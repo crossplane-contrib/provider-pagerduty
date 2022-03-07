@@ -31,10 +31,12 @@ import (
 )
 
 const (
-	keyToken = "token"
+	keyToken  = "token"
+	keyRegion = "region"
 
 	// PagerDuty credentials environment variable names
-	envToken = "PAGERDUTY_TOKEN"
+	envToken     = "PAGERDUTY_TOKEN"
+	envUserToken = "PAGERDUTY_USER_TOKEN"
 )
 
 const (
@@ -83,9 +85,15 @@ func TerraformSetupBuilder(version, providerSource, providerVersion string) terr
 			return ps, errors.Wrap(err, errUnmarshalCredentials)
 		}
 
+		// set provider configuration
+		ps.Configuration = map[string]interface{}{
+			"service_region": pagerdutyCreds[keyRegion],
+		}
+
 		// set environment variables for sensitive provider configuration
 		ps.Env = []string{
 			fmt.Sprintf(fmtEnvVar, envToken, pagerdutyCreds[keyToken]),
+			fmt.Sprintf(fmtEnvVar, envUserToken, pagerdutyCreds[keyToken]),
 		}
 		return ps, nil
 	}
