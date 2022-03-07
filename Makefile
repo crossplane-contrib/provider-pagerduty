@@ -1,15 +1,15 @@
 # ====================================================================================
 # Setup Project
 
-PROJECT_NAME := provider-jet-template
-PROJECT_REPO := github.com/crossplane-contrib/$(PROJECT_NAME)
+PROJECT_NAME := provider-jet-pagerduty
+PROJECT_REPO := github.com/haarchri/$(PROJECT_NAME)
 
 export TERRAFORM_VERSION := 1.1.6
 
-export TERRAFORM_PROVIDER_SOURCE := hashicorp/null
-export TERRAFORM_PROVIDER_VERSION := 3.1.0
-export TERRAFORM_PROVIDER_DOWNLOAD_NAME := terraform-provider-null
-export TERRAFORM_PROVIDER_DOWNLOAD_URL_PREFIX := https://releases.hashicorp.com/terraform-provider-null/3.1.0
+export TERRAFORM_PROVIDER_SOURCE := PagerDuty/pagerduty
+export TERRAFORM_PROVIDER_VERSION := 2.3.0
+export TERRAFORM_PROVIDER_DOWNLOAD_NAME := terraform-provider-pagerduty
+export TERRAFORM_PROVIDER_DOWNLOAD_URL_PREFIX := https://releases.hashicorp.com/terraform-provider-pagerduty/2.3.0
 
 PLATFORMS ?= linux_amd64 linux_arm64
 
@@ -51,7 +51,7 @@ GO111MODULE = on
 # Setup Images
 
 DOCKER_REGISTRY ?= crossplane
-IMAGES = provider-jet-template provider-jet-template-controller
+IMAGES = provider-jet-pagerduty provider-jet-pagerduty-controller
 -include build/makelib/image.mk
 
 # ====================================================================================

@@ -1,0 +1,11 @@
+---
+apiVersion: pagerduty.pagerduty.jet.crossplane.io/v1alpha1
+kind: Team
+metadata:
+  name: crossplane
+spec:
+  forProvider:
+    name: crossplane
+    description: "managed by provider-jet-pagerduty"
+  providerConfigRef:
+    name: default

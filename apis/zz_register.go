@@ -22,15 +22,41 @@ package apis
 import (
 	"k8s.io/apimachinery/pkg/runtime"
 
-	v1alpha1 "github.com/crossplane-contrib/provider-jet-template/apis/null/v1alpha1"
-	v1alpha1apis "github.com/crossplane-contrib/provider-jet-template/apis/v1alpha1"
+	v1alpha1 "github.com/haarchri/provider-jet-pagerduty/apis/business/v1alpha1"
+	v1alpha1escalation "github.com/haarchri/provider-jet-pagerduty/apis/escalation/v1alpha1"
+	v1alpha1event "github.com/haarchri/provider-jet-pagerduty/apis/event/v1alpha1"
+	v1alpha1extension "github.com/haarchri/provider-jet-pagerduty/apis/extension/v1alpha1"
+	v1alpha1maintenance "github.com/haarchri/provider-jet-pagerduty/apis/maintenance/v1alpha1"
+	v1alpha1pagerduty "github.com/haarchri/provider-jet-pagerduty/apis/pagerduty/v1alpha1"
+	v1alpha1response "github.com/haarchri/provider-jet-pagerduty/apis/response/v1alpha1"
+	v1alpha1ruleset "github.com/haarchri/provider-jet-pagerduty/apis/ruleset/v1alpha1"
+	v1alpha1service "github.com/haarchri/provider-jet-pagerduty/apis/service/v1alpha1"
+	v1alpha1slack "github.com/haarchri/provider-jet-pagerduty/apis/slack/v1alpha1"
+	v1alpha1tag "github.com/haarchri/provider-jet-pagerduty/apis/tag/v1alpha1"
+	v1alpha1team "github.com/haarchri/provider-jet-pagerduty/apis/team/v1alpha1"
+	v1alpha1user "github.com/haarchri/provider-jet-pagerduty/apis/user/v1alpha1"
+	v1alpha1apis "github.com/haarchri/provider-jet-pagerduty/apis/v1alpha1"
+	v1alpha1webhook "github.com/haarchri/provider-jet-pagerduty/apis/webhook/v1alpha1"
 )
 
 func init() {
 	// Register the types with the Scheme so the components can map objects to GroupVersionKinds and back
 	AddToSchemes = append(AddToSchemes,
 		v1alpha1.SchemeBuilder.AddToScheme,
+		v1alpha1escalation.SchemeBuilder.AddToScheme,
+		v1alpha1event.SchemeBuilder.AddToScheme,
+		v1alpha1extension.SchemeBuilder.AddToScheme,
+		v1alpha1maintenance.SchemeBuilder.AddToScheme,
+		v1alpha1pagerduty.SchemeBuilder.AddToScheme,
+		v1alpha1response.SchemeBuilder.AddToScheme,
+		v1alpha1ruleset.SchemeBuilder.AddToScheme,
+		v1alpha1service.SchemeBuilder.AddToScheme,
+		v1alpha1slack.SchemeBuilder.AddToScheme,
+		v1alpha1tag.SchemeBuilder.AddToScheme,
+		v1alpha1team.SchemeBuilder.AddToScheme,
+		v1alpha1user.SchemeBuilder.AddToScheme,
 		v1alpha1apis.SchemeBuilder.AddToScheme,
+		v1alpha1webhook.SchemeBuilder.AddToScheme,
 	)
 }
 
