@@ -1,4 +1,4 @@
-# Terrajet PagerDuty Provider
+# provider-jet-pagerduty
 
 `provider-jet-pagerduty` is a [Crossplane](https://crossplane.io/) provider that
 is built using [Terrajet](https://github.com/crossplane/terrajet) code
