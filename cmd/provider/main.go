@@ -33,10 +33,10 @@ import (
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/log/zap"
 
-	"github.com/haarchri/provider-jet-pagerduty/apis"
-	"github.com/haarchri/provider-jet-pagerduty/config"
-	"github.com/haarchri/provider-jet-pagerduty/internal/clients"
-	"github.com/haarchri/provider-jet-pagerduty/internal/controller"
+	"github.com/crossplane-contrib/provider-jet-pagerduty/apis"
+	"github.com/crossplane-contrib/provider-jet-pagerduty/config"
+	"github.com/crossplane-contrib/provider-jet-pagerduty/internal/clients"
+	"github.com/crossplane-contrib/provider-jet-pagerduty/internal/controller"
 )
 
 func main() {

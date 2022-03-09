@@ -1,4 +1,4 @@
-module github.com/haarchri/provider-jet-pagerduty
+module github.com/crossplane-contrib/provider-jet-pagerduty
 
 go 1.17
 

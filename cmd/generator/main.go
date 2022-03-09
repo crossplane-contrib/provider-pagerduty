@@ -25,7 +25,7 @@ import (
 
 	"github.com/crossplane/terrajet/pkg/pipeline"
 
-	"github.com/haarchri/provider-jet-pagerduty/config"
+	"github.com/crossplane-contrib/provider-jet-pagerduty/config"
 )
 
 func main() {
