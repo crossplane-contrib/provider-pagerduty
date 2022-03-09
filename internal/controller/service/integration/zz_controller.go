@@ -29,7 +29,7 @@ import (
 	"github.com/crossplane/terrajet/pkg/terraform"
 	ctrl "sigs.k8s.io/controller-runtime"
 
-	v1alpha1 "github.com/haarchri/provider-jet-pagerduty/apis/service/v1alpha1"
+	v1alpha1 "github.com/crossplane-contrib/provider-jet-pagerduty/apis/service/v1alpha1"
 )
 
 // Setup adds a controller that reconciles Integration managed resources.
