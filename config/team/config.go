@@ -1,0 +1,26 @@
+package user
+
+import "github.com/upbound/upjet/pkg/config"
+
+// Configure configures individual resources by adding custom ResourceConfigurators.
+func Configure(p *config.Provider) {
+	p.AddResourceConfigurator("pagerduty_team", func(r *config.Resource) {
+		// We need to override the default group that upjet generated for
+		// this resource, which would be "github"
+		r.ShortGroup = "team"
+	})
+
+	p.AddResourceConfigurator("pagerduty_team_membership", func(r *config.Resource) {
+		// We need to override the default group that upjet generated for
+		// this resource, which would be "github"
+		r.ShortGroup = "team"
+		r.References = config.References{
+			"user_id": {
+				Type: "github.com/crossplane-contrib/provider-pagerduty/apis/user/v1alpha1.User",
+			},
+			"team_id": {
+				Type: "Team",
+			},
+		}
+	})
+}

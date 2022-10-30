@@ -1,0 +1,49 @@
+apiVersion: slack.pagerduty.crossplane.io/v1alpha1
+kind: Connection
+metadata:
+  annotations:
+    meta.upbound.io/example-id: slack/v1alpha1/connection
+  labels:
+    testing.upbound.io/example-name: foo
+  name: foo
+spec:
+  forProvider:
+    channelId: C02CABCDAC9
+    config:
+    - events:
+      - incident.triggered
+      - incident.acknowledged
+      - incident.escalated
+      - incident.resolved
+      - incident.reassigned
+      - incident.annotated
+      - incident.unacknowledged
+      - incident.delegated
+      - incident.priority_updated
+      - incident.responder.added
+      - incident.responder.replied
+      - incident.status_update_published
+      - incident.reopened
+      priorities:
+      - ${data.pagerduty_priority.p1.id}
+    notificationType: responder
+    sourceId: ${pagerduty_team.foo.id}
+    sourceType: team_reference
+    workspaceId: T02A123LV1A
+
+---
+
+apiVersion: team.pagerduty.crossplane.io/v1alpha1
+kind: Team
+metadata:
+  annotations:
+    meta.upbound.io/example-id: slack/v1alpha1/connection
+  labels:
+    testing.upbound.io/example-name: foo
+  name: foo
+spec:
+  forProvider:
+    name: Team Foo
+
+---
+

@@ -1,7 +1,4 @@
 apiVersion: meta.pkg.crossplane.io/v1alpha1
 kind: Provider
 metadata:
-  name: provider-jet-pagerduty
-spec:
-  controller:
-    image: DOCKER_REGISTRY/provider-jet-pagerduty-controller:VERSION
+  name: provider-pagerduty
