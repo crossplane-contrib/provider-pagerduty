@@ -2,3 +2,18 @@ apiVersion: meta.pkg.crossplane.io/v1alpha1
 kind: Provider
 metadata:
   name: provider-pagerduty
+  annotations:
+    meta.crossplane.io/maintainer: Crossplane Maintainers <info@crossplane.io>
+    meta.crossplane.io/source: github.com/crossplane-contrib/provider-pagerduty
+    meta.crossplane.io/license: Apache-2.0
+    meta.crossplane.io/description: |
+      The PagerDuty Crossplane provider adds support for
+      managing PagerDuty resources in Kubernetes.
+    meta.crossplane.io/readme: |
+      `provider-pagerduty` is for an incident management platform that provides reliable notifications, 
+      automatic escalations, on-call scheduling, and other functionality to help teams
+      detect and address unplanned work in real-time.
+      If you encounter an issue please reach out on
+      [slack.crossplane.io](https://slack.crossplane.io) and create an issue in
+      the [crossplane-contrib/provider-pagerduty](https://github.com/crossplane-contrib/provider-pagerduty)
+      repo.
