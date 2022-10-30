@@ -14,10 +14,12 @@ env:
   GOLANGCI_VERSION: 'v1.50.0'
   DOCKER_BUILDX_VERSION: 'v0.8.2'
 
-  # Common users. We can't run a step 'if secrets.XXX != ""' but we can run a
-  # step 'if env.XXX != ""', so we copy these to succinctly test whether
+  # Common users. We can't run a step 'if secrets.AWS_USR != ""' but we can run
+  # a step 'if env.AWS_USR' != ""', so we copy these to succinctly test whether
   # credentials have been provided before trying to run steps that need them.
-  UPBOUND_MARKETPLACE_PUSH_ROBOT_USR: ${{ secrets.UPBOUND_MARKETPLACE_PUSH_ROBOT_USR }}
+  CONTRIB_DOCKER_USR: ${{ secrets.CONTRIB_DOCKER_USR }}
+  XPKG_ACCESS_ID: ${{ secrets.XPKG_ACCESS_ID }}
+  AWS_USR: ${{ secrets.AWS_USR }}
 
 jobs:
   detect-noop:
@@ -32,7 +34,6 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           paths_ignore: '["**.md", "**.png", "**.jpg"]'
           do_not_skip: '["workflow_dispatch", "schedule", "push"]'
-
 
   lint:
     runs-on: ubuntu-22.04
@@ -187,14 +188,6 @@ jobs:
           version: ${{ env.DOCKER_BUILDX_VERSION }}
           install: true
 
-      - name: Login to Upbound
-        uses: docker/login-action@v1
-        if: env.UPBOUND_MARKETPLACE_PUSH_ROBOT_USR != ''
-        with:
-          registry: xpkg.upbound.io
-          username: ${{ secrets.UPBOUND_MARKETPLACE_PUSH_ROBOT_USR }}
-          password: ${{ secrets.UPBOUND_MARKETPLACE_PUSH_ROBOT_PSW }}
-
       - name: Checkout
         uses: actions/checkout@v2
         with:
@@ -235,12 +228,41 @@ jobs:
           # We're using docker buildx, which doesn't actually load the images it
           # builds by default. Specifying --load does so.
           BUILD_ARGS: "--load"
-
-      - name: Upload Artifacts to GitHub
+      
+      - name: Publish Artifacts to GitHub
         uses: actions/upload-artifact@v2
         with:
           name: output
           path: _output/**
+      
+      - name: Login to Docker
+        uses: docker/login-action@v1
+        if: env.CONTRIB_DOCKER_USR != ''
+        with:
+          username: ${{ secrets.CONTRIB_DOCKER_USR }}
+          password: ${{ secrets.CONTRIB_DOCKER_PSW }}
 
-      - name: Publish Artifacts
-        run: make publish BRANCH_NAME=${GITHUB_REF##*/}
+      - name: Login to Upbound
+        uses: docker/login-action@v1
+        if: env.XPKG_ACCESS_ID != ''
+        with:
+          registry: xpkg.upbound.io
+          username: ${{ secrets.XPKG_ACCESS_ID }}
+          password: ${{ secrets.XPKG_TOKEN }}
+
+      - name: Publish Artifacts to S3 and Docker Hub
+        run: make -j2 publish BRANCH_NAME=${GITHUB_REF##*/}
+        if: env.AWS_USR != '' && env.CONTRIB_DOCKER_USR != ''
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_USR }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_PSW }}
+          GIT_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Promote Artifacts in S3 and Docker Hub
+        if: github.ref == 'refs/heads/main' && env.AWS_USR != '' && env.CONTRIB_DOCKER_USR != ''
+        run: make -j2 promote
+        env:
+          BRANCH_NAME: main
+          CHANNEL: main
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_USR }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_PSW }}
