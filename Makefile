@@ -1,15 +1,17 @@
 # ====================================================================================
 # Setup Project
 
-PROJECT_NAME := provider-jet-pagerduty
+PROJECT_NAME := provider-pagerduty
 PROJECT_REPO := github.com/crossplane-contrib/$(PROJECT_NAME)
 
-export TERRAFORM_VERSION := 1.1.6
+export TERRAFORM_VERSION := 1.3.3
 
 export TERRAFORM_PROVIDER_SOURCE := PagerDuty/pagerduty
-export TERRAFORM_PROVIDER_VERSION := 2.3.0
+export TERRAFORM_PROVIDER_VERSION := 2.6.3
 export TERRAFORM_PROVIDER_DOWNLOAD_NAME := terraform-provider-pagerduty
-export TERRAFORM_PROVIDER_DOWNLOAD_URL_PREFIX := https://releases.hashicorp.com/terraform-provider-pagerduty/2.3.0
+export TERRAFORM_PROVIDER_DOWNLOAD_URL_PREFIX := https://github.com/PagerDuty/terraform-provider-pagerduty/releases/download/v2.6.3
+export TERRAFORM_PROVIDER_REPO ?= https://github.com/PagerDuty/terraform-provider-pagerduty
+export TERRAFORM_DOCS_PATH := website/docs/r
 
 PLATFORMS ?= linux_amd64 linux_arm64
 
@@ -36,7 +38,9 @@ NPROCS ?= 1
 # to half the number of CPU cores.
 GO_TEST_PARALLEL := $(shell echo $$(( $(NPROCS) / 2 )))
 
-GO_STATIC_PACKAGES = $(GO_PROJECT)/cmd/provider
+GO_REQUIRED_VERSION ?= 1.19
+GOLANGCILINT_VERSION ?= 1.50.0
+GO_STATIC_PACKAGES = $(GO_PROJECT)/cmd/provider $(GO_PROJECT)/cmd/generator
 GO_LDFLAGS += -X $(GO_PROJECT)/internal/version.Version=$(VERSION)
 GO_SUBDIRS += cmd internal apis
 GO111MODULE = on
@@ -45,14 +49,35 @@ GO111MODULE = on
 # ====================================================================================
 # Setup Kubernetes tools
 
+KIND_VERSION = v0.15.0
+UP_VERSION = v0.14.0
+UP_CHANNEL = stable
 -include build/makelib/k8s_tools.mk
 
 # ====================================================================================
 # Setup Images
 
-DOCKER_REGISTRY ?= crossplane
-IMAGES = provider-jet-pagerduty provider-jet-pagerduty-controller
--include build/makelib/image.mk
+REGISTRY_ORGS ?= xpkg.upbound.io/upbound
+IMAGES = $(PROJECT_NAME)
+-include build/makelib/imagelight.mk
+
+# ====================================================================================
+# Setup XPKG
+
+XPKG_REG_ORGS ?= xpkg.upbound.io/upbound
+# NOTE(hasheddan): skip promoting on xpkg.upbound.io as channel tags are
+# inferred.
+XPKG_REG_ORGS_NO_PROMOTE ?= xpkg.upbound.io/upbound
+XPKGS = $(PROJECT_NAME)
+-include build/makelib/xpkg.mk
+
+# NOTE(hasheddan): we force image building to happen prior to xpkg build so that
+# we ensure image is present in daemon.
+xpkg.build.provider-pagerduty: do.build.images
+
+# NOTE(hasheddan): we ensure up is installed prior to running platform-specific
+# build steps in parallel to avoid encountering an installation race condition.
+build.init: $(UP)
 
 # ====================================================================================
 # Fallthrough
@@ -91,9 +116,16 @@ $(TERRAFORM_PROVIDER_SCHEMA): $(TERRAFORM)
 	@$(TERRAFORM) -chdir=$(TERRAFORM_WORKDIR) providers schema -json=true > $(TERRAFORM_PROVIDER_SCHEMA) 2>> $(TERRAFORM_WORKDIR)/terraform-logs.txt
 	@$(OK) generating provider schema for $(TERRAFORM_PROVIDER_SOURCE) $(TERRAFORM_PROVIDER_VERSION)
 
-generate.init: $(TERRAFORM_PROVIDER_SCHEMA)
+pull-docs:
+	@if [ ! -d "$(WORK_DIR)/$(TERRAFORM_PROVIDER_SOURCE)" ]; then \
+  		mkdir -p "$(WORK_DIR)/$(TERRAFORM_PROVIDER_SOURCE)" && \
+		git clone -c advice.detachedHead=false --depth 1 --filter=blob:none --branch "v$(TERRAFORM_PROVIDER_VERSION)" --sparse "$(TERRAFORM_PROVIDER_REPO)" "$(WORK_DIR)/$(TERRAFORM_PROVIDER_SOURCE)"; \
+	fi
+	@git -C "$(WORK_DIR)/$(TERRAFORM_PROVIDER_SOURCE)" sparse-checkout set "$(TERRAFORM_DOCS_PATH)"
 
-.PHONY: $(TERRAFORM_PROVIDER_SCHEMA)
+generate.init: $(TERRAFORM_PROVIDER_SCHEMA) pull-docs
+
+.PHONY: $(TERRAFORM_PROVIDER_SCHEMA) pull-docs
 # ====================================================================================
 # Targets
 
@@ -105,6 +137,9 @@ generate.init: $(TERRAFORM_PROVIDER_SCHEMA)
 # its location in CI so that we cache between builds.
 go.cachedir:
 	@go env GOCACHE
+
+go.mod.cachedir:
+	@go env GOMODCACHE
 
 # Generate a coverage report for cobertura applying exclusions on
 # - generated file
@@ -124,7 +159,7 @@ submodules:
 run: go.build
 	@$(INFO) Running Crossplane locally out-of-cluster . . .
 	@# To see other arguments that can be provided, run the command with --help instead
-	$(GO_OUT_DIR)/provider --debug
+	UPBOUND_CONTEXT="local" $(GO_OUT_DIR)/provider --debug
 
 .PHONY: cobertura submodules fallthrough run crds.clean
 

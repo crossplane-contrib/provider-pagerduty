@@ -1,17 +1,5 @@
 /*
-Copyright 2021 The Crossplane Authors.
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
+Copyright 2021 Upbound Inc.
 */
 
 package config
@@ -20,32 +8,63 @@ import (
 	// Note(turkenh): we are importing this to embed provider schema document
 	_ "embed"
 
-	tjconfig "github.com/crossplane/terrajet/pkg/config"
-	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+	ujconfig "github.com/upbound/upjet/pkg/config"
+
+	addon "github.com/crossplane-contrib/provider-pagerduty/config/addon"
+	business "github.com/crossplane-contrib/provider-pagerduty/config/business"
+	escalation "github.com/crossplane-contrib/provider-pagerduty/config/escalation"
+	event "github.com/crossplane-contrib/provider-pagerduty/config/event"
+	extensions "github.com/crossplane-contrib/provider-pagerduty/config/extensions"
+	maintenance "github.com/crossplane-contrib/provider-pagerduty/config/maintenance"
+	response "github.com/crossplane-contrib/provider-pagerduty/config/response"
+	ruleset "github.com/crossplane-contrib/provider-pagerduty/config/ruleset"
+	schedule "github.com/crossplane-contrib/provider-pagerduty/config/schedule"
+	service "github.com/crossplane-contrib/provider-pagerduty/config/service"
+	slack "github.com/crossplane-contrib/provider-pagerduty/config/slack"
+	tag "github.com/crossplane-contrib/provider-pagerduty/config/tag"
+	team "github.com/crossplane-contrib/provider-pagerduty/config/team"
+	user "github.com/crossplane-contrib/provider-pagerduty/config/user"
+	webhook "github.com/crossplane-contrib/provider-pagerduty/config/webhook"
 )
 
 const (
 	resourcePrefix = "pagerduty"
-	modulePath     = "github.com/crossplane-contrib/provider-jet-pagerduty"
+	modulePath     = "github.com/crossplane-contrib/provider-pagerduty"
 )
 
 //go:embed schema.json
 var providerSchema string
 
+//go:embed provider-metadata.yaml
+var providerMetadata string
+
 // GetProvider returns provider configuration
-func GetProvider() *tjconfig.Provider {
-	defaultResourceFn := func(name string, terraformResource *schema.Resource, opts ...tjconfig.ResourceOption) *tjconfig.Resource {
-		r := tjconfig.DefaultResource(name, terraformResource)
-		// Add any provider-specific defaulting here. For example:
-		r.ExternalName = tjconfig.IdentifierFromProvider
-		return r
-	}
+func GetProvider() *ujconfig.Provider {
+	pc := ujconfig.NewProvider([]byte(providerSchema), resourcePrefix, modulePath, []byte(providerMetadata),
+		ujconfig.WithIncludeList(ExternalNameConfigured()),
+		ujconfig.WithShortName("pagerduty"),
+		ujconfig.WithRootGroup("pagerduty.crossplane.io"),
+		ujconfig.WithDefaultResourceOptions(
+			ExternalNameConfigurations(),
+		))
 
-	pc := tjconfig.NewProviderWithSchema([]byte(providerSchema), resourcePrefix, modulePath,
-		tjconfig.WithDefaultResourceFn(defaultResourceFn))
-
-	for _, configure := range []func(provider *tjconfig.Provider){
+	for _, configure := range []func(provider *ujconfig.Provider){
 		// add custom config functions
+		addon.Configure,
+		business.Configure,
+		escalation.Configure,
+		event.Configure,
+		extensions.Configure,
+		maintenance.Configure,
+		response.Configure,
+		ruleset.Configure,
+		schedule.Configure,
+		service.Configure,
+		slack.Configure,
+		team.Configure,
+		tag.Configure,
+		user.Configure,
+		webhook.Configure,
 	} {
 		configure(pc)
 	}

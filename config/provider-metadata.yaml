@@ -1,0 +1,2307 @@
+name: PagerDuty/pagerduty
+resources:
+    pagerduty_addon:
+        subCategory: ""
+        description: Creates and manages an add-on in PagerDuty.
+        name: pagerduty_addon
+        title: pagerduty_addon
+        examples:
+            - name: example
+              manifest: |-
+                {
+                  "name": "Internal Status Page",
+                  "src": "https://intranet.example.com/status"
+                }
+        argumentDocs:
+            id: '- The ID of the add-on.'
+            name: '- (Required) The name of the add-on.'
+            src: '- (Required) The source URL to display in a frame in the PagerDuty UI. HTTPS is required.'
+        importStatements: []
+    pagerduty_business_service:
+        subCategory: ""
+        description: Creates and manages a business service in PagerDuty.
+        name: pagerduty_business_service
+        title: pagerduty_business_service
+        examples:
+            - name: example
+              manifest: |-
+                {
+                  "description": "A very descriptive description of this business service",
+                  "name": "My Web App",
+                  "point_of_contact": "PagerDuty Admin",
+                  "team": "P37RSRS"
+                }
+        argumentDocs:
+            description: |-
+                - (Optional) A human-friendly description of the service.
+                If not set, a placeholder of "Managed by Terraform" will be set.
+            html_url: '- A URL at which the entity is uniquely displayed in the Web app.'
+            id: '- The ID of the service.'
+            name: '- (Required) The name of the business service.'
+            point_of_contact: '- (Optional) The owner of the business service.'
+            self: '- The API show URL at which the object is accessible.'
+            summary: '- A short-form, server-generated string that provides succinct, important information about an object suitable for primary labeling of an entity in a client. In many cases, this will be identical to name, though it is not intended to be an identifier.'
+            team: '- (Optional) ID of the team that owns the business service.'
+            type: '- Deprecated (Optional) Default (and only supported) value is business_service.'
+        importStatements: []
+    pagerduty_business_service_subscriber:
+        subCategory: ""
+        description: Creates and manages a business service subscriber in PagerDuty.
+        name: pagerduty_business_service_subscriber
+        title: pagerduty_business_service_subscriber
+        examples:
+            - name: team_example
+              manifest: |-
+                {
+                  "business_service_id": "${pagerduty_business_service.example.id}",
+                  "subscriber_id": "${pagerduty_team.engteam.id}",
+                  "subscriber_type": "team"
+                }
+              references:
+                business_service_id: pagerduty_business_service.example.id
+                subscriber_id: pagerduty_team.engteam.id
+              dependencies:
+                pagerduty_business_service.example: |-
+                    {
+                      "description": "A very descriptive description of this business service",
+                      "name": "My Web App",
+                      "point_of_contact": "PagerDuty Admin",
+                      "team": "P37RSRS"
+                    }
+                pagerduty_team.engteam: |-
+                    {
+                      "name": "Engineering"
+                    }
+                pagerduty_user.example: |-
+                    {
+                      "email": "125.greenholt.earline@graham.name",
+                      "name": "Earline Greenholt"
+                    }
+            - name: user_example
+              manifest: |-
+                {
+                  "business_service_id": "${pagerduty_business_service.example.id}",
+                  "subscriber_id": "${pagerduty_user.example.id}",
+                  "subscriber_type": "user"
+                }
+              references:
+                business_service_id: pagerduty_business_service.example.id
+                subscriber_id: pagerduty_user.example.id
+              dependencies:
+                pagerduty_business_service.example: |-
+                    {
+                      "description": "A very descriptive description of this business service",
+                      "name": "My Web App",
+                      "point_of_contact": "PagerDuty Admin",
+                      "team": "P37RSRS"
+                    }
+                pagerduty_team.engteam: |-
+                    {
+                      "name": "Engineering"
+                    }
+                pagerduty_user.example: |-
+                    {
+                      "email": "125.greenholt.earline@graham.name",
+                      "name": "Earline Greenholt"
+                    }
+        argumentDocs:
+            business_service_id: '- (Required) The ID of the business service to subscribe to.'
+            id: '- The ID of the business service subscriber assignment.'
+            subscriber_id: '- (Required) The ID of the subscriber entity.'
+            subscriber_type: '- (Required) Type of subscriber entity in the subscriber assignment. Possible values can be user and team.'
+        importStatements: []
+    pagerduty_escalation_policy:
+        subCategory: ""
+        description: Creates and manages an escalation policy in PagerDuty.
+        name: pagerduty_escalation_policy
+        title: pagerduty_escalation_policy
+        examples:
+            - name: example
+              manifest: |-
+                {
+                  "name": "Engineering Escalation Policy",
+                  "num_loops": 2,
+                  "rule": [
+                    {
+                      "escalation_delay_in_minutes": 10,
+                      "target": [
+                        {
+                          "id": "${pagerduty_user.example.id}",
+                          "type": "user_reference"
+                        },
+                        {
+                          "id": "${pagerduty_user.example2.id}",
+                          "type": "user_reference"
+                        }
+                      ]
+                    }
+                  ],
+                  "teams": [
+                    "${pagerduty_team.example.id}"
+                  ]
+                }
+              references:
+                rule.target.id: pagerduty_user.example2.id
+              dependencies:
+                pagerduty_team.example: |-
+                    {
+                      "description": "All engineering",
+                      "name": "Engineering"
+                    }
+                pagerduty_user.example: |-
+                    {
+                      "email": "125.greenholt.earline@graham.name",
+                      "name": "Earline Greenholt",
+                      "teams": [
+                        "${pagerduty_team.example.id}"
+                      ]
+                    }
+        argumentDocs:
+            description: |-
+                - (Optional) A human-friendly description of the escalation policy.
+                If not set, a placeholder of "Managed by Terraform" will be set.
+            escalation_delay_in_minutes: '- (Required) The number of minutes before an unacknowledged incident escalates away from this rule.'
+            id: '- (Required) A target ID'
+            name: '- (Required) The name of the escalation policy.'
+            num_loops: '- (Optional) The number of times the escalation policy will repeat after reaching the end of its escalation.'
+            rule: '- (Required) An Escalation rule block. Escalation rules documented below.'
+            targets: '- (Required) A target block. Target blocks documented below.'
+            teams: '- (Optional) Teams associated with the policy. Account must have the teams ability to use this parameter.'
+            type: '- (Optional) Can be user_reference or schedule_reference. Defaults to user_reference. For multiple users as example, repeat the target.'
+        importStatements: []
+    pagerduty_event_orchestration:
+        subCategory: ""
+        description: Creates and manages a Global Event Orchestration in PagerDuty.
+        name: pagerduty_event_orchestration
+        title: pagerduty_event_orchestration
+        examples:
+            - name: my_monitor
+              manifest: |-
+                {
+                  "description": "Send events to a pair of services",
+                  "name": "My Monitoring Orchestration",
+                  "team": "${pagerduty_team.engineering.id}"
+                }
+              references:
+                team: pagerduty_team.engineering.id
+              dependencies:
+                pagerduty_team.engineering: |-
+                    {
+                      "name": "Engineering"
+                    }
+        argumentDocs:
+            description: '- (Optional) A human-friendly description of the Event Orchestration.'
+            id: '- The ID of the Event Orchestration.'
+            integration: '- An integration for the Event Orchestration.'
+            name: '- (Required) Name of the Event Orchestration.'
+            parameters: ""
+            routing_key: '- Routing key that routes to this Orchestration.'
+            team: '- (Optional) ID of the team that owns the Event Orchestration. If none is specified, only admins have access.'
+            type: '- Type of the routing key. global is the default type.'
+        importStatements: []
+    pagerduty_event_orchestration_router:
+        subCategory: ""
+        description: Creates and manages a Router for Global Event Orchestration in PagerDuty.
+        name: pagerduty_event_orchestration_router
+        title: pagerduty_event_orchestration_router
+        examples:
+            - name: router
+              manifest: |-
+                {
+                  "catch_all": [
+                    {
+                      "actions": [
+                        {
+                          "route_to": "unrouted"
+                        }
+                      ]
+                    }
+                  ],
+                  "event_orchestration": "${pagerduty_event_orchestration.my_monitor.id}",
+                  "set": [
+                    {
+                      "id": "start",
+                      "rule": [
+                        {
+                          "actions": [
+                            {
+                              "route_to": "${pagerduty_service.database.id}"
+                            }
+                          ],
+                          "condition": [
+                            {
+                              "expression": "event.summary matches part 'database'"
+                            },
+                            {
+                              "expression": "event.source matches regex 'db[0-9]+-server'"
+                            }
+                          ],
+                          "label": "Events relating to our relational database"
+                        },
+                        {
+                          "actions": [
+                            {
+                              "route_to": "${pagerduty_service.www.id}"
+                            }
+                          ],
+                          "condition": [
+                            {
+                              "expression": "event.summary matches part 'www'"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              references:
+                event_orchestration: pagerduty_event_orchestration.my_monitor.id
+                set.rule.actions.route_to: pagerduty_service.www.id
+        argumentDocs:
+            actions: '- (Required) Actions that will be taken to change the resulting alert and incident, when an event matches this rule.'
+            catch_all: '- (Required) When none of the rules match an event, the event will be routed according to the catch_all settings.'
+            condition: '- (Optional) Each of these conditions is evaluated to check if an event matches this rule. The rule is considered a match if any of these conditions match. If none are provided, the event will always match against the rule.'
+            disabled: '- (Optional) Indicates whether the rule is disabled and would therefore not be evaluated.'
+            event_orchestration: '- (Required) ID of the Event Orchestration to which the Router belongs.'
+            expression: '- (Required) A PCL condition string.'
+            id: '- (Required) ID of the start set. Router supports only one set and it''s id has to be start'
+            label: '- (Optional) A description of this rule''s purpose.'
+            route_to: '- (Required) The ID of the target Service for the resulting alert.'
+            rule: '- (Optional) The Router evaluates Events against these Rules, one at a time, and routes each Event to a specific Service based on the first rule that matches. If no rules are provided as part of Terraform configuration, the API returns empty list of rules.'
+            self: '- The URL at which the Router Orchestration is accessible.'
+            set: '- (Required) The Router contains a single set of rules  (the "start" set).'
+        importStatements: []
+    pagerduty_event_orchestration_service:
+        subCategory: ""
+        description: Creates and manages a Service Orchestration for a Service.
+        name: pagerduty_event_orchestration_service
+        title: pagerduty_event_orchestration_service
+        examples:
+            - name: www
+              manifest: |-
+                {
+                  "catch_all": [
+                    {
+                      "actions": [
+                        {}
+                      ]
+                    }
+                  ],
+                  "service": "${pagerduty_service.example.id}",
+                  "set": [
+                    {
+                      "id": "start",
+                      "rule": [
+                        {
+                          "actions": [
+                            {
+                              "extraction": [
+                                {
+                                  "target": "event.custom_details.hostname",
+                                  "template": "{{variables.hostname}}"
+                                },
+                                {
+                                  "regex": "www (.*) service",
+                                  "source": "event.source",
+                                  "target": "event.source"
+                                }
+                              ],
+                              "route_to": "step-two",
+                              "variable": [
+                                {
+                                  "name": "hostname",
+                                  "path": "event.component",
+                                  "type": "regex",
+                                  "value": "hostname: (.*)"
+                                }
+                              ]
+                            }
+                          ],
+                          "label": "Always apply some consistent event transformations to all events"
+                        }
+                      ]
+                    },
+                    {
+                      "id": "step-two",
+                      "rule": [
+                        {
+                          "actions": [
+                            {
+                              "annotate": "Please use our P1 runbook: https://docs.test/p1-runbook",
+                              "priority": "${data.pagerduty_priority.p1.id}"
+                            }
+                          ],
+                          "condition": [
+                            {
+                              "expression": "event.severity matches 'critical'"
+                            }
+                          ],
+                          "label": "All critical alerts should be treated as P1 incident"
+                        },
+                        {
+                          "actions": [
+                            {
+                              "automation_action": [
+                                {
+                                  "auto_send": true,
+                                  "header": [
+                                    {
+                                      "key": "X-Notification-Source",
+                                      "value": "PagerDuty Incident Webhook"
+                                    }
+                                  ],
+                                  "name": "Canary Slack Notification",
+                                  "parameter": [
+                                    {
+                                      "key": "channel",
+                                      "value": "#my-team-channel"
+                                    },
+                                    {
+                                      "key": "message",
+                                      "value": "something is wrong with the canary deployment"
+                                    }
+                                  ],
+                                  "url": "https://our-slack-listerner.test/canary-notification"
+                                }
+                              ]
+                            }
+                          ],
+                          "condition": [
+                            {
+                              "expression": "event.custom_details.hostname matches part 'canary'"
+                            }
+                          ],
+                          "label": "If there's something wrong on the canary let the team know about it in our deployments Slack channel"
+                        },
+                        {
+                          "actions": [
+                            {
+                              "suppress": true
+                            }
+                          ],
+                          "condition": [
+                            {
+                              "expression": "event.severity matches 'info' and not (now in Mon,Tue,Wed,Thu,Fri 09:00:00 to 17:00:00 America/Los_Angeles)"
+                            }
+                          ],
+                          "label": "Never bother the on-call for info-level events outside of work hours"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              references:
+                service: pagerduty_service.example.id
+                set.rule.actions.priority: data.pagerduty_priority.p1.id
+              dependencies:
+                pagerduty_escalation_policy.foo: |-
+                    {
+                      "name": "Engineering Escalation Policy",
+                      "num_loops": 2,
+                      "rule": [
+                        {
+                          "escalation_delay_in_minutes": 10,
+                          "target": [
+                            {
+                              "id": "${pagerduty_user.example.id}",
+                              "type": "user"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                pagerduty_service.example: |-
+                    {
+                      "acknowledgement_timeout": 600,
+                      "alert_creation": "create_alerts_and_incidents",
+                      "auto_resolve_timeout": 14400,
+                      "escalation_policy": "${pagerduty_escalation_policy.example.id}",
+                      "name": "My Web App"
+                    }
+                pagerduty_team.engineering: |-
+                    {
+                      "name": "Engineering"
+                    }
+                pagerduty_user.example: |-
+                    {
+                      "email": "125.greenholt.earline@graham.name",
+                      "name": "Earline Greenholt",
+                      "teams": [
+                        "${pagerduty_team.engineering.id}"
+                      ]
+                    }
+        argumentDocs:
+            action_id: '- (Required) Id of the Process Automation action to be triggered.'
+            actions: '- (Required) Actions that will be taken to change the resulting alert and incident, when an event matches this rule.'
+            annotate: '- (Optional) Add this text as a note on the resulting incident.'
+            auto_send: '- (Optional) When true, PagerDuty''s servers will automatically send this webhook request as soon as the resulting incident is created. When false, your incident responder will be able to manually trigger the Webhook via the PagerDuty website and mobile app.'
+            automation_action: '- (Optional) Create a Webhook associated with the resulting incident.'
+            catch_all: '- (Required) the catch_all actions will be applied if an Event reaches the end of any set without matching any rules in that set.'
+            condition: '- (Optional) Each of these conditions is evaluated to check if an event matches this rule. The rule is considered a match if any of these conditions match. If none are provided, the event will always match against the rule.'
+            disabled: '- (Optional) Indicates whether the rule is disabled and would therefore not be evaluated.'
+            event_action: '- (Optional) sets whether the resulting alert status is trigger or resolve. Allowed values are: trigger, resolve'
+            expression: '- (Required) A PCL condition string.'
+            extraction: '- (Optional) Replace any CEF field or Custom Details object field using custom variables.'
+            header: '- (Optional) Specify custom key/value pairs that''ll be sent with the webhook request as request headers.'
+            id: '- (Required) The ID of this set of rules. Rules in other sets can route events into this set using the rule''s route_to property.'
+            ip: 'and subnet with a template like: {{variables.ip}}/{{variables.subnet}}'
+            key: '- (Required) Name to identify the header'
+            label: '- (Optional) A description of this rule''s purpose.'
+            name: '- (Required) Name of this Webhook.'
+            pagerduty_automation_action: '- (Optional) Configure a Process Automation associated with the resulting incident.'
+            parameter: '- (Optional) Specify custom key/value pairs that''ll be included in the webhook request''s JSON payload.'
+            path: '- (Required) Path to a field in an event, in dot-notation. This supports both PagerDuty Common Event Format PD-CEF and non-CEF fields. Eg: Use event.summary for the summary CEF field. Use raw_event.fieldname to read from the original event fieldname data. You can use any valid PCL path.'
+            priority: '- (Optional) The ID of the priority you want to set on resulting incident. Consider using the pagerduty_priority data source.'
+            regex: '- (Optional) A RE2 regular expression that will be matched against field specified via the source argument. If the regex contains one or more capture groups, their values will be extracted and appended together. If it contains no capture groups, the whole match is used. This field can be ignored for template based extractions.'
+            route_to: '- (Optional) The ID of a Set from this Service Orchestration whose rules you also want to use with event that match this rule.'
+            rule: '- (Optional) The service orchestration evaluates Events against these Rules, one at a time, and applies all the actions for first rule it finds where the event matches the rule''s conditions. If no rules are provided as part of Terraform configuration, the API returns empty list of rules.'
+            self: '- The URL at which the Service Orchestration is accessible.'
+            service: '- (Required) ID of the Service to which this Service Orchestration belongs to.'
+            set: '- (Required) A Service Orchestration must contain at least a "start" set, but can contain any number of additional sets that are routed to by other rules to form a directional graph.'
+            severity: '- (Optional) sets Severity of the resulting alert. Allowed values are: info, error, warning, critical'
+            source: '- (Optional) The path to the event field where the regex will be applied to extract a value. You can use any valid PCL path like event.summary and you can reference previously-defined variables using a path like variables.hostname. This field can be ignored for template based extractions.'
+            suppress: '- (Optional) Set whether the resulting alert is suppressed. Suppressed alerts will not trigger an incident.'
+            suspend: '- (Optional) The number of seconds to suspend the resulting alert before triggering. This effectively pauses incident notifications. If a resolve event arrives before the alert triggers then PagerDuty won''t create an incident for this the resulting alert.'
+            target: '- (Required) The PagerDuty Common Event Format PD-CEF field that will be set with the value from the template or based on regex and source fields.'
+            template: '- (Optional) A string that will be used to populate the target field. You can reference variables or event data within your template using double curly braces. For example:'
+            type: '- (Required) Only regex is supported'
+            url: '- (Required) The API endpoint where PagerDuty''s servers will send the webhook request.'
+            value: '- (Required) Value of this header'
+            variable: '- (Optional) Populate variables from event payloads and use those variables in other event actions.'
+        importStatements: []
+    pagerduty_event_orchestration_unrouted:
+        subCategory: ""
+        description: Creates and manages an Unrouted Orchestration for a Global Event Orchestration in PagerDuty.
+        name: pagerduty_event_orchestration_unrouted
+        title: pagerduty_event_orchestration_unrouted
+        examples:
+            - name: unrouted
+              manifest: |-
+                {
+                  "catch_all": [
+                    {
+                      "actions": [
+                        {
+                          "severity": "info"
+                        }
+                      ]
+                    }
+                  ],
+                  "event_orchestration": "${pagerduty_event_orchestration.my_monitor.id}",
+                  "set": [
+                    {
+                      "id": "start",
+                      "rule": [
+                        {
+                          "actions": [
+                            {
+                              "extraction": [
+                                {
+                                  "target": "event.summary",
+                                  "template": "[Critical Unrouted] {{event.summary}}"
+                                }
+                              ],
+                              "severity": "critical"
+                            }
+                          ],
+                          "condition": [
+                            {
+                              "expression": "event.severity matches 'critical'"
+                            }
+                          ],
+                          "label": "Update the summary of un-matched Critical alerts so they're easier to spot"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              references:
+                event_orchestration: pagerduty_event_orchestration.my_monitor.id
+        argumentDocs:
+            actions: '- (Required) Actions that will be taken to change the resulting alert and incident, when an event matches this rule.'
+            catch_all: '- (Required) the catch_all actions will be applied if an Event reaches the end of any set without matching any rules in that set.'
+            condition: '- (Optional) Each of these conditions is evaluated to check if an event matches this rule. The rule is considered a match if any of these conditions match. If none are provided, the event will always match against the rule.'
+            disabled: '- (Optional) Indicates whether the rule is disabled and would therefore not be evaluated.'
+            event_action: '- (Optional) sets whether the resulting alert status is trigger or resolve. Allowed values are: trigger, resolve'
+            event_orchestration: '- (Required) The Event Orchestration to which this Unrouted Orchestration belongs to.'
+            expression: '- (Required) A PCL condition string.'
+            extraction: '- (Optional) Replace any CEF field or Custom Details object field using custom variables.'
+            id: '- (Required) The ID of this set of rules. Rules in other sets can route events into this set using the rule''s route_to property.'
+            ip: 'and subnet with a template like: {{variables.ip}}/{{variables.subnet}}'
+            label: '- (Optional) A description of this rule''s purpose.'
+            name: '- (Required) The name of the variable'
+            path: '- (Required) Path to a field in an event, in dot-notation. This supports both PD-CEF and non-CEF fields. Eg: Use event.summary for the summary CEF field. Use raw_event.fieldname to read from the original event fieldname data.'
+            regex: '- (Optional) A RE2 regular expression that will be matched against field specified via the source argument. If the regex contains one or more capture groups, their values will be extracted and appended together. If it contains no capture groups, the whole match is used. This field can be ignored for template based extractions.'
+            route_to: '- (Optional) The ID of a Set from this Unrouted Orchestration whose rules you also want to use with event that match this rule.'
+            rule: '- (Optional) The Unrouted Orchestration evaluates Events against these Rules, one at a time, and applies all the actions for first rule it finds where the event matches the rule''s conditions. If no rules are provided as part of Terraform configuration, the API returns empty list of rules.'
+            self: '- The URL at which the Unrouted Event Orchestration is accessible.'
+            set: '- (Required) An Unrouted Orchestration must contain at least a "start" set, but can contain any number of additional sets that are routed to by other rules to form a directional graph.'
+            severity: '- (Optional) sets Severity of the resulting alert. Allowed values are: info, error, warning, critical'
+            source: '- (Optional) The path to the event field where the regex will be applied to extract a value. You can use any valid PCL path like event.summary and you can reference previously-defined variables using a path like variables.hostname. This field can be ignored for template based extractions.'
+            target: '- (Required) The PagerDuty Common Event Format PD-CEF field that will be set with the value from the template or based on regex and source fields.'
+            template: '- (Optional) A string that will be used to populate the target field. You can reference variables or event data within your template using double curly braces. For example:'
+            type: '- (Required) Only regex is supported'
+            value: '- (Required) The Regex expression to match against. Must use valid RE2 regular expression syntax.'
+            variable: '- (Optional) Populate variables from event payloads and use those variables in other event actions.'
+        importStatements: []
+    pagerduty_event_rule:
+        subCategory: ""
+        description: Creates and manages an event rule in PagerDuty.
+        name: pagerduty_event_rule
+        title: pagerduty_event_rule
+        examples:
+            - name: second
+              manifest: |-
+                {
+                  "action_json": "${jsonencode([\n        [\n            \"route\",\n            \"P5DTL0K\"\n        ],\n        [\n            \"severity\",\n            \"warning\"\n        ],\n        [\n            \"annotate\",\n            \"2 Managed by terraform\"\n        ],\n        [\n            \"priority\",\n            \"PL451DT\"\n        ]\n    ])}",
+                  "advanced_condition_json": "${jsonencode([\n        [\n            \"scheduled-weekly\",\n            1565392127032,\n            3600000,\n            \"America/Los_Angeles\",\n            [\n                1,\n                2,\n                3,\n                5,\n                7\n            ]\n        ]\n    ])}",
+                  "condition_json": "${jsonencode([\n        \"and\",\n        [\"contains\",[\"path\",\"payload\",\"source\"],\"website\"],\n        [\"contains\",[\"path\",\"headers\",\"from\",\"0\",\"address\"],\"homer\"]\n    ])}"
+                }
+            - name: third
+              manifest: |-
+                {
+                  "action_json": "${jsonencode([\n        [\n            \"route\",\n            \"P5DTL0K\"\n        ],\n        [\n            \"severity\",\n            \"warning\"\n        ],\n        [\n            \"annotate\",\n            \"3 Managed by terraform\"\n        ],\n        [\n            \"priority\",\n            \"PL451DT\"\n        ]\n    ])}",
+                  "condition_json": "${jsonencode([\n        \"and\",\n        [\"contains\",[\"path\",\"payload\",\"source\"],\"website\"],\n        [\"contains\",[\"path\",\"headers\",\"from\",\"0\",\"address\"],\"homer\"]\n    ])}",
+                  "depends_on": [
+                    "${pagerduty_event_rule.two}"
+                  ]
+                }
+        argumentDocs:
+            action_json: '- (Required) A list of one or more actions for each rule. Each action within the list is itself a list.'
+            advanced_condition_json: '- (Optional) Contains a list of specific conditions including active-between,scheduled-weekly, and frequency-over. The first element in the list is the label for the condition, followed by a list of values for the specific condition. For more details on these conditions see Advanced Condition in the PagerDuty API documentation.'
+            catch_all: '- A boolean that indicates whether the rule is a catch-all for the account. This field is read-only through the PagerDuty API.'
+            condition_json: '- (Required) Contains a list of conditions. The first field in the list is and or or, followed by a list of operators and values.'
+            depends_on: '- (Optional) A Terraform meta-parameter that ensures that the event_rule specified is created before the current rule. This is important because Event Rules in PagerDuty are executed in order. depends_on ensures that  the rules are created in the order specified.'
+            id: '- The ID of the event rule.'
+        importStatements: []
+    pagerduty_extension:
+        subCategory: ""
+        description: Creates and manages a service extension in PagerDuty.
+        name: pagerduty_extension
+        title: pagerduty_extension
+        examples:
+            - name: slack
+              manifest: |-
+                {
+                  "config": "{\n\t\"restrict\": \"any\",\n\t\"notify_types\": {\n\t\t\t\"resolve\": false,\n\t\t\t\"acknowledge\": false,\n\t\t\t\"assignments\": false\n\t},\n\t\"access_token\": \"XXX\"\n}\n",
+                  "endpoint_url": "https://generic_webhook_url/XXXXXX/BBBBBB",
+                  "extension_objects": [
+                    "${pagerduty_service.example.id}"
+                  ],
+                  "extension_schema": "${data.pagerduty_extension_schema.webhook.id}",
+                  "name": "My Web App Extension"
+                }
+              references:
+                extension_schema: data.pagerduty_extension_schema.webhook.id
+              dependencies:
+                pagerduty_escalation_policy.example: |-
+                    {
+                      "name": "Engineering Escalation Policy",
+                      "num_loops": 2,
+                      "rule": [
+                        {
+                          "escalation_delay_in_minutes": 10,
+                          "target": [
+                            {
+                              "id": "${pagerduty_user.example.id}",
+                              "type": "user"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                pagerduty_service.example: |-
+                    {
+                      "acknowledgement_timeout": 600,
+                      "auto_resolve_timeout": 14400,
+                      "escalation_policy": "${pagerduty_escalation_policy.example.id}",
+                      "name": "My Web App"
+                    }
+                pagerduty_user.example: |-
+                    {
+                      "email": "howard.james@example.domain",
+                      "name": "Howard James"
+                    }
+        argumentDocs:
+            config: '- (Optional) The configuration of the service extension as string containing plain JSON-encoded data.'
+            endpoint_url: |-
+                - (Required|Optional) The url of the extension.
+                Note: The endpoint URL is Optional API wise in most cases. But in some cases it is a Required parameter. For example, pagerduty_extension_schema named Generic V2 Webhook doesn't accept pagerduty_extension with no endpoint_url, but one with named Slack accepts.
+            extension_objects: '- (Required) This is the objects for which the extension applies (An array of service ids).'
+            extension_schema: '- (Required) This is the schema for this extension.'
+            html_url: '- URL at which the entity is uniquely displayed in the Web app'
+            id: '- The ID of the extension.'
+            name: '- (Optional) The name of the service extension.'
+            pagerduty_extension_schema: data source to locate the appropriate extension vendor ID.
+            summary: '- A short-form, server-generated string that provides succinct, important information about an object suitable for primary labeling of an entity in a client. In many cases, this will be identical to name, though it is not intended to be an identifier.'
+        importStatements: []
+    pagerduty_extension_servicenow:
+        subCategory: ""
+        description: Creates and manages a ServiceNow service extension in PagerDuty.
+        name: pagerduty_extension_servicenow
+        title: pagerduty_extension_servicenow
+        examples:
+            - name: snow
+              manifest: |-
+                {
+                  "extension_objects": [
+                    "${pagerduty_service.example.id}"
+                  ],
+                  "extension_schema": "${data.pagerduty_extension_schema.servicenow.id}",
+                  "name": "My Web App Extension",
+                  "referer": "None",
+                  "snow_password": "zorz",
+                  "snow_user": "meeps",
+                  "sync_options": "manual_sync",
+                  "target": "https://foo.servicenow.com/webhook_foo",
+                  "task_type": "incident"
+                }
+              references:
+                extension_schema: data.pagerduty_extension_schema.servicenow.id
+              dependencies:
+                pagerduty_escalation_policy.example: |-
+                    {
+                      "name": "Engineering Escalation Policy",
+                      "num_loops": 2,
+                      "rule": [
+                        {
+                          "escalation_delay_in_minutes": 10,
+                          "target": [
+                            {
+                              "id": "${pagerduty_user.example.id}",
+                              "type": "user"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                pagerduty_service.example: |-
+                    {
+                      "acknowledgement_timeout": 600,
+                      "auto_resolve_timeout": 14400,
+                      "escalation_policy": "${pagerduty_escalation_policy.example.id}",
+                      "name": "My Web App"
+                    }
+                pagerduty_user.example: |-
+                    {
+                      "email": "howard.james@example.domain",
+                      "name": "Howard James"
+                    }
+        argumentDocs:
+            extension_objects: '- (Required) This is the objects for which the extension applies (An array of service ids).'
+            extension_schema: '- (Required) This is the schema for this extension.'
+            html_url: '- URL at which the entity is uniquely displayed in the Web app.'
+            id: '- The ID of the extension.'
+            name: '- (Optional) The name of the service extension.'
+            referer: '- (Required) The ServiceNow referer.'
+            snow_password: '- (Required) The ServiceNow password.'
+            snow_user: '- (Required) The ServiceNow username.'
+            summary: '- A short-form, server-generated string that provides succinct, important information about an object suitable for primary labeling of an entity in a client. In many cases, this will be identical to name, though it is not intended to be an identifier.'
+            sync_options: '- (Required) The ServiceNow sync option.'
+            target: '- (Required) Target Webhook URL.'
+            task_type: '- (Required) The ServiceNow task type, typically incident.'
+        importStatements: []
+    pagerduty_maintenance_window:
+        subCategory: ""
+        description: Creates and manages a maintenance window in PagerDuty.
+        name: pagerduty_maintenance_window
+        title: pagerduty_maintenance_window
+        examples:
+            - name: example
+              manifest: |-
+                {
+                  "end_time": "2015-11-09T22:00:00-05:00",
+                  "services": [
+                    "${pagerduty_service.example.id}"
+                  ],
+                  "start_time": "2015-11-09T20:00:00-05:00"
+                }
+        argumentDocs:
+            description: '- (Optional) A description for the maintenance window.'
+            end_time: '- (Required) The maintenance window''s end time. This is when the services will start creating incidents again. This date must be in the future and after the start_time.'
+            id: '- The ID of the maintenance window.'
+            services: '- (Required) A list of service IDs to include in the maintenance window.'
+            start_time: '- (Required) The maintenance window''s start time. This is when the services will stop creating incidents. If this date is in the past, it will be updated to be the current time.'
+        importStatements: []
+    pagerduty_response_play:
+        subCategory: ""
+        description: Creates and manages a response play in PagerDuty.
+        name: pagerduty_response_play
+        title: pagerduty_response_play
+        examples:
+            - name: example
+              manifest: |-
+                {
+                  "from": "${pagerduty_user.example.email}",
+                  "name": "My Response Play",
+                  "responder": [
+                    {
+                      "id": "${pagerduty_escalation_policy.example.id}",
+                      "type": "escalation_policy_reference"
+                    }
+                  ],
+                  "runnability": "services",
+                  "subscriber": [
+                    {
+                      "id": "${pagerduty_user.example.id}",
+                      "type": "user_reference"
+                    }
+                  ]
+                }
+              references:
+                from: pagerduty_user.example.email
+                responder.id: pagerduty_escalation_policy.example.id
+                subscriber.id: pagerduty_user.example.id
+              dependencies:
+                pagerduty_escalation_policy.example: |-
+                    {
+                      "name": "Engineering Escalation Policy",
+                      "num_loops": 2,
+                      "rule": [
+                        {
+                          "escalation_delay_in_minutes": 10,
+                          "target": [
+                            {
+                              "id": "${pagerduty_user.example.id}",
+                              "type": "user"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                pagerduty_user.example: |-
+                    {
+                      "email": "125.greenholt.earline@graham.name",
+                      "name": "Earline Greenholt",
+                      "teams": [
+                        "${pagerduty_team.example.id}"
+                      ]
+                    }
+        argumentDocs:
+            conference_number: '- (Optional) The telephone number that will be set as the conference number for any incident on which this response play is run.'
+            conference_url: '- (Optional) The URL that will be set as the conference URL for any incident on which this response play is run.'
+            description: |-
+                - (Optional) A human-friendly description of the response play.
+                If not set, a placeholder of "Managed by Terraform" will be set.
+            escalation_delay_in_minutes: '- The number of minutes before an unacknowledged incident escalates away from this rule.'
+            escalation_rule: '- The escalation rules'
+            from: '- (Required) The email of the user attributed to the request. Needs to be a valid email address of a user in the PagerDuty account.'
+            id: '- ID of the user defined as the responder'
+            name: '- (Required) The name of the response play.'
+            num_loops: '- The number of times the escalation policy will repeat after reaching the end of its escalation.'
+            on_call_handoff_notifications: '- Determines how on call handoff notifications will be sent for users on the escalation policy. Defaults to "if_has_services". Could be "if_has_services", "always'
+            responder: '- (Required) A user and/or escalation policy to be requested as a responder to any incident on which this response play is run. There can be multiple responders defined on a single response play.'
+            responders: ': This response play can be run manually on an incident by any responders in this account.'
+            responders_message: '- (Optional) The message body of the notification that will be sent to this response play''s set of responders. If empty, a default response request notification will be sent.'
+            runnability: '- (Optional) String representing how this response play is allowed to be run. Valid options are:'
+            service: '- There can be multiple services associated with a policy.'
+            services: ': This response play cannot be manually run by any users. It will run automatically for new incidents triggered on any services that are configured with this response play.'
+            subscriber: '- (Required) A user and/or team to be added as a subscriber to any incident on which this response play is run. There can be multiple subscribers defined on a single response play.'
+            subscribers_message: '- (Optional) The content of the notification that will be sent to all incident subscribers upon the running of this response play. Note that this includes any users who may have already been subscribed to the incident prior to the running of this response play. If empty, no notifications will be sent.'
+            target: '- The targets an incident should be assigned to upon reaching this rule.'
+            team: '- (Optional) The ID of the team associated with the response play.'
+            teams: ': This response play can be run manually on an incident only by members of its configured team. This option can only be selected when the team property for this response play is not empty.'
+            type: '- (Optional)  A string that determines the schema of the object. If not set, the default value is "response_play".'
+        importStatements: []
+    pagerduty_ruleset:
+        subCategory: ""
+        description: Creates and manages an ruleset in PagerDuty.
+        name: pagerduty_ruleset
+        title: pagerduty_ruleset
+        examples:
+            - name: foo
+              manifest: |-
+                {
+                  "name": "Primary Ruleset",
+                  "team": [
+                    {
+                      "id": "${pagerduty_team.foo.id}"
+                    }
+                  ]
+                }
+              references:
+                team.id: pagerduty_team.foo.id
+              dependencies:
+                pagerduty_team.foo: |-
+                    {
+                      "name": "Engineering (Seattle)"
+                    }
+        argumentDocs:
+            id: '- The ID of the ruleset.'
+            name: '- (Required) Name of the ruleset.'
+            routing_keys: '- Routing keys routed to this ruleset.'
+            team: '- (Optional) Reference to the team that owns the ruleset. If none is specified, only admins have access.'
+            type: '- Type of ruleset. Currently, only sets to global.'
+        importStatements: []
+    pagerduty_ruleset_rule:
+        subCategory: ""
+        description: Creates and manages a ruleset rule in PagerDuty.
+        name: pagerduty_ruleset_rule
+        title: pagerduty_ruleset_rule
+        examples:
+            - name: foo
+              manifest: |-
+                {
+                  "actions": [
+                    {
+                      "annotate": [
+                        {
+                          "value": "From Terraform"
+                        }
+                      ],
+                      "extractions": [
+                        {
+                          "regex": "(.*)",
+                          "source": "details.host",
+                          "target": "dedup_key"
+                        },
+                        {
+                          "target": "summary",
+                          "template": "Warning: Disk Space Low on {{Src}}"
+                        }
+                      ],
+                      "route": [
+                        {
+                          "value": "${pagerduty_service.foo.id}"
+                        }
+                      ],
+                      "severity": [
+                        {
+                          "value": "warning"
+                        }
+                      ]
+                    }
+                  ],
+                  "conditions": [
+                    {
+                      "operator": "and",
+                      "subconditions": [
+                        {
+                          "operator": "contains",
+                          "parameter": [
+                            {
+                              "path": "payload.summary",
+                              "value": "disk space"
+                            }
+                          ]
+                        },
+                        {
+                          "operator": "contains",
+                          "parameter": [
+                            {
+                              "path": "payload.source",
+                              "value": "db"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ],
+                  "disabled": "false",
+                  "position": 0,
+                  "ruleset": "${pagerduty_ruleset.foo.id}",
+                  "time_frame": [
+                    {
+                      "scheduled_weekly": [
+                        {
+                          "duration": "${2 * 60 * 60 * 1000}",
+                          "start_time": "${time_static.eastern_time_at_0930.unix * 1000}",
+                          "timezone": "America/New_York",
+                          "weekdays": [
+                            2,
+                            4,
+                            6
+                          ]
+                        }
+                      ]
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "name": "Src",
+                      "parameters": [
+                        {
+                          "path": "payload.source",
+                          "value": "(.*)"
+                        }
+                      ],
+                      "type": "regex"
+                    }
+                  ]
+                }
+              references:
+                actions.route.value: pagerduty_service.foo.id
+                ruleset: pagerduty_ruleset.foo.id
+              dependencies:
+                pagerduty_ruleset.foo: |-
+                    {
+                      "name": "Primary Ruleset",
+                      "team": [
+                        {
+                          "id": "${pagerduty_team.foo.id}"
+                        }
+                      ]
+                    }
+                pagerduty_team.foo: |-
+                    {
+                      "name": "Engineering (Seattle)"
+                    }
+                time_static.eastern_time_at_0930: |-
+                    {
+                      "rfc3339": "2019-04-11T09:30:00-04:00"
+                    }
+            - name: catch_all
+              manifest: |-
+                {
+                  "actions": [
+                    {
+                      "annotate": [
+                        {
+                          "value": "From Terraform"
+                        }
+                      ],
+                      "suppress": [
+                        {
+                          "value": true
+                        }
+                      ]
+                    }
+                  ],
+                  "catch_all": true,
+                  "position": 1,
+                  "ruleset": "${pagerduty_ruleset.foo.id}"
+                }
+              references:
+                ruleset: pagerduty_ruleset.foo.id
+              dependencies:
+                pagerduty_ruleset.foo: |-
+                    {
+                      "name": "Primary Ruleset",
+                      "team": [
+                        {
+                          "id": "${pagerduty_team.foo.id}"
+                        }
+                      ]
+                    }
+                pagerduty_team.foo: |-
+                    {
+                      "name": "Engineering (Seattle)"
+                    }
+                time_static.eastern_time_at_0930: |-
+                    {
+                      "rfc3339": "2019-04-11T09:30:00-04:00"
+                    }
+        argumentDocs:
+            actions: '- (Optional) Actions to apply to an event if the conditions match.'
+            active_between: (Optional) - Values for executing the rule during a specific time period.
+            annotate: (Optional) - Note added to the event.
+            catch_all: '- (Optional) Indicates whether the Event Rule is the last Event Rule of the Ruleset that serves as a catch-all. It has limited functionality compared to other rules and always matches.'
+            conditions: '- (Required) Conditions evaluated to check if an event matches this event rule. Is always empty for the catch-all rule, though.'
+            disabled: '- (Optional) Indicates whether the rule is disabled and would therefore not be evaluated.'
+            duration: '- Length of time the schedule will be active in milliseconds. For example duration = 2 * 60 * 60 * 1000 if you want your rule to apply for 2 hours, from the specified start_time.'
+            event_action: (Optional) - An object with a single value field. The value sets whether the resulting alert status is trigger or resolve.
+            extraction: objects attributed to it.
+            extractions: '(Optional) - Allows you to copy important data from one event field to another. Extraction objects may use either of the following field structures:'
+            id: '- The ID of the rule.'
+            operator: '- Operator to combine sub-conditions. Can be and or or.'
+            parameter: '- Parameter for the sub-condition. It requires both a path and value to be set.'
+            position: '- (Optional) Position/index of the rule within the ruleset.'
+            priority: (Optional) - The ID of the priority applied to the event.
+            regex: '- The conditions that need to be met for the extraction to happen. Must use valid RE2 regular expression syntax.'
+            route: (Optional) - The ID of the service where the event will be routed.
+            ruleset: '- (Required) The ID of the ruleset that the rule belongs to.'
+            scheduled_weekly: (Optional) - Values for executing the rule on a recurring schedule.
+            severity: (Optional)  - The severity level of the event. Can be either info,warning,error, or critical.
+            source: '- Field where the data is being copied from. Must be a PagerDuty Common Event Format (PD-CEF) field.'
+            start_time: '- A Unix timestamp in milliseconds which is combined with the timezone to determine the time this rule will start on each specified weekday. Note that the date of the timestamp you specify does not matter, except that it lets you determine whether daylight saving time is in effect so that you use the correct UTC offset for the timezone you specify. In practice, you may want to use the  to generate this value, as demonstrated in the resource.pagerduty_ruleset_rule.foo code example at the top of this page. To generate this timestamp manually, if you want your rule to apply starting at 9:30am in the America/New_York timezone, use your programing language of choice to determine a Unix timestamp that represents 9:30am in that timezone, like 1554989400000.'
+            subconditions: '- List of sub-conditions that define the condition.'
+            suppress: '(Optional) - Controls whether an alert is suppressed (does not create an incident). Note: If a threshold is set, the rule must also have a route action.'
+            suspend: '(Optional) - An object with a single value field. The value sets the length of time to suspend the resulting alert before triggering. Note: A rule with a suspend action must also have a route action.'
+            target: '- Field where the data is being copied to. Must be a PagerDuty Common Event Format (PD-CEF) field.'
+            template: '- A customized field message. This can also include variables extracted from the payload by using string interpolation.'
+            threshold_time_amount: (Optional) - The number value of the threshold_time_unit before an incident is created. Must be greater than 0.
+            threshold_time_unit: (Optional)  - The seconds,minutes, or hours the threshold_time_amount should be measured.
+            threshold_value: (Optional) - The number of alerts that should be suppressed. Must be greater than 0.
+            time_frame: '- (Optional) Settings for scheduling the rule.'
+            time_static: resource
+            timezone: '- The name of the timezone for the given schedule, which will be used to determine UTC offset including adjustment for daylight saving time. For example: timezone = "America/Toronto"'
+            value: '- Boolean value that indicates if the alert should be suppressed before the indicated threshold values are met.'
+            variable: '- (Optional) Populate variables from event payloads and use those variables in other event actions. NOTE: A rule can have multiple'
+            weekdays: '- An integer array representing which days during the week the rule executes. For example weekdays = [1,3,7] would execute on Monday, Wednesday and Sunday.'
+        importStatements: []
+    pagerduty_schedule:
+        subCategory: ""
+        description: Creates and manages a schedule in PagerDuty.
+        name: pagerduty_schedule
+        title: pagerduty_schedule
+        examples:
+            - name: foo
+              manifest: |-
+                {
+                  "layer": [
+                    {
+                      "name": "Night Shift",
+                      "restriction": [
+                        {
+                          "duration_seconds": 32400,
+                          "start_time_of_day": "08:00:00",
+                          "type": "daily_restriction"
+                        }
+                      ],
+                      "rotation_turn_length_seconds": 86400,
+                      "rotation_virtual_start": "2015-11-06T20:00:00-05:00",
+                      "start": "2015-11-06T20:00:00-05:00",
+                      "users": [
+                        "${pagerduty_user.example.id}"
+                      ]
+                    }
+                  ],
+                  "name": "Daily Engineering Rotation",
+                  "teams": [
+                    "${pagerduty_team.example.id}"
+                  ],
+                  "time_zone": "America/New_York"
+                }
+              dependencies:
+                pagerduty_team.example: |-
+                    {
+                      "name": "A Team"
+                    }
+                pagerduty_user.example: |-
+                    {
+                      "email": "125.greenholt.earline@graham.name",
+                      "name": "Earline Greenholt"
+                    }
+        argumentDocs:
+            description: '- (Optional) The description of the schedule.'
+            end: '- (Optional) The end time of the schedule layer. If not specified, the layer does not end.'
+            id: '- The ID of the schedule.'
+            layer: '- (Required) A schedule layer block. Schedule layers documented below.'
+            name: '- (Optional) The name of the schedule.'
+            overflow: |-
+                - (Optional) Any on-call schedule entries that pass the date range bounds will be truncated at the bounds, unless the parameter overflow is passed. For instance, if your schedule is a rotation that changes daily at midnight UTC, and your date range is from 2011-06-01T10:00:00Z to 2011-06-01T14:00:00Z:
+                If you don't pass the overflow=true parameter, you will get one schedule entry returned with a start of 2011-06-01T10:00:00Z and end of 2011-06-01T14:00:00Z.
+                If you do pass the overflow parameter, you will get one schedule entry returned with a start of 2011-06-01T00:00:00Z and end of 2011-06-02T00:00:00Z.
+            restriction: '- (Optional) A schedule layer restriction block. Restriction blocks documented below.'
+            restriction.duration_seconds: '- (Required) The duration of the restriction in seconds.'
+            restriction.start_day_of_week: '- (Required for weekly_restriction) Number of the day when restriction starts. From 1 to 7 where 1 is Monday and 7 is Sunday.'
+            restriction.start_time_of_day: '- (Required) The start time in HH:mm:ss format.'
+            restriction.type: '- (Required) Can be daily_restriction or weekly_restriction.'
+            rotation_turn_length_seconds: '- (Required) The duration of each on-call shift in seconds.'
+            rotation_virtual_start: '- (Required) The effective start time of the schedule layer. This can be before the start time of the schedule.'
+            start: '- (Required) The start time of the schedule layer.'
+            teams: '- (Optional) Teams associated with the schedule.'
+            time_zone: '- (Required) The time zone of the schedule (e.g. Europe/Berlin).'
+            users: '- (Required) The ordered list of users on this layer. The position of the user on the list determines their order in the layer.'
+        importStatements: []
+    pagerduty_service:
+        subCategory: ""
+        description: Creates and manages a service in PagerDuty.
+        name: pagerduty_service
+        title: pagerduty_service
+        examples:
+            - name: example
+              manifest: |-
+                {
+                  "acknowledgement_timeout": 600,
+                  "alert_creation": "create_alerts_and_incidents",
+                  "auto_pause_notifications_parameters": [
+                    {
+                      "enabled": true,
+                      "timeout": 300
+                    }
+                  ],
+                  "auto_resolve_timeout": 14400,
+                  "escalation_policy": "${pagerduty_escalation_policy.foo.id}",
+                  "name": "My Web App"
+                }
+              references:
+                escalation_policy: pagerduty_escalation_policy.foo.id
+              dependencies:
+                pagerduty_escalation_policy.foo: |-
+                    {
+                      "name": "Engineering Escalation Policy",
+                      "num_loops": 2,
+                      "rule": [
+                        {
+                          "escalation_delay_in_minutes": 10,
+                          "target": [
+                            {
+                              "id": "${pagerduty_user.example.id}",
+                              "type": "user_reference"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                pagerduty_user.example: |-
+                    {
+                      "email": "125.greenholt.earline@graham.name",
+                      "name": "Earline Greenholt"
+                    }
+            - name: foo
+              manifest: |-
+                {
+                  "acknowledgement_timeout": 3600,
+                  "auto_resolve_timeout": 3600,
+                  "description": "bar bar bar",
+                  "escalation_policy": "${pagerduty_escalation_policy.foo.id}",
+                  "incident_urgency_rule": [
+                    {
+                      "during_support_hours": [
+                        {
+                          "type": "constant",
+                          "urgency": "high"
+                        }
+                      ],
+                      "outside_support_hours": [
+                        {
+                          "type": "constant",
+                          "urgency": "low"
+                        }
+                      ],
+                      "type": "use_support_hours"
+                    }
+                  ],
+                  "name": "bar",
+                  "scheduled_actions": [
+                    {
+                      "at": [
+                        {
+                          "name": "support_hours_start",
+                          "type": "named_time"
+                        }
+                      ],
+                      "to_urgency": "high",
+                      "type": "urgency_change"
+                    }
+                  ],
+                  "support_hours": [
+                    {
+                      "days_of_week": [
+                        1,
+                        2,
+                        3,
+                        4,
+                        5
+                      ],
+                      "end_time": "17:00:00",
+                      "start_time": "09:00:00",
+                      "time_zone": "America/Lima",
+                      "type": "fixed_time_per_day"
+                    }
+                  ]
+                }
+              references:
+                escalation_policy: pagerduty_escalation_policy.foo.id
+        argumentDocs:
+            acknowledgement_timeout: '- (Optional) Time in seconds that an incident changes to the Triggered State after being Acknowledged. Disabled if set to the "null" string.  If not passed in, will default to ''"1800"''.'
+            aggregate: '- (Optional) One of any or all. This setting applies only when type is set to content_based. Group alerts based on one or all of fields value(s).'
+            alert_creation: '- (Optional) Must be one of two values. PagerDuty receives events from your monitoring systems and can then create incidents in different ways. Value "create_incidents" is default: events will create an incident that cannot be merged. Value "create_alerts_and_incidents" is the alternative: events will create an alert and then add it to a new incident, these incidents can be merged. This option is recommended.'
+            alert_grouping: '- (Optional) (Deprecated) Defines how alerts on this service will be automatically grouped into incidents. Note that the alert grouping features are available only on certain plans. If not set, each alert will create a separate incident; If value is set to time: All alerts within a specified duration will be grouped into the same incident. This duration is set in the alert_grouping_timeout setting (described below). Available on Standard, Enterprise, and Event Intelligence plans; If value is set to intelligent - Alerts will be intelligently grouped based on a machine learning model that looks at the alert summary, timing, and the history of grouped alerts. Available on Enterprise and Event Intelligence plan. This field is deprecated, use alert_grouping_parameters.type instead,'
+            alert_grouping_parameters: '- (Optional) Defines how alerts on this service will be automatically grouped into incidents. Note that the alert grouping features are available only on certain plans. If not set, each alert will create a separate incident.'
+            alert_grouping_parameters.config: (Optional) - Alert grouping parameters dependent on type. If type is set to intelligent or empty then config can be empty.
+            alert_grouping_parameters.type: (Optional) - The type of alert grouping; one of intelligent, time or content_based.
+            alert_grouping_timeout: '- (Optional) (Deprecated) The duration in minutes within which to automatically group incoming alerts. This setting applies only when alert_grouping is set to time. To continue grouping alerts until the incident is resolved, set this value to 0. This field is deprecated, use alert_grouping_parameters.config.timeout instead,'
+            at: '- A block representing when the scheduled action will occur.'
+            at.name: '- Designates either the start or the end of the scheduled action. Can be support_hours_start or support_hours_end.'
+            at.type: '- The type of time specification. Currently, this must be set to named_time.'
+            auto_pause_notifications_parameters: '- (Optional) Defines how alerts on this service are automatically suspended for a period of time before triggering, when identified as likely being transient. Note that automatically pausing notifications is only available on certain plans as mentioned here.'
+            auto_pause_notifications_parameters.enabled: (Optional) - Indicates whether alerts should be automatically suspended when identified as transient.  If not passed in, will default to 'false'.
+            auto_pause_notifications_parameters.timeout: '(Optional) - Indicates in seconds how long alerts should be suspended before triggering. Allowed values: 120, 180, 300, 600, 900 if enabled is true. Must be omitted or set to null if enabled is false.'
+            auto_resolve_timeout: '- (Optional) Time in seconds that an incident is automatically resolved if left open for that long. Disabled if set to the "null" string.'
+            created_at: '- Creation timestamp of the service.'
+            description: |-
+                - (Optional) A human-friendly description of the service.
+                If not set, a placeholder of "Managed by Terraform" will be set.
+            escalation_policy: '- (Required) The escalation policy used by this service.'
+            fields: '- (Optional) Alerts will be grouped together if the content of these fields match. This setting applies only when type is set to content_based.'
+            html_url: '- URL at which the entity is uniquely displayed in the Web app.'
+            id: '- The ID of the service.'
+            incident_urgency_rule.during_support_hours: '- (Optional) Incidents'' urgency during support hours.'
+            incident_urgency_rule.outside_support_hours: '- (Optional) Incidents'' urgency outside support hours.'
+            incident_urgency_rule.type: '- The type of incident urgency: constant or use_support_hours (when depending on specific support hours; see support_hours).'
+            incident_urgency_rule.urgency: '- The urgency: low Notify responders (does not escalate), high (follows escalation rules) or severity_based Set''s the urgency of the incident based on the severity set by the triggering monitoring tool.'
+            last_incident_timestamp: '- Last incident timestamp of the service.'
+            name: '- (Required) The name of the service.'
+            response_play: '- (Optional) The response play used by this service.'
+            status: '- The status of the service.'
+            timeout: '- (Optional) The duration in minutes within which to automatically group incoming alerts. This setting applies only when type is set to time. To continue grouping alerts until the incident is resolved, set this value to 0.'
+            to_urgency: '- The urgency to change to: low (does not escalate), or high (follows escalation rules).'
+            type: '- The type of scheduled action. Currently, this must be set to urgency_change.'
+            type = "use_support_hours".days_of_week: |-
+                - Array of days of week as integers. 1 to 7, 1 being
+                Monday and 7 being Sunday.
+            type = "use_support_hours".end_time: '- The support hours'' ending time of day.'
+            type = "use_support_hours".start_time: '- The support hours'' starting time of day.'
+            type = "use_support_hours".time_zone: '- The time zone for the support hours.'
+            type = "use_support_hours".type: '- The type of support hours. Can be fixed_time_per_day.'
+        importStatements: []
+    pagerduty_service_dependency:
+        subCategory: ""
+        description: Creates and manages a business service dependency in PagerDuty.
+        name: pagerduty_service_dependency
+        title: pagerduty_service_dependency
+        examples:
+            - name: foo
+              manifest: |-
+                {
+                  "dependency": [
+                    {
+                      "dependent_service": [
+                        {
+                          "id": "${pagerduty_business_service.foo.id}",
+                          "type": "${pagerduty_business_service.foo.type}"
+                        }
+                      ],
+                      "supporting_service": [
+                        {
+                          "id": "${pagerduty_service.foo.id}",
+                          "type": "${pagerduty_service.foo.type}"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              references:
+                dependency.dependent_service.id: pagerduty_business_service.foo.id
+                dependency.dependent_service.type: pagerduty_business_service.foo.type
+                dependency.supporting_service.id: pagerduty_service.foo.id
+                dependency.supporting_service.type: pagerduty_service.foo.type
+            - name: bar
+              manifest: |-
+                {
+                  "dependency": [
+                    {
+                      "dependent_service": [
+                        {
+                          "id": "${pagerduty_business_service.foo.id}",
+                          "type": "${pagerduty_business_service.foo.type}"
+                        }
+                      ],
+                      "supporting_service": [
+                        {
+                          "id": "${pagerduty_service.two.id}",
+                          "type": "${pagerduty_service.two.type}"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              references:
+                dependency.dependent_service.id: pagerduty_business_service.foo.id
+                dependency.dependent_service.type: pagerduty_business_service.foo.type
+                dependency.supporting_service.id: pagerduty_service.two.id
+                dependency.supporting_service.type: pagerduty_service.two.type
+        argumentDocs:
+            dependency: '- (Required) The relationship between the supporting_service and dependent_service. One and only one dependency block must be defined.'
+            dependent_service: '- (Required) The service that dependents on the supporting service. Dependency dependent service documented below.'
+            id: '- (Required) The ID of the service dependency.'
+            supporting_service: '- (Required) The service that supports the dependent service. Dependency supporting service documented below.'
+            type: '- (Required) Can be business_service,  service, business_service_reference or technical_service_reference.'
+        importStatements: []
+    pagerduty_service_event_rule:
+        subCategory: ""
+        description: Creates and manages a service event rule in PagerDuty.
+        name: pagerduty_service_event_rule
+        title: pagerduty_service_event_rule
+        examples:
+            - name: foo
+              manifest: |-
+                {
+                  "actions": [
+                    {
+                      "annotate": [
+                        {
+                          "value": "From Terraform"
+                        }
+                      ],
+                      "extractions": [
+                        {
+                          "regex": "(.*)",
+                          "source": "source",
+                          "target": "dedup_key"
+                        },
+                        {
+                          "target": "summary",
+                          "template": "Warning: Disk Space Low on {{Src}}"
+                        }
+                      ]
+                    }
+                  ],
+                  "conditions": [
+                    {
+                      "operator": "and",
+                      "subconditions": [
+                        {
+                          "operator": "contains",
+                          "parameter": [
+                            {
+                              "path": "summary",
+                              "value": "disk space"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ],
+                  "disabled": true,
+                  "position": 0,
+                  "service": "${pagerduty_service.example.id}",
+                  "variable": [
+                    {
+                      "name": "Src",
+                      "parameters": [
+                        {
+                          "path": "source",
+                          "value": "(.*)"
+                        }
+                      ],
+                      "type": "regex"
+                    }
+                  ]
+                }
+              references:
+                service: pagerduty_service.example.id
+              dependencies:
+                pagerduty_service.example: |-
+                    {
+                      "acknowledgement_timeout": 600,
+                      "alert_creation": "create_alerts_and_incidents",
+                      "auto_resolve_timeout": 14400,
+                      "escalation_policy": "${pagerduty_escalation_policy.example.id}",
+                      "name": "Checkout API Service"
+                    }
+            - name: bar
+              manifest: |-
+                {
+                  "actions": [
+                    {
+                      "annotate": [
+                        {
+                          "value": "From Terraform"
+                        }
+                      ]
+                    }
+                  ],
+                  "conditions": [
+                    {
+                      "operator": "and",
+                      "subconditions": [
+                        {
+                          "operator": "contains",
+                          "parameter": [
+                            {
+                              "path": "summary",
+                              "value": "cpu spike"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ],
+                  "disabled": true,
+                  "position": 1,
+                  "service": "${pagerduty_service.foo.id}"
+                }
+              references:
+                service: pagerduty_service.foo.id
+              dependencies:
+                pagerduty_service.example: |-
+                    {
+                      "acknowledgement_timeout": 600,
+                      "alert_creation": "create_alerts_and_incidents",
+                      "auto_resolve_timeout": 14400,
+                      "escalation_policy": "${pagerduty_escalation_policy.example.id}",
+                      "name": "Checkout API Service"
+                    }
+        argumentDocs:
+            actions: '- (Optional) Actions to apply to an event if the conditions match.'
+            active_between: (Optional) - Values for executing the rule during a specific time period.
+            annotate: (Optional) - Note added to the event.
+            conditions: '- (Required) Conditions evaluated to check if an event matches this event rule.'
+            disabled: '- (Optional) Indicates whether the rule is disabled and would therefore not be evaluated.'
+            duration: '- Length of time the schedule will be active.  Unix timestamp in milliseconds.'
+            end_time: '- Ending of the scheduled time when the rule should execute.  Unix timestamp in milliseconds.'
+            event_action: (Optional) - An object with a single value field. The value sets whether the resulting alert status is trigger or resolve.
+            extraction: objects attributed to it.
+            extractions: '(Optional) - Allows you to copy important data from one event field to another. Extraction objects may use either of the following field structures:'
+            id: '- The ID of the rule.'
+            name: (Optional) - The name of the variable.
+            operator: '- Operator to combine sub-conditions. Can be and or or.'
+            parameter: '- Parameter for the sub-condition. It requires both a path and value to be set. The path value must be a PagerDuty Common Event Format (PD-CEF) field.'
+            parameters: (Optional) - The parameters for performing the operation to populate the variable.
+            path: '- Path to a field in an event, in dot-notation. For Event Rules on a Service, this will have to be a PD-CEF field.'
+            position: '- (Optional) Position/index of the rule within the service.'
+            priority: (Optional) - The ID of the priority applied to the event.
+            regex: '- The conditions that need to be met for the extraction to happen. Must use valid RE2 regular expression syntax.'
+            scheduled_weekly: (Optional) - Values for executing the rule on a recurring schedule.
+            service: '- (Required) The ID of the service that the rule belongs to.'
+            severity: (Optional)  - The severity level of the event. Can be either info,error,warning, or critical.
+            source: '- Field where the data is being copied from. Must be a PagerDuty Common Event Format (PD-CEF) field.'
+            start_time: '- Time when the schedule will start. Unix timestamp in milliseconds. For example, if you have a rule with a start_time of 0 and a duration of 60,000 then that rule would be active from 00:00 to 00:01. If the start_time was 3,600,000 the it would be active starting at 01:00.'
+            subconditions: '- List of sub-conditions that define the condition.'
+            suppress: (Optional) - Controls whether an alert is suppressed (does not create an incident).
+            suspend: (Optional) - An object with a single value field. The value sets the length of time to suspend the resulting alert before triggering.
+            target: '- Field where the data is being copied to. Must be a PagerDuty Common Event Format (PD-CEF) field.'
+            template: '- A customized field message. This can also include variables extracted from the payload by using string interpolation.'
+            threshold_time_amount: '- The number value of the threshold_time_unit before an incident is created.'
+            threshold_time_unit: '- The seconds,minutes, or hours the threshold_time_amount should be measured.'
+            threshold_value: '- The number of alerts that should be suppressed.'
+            time_frame: '- (Optional) Settings for scheduling the rule.'
+            timezone: '- Timezone for the given schedule.'
+            type: (Optional) - Type of operation to populate the variable. Usually regex.
+            value: '- Boolean value that indicates if the alert should be suppressed before the indicated threshold values are met.'
+            variable: '- (Optional) Populate variables from event payloads and use those variables in other event actions. NOTE: A rule can have multiple'
+            weekdays: '- An integer array representing which days during the week the rule executes. For example weekdays = [1,3,7] would execute on Monday, Wednesday and Sunday.'
+        importStatements: []
+    pagerduty_service_integration:
+        subCategory: ""
+        description: Creates and manages a service integration in PagerDuty.
+        name: pagerduty_service_integration
+        title: pagerduty_service_integration
+        examples:
+            - name: example
+              manifest: |-
+                {
+                  "name": "Generic API Service Integration",
+                  "service": "${pagerduty_service.example.id}",
+                  "type": "generic_events_api_inbound_integration"
+                }
+              references:
+                service: pagerduty_service.example.id
+              dependencies:
+                pagerduty_escalation_policy.foo: |-
+                    {
+                      "name": "Engineering Escalation Policy",
+                      "num_loops": 2,
+                      "rule": [
+                        {
+                          "escalation_delay_in_minutes": 10,
+                          "target": [
+                            {
+                              "id": "${pagerduty_user.example.id}",
+                              "type": "user"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                pagerduty_service.example: |-
+                    {
+                      "acknowledgement_timeout": 600,
+                      "auto_resolve_timeout": 14400,
+                      "escalation_policy": "${pagerduty_escalation_policy.example.id}",
+                      "name": "My Web App"
+                    }
+                pagerduty_user.example: |-
+                    {
+                      "email": "125.greenholt.earline@graham.name",
+                      "name": "Earline Greenholt",
+                      "teams": [
+                        "${pagerduty_team.example.id}"
+                      ]
+                    }
+            - name: apiv2
+              manifest: |-
+                {
+                  "integration_key": "12345678910testtesttesttesttes",
+                  "name": "API V2",
+                  "service": "${pagerduty_service.example.id}",
+                  "type": "events_api_v2_inbound_integration"
+                }
+              references:
+                service: pagerduty_service.example.id
+              dependencies:
+                pagerduty_escalation_policy.foo: |-
+                    {
+                      "name": "Engineering Escalation Policy",
+                      "num_loops": 2,
+                      "rule": [
+                        {
+                          "escalation_delay_in_minutes": 10,
+                          "target": [
+                            {
+                              "id": "${pagerduty_user.example.id}",
+                              "type": "user"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                pagerduty_service.example: |-
+                    {
+                      "acknowledgement_timeout": 600,
+                      "auto_resolve_timeout": 14400,
+                      "escalation_policy": "${pagerduty_escalation_policy.example.id}",
+                      "name": "My Web App"
+                    }
+                pagerduty_user.example: |-
+                    {
+                      "email": "125.greenholt.earline@graham.name",
+                      "name": "Earline Greenholt",
+                      "teams": [
+                        "${pagerduty_team.example.id}"
+                      ]
+                    }
+            - name: email_x
+              manifest: |-
+                {
+                  "integration_email": "ecommerce@subdomain.pagerduty.com",
+                  "name": "Email X",
+                  "service": "${pagerduty_service.example.id}",
+                  "type": "generic_email_inbound_integration"
+                }
+              references:
+                service: pagerduty_service.example.id
+              dependencies:
+                pagerduty_escalation_policy.foo: |-
+                    {
+                      "name": "Engineering Escalation Policy",
+                      "num_loops": 2,
+                      "rule": [
+                        {
+                          "escalation_delay_in_minutes": 10,
+                          "target": [
+                            {
+                              "id": "${pagerduty_user.example.id}",
+                              "type": "user"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                pagerduty_service.example: |-
+                    {
+                      "acknowledgement_timeout": 600,
+                      "auto_resolve_timeout": 14400,
+                      "escalation_policy": "${pagerduty_escalation_policy.example.id}",
+                      "name": "My Web App"
+                    }
+                pagerduty_user.example: |-
+                    {
+                      "email": "125.greenholt.earline@graham.name",
+                      "name": "Earline Greenholt",
+                      "teams": [
+                        "${pagerduty_team.example.id}"
+                      ]
+                    }
+            - name: datadog
+              manifest: |-
+                {
+                  "name": "${data.pagerduty_vendor.datadog.name}",
+                  "service": "${pagerduty_service.example.id}",
+                  "vendor": "${data.pagerduty_vendor.datadog.id}"
+                }
+              references:
+                name: data.pagerduty_vendor.datadog.name
+                service: pagerduty_service.example.id
+                vendor: data.pagerduty_vendor.datadog.id
+              dependencies:
+                pagerduty_escalation_policy.foo: |-
+                    {
+                      "name": "Engineering Escalation Policy",
+                      "num_loops": 2,
+                      "rule": [
+                        {
+                          "escalation_delay_in_minutes": 10,
+                          "target": [
+                            {
+                              "id": "${pagerduty_user.example.id}",
+                              "type": "user"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                pagerduty_service.example: |-
+                    {
+                      "acknowledgement_timeout": 600,
+                      "auto_resolve_timeout": 14400,
+                      "escalation_policy": "${pagerduty_escalation_policy.example.id}",
+                      "name": "My Web App"
+                    }
+                pagerduty_user.example: |-
+                    {
+                      "email": "125.greenholt.earline@graham.name",
+                      "name": "Earline Greenholt",
+                      "teams": [
+                        "${pagerduty_team.example.id}"
+                      ]
+                    }
+            - name: cloudwatch
+              manifest: |-
+                {
+                  "name": "${data.pagerduty_vendor.cloudwatch.name}",
+                  "service": "${pagerduty_service.example.id}",
+                  "vendor": "${data.pagerduty_vendor.cloudwatch.id}"
+                }
+              references:
+                name: data.pagerduty_vendor.cloudwatch.name
+                service: pagerduty_service.example.id
+                vendor: data.pagerduty_vendor.cloudwatch.id
+              dependencies:
+                pagerduty_escalation_policy.foo: |-
+                    {
+                      "name": "Engineering Escalation Policy",
+                      "num_loops": 2,
+                      "rule": [
+                        {
+                          "escalation_delay_in_minutes": 10,
+                          "target": [
+                            {
+                              "id": "${pagerduty_user.example.id}",
+                              "type": "user"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                pagerduty_service.example: |-
+                    {
+                      "acknowledgement_timeout": 600,
+                      "auto_resolve_timeout": 14400,
+                      "escalation_policy": "${pagerduty_escalation_policy.example.id}",
+                      "name": "My Web App"
+                    }
+                pagerduty_user.example: |-
+                    {
+                      "email": "125.greenholt.earline@graham.name",
+                      "name": "Earline Greenholt",
+                      "teams": [
+                        "${pagerduty_team.example.id}"
+                      ]
+                    }
+            - name: email
+              manifest: |-
+                {
+                  "email_filter": [
+                    {
+                      "body_mode": "always",
+                      "body_regex": null,
+                      "from_email_mode": "match",
+                      "from_email_regex": "(@foo.test*)",
+                      "subject_mode": "match",
+                      "subject_regex": "(CRITICAL*)"
+                    },
+                    {
+                      "body_mode": "always",
+                      "body_regex": null,
+                      "from_email_mode": "match",
+                      "from_email_regex": "(@bar.com*)",
+                      "subject_mode": "match",
+                      "subject_regex": "(CRITICAL*)"
+                    }
+                  ],
+                  "email_filter_mode": "and-rules-email",
+                  "email_incident_creation": "use_rules",
+                  "email_parser": [
+                    {
+                      "action": "resolve",
+                      "match_predicate": [
+                        {
+                          "predicate": [
+                            {
+                              "matcher": "foo",
+                              "part": "subject",
+                              "type": "contains"
+                            },
+                            {
+                              "predicate": [
+                                {
+                                  "matcher": "(bar*)",
+                                  "part": "body",
+                                  "type": "regex"
+                                }
+                              ],
+                              "type": "not"
+                            }
+                          ],
+                          "type": "any"
+                        }
+                      ],
+                      "value_extractor": [
+                        {
+                          "ends_before": "end",
+                          "part": "subject",
+                          "starts_after": "start",
+                          "type": "between",
+                          "value_name": "incident_key"
+                        },
+                        {
+                          "ends_before": "end",
+                          "part": "subject",
+                          "starts_after": "start",
+                          "type": "between",
+                          "value_name": "FieldName1"
+                        }
+                      ]
+                    }
+                  ],
+                  "integration_email": "s1@your_account.pagerduty.com",
+                  "name": "${data.pagerduty_vendor.email.name}",
+                  "service": "${pagerduty_service.example.id}",
+                  "vendor": "${data.pagerduty_vendor.email.id}"
+                }
+              references:
+                name: data.pagerduty_vendor.email.name
+                service: pagerduty_service.example.id
+                vendor: data.pagerduty_vendor.email.id
+              dependencies:
+                pagerduty_escalation_policy.foo: |-
+                    {
+                      "name": "Engineering Escalation Policy",
+                      "num_loops": 2,
+                      "rule": [
+                        {
+                          "escalation_delay_in_minutes": 10,
+                          "target": [
+                            {
+                              "id": "${pagerduty_user.example.id}",
+                              "type": "user"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                pagerduty_service.example: |-
+                    {
+                      "acknowledgement_timeout": 600,
+                      "auto_resolve_timeout": 14400,
+                      "escalation_policy": "${pagerduty_escalation_policy.example.id}",
+                      "name": "My Web App"
+                    }
+                pagerduty_user.example: |-
+                    {
+                      "email": "125.greenholt.earline@graham.name",
+                      "name": "Earline Greenholt",
+                      "teams": [
+                        "${pagerduty_team.example.id}"
+                      ]
+                    }
+        argumentDocs:
+            action: '- (Required) Can be resolve or trigger.'
+            body_mode: '- (Required) Can be always or match.'
+            body_regex: '- (Optional) Should be a valid regex or null'
+            email_filter_mode: '- (Optional) Mode of Emails Filters feature (explained in PD docs). Can be all-email, or-rules-email or and-rules-email.'
+            email_incident_creation: '- (Optional) Behaviour of Email Management feature (explained in PD docs). Can be on_new_email, on_new_email_subject, only_if_no_open_incidents or use_rules.'
+            email_parsing_fallback: '- (Optional) Can be open_new_incident or discard.'
+            ends_before: '- (Optional)'
+            from_email_mode: '- (Required) Can be always or match.'
+            from_email_regex: '- (Optional) Should be a valid regex or null'
+            html_url: '- URL at which the entity is uniquely displayed in the Web app.'
+            id: '- The ID of the service integration.'
+            integration_email: '- (Optional) This is the unique fully-qualified email address used for routing emails to this integration for processing.'
+            integration_key: '- (Optional) This is the unique key used to route events to this integration when received via the PagerDuty Events API.'
+            matcher: '- (Optional) Predicate value or valid regex.'
+            name: '- (Optional) The name of the service integration.'
+            pagerduty_vendor: data source to locate the appropriate vendor ID.
+            part: '- (Optional) Can be subject, body or from_addresses.'
+            regex: '- (Optional) If type has value regex this value should contain valid regex.'
+            service: '- (Required) The ID of the service the integration should belong to.'
+            starts_after: '- (Optional)'
+            subject_mode: '- (Required) Can be always or match.'
+            subject_regex: '- (Optional) Should be a valid regex or null'
+            type: |-
+                - (Optional) The service type. Can be:
+                aws_cloudwatch_inbound_integration,
+                cloudkick_inbound_integration,
+                event_transformer_api_inbound_integration,
+                events_api_v2_inbound_integration (requires service alert_creation to be create_alerts_and_incidents),
+                generic_email_inbound_integration,
+                generic_events_api_inbound_integration,
+                keynote_inbound_integration,
+                nagios_inbound_integration,
+                pingdom_inbound_integrationor sql_monitor_inbound_integration.
+            value_name: '- (Required) First value extractor should have name incident_key other value extractors should contain custom names.'
+            vendor: field instead.
+        importStatements: []
+    pagerduty_slack_connection:
+        subCategory: ""
+        description: Creates and manages a slack connection in PagerDuty.
+        name: pagerduty_slack_connection
+        title: pagerduty_slack_connection
+        examples:
+            - name: foo
+              manifest: |-
+                {
+                  "channel_id": "C02CABCDAC9",
+                  "config": [
+                    {
+                      "events": [
+                        "incident.triggered",
+                        "incident.acknowledged",
+                        "incident.escalated",
+                        "incident.resolved",
+                        "incident.reassigned",
+                        "incident.annotated",
+                        "incident.unacknowledged",
+                        "incident.delegated",
+                        "incident.priority_updated",
+                        "incident.responder.added",
+                        "incident.responder.replied",
+                        "incident.status_update_published",
+                        "incident.reopened"
+                      ],
+                      "priorities": [
+                        "${data.pagerduty_priority.p1.id}"
+                      ]
+                    }
+                  ],
+                  "notification_type": "responder",
+                  "source_id": "${pagerduty_team.foo.id}",
+                  "source_type": "team_reference",
+                  "workspace_id": "T02A123LV1A"
+                }
+              references:
+                source_id: pagerduty_team.foo.id
+              dependencies:
+                pagerduty_team.foo: |-
+                    {
+                      "name": "Team Foo"
+                    }
+        argumentDocs:
+            '["*"]': its corresponding value for priorities in Slack Connection's configuration will be Any Priority.
+            '[]': ) in the configuration for a Slack Connection, its default behaviour is to set priorities to No Priority value.
+            channel_id: '- (Required) The ID of a Slack channel in the workspace.'
+            channel_name: '- Name of the Slack channel in Slack connection.'
+            config: '- (Required) Configuration options for the Slack connection that provide options to filter events.'
+            events: '- (Required) A list of strings to filter events by PagerDuty event type. "incident.triggered" is required. The follow event types are also possible:'
+            id: '- The ID of the slack connection.'
+            notification_type: '- (Required) Type of notification. Either responder or stakeholder.'
+            priorities: '- (Optional) Allows you to filter events by priority. Needs to be an array of PagerDuty priority IDs. Available through pagerduty_priority data source.'
+            source_id: '- (Required) The ID of the source in PagerDuty. Valid sources are services or teams.'
+            source_name: '- Name of the source (team or service) in Slack connection.'
+            source_type: '- (Required) The type of the source. Either team_reference or service_reference.'
+            urgency: '- (Optional) Allows you to filter events by urgency. Either high or low.'
+            user_token: on the provider tag or as the PAGERDUTY_USER_TOKEN environment variable.
+            workspace_id: '- (Required) The ID of the connected Slack workspace. Can also be defined by the SLACK_CONNECTION_WORKSPACE_ID environment variable.'
+        importStatements: []
+    pagerduty_tag:
+        subCategory: ""
+        description: Creates and manages a tag in PagerDuty.
+        name: pagerduty_tag
+        title: pagerduty_tag
+        examples:
+            - name: example
+              manifest: |-
+                {
+                  "label": "Product"
+                }
+        argumentDocs:
+            html_url: '- URL at which the entity is uniquely displayed in the Web app.'
+            id: '- The ID of the tag.'
+            label: '- (Required) The label of the tag.'
+            summary: '- A short-form, server-generated string that provides succinct, important information about an object suitable for primary labeling of an entity in a client. In many cases, this will be identical to name, though it is not intended to be an identifier.'
+        importStatements: []
+    pagerduty_tag_assignment:
+        subCategory: ""
+        description: Creates and manages a tag assignment in PagerDuty.
+        name: pagerduty_tag_assignment
+        title: pagerduty_tag_assignment
+        examples:
+            - name: example
+              manifest: |-
+                {
+                  "entity_id": "${pagerduty_team.engteam.id}",
+                  "entity_type": "teams",
+                  "tag_id": "${pagerduty_tag.example.id}"
+                }
+              references:
+                entity_id: pagerduty_team.engteam.id
+                tag_id: pagerduty_tag.example.id
+              dependencies:
+                pagerduty_tag.example: |-
+                    {
+                      "label": "API"
+                    }
+                pagerduty_team.engteam: |-
+                    {
+                      "name": "Engineering"
+                    }
+        argumentDocs:
+            entity_id: '- (Required) The ID of the entity.'
+            entity_type: '- (Required) Type of entity in the tag assignment. Possible values can be users, teams, and escalation_policies.'
+            id: '- The ID of the tag assignment.'
+            tag_id: '- (Required) The ID of the tag.'
+        importStatements: []
+    pagerduty_team:
+        subCategory: ""
+        description: Creates and manages a team in PagerDuty.
+        name: pagerduty_team
+        title: pagerduty_team
+        examples:
+            - name: parent
+              manifest: |-
+                {
+                  "description": "Product and Engineering",
+                  "name": "Product Development"
+                }
+            - name: example
+              manifest: |-
+                {
+                  "description": "All engineering",
+                  "name": "Engineering",
+                  "parent": "${pagerduty_team.parent.id}"
+                }
+              references:
+                parent: pagerduty_team.parent.id
+        argumentDocs:
+            description: |-
+                - (Optional) A human-friendly description of the team.
+                If not set, a placeholder of "Managed by Terraform" will be set.
+            html_url: '- URL at which the entity is uniquely displayed in the Web app'
+            id: '- The ID of the team.'
+            name: '- (Required) The name of the group.'
+            parent: '- (Optional) ID of the parent team. This is available to accounts with the Team Hierarchy feature enabled. Please contact your account manager for more information.'
+        importStatements: []
+    pagerduty_team_membership:
+        subCategory: ""
+        description: Creates and manages a team membership in PagerDuty.
+        name: pagerduty_team_membership
+        title: pagerduty_team_membership
+        examples:
+            - name: foo
+              manifest: |-
+                {
+                  "role": "manager",
+                  "team_id": "${pagerduty_team.foo.id}",
+                  "user_id": "${pagerduty_user.foo.id}"
+                }
+              references:
+                team_id: pagerduty_team.foo.id
+                user_id: pagerduty_user.foo.id
+              dependencies:
+                pagerduty_team.foo: |-
+                    {
+                      "description": "foo",
+                      "name": "foo"
+                    }
+                pagerduty_user.foo: |-
+                    {
+                      "email": "foo@bar.com",
+                      "name": "foo"
+                    }
+        argumentDocs:
+            limited_user: is a Team role of responder
+            role: |-
+                - (Optional) The role of the user in the team. One of observer, responder, or manager. Defaults to manager.
+                These roles match up to user roles in the following ways:
+            team_id: '- (Required) The ID of the team in which the user will belong.'
+            user: is a Team role of manager
+            user_id: '- (Required) The ID of the user to add to the team.'
+        importStatements: []
+    pagerduty_user:
+        subCategory: ""
+        description: Creates and manages a user in PagerDuty.
+        name: pagerduty_user
+        title: pagerduty_user
+        examples:
+            - name: example
+              manifest: |-
+                {
+                  "email": "125.greenholt.earline@graham.name",
+                  "name": "Earline Greenholt"
+                }
+        argumentDocs:
+            avatar_url: '- The URL of the user''s avatar.'
+            color: '- (Optional) The schedule color for the user. Valid options are purple, red, green, blue, teal, orange, brown, turquoise, dark-slate-blue, cayenne, orange-red, dark-orchid, dark-slate-grey, lime, dark-magenta, lime-green, midnight-blue, deep-pink, dark-green, dark-orange, dark-cyan, darkolive-green, dark-slate-gray, grey20, firebrick, maroon, crimson, dark-red, dark-goldenrod, chocolate, medium-violet-red, sea-green, olivedrab, forest-green, dark-olive-green, blue-violet, royal-blue, indigo, slate-blue, saddle-brown, or steel-blue.'
+            description: |-
+                - (Optional) A human-friendly description of the user.
+                If not set, a placeholder of "Managed by Terraform" will be set.
+            email: '- (Required) The user''s email address.'
+            html_url: '- URL at which the entity is uniquely displayed in the Web app'
+            id: '- The ID of the user.'
+            invitation_sent: '- If true, the user has an outstanding invitation.'
+            job_title: '- (Optional) The user''s title.'
+            name: '- (Required) The name of the user.'
+            pagerduty_team_membership: resource.
+            read_only_users: ability to set a user as a read_only_user or a read_only_limited_user, and must have advanced permissions abilities to set a user as observer or restricted_access.
+            role: |-
+                - (Optional) The user role. Can be admin, limited_user, observer, owner, read_only_user, read_only_limited_user, restricted_access, or user.
+                Notes:
+            teams: '- (Optional, DEPRECATED) A list of teams the user should belong to. Please use pagerduty_team_membership instead.'
+            time_zone: '- (Optional) The time zone of the user. Default is account default timezone.'
+        importStatements: []
+    pagerduty_user_contact_method:
+        subCategory: ""
+        description: Creates and manages contact methods for a user in PagerDuty.
+        name: pagerduty_user_contact_method
+        title: pagerduty_user_contact_method
+        examples:
+            - name: email
+              manifest: |-
+                {
+                  "address": "foo@bar.com",
+                  "label": "Work",
+                  "type": "email_contact_method",
+                  "user_id": "${pagerduty_user.example.id}"
+                }
+              references:
+                user_id: pagerduty_user.example.id
+              dependencies:
+                pagerduty_user.example: |-
+                    {
+                      "email": "125.greenholt.earline@graham.name",
+                      "name": "Earline Greenholt",
+                      "teams": [
+                        "${pagerduty_team.example.id}"
+                      ]
+                    }
+            - name: phone
+              manifest: |-
+                {
+                  "address": "2025550199",
+                  "country_code": "+1",
+                  "label": "Work",
+                  "type": "phone_contact_method",
+                  "user_id": "${pagerduty_user.example.id}"
+                }
+              references:
+                user_id: pagerduty_user.example.id
+              dependencies:
+                pagerduty_user.example: |-
+                    {
+                      "email": "125.greenholt.earline@graham.name",
+                      "name": "Earline Greenholt",
+                      "teams": [
+                        "${pagerduty_team.example.id}"
+                      ]
+                    }
+            - name: sms
+              manifest: |-
+                {
+                  "address": "2025550199",
+                  "country_code": "+1",
+                  "label": "Work",
+                  "type": "sms_contact_method",
+                  "user_id": "${pagerduty_user.example.id}"
+                }
+              references:
+                user_id: pagerduty_user.example.id
+              dependencies:
+                pagerduty_user.example: |-
+                    {
+                      "email": "125.greenholt.earline@graham.name",
+                      "name": "Earline Greenholt",
+                      "teams": [
+                        "${pagerduty_team.example.id}"
+                      ]
+                    }
+        argumentDocs:
+            address: '- (Required) The "address" to deliver to: email, phone number, etc., depending on the type.'
+            blacklisted: '- If true, this phone has been blacklisted by PagerDuty and no messages will be sent to it.'
+            country_code: '- (Optional) The 1-to-3 digit country calling code. Required when using phone_contact_method or sms_contact_method.'
+            enabled: '- If true, this phone is capable of receiving SMS messages.'
+            id: '- The ID of the contact method.'
+            label: '- (Required) The label (e.g., "Work", "Mobile", etc.).'
+            send_short_email: '- (Optional) Send an abbreviated email message instead of the standard email output.'
+            type: '- (Required) The contact method type. May be (email_contact_method, phone_contact_method, sms_contact_method, push_notification_contact_method).'
+            user_id: '- (Required) The ID of the user.'
+        importStatements: []
+    pagerduty_user_notification_rule:
+        subCategory: ""
+        description: Creates and manages notification rules for a user in PagerDuty.
+        name: pagerduty_user_notification_rule
+        title: pagerduty_user_notification_rule
+        examples:
+            - name: high_urgency_phone
+              manifest: |-
+                {
+                  "contact_method": {
+                    "id": "${pagerduty_user_contact_method.phone.id}",
+                    "type": "phone_contact_method"
+                  },
+                  "start_delay_in_minutes": 1,
+                  "urgency": "high",
+                  "user_id": "${pagerduty_user.example.id}"
+                }
+              references:
+                user_id: pagerduty_user.example.id
+              dependencies:
+                pagerduty_user.example: |-
+                    {
+                      "email": "125.greenholt.earline@graham.name",
+                      "name": "Earline Greenholt"
+                    }
+                pagerduty_user_contact_method.email: |-
+                    {
+                      "address": "foo@bar.com",
+                      "label": "Work",
+                      "type": "email_contact_method",
+                      "user_id": "${pagerduty_user.example.id}"
+                    }
+                pagerduty_user_contact_method.phone: |-
+                    {
+                      "address": "2025550199",
+                      "country_code": "+1",
+                      "label": "Work",
+                      "type": "phone_contact_method",
+                      "user_id": "${pagerduty_user.example.id}"
+                    }
+                pagerduty_user_contact_method.sms: |-
+                    {
+                      "address": "2025550199",
+                      "country_code": "+1",
+                      "label": "Work",
+                      "type": "sms_contact_method",
+                      "user_id": "${pagerduty_user.example.id}"
+                    }
+            - name: low_urgency_email
+              manifest: |-
+                {
+                  "contact_method": {
+                    "id": "${pagerduty_user_contact_method.email.id}",
+                    "type": "email_contact_method"
+                  },
+                  "start_delay_in_minutes": 1,
+                  "urgency": "low",
+                  "user_id": "${pagerduty_user.example.id}"
+                }
+              references:
+                user_id: pagerduty_user.example.id
+              dependencies:
+                pagerduty_user.example: |-
+                    {
+                      "email": "125.greenholt.earline@graham.name",
+                      "name": "Earline Greenholt"
+                    }
+                pagerduty_user_contact_method.email: |-
+                    {
+                      "address": "foo@bar.com",
+                      "label": "Work",
+                      "type": "email_contact_method",
+                      "user_id": "${pagerduty_user.example.id}"
+                    }
+                pagerduty_user_contact_method.phone: |-
+                    {
+                      "address": "2025550199",
+                      "country_code": "+1",
+                      "label": "Work",
+                      "type": "phone_contact_method",
+                      "user_id": "${pagerduty_user.example.id}"
+                    }
+                pagerduty_user_contact_method.sms: |-
+                    {
+                      "address": "2025550199",
+                      "country_code": "+1",
+                      "label": "Work",
+                      "type": "sms_contact_method",
+                      "user_id": "${pagerduty_user.example.id}"
+                    }
+            - name: low_urgency_sms
+              manifest: |-
+                {
+                  "contact_method": {
+                    "id": "${pagerduty_user_contact_method.sms.id}",
+                    "type": "sms_contact_method"
+                  },
+                  "start_delay_in_minutes": 10,
+                  "urgency": "low",
+                  "user_id": "${pagerduty_user.example.id}"
+                }
+              references:
+                user_id: pagerduty_user.example.id
+              dependencies:
+                pagerduty_user.example: |-
+                    {
+                      "email": "125.greenholt.earline@graham.name",
+                      "name": "Earline Greenholt"
+                    }
+                pagerduty_user_contact_method.email: |-
+                    {
+                      "address": "foo@bar.com",
+                      "label": "Work",
+                      "type": "email_contact_method",
+                      "user_id": "${pagerduty_user.example.id}"
+                    }
+                pagerduty_user_contact_method.phone: |-
+                    {
+                      "address": "2025550199",
+                      "country_code": "+1",
+                      "label": "Work",
+                      "type": "phone_contact_method",
+                      "user_id": "${pagerduty_user.example.id}"
+                    }
+                pagerduty_user_contact_method.sms: |-
+                    {
+                      "address": "2025550199",
+                      "country_code": "+1",
+                      "label": "Work",
+                      "type": "sms_contact_method",
+                      "user_id": "${pagerduty_user.example.id}"
+                    }
+        argumentDocs:
+            contact_method: '- (Required) A contact method block, configured as a block described below.'
+            id: '- (Required) The id of the referenced contact method.'
+            start_delay_in_minutes: '- (Required) The delay before firing the rule, in minutes.'
+            type: '- (Required) The type of contact method. Can be email_contact_method, phone_contact_method, push_notification_contact_method or sms_contact_method.'
+            urgency: '- (Required) Which incident urgency this rule is used for. Account must have the urgencies ability to have a low urgency notification rule. Can be high or low.'
+            user_id: '- (Required) The ID of the user.'
+        importStatements: []
+    pagerduty_webhook_subscription:
+        subCategory: ""
+        description: Creates and manages a webhook subscription in PagerDuty.
+        name: pagerduty_webhook_subscription
+        title: pagerduty_webhook_subscription
+        examples:
+            - name: foo
+              manifest: |-
+                {
+                  "active": true,
+                  "delivery_method": [
+                    {
+                      "custom_header": [
+                        {
+                          "name": "X-Foo",
+                          "value": "foo"
+                        },
+                        {
+                          "name": "X-Bar",
+                          "value": "bar"
+                        }
+                      ],
+                      "type": "http_delivery_method",
+                      "url": "https://example.com/receive_a_pagerduty_webhook"
+                    }
+                  ],
+                  "description": "%s",
+                  "events": [
+                    "incident.acknowledged",
+                    "incident.annotated",
+                    "incident.delegated",
+                    "incident.escalated",
+                    "incident.priority_updated",
+                    "incident.reassigned",
+                    "incident.reopened",
+                    "incident.resolved",
+                    "incident.responder.added",
+                    "incident.responder.replied",
+                    "incident.status_update_published",
+                    "incident.triggered",
+                    "incident.unacknowledged"
+                  ],
+                  "filter": [
+                    {
+                      "id": "${data.pagerduty_service.example.id}",
+                      "type": "service_reference"
+                    }
+                  ],
+                  "type": "webhook_subscription"
+                }
+              references:
+                filter.id: data.pagerduty_service.example.id
+        argumentDocs:
+            active: '- (Required) Determines whether the subscription will produce webhook events.'
+            channel_name: '- Name of the Slack channel in Slack connection.'
+            custom_header: '- (Optional) The custom_header of a webhook subscription define any optional headers that will be passed along with the payload to the destination URL.'
+            delivery_method: '- (Required) The object describing where to send the webhooks.'
+            description: '- (Optional) A short description of the webhook subscription'
+            events: '- (Required) A set of outbound event types the webhook will receive. The follow event types are possible:'
+            filter: '- (Required) determines which events will match and produce a webhook. There are currently three types of filters that can be applied to webhook subscriptions: service_reference, team_reference and account_reference.'
+            id: '- (Optional) The id of the object being used as the filter. This field is required for all filter types except account_reference.'
+            source_name: '- Name of the source (team or service) in Slack connection.'
+            temporarily_disabled: '- (Required) Whether this webhook subscription is temporarily disabled. Becomes true if the delivery method URL is repeatedly rejected by the server.'
+            type: '- (Required) The type indicating the schema of the object. The provider sets this as webhook_subscription, which is currently the only acceptable value.'
+            url: '- (Required) The destination URL for webhook delivery.'
+        importStatements: []

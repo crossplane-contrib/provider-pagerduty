@@ -1,0 +1,14 @@
+apiVersion: tag.pagerduty.crossplane.io/v1alpha1
+kind: Tag
+metadata:
+  annotations:
+    meta.upbound.io/example-id: tag/v1alpha1/tag
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    label: Product
+
+---
+

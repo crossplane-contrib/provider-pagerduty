@@ -1,0 +1,598 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.8.0
+  creationTimestamp: null
+  name: services.service.pagerduty.crossplane.io
+spec:
+  group: service.pagerduty.crossplane.io
+  names:
+    categories:
+    - crossplane
+    - managed
+    - pagerduty
+    kind: Service
+    listKind: ServiceList
+    plural: services
+    singular: service
+  scope: Cluster
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: READY
+      type: string
+    - jsonPath: .status.conditions[?(@.type=='Synced')].status
+      name: SYNCED
+      type: string
+    - jsonPath: .metadata.annotations.crossplane\.io/external-name
+      name: EXTERNAL-NAME
+      type: string
+    - jsonPath: .metadata.creationTimestamp
+      name: AGE
+      type: date
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: Service is the Schema for the Services API. Creates and manages
+          a service in PagerDuty.
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: ServiceSpec defines the desired state of Service
+            properties:
+              deletionPolicy:
+                default: Delete
+                description: DeletionPolicy specifies what will happen to the underlying
+                  external when this managed resource is deleted - either "Delete"
+                  or "Orphan" the external resource.
+                enum:
+                - Orphan
+                - Delete
+                type: string
+              forProvider:
+                properties:
+                  acknowledgementTimeout:
+                    description: Time in seconds that an incident changes to the Triggered
+                      State after being Acknowledged. Disabled if set to the "null"
+                      string.  If not passed in, will default to '"1800"'.
+                    type: string
+                  alertCreation:
+                    description: 'Must be one of two values. PagerDuty receives events
+                      from your monitoring systems and can then create incidents in
+                      different ways. Value "create_incidents" is default: events
+                      will create an incident that cannot be merged. Value "create_alerts_and_incidents"
+                      is the alternative: events will create an alert and then add
+                      it to a new incident, these incidents can be merged. This option
+                      is recommended.'
+                    type: string
+                  alertGrouping:
+                    description: '(Deprecated) Defines how alerts on this service
+                      will be automatically grouped into incidents. Note that the
+                      alert grouping features are available only on certain plans.
+                      If not set, each alert will create a separate incident; If value
+                      is set to time: All alerts within a specified duration will
+                      be grouped into the same incident. This duration is set in the
+                      alert_grouping_timeout setting (described below). Available
+                      on Standard, Enterprise, and Event Intelligence plans; If value
+                      is set to intelligent - Alerts will be intelligently grouped
+                      based on a machine learning model that looks at the alert summary,
+                      timing, and the history of grouped alerts. Available on Enterprise
+                      and Event Intelligence plan. This field is deprecated, use alert_grouping_parameters.type
+                      instead,'
+                    type: string
+                  alertGroupingParameters:
+                    description: Defines how alerts on this service will be automatically
+                      grouped into incidents. Note that the alert grouping features
+                      are available only on certain plans. If not set, each alert
+                      will create a separate incident.
+                    items:
+                      properties:
+                        config:
+                          description: Alert grouping parameters dependent on type.
+                            If type is set to intelligent or empty then config can
+                            be empty.
+                          items:
+                            properties:
+                              aggregate:
+                                description: One of any or all. This setting applies
+                                  only when type is set to content_based. Group alerts
+                                  based on one or all of fields value(s).
+                                type: string
+                              fields:
+                                description: Alerts will be grouped together if the
+                                  content of these fields match. This setting applies
+                                  only when type is set to content_based.
+                                items:
+                                  type: string
+                                type: array
+                              timeout:
+                                description: The duration in minutes within which
+                                  to automatically group incoming alerts. This setting
+                                  applies only when type is set to time. To continue
+                                  grouping alerts until the incident is resolved,
+                                  set this value to 0.
+                                type: number
+                            type: object
+                          type: array
+                        type:
+                          description: The type of alert grouping; one of intelligent,
+                            time or content_based.
+                          type: string
+                      type: object
+                    type: array
+                  alertGroupingTimeout:
+                    description: (Deprecated) The duration in minutes within which
+                      to automatically group incoming alerts. This setting applies
+                      only when alert_grouping is set to time. To continue grouping
+                      alerts until the incident is resolved, set this value to 0.
+                      This field is deprecated, use alert_grouping_parameters.config.timeout
+                      instead,
+                    type: string
+                  autoPauseNotificationsParameters:
+                    description: Defines how alerts on this service are automatically
+                      suspended for a period of time before triggering, when identified
+                      as likely being transient. Note that automatically pausing notifications
+                      is only available on certain plans as mentioned here.
+                    items:
+                      properties:
+                        enabled:
+                          description: Indicates whether alerts should be automatically
+                            suspended when identified as transient.  If not passed
+                            in, will default to 'false'.
+                          type: boolean
+                        timeout:
+                          description: 'Indicates in seconds how long alerts should
+                            be suspended before triggering. Allowed values: 120, 180,
+                            300, 600, 900 if enabled is true. Must be omitted or set
+                            to null if enabled is false.'
+                          type: number
+                      type: object
+                    type: array
+                  autoResolveTimeout:
+                    description: Time in seconds that an incident is automatically
+                      resolved if left open for that long. Disabled if set to the
+                      "null" string.
+                    type: string
+                  description:
+                    description: A human-friendly description of the service.
+                    type: string
+                  escalationPolicy:
+                    description: The escalation policy used by this service.
+                    type: string
+                  escalationPolicyRef:
+                    description: Reference to a Policy in escalation to populate escalationPolicy.
+                    properties:
+                      name:
+                        description: Name of the referenced object.
+                        type: string
+                      policy:
+                        description: Policies for referencing.
+                        properties:
+                          resolution:
+                            default: Required
+                            description: Resolution specifies whether resolution of
+                              this reference is required. The default is 'Required',
+                              which means the reconcile will fail if the reference
+                              cannot be resolved. 'Optional' means this reference
+                              will be a no-op if it cannot be resolved.
+                            enum:
+                            - Required
+                            - Optional
+                            type: string
+                          resolve:
+                            description: Resolve specifies when this reference should
+                              be resolved. The default is 'IfNotPresent', which will
+                              attempt to resolve the reference only when the corresponding
+                              field is not present. Use 'Always' to resolve the reference
+                              on every reconcile.
+                            enum:
+                            - Always
+                            - IfNotPresent
+                            type: string
+                        type: object
+                    required:
+                    - name
+                    type: object
+                  escalationPolicySelector:
+                    description: Selector for a Policy in escalation to populate escalationPolicy.
+                    properties:
+                      matchControllerRef:
+                        description: MatchControllerRef ensures an object with the
+                          same controller reference as the selecting object is selected.
+                        type: boolean
+                      matchLabels:
+                        additionalProperties:
+                          type: string
+                        description: MatchLabels ensures an object with matching labels
+                          is selected.
+                        type: object
+                      policy:
+                        description: Policies for selection.
+                        properties:
+                          resolution:
+                            default: Required
+                            description: Resolution specifies whether resolution of
+                              this reference is required. The default is 'Required',
+                              which means the reconcile will fail if the reference
+                              cannot be resolved. 'Optional' means this reference
+                              will be a no-op if it cannot be resolved.
+                            enum:
+                            - Required
+                            - Optional
+                            type: string
+                          resolve:
+                            description: Resolve specifies when this reference should
+                              be resolved. The default is 'IfNotPresent', which will
+                              attempt to resolve the reference only when the corresponding
+                              field is not present. Use 'Always' to resolve the reference
+                              on every reconcile.
+                            enum:
+                            - Always
+                            - IfNotPresent
+                            type: string
+                        type: object
+                    type: object
+                  incidentUrgencyRule:
+                    items:
+                      properties:
+                        duringSupportHours:
+                          description: Incidents' urgency during support hours.
+                          items:
+                            properties:
+                              type:
+                                description: The type of support hours. Can be fixed_time_per_day.
+                                type: string
+                              urgency:
+                                description: 'The urgency: low Notify responders (does
+                                  not escalate), high (follows escalation rules) or
+                                  severity_based Set''s the urgency of the incident
+                                  based on the severity set by the triggering monitoring
+                                  tool.'
+                                type: string
+                            type: object
+                          type: array
+                        outsideSupportHours:
+                          description: Incidents' urgency outside support hours.
+                          items:
+                            properties:
+                              type:
+                                description: The type of support hours. Can be fixed_time_per_day.
+                                type: string
+                              urgency:
+                                description: 'The urgency: low Notify responders (does
+                                  not escalate), high (follows escalation rules) or
+                                  severity_based Set''s the urgency of the incident
+                                  based on the severity set by the triggering monitoring
+                                  tool.'
+                                type: string
+                            type: object
+                          type: array
+                        type:
+                          description: 'The type of incident urgency: constant or
+                            use_support_hours (when depending on specific support
+                            hours; see support_hours).'
+                          type: string
+                        urgency:
+                          description: 'The urgency: low Notify responders (does not
+                            escalate), high (follows escalation rules) or severity_based
+                            Set''s the urgency of the incident based on the severity
+                            set by the triggering monitoring tool.'
+                          type: string
+                      required:
+                      - type
+                      type: object
+                    type: array
+                  name:
+                    description: The name of the service.
+                    type: string
+                  responsePlay:
+                    description: The response play used by this service.
+                    type: string
+                  scheduledActions:
+                    items:
+                      properties:
+                        at:
+                          description: A block representing when the scheduled action
+                            will occur.
+                          items:
+                            properties:
+                              name:
+                                description: The name of the service.
+                                type: string
+                              type:
+                                description: The type of support hours. Can be fixed_time_per_day.
+                                type: string
+                            type: object
+                          type: array
+                        toUrgency:
+                          description: 'The urgency to change to: low (does not escalate),
+                            or high (follows escalation rules).'
+                          type: string
+                        type:
+                          description: The type of support hours. Can be fixed_time_per_day.
+                          type: string
+                      type: object
+                    type: array
+                  supportHours:
+                    items:
+                      properties:
+                        daysOfWeek:
+                          description: Array of days of week as integers. 1 to 7,
+                            1 being Monday and 7 being Sunday.
+                          items:
+                            type: number
+                          type: array
+                        endTime:
+                          description: The support hours' ending time of day.
+                          type: string
+                        startTime:
+                          description: The support hours' starting time of day.
+                          type: string
+                        timeZone:
+                          description: The time zone for the support hours.
+                          type: string
+                        type:
+                          description: The type of support hours. Can be fixed_time_per_day.
+                          type: string
+                      type: object
+                    type: array
+                required:
+                - name
+                type: object
+              providerConfigRef:
+                default:
+                  name: default
+                description: ProviderConfigReference specifies how the provider that
+                  will be used to create, observe, update, and delete this managed
+                  resource should be configured.
+                properties:
+                  name:
+                    description: Name of the referenced object.
+                    type: string
+                  policy:
+                    description: Policies for referencing.
+                    properties:
+                      resolution:
+                        default: Required
+                        description: Resolution specifies whether resolution of this
+                          reference is required. The default is 'Required', which
+                          means the reconcile will fail if the reference cannot be
+                          resolved. 'Optional' means this reference will be a no-op
+                          if it cannot be resolved.
+                        enum:
+                        - Required
+                        - Optional
+                        type: string
+                      resolve:
+                        description: Resolve specifies when this reference should
+                          be resolved. The default is 'IfNotPresent', which will attempt
+                          to resolve the reference only when the corresponding field
+                          is not present. Use 'Always' to resolve the reference on
+                          every reconcile.
+                        enum:
+                        - Always
+                        - IfNotPresent
+                        type: string
+                    type: object
+                required:
+                - name
+                type: object
+              providerRef:
+                description: 'ProviderReference specifies the provider that will be
+                  used to create, observe, update, and delete this managed resource.
+                  Deprecated: Please use ProviderConfigReference, i.e. `providerConfigRef`'
+                properties:
+                  name:
+                    description: Name of the referenced object.
+                    type: string
+                  policy:
+                    description: Policies for referencing.
+                    properties:
+                      resolution:
+                        default: Required
+                        description: Resolution specifies whether resolution of this
+                          reference is required. The default is 'Required', which
+                          means the reconcile will fail if the reference cannot be
+                          resolved. 'Optional' means this reference will be a no-op
+                          if it cannot be resolved.
+                        enum:
+                        - Required
+                        - Optional
+                        type: string
+                      resolve:
+                        description: Resolve specifies when this reference should
+                          be resolved. The default is 'IfNotPresent', which will attempt
+                          to resolve the reference only when the corresponding field
+                          is not present. Use 'Always' to resolve the reference on
+                          every reconcile.
+                        enum:
+                        - Always
+                        - IfNotPresent
+                        type: string
+                    type: object
+                required:
+                - name
+                type: object
+              publishConnectionDetailsTo:
+                description: PublishConnectionDetailsTo specifies the connection secret
+                  config which contains a name, metadata and a reference to secret
+                  store config to which any connection details for this managed resource
+                  should be written. Connection details frequently include the endpoint,
+                  username, and password required to connect to the managed resource.
+                properties:
+                  configRef:
+                    default:
+                      name: default
+                    description: SecretStoreConfigRef specifies which secret store
+                      config should be used for this ConnectionSecret.
+                    properties:
+                      name:
+                        description: Name of the referenced object.
+                        type: string
+                      policy:
+                        description: Policies for referencing.
+                        properties:
+                          resolution:
+                            default: Required
+                            description: Resolution specifies whether resolution of
+                              this reference is required. The default is 'Required',
+                              which means the reconcile will fail if the reference
+                              cannot be resolved. 'Optional' means this reference
+                              will be a no-op if it cannot be resolved.
+                            enum:
+                            - Required
+                            - Optional
+                            type: string
+                          resolve:
+                            description: Resolve specifies when this reference should
+                              be resolved. The default is 'IfNotPresent', which will
+                              attempt to resolve the reference only when the corresponding
+                              field is not present. Use 'Always' to resolve the reference
+                              on every reconcile.
+                            enum:
+                            - Always
+                            - IfNotPresent
+                            type: string
+                        type: object
+                    required:
+                    - name
+                    type: object
+                  metadata:
+                    description: Metadata is the metadata for connection secret.
+                    properties:
+                      annotations:
+                        additionalProperties:
+                          type: string
+                        description: Annotations are the annotations to be added to
+                          connection secret. - For Kubernetes secrets, this will be
+                          used as "metadata.annotations". - It is up to Secret Store
+                          implementation for others store types.
+                        type: object
+                      labels:
+                        additionalProperties:
+                          type: string
+                        description: Labels are the labels/tags to be added to connection
+                          secret. - For Kubernetes secrets, this will be used as "metadata.labels".
+                          - It is up to Secret Store implementation for others store
+                          types.
+                        type: object
+                      type:
+                        description: Type is the SecretType for the connection secret.
+                          - Only valid for Kubernetes Secret Stores.
+                        type: string
+                    type: object
+                  name:
+                    description: Name is the name of the connection secret.
+                    type: string
+                required:
+                - name
+                type: object
+              writeConnectionSecretToRef:
+                description: WriteConnectionSecretToReference specifies the namespace
+                  and name of a Secret to which any connection details for this managed
+                  resource should be written. Connection details frequently include
+                  the endpoint, username, and password required to connect to the
+                  managed resource. This field is planned to be replaced in a future
+                  release in favor of PublishConnectionDetailsTo. Currently, both
+                  could be set independently and connection details would be published
+                  to both without affecting each other.
+                properties:
+                  name:
+                    description: Name of the secret.
+                    type: string
+                  namespace:
+                    description: Namespace of the secret.
+                    type: string
+                required:
+                - name
+                - namespace
+                type: object
+            required:
+            - forProvider
+            type: object
+          status:
+            description: ServiceStatus defines the observed state of Service.
+            properties:
+              atProvider:
+                properties:
+                  createdAt:
+                    description: Creation timestamp of the service.
+                    type: string
+                  htmlUrl:
+                    description: URL at which the entity is uniquely displayed in
+                      the Web app.
+                    type: string
+                  id:
+                    description: The ID of the service.
+                    type: string
+                  lastIncidentTimestamp:
+                    description: Last incident timestamp of the service.
+                    type: string
+                  status:
+                    description: The status of the service.
+                    type: string
+                  type:
+                    description: The type of scheduled action. Currently, this must
+                      be set to urgency_change.
+                    type: string
+                type: object
+              conditions:
+                description: Conditions of the resource.
+                items:
+                  description: A Condition that may apply to a resource.
+                  properties:
+                    lastTransitionTime:
+                      description: LastTransitionTime is the last time this condition
+                        transitioned from one status to another.
+                      format: date-time
+                      type: string
+                    message:
+                      description: A Message containing details about this condition's
+                        last transition from one status to another, if any.
+                      type: string
+                    reason:
+                      description: A Reason for this condition's last transition from
+                        one status to another.
+                      type: string
+                    status:
+                      description: Status of this condition; is it currently True,
+                        False, or Unknown?
+                      type: string
+                    type:
+                      description: Type of this condition. At most one of each condition
+                        type may apply to a resource at any point in time.
+                      type: string
+                  required:
+                  - lastTransitionTime
+                  - reason
+                  - status
+                  - type
+                  type: object
+                type: array
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
+status:
+  acceptedNames:
+    kind: ""
+    plural: ""
+  conditions: []
+  storedVersions: []

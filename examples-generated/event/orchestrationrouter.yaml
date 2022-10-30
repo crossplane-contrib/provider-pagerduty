@@ -1,0 +1,32 @@
+apiVersion: event.pagerduty.crossplane.io/v1alpha1
+kind: OrchestrationRouter
+metadata:
+  annotations:
+    meta.upbound.io/example-id: event/v1alpha1/orchestrationrouter
+  labels:
+    testing.upbound.io/example-name: router
+  name: router
+spec:
+  forProvider:
+    catchAll:
+    - actions:
+      - routeTo: unrouted
+    eventOrchestrationSelector:
+      matchLabels:
+        testing.upbound.io/example-name: my_monitor
+    set:
+    - id: start
+      rule:
+      - actions:
+        - routeTo: ${pagerduty_service.database.id}
+        condition:
+        - expression: event.summary matches part 'database'
+        - expression: event.source matches regex 'db[0-9]+-server'
+        label: Events relating to our relational database
+      - actions:
+        - routeTo: ${pagerduty_service.www.id}
+        condition:
+        - expression: event.summary matches part 'www'
+
+---
+

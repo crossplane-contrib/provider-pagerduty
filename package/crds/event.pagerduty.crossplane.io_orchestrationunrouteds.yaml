@@ -1,0 +1,655 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.8.0
+  creationTimestamp: null
+  name: orchestrationunrouteds.event.pagerduty.crossplane.io
+spec:
+  group: event.pagerduty.crossplane.io
+  names:
+    categories:
+    - crossplane
+    - managed
+    - pagerduty
+    kind: OrchestrationUnrouted
+    listKind: OrchestrationUnroutedList
+    plural: orchestrationunrouteds
+    singular: orchestrationunrouted
+  scope: Cluster
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: READY
+      type: string
+    - jsonPath: .status.conditions[?(@.type=='Synced')].status
+      name: SYNCED
+      type: string
+    - jsonPath: .metadata.annotations.crossplane\.io/external-name
+      name: EXTERNAL-NAME
+      type: string
+    - jsonPath: .metadata.creationTimestamp
+      name: AGE
+      type: date
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: OrchestrationUnrouted is the Schema for the OrchestrationUnrouteds
+          API. Creates and manages an Unrouted Orchestration for a Global Event Orchestration
+          in PagerDuty.
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: OrchestrationUnroutedSpec defines the desired state of OrchestrationUnrouted
+            properties:
+              deletionPolicy:
+                default: Delete
+                description: DeletionPolicy specifies what will happen to the underlying
+                  external when this managed resource is deleted - either "Delete"
+                  or "Orphan" the external resource.
+                enum:
+                - Orphan
+                - Delete
+                type: string
+              forProvider:
+                properties:
+                  catchAll:
+                    description: the catch_all actions will be applied if an Event
+                      reaches the end of any set without matching any rules in that
+                      set.
+                    items:
+                      properties:
+                        actions:
+                          description: Actions that will be taken to change the resulting
+                            alert and incident, when an event matches this rule.
+                          items:
+                            properties:
+                              eventAction:
+                                description: 'sets whether the resulting alert status
+                                  is trigger or resolve. Allowed values are: trigger,
+                                  resolve'
+                                type: string
+                              extraction:
+                                description: Replace any CEF field or Custom Details
+                                  object field using custom variables.
+                                items:
+                                  properties:
+                                    regex:
+                                      description: A RE2 regular expression that will
+                                        be matched against field specified via the
+                                        source argument. If the regex contains one
+                                        or more capture groups, their values will
+                                        be extracted and appended together. If it
+                                        contains no capture groups, the whole match
+                                        is used. This field can be ignored for template
+                                        based extractions.
+                                      type: string
+                                    source:
+                                      description: The path to the event field where
+                                        the regex will be applied to extract a value.
+                                        You can use any valid PCL path like event.summary
+                                        and you can reference previously-defined variables
+                                        using a path like variables.hostname. This
+                                        field can be ignored for template based extractions.
+                                      type: string
+                                    target:
+                                      description: The PagerDuty Common Event Format
+                                        PD-CEF field that will be set with the value
+                                        from the template or based on regex and source
+                                        fields.
+                                      type: string
+                                    template:
+                                      description: 'A string that will be used to
+                                        populate the target field. You can reference
+                                        variables or event data within your template
+                                        using double curly braces. For example:'
+                                      type: string
+                                  required:
+                                  - target
+                                  type: object
+                                type: array
+                              severity:
+                                description: 'sets Severity of the resulting alert.
+                                  Allowed values are: info, error, warning, critical'
+                                type: string
+                              variable:
+                                description: Populate variables from event payloads
+                                  and use those variables in other event actions.
+                                items:
+                                  properties:
+                                    name:
+                                      description: The name of the variable
+                                      type: string
+                                    path:
+                                      description: 'Path to a field in an event, in
+                                        dot-notation. This supports both PD-CEF and
+                                        non-CEF fields. Eg: Use event.summary for
+                                        the summary CEF field. Use raw_event.fieldname
+                                        to read from the original event fieldname
+                                        data.'
+                                      type: string
+                                    type:
+                                      description: Only regex is supported
+                                      type: string
+                                    value:
+                                      description: The Regex expression to match against.
+                                        Must use valid RE2 regular expression syntax.
+                                      type: string
+                                  required:
+                                  - name
+                                  - path
+                                  - type
+                                  - value
+                                  type: object
+                                type: array
+                            type: object
+                          type: array
+                      required:
+                      - actions
+                      type: object
+                    type: array
+                  eventOrchestration:
+                    description: The Event Orchestration to which this Unrouted Orchestration
+                      belongs to.
+                    type: string
+                  eventOrchestrationRef:
+                    description: Reference to a Orchestration to populate eventOrchestration.
+                    properties:
+                      name:
+                        description: Name of the referenced object.
+                        type: string
+                      policy:
+                        description: Policies for referencing.
+                        properties:
+                          resolution:
+                            default: Required
+                            description: Resolution specifies whether resolution of
+                              this reference is required. The default is 'Required',
+                              which means the reconcile will fail if the reference
+                              cannot be resolved. 'Optional' means this reference
+                              will be a no-op if it cannot be resolved.
+                            enum:
+                            - Required
+                            - Optional
+                            type: string
+                          resolve:
+                            description: Resolve specifies when this reference should
+                              be resolved. The default is 'IfNotPresent', which will
+                              attempt to resolve the reference only when the corresponding
+                              field is not present. Use 'Always' to resolve the reference
+                              on every reconcile.
+                            enum:
+                            - Always
+                            - IfNotPresent
+                            type: string
+                        type: object
+                    required:
+                    - name
+                    type: object
+                  eventOrchestrationSelector:
+                    description: Selector for a Orchestration to populate eventOrchestration.
+                    properties:
+                      matchControllerRef:
+                        description: MatchControllerRef ensures an object with the
+                          same controller reference as the selecting object is selected.
+                        type: boolean
+                      matchLabels:
+                        additionalProperties:
+                          type: string
+                        description: MatchLabels ensures an object with matching labels
+                          is selected.
+                        type: object
+                      policy:
+                        description: Policies for selection.
+                        properties:
+                          resolution:
+                            default: Required
+                            description: Resolution specifies whether resolution of
+                              this reference is required. The default is 'Required',
+                              which means the reconcile will fail if the reference
+                              cannot be resolved. 'Optional' means this reference
+                              will be a no-op if it cannot be resolved.
+                            enum:
+                            - Required
+                            - Optional
+                            type: string
+                          resolve:
+                            description: Resolve specifies when this reference should
+                              be resolved. The default is 'IfNotPresent', which will
+                              attempt to resolve the reference only when the corresponding
+                              field is not present. Use 'Always' to resolve the reference
+                              on every reconcile.
+                            enum:
+                            - Always
+                            - IfNotPresent
+                            type: string
+                        type: object
+                    type: object
+                  set:
+                    description: An Unrouted Orchestration must contain at least a
+                      "start" set, but can contain any number of additional sets that
+                      are routed to by other rules to form a directional graph.
+                    items:
+                      properties:
+                        id:
+                          description: The ID of this set of rules. Rules in other
+                            sets can route events into this set using the rule's route_to
+                            property.
+                          type: string
+                        rule:
+                          description: The Unrouted Orchestration evaluates Events
+                            against these Rules, one at a time, and applies all the
+                            actions for first rule it finds where the event matches
+                            the rule's conditions.
+                          items:
+                            properties:
+                              actions:
+                                description: Actions that will be taken to change
+                                  the resulting alert and incident, when an event
+                                  matches this rule.
+                                items:
+                                  properties:
+                                    eventAction:
+                                      description: 'sets whether the resulting alert
+                                        status is trigger or resolve. Allowed values
+                                        are: trigger, resolve'
+                                      type: string
+                                    extraction:
+                                      description: Replace any CEF field or Custom
+                                        Details object field using custom variables.
+                                      items:
+                                        properties:
+                                          regex:
+                                            description: A RE2 regular expression
+                                              that will be matched against field specified
+                                              via the source argument. If the regex
+                                              contains one or more capture groups,
+                                              their values will be extracted and appended
+                                              together. If it contains no capture
+                                              groups, the whole match is used. This
+                                              field can be ignored for template based
+                                              extractions.
+                                            type: string
+                                          source:
+                                            description: The path to the event field
+                                              where the regex will be applied to extract
+                                              a value. You can use any valid PCL path
+                                              like event.summary and you can reference
+                                              previously-defined variables using a
+                                              path like variables.hostname. This field
+                                              can be ignored for template based extractions.
+                                            type: string
+                                          target:
+                                            description: The PagerDuty Common Event
+                                              Format PD-CEF field that will be set
+                                              with the value from the template or
+                                              based on regex and source fields.
+                                            type: string
+                                          template:
+                                            description: 'A string that will be used
+                                              to populate the target field. You can
+                                              reference variables or event data within
+                                              your template using double curly braces.
+                                              For example:'
+                                            type: string
+                                        required:
+                                        - target
+                                        type: object
+                                      type: array
+                                    routeTo:
+                                      description: The ID of a Set from this Unrouted
+                                        Orchestration whose rules you also want to
+                                        use with event that match this rule.
+                                      type: string
+                                    severity:
+                                      description: 'sets Severity of the resulting
+                                        alert. Allowed values are: info, error, warning,
+                                        critical'
+                                      type: string
+                                    variable:
+                                      description: Populate variables from event payloads
+                                        and use those variables in other event actions.
+                                      items:
+                                        properties:
+                                          name:
+                                            description: The name of the variable
+                                            type: string
+                                          path:
+                                            description: 'Path to a field in an event,
+                                              in dot-notation. This supports both
+                                              PD-CEF and non-CEF fields. Eg: Use event.summary
+                                              for the summary CEF field. Use raw_event.fieldname
+                                              to read from the original event fieldname
+                                              data.'
+                                            type: string
+                                          type:
+                                            description: Only regex is supported
+                                            type: string
+                                          value:
+                                            description: The Regex expression to match
+                                              against. Must use valid RE2 regular
+                                              expression syntax.
+                                            type: string
+                                        required:
+                                        - name
+                                        - path
+                                        - type
+                                        - value
+                                        type: object
+                                      type: array
+                                  type: object
+                                type: array
+                              condition:
+                                description: Each of these conditions is evaluated
+                                  to check if an event matches this rule. The rule
+                                  is considered a match if any of these conditions
+                                  match. If none are provided, the event will always
+                                  match against the rule.
+                                items:
+                                  properties:
+                                    expression:
+                                      description: A PCL condition string.
+                                      type: string
+                                  required:
+                                  - expression
+                                  type: object
+                                type: array
+                              disabled:
+                                description: Indicates whether the rule is disabled
+                                  and would therefore not be evaluated.
+                                type: boolean
+                              label:
+                                description: A description of this rule's purpose.
+                                type: string
+                            required:
+                            - actions
+                            type: object
+                          type: array
+                      required:
+                      - id
+                      type: object
+                    type: array
+                required:
+                - catchAll
+                - set
+                type: object
+              providerConfigRef:
+                default:
+                  name: default
+                description: ProviderConfigReference specifies how the provider that
+                  will be used to create, observe, update, and delete this managed
+                  resource should be configured.
+                properties:
+                  name:
+                    description: Name of the referenced object.
+                    type: string
+                  policy:
+                    description: Policies for referencing.
+                    properties:
+                      resolution:
+                        default: Required
+                        description: Resolution specifies whether resolution of this
+                          reference is required. The default is 'Required', which
+                          means the reconcile will fail if the reference cannot be
+                          resolved. 'Optional' means this reference will be a no-op
+                          if it cannot be resolved.
+                        enum:
+                        - Required
+                        - Optional
+                        type: string
+                      resolve:
+                        description: Resolve specifies when this reference should
+                          be resolved. The default is 'IfNotPresent', which will attempt
+                          to resolve the reference only when the corresponding field
+                          is not present. Use 'Always' to resolve the reference on
+                          every reconcile.
+                        enum:
+                        - Always
+                        - IfNotPresent
+                        type: string
+                    type: object
+                required:
+                - name
+                type: object
+              providerRef:
+                description: 'ProviderReference specifies the provider that will be
+                  used to create, observe, update, and delete this managed resource.
+                  Deprecated: Please use ProviderConfigReference, i.e. `providerConfigRef`'
+                properties:
+                  name:
+                    description: Name of the referenced object.
+                    type: string
+                  policy:
+                    description: Policies for referencing.
+                    properties:
+                      resolution:
+                        default: Required
+                        description: Resolution specifies whether resolution of this
+                          reference is required. The default is 'Required', which
+                          means the reconcile will fail if the reference cannot be
+                          resolved. 'Optional' means this reference will be a no-op
+                          if it cannot be resolved.
+                        enum:
+                        - Required
+                        - Optional
+                        type: string
+                      resolve:
+                        description: Resolve specifies when this reference should
+                          be resolved. The default is 'IfNotPresent', which will attempt
+                          to resolve the reference only when the corresponding field
+                          is not present. Use 'Always' to resolve the reference on
+                          every reconcile.
+                        enum:
+                        - Always
+                        - IfNotPresent
+                        type: string
+                    type: object
+                required:
+                - name
+                type: object
+              publishConnectionDetailsTo:
+                description: PublishConnectionDetailsTo specifies the connection secret
+                  config which contains a name, metadata and a reference to secret
+                  store config to which any connection details for this managed resource
+                  should be written. Connection details frequently include the endpoint,
+                  username, and password required to connect to the managed resource.
+                properties:
+                  configRef:
+                    default:
+                      name: default
+                    description: SecretStoreConfigRef specifies which secret store
+                      config should be used for this ConnectionSecret.
+                    properties:
+                      name:
+                        description: Name of the referenced object.
+                        type: string
+                      policy:
+                        description: Policies for referencing.
+                        properties:
+                          resolution:
+                            default: Required
+                            description: Resolution specifies whether resolution of
+                              this reference is required. The default is 'Required',
+                              which means the reconcile will fail if the reference
+                              cannot be resolved. 'Optional' means this reference
+                              will be a no-op if it cannot be resolved.
+                            enum:
+                            - Required
+                            - Optional
+                            type: string
+                          resolve:
+                            description: Resolve specifies when this reference should
+                              be resolved. The default is 'IfNotPresent', which will
+                              attempt to resolve the reference only when the corresponding
+                              field is not present. Use 'Always' to resolve the reference
+                              on every reconcile.
+                            enum:
+                            - Always
+                            - IfNotPresent
+                            type: string
+                        type: object
+                    required:
+                    - name
+                    type: object
+                  metadata:
+                    description: Metadata is the metadata for connection secret.
+                    properties:
+                      annotations:
+                        additionalProperties:
+                          type: string
+                        description: Annotations are the annotations to be added to
+                          connection secret. - For Kubernetes secrets, this will be
+                          used as "metadata.annotations". - It is up to Secret Store
+                          implementation for others store types.
+                        type: object
+                      labels:
+                        additionalProperties:
+                          type: string
+                        description: Labels are the labels/tags to be added to connection
+                          secret. - For Kubernetes secrets, this will be used as "metadata.labels".
+                          - It is up to Secret Store implementation for others store
+                          types.
+                        type: object
+                      type:
+                        description: Type is the SecretType for the connection secret.
+                          - Only valid for Kubernetes Secret Stores.
+                        type: string
+                    type: object
+                  name:
+                    description: Name is the name of the connection secret.
+                    type: string
+                required:
+                - name
+                type: object
+              writeConnectionSecretToRef:
+                description: WriteConnectionSecretToReference specifies the namespace
+                  and name of a Secret to which any connection details for this managed
+                  resource should be written. Connection details frequently include
+                  the endpoint, username, and password required to connect to the
+                  managed resource. This field is planned to be replaced in a future
+                  release in favor of PublishConnectionDetailsTo. Currently, both
+                  could be set independently and connection details would be published
+                  to both without affecting each other.
+                properties:
+                  name:
+                    description: Name of the secret.
+                    type: string
+                  namespace:
+                    description: Namespace of the secret.
+                    type: string
+                required:
+                - name
+                - namespace
+                type: object
+            required:
+            - forProvider
+            type: object
+          status:
+            description: OrchestrationUnroutedStatus defines the observed state of
+              OrchestrationUnrouted.
+            properties:
+              atProvider:
+                properties:
+                  catchAll:
+                    description: the catch_all actions will be applied if an Event
+                      reaches the end of any set without matching any rules in that
+                      set.
+                    items:
+                      properties:
+                        actions:
+                          description: Actions that will be taken to change the resulting
+                            alert and incident, when an event matches this rule.
+                          items:
+                            properties:
+                              suppress:
+                                type: boolean
+                            type: object
+                          type: array
+                      type: object
+                    type: array
+                  id:
+                    description: The ID of this set of rules. Rules in other sets
+                      can route events into this set using the rule's route_to property.
+                    type: string
+                  set:
+                    description: An Unrouted Orchestration must contain at least a
+                      "start" set, but can contain any number of additional sets that
+                      are routed to by other rules to form a directional graph.
+                    items:
+                      properties:
+                        rule:
+                          description: The Unrouted Orchestration evaluates Events
+                            against these Rules, one at a time, and applies all the
+                            actions for first rule it finds where the event matches
+                            the rule's conditions.
+                          items:
+                            properties:
+                              id:
+                                description: The ID of this set of rules. Rules in
+                                  other sets can route events into this set using
+                                  the rule's route_to property.
+                                type: string
+                            type: object
+                          type: array
+                      type: object
+                    type: array
+                type: object
+              conditions:
+                description: Conditions of the resource.
+                items:
+                  description: A Condition that may apply to a resource.
+                  properties:
+                    lastTransitionTime:
+                      description: LastTransitionTime is the last time this condition
+                        transitioned from one status to another.
+                      format: date-time
+                      type: string
+                    message:
+                      description: A Message containing details about this condition's
+                        last transition from one status to another, if any.
+                      type: string
+                    reason:
+                      description: A Reason for this condition's last transition from
+                        one status to another.
+                      type: string
+                    status:
+                      description: Status of this condition; is it currently True,
+                        False, or Unknown?
+                      type: string
+                    type:
+                      description: Type of this condition. At most one of each condition
+                        type may apply to a resource at any point in time.
+                      type: string
+                  required:
+                  - lastTransitionTime
+                  - reason
+                  - status
+                  - type
+                  type: object
+                type: array
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
+status:
+  acceptedNames:
+    kind: ""
+    plural: ""
+  conditions: []
+  storedVersions: []
