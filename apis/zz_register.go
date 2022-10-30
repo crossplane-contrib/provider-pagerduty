@@ -10,7 +10,9 @@ package apis
 import (
 	"k8s.io/apimachinery/pkg/runtime"
 
-	v1alpha1 "github.com/crossplane-contrib/provider-pagerduty/apis/escalation/v1alpha1"
+	v1alpha1 "github.com/crossplane-contrib/provider-pagerduty/apis/addon/v1alpha1"
+	v1alpha1business "github.com/crossplane-contrib/provider-pagerduty/apis/business/v1alpha1"
+	v1alpha1escalation "github.com/crossplane-contrib/provider-pagerduty/apis/escalation/v1alpha1"
 	v1alpha1maintenance "github.com/crossplane-contrib/provider-pagerduty/apis/maintenance/v1alpha1"
 	v1alpha1ruleset "github.com/crossplane-contrib/provider-pagerduty/apis/ruleset/v1alpha1"
 	v1alpha1schedule "github.com/crossplane-contrib/provider-pagerduty/apis/schedule/v1alpha1"
@@ -28,6 +30,8 @@ func init() {
 	// Register the types with the Scheme so the components can map objects to GroupVersionKinds and back
 	AddToSchemes = append(AddToSchemes,
 		v1alpha1.SchemeBuilder.AddToScheme,
+		v1alpha1business.SchemeBuilder.AddToScheme,
+		v1alpha1escalation.SchemeBuilder.AddToScheme,
 		v1alpha1maintenance.SchemeBuilder.AddToScheme,
 		v1alpha1ruleset.SchemeBuilder.AddToScheme,
 		v1alpha1schedule.SchemeBuilder.AddToScheme,

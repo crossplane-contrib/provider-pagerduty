@@ -9,6 +9,9 @@ import (
 
 	"github.com/upbound/upjet/pkg/controller"
 
+	addon "github.com/crossplane-contrib/provider-pagerduty/internal/controller/addon/addon"
+	service "github.com/crossplane-contrib/provider-pagerduty/internal/controller/business/service"
+	servicesubscriber "github.com/crossplane-contrib/provider-pagerduty/internal/controller/business/servicesubscriber"
 	policy "github.com/crossplane-contrib/provider-pagerduty/internal/controller/escalation/policy"
 	window "github.com/crossplane-contrib/provider-pagerduty/internal/controller/maintenance/window"
 	providerconfig "github.com/crossplane-contrib/provider-pagerduty/internal/controller/providerconfig"
@@ -18,7 +21,7 @@ import (
 	dependency "github.com/crossplane-contrib/provider-pagerduty/internal/controller/service/dependency"
 	eventrule "github.com/crossplane-contrib/provider-pagerduty/internal/controller/service/eventrule"
 	integration "github.com/crossplane-contrib/provider-pagerduty/internal/controller/service/integration"
-	service "github.com/crossplane-contrib/provider-pagerduty/internal/controller/service/service"
+	serviceservice "github.com/crossplane-contrib/provider-pagerduty/internal/controller/service/service"
 	connection "github.com/crossplane-contrib/provider-pagerduty/internal/controller/slack/connection"
 	assignment "github.com/crossplane-contrib/provider-pagerduty/internal/controller/tag/assignment"
 	tag "github.com/crossplane-contrib/provider-pagerduty/internal/controller/tag/tag"
@@ -34,6 +37,9 @@ import (
 // the supplied manager.
 func Setup(mgr ctrl.Manager, o controller.Options) error {
 	for _, setup := range []func(ctrl.Manager, controller.Options) error{
+		addon.Setup,
+		service.Setup,
+		servicesubscriber.Setup,
 		policy.Setup,
 		window.Setup,
 		providerconfig.Setup,
@@ -43,7 +49,7 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 		dependency.Setup,
 		eventrule.Setup,
 		integration.Setup,
-		service.Setup,
+		serviceservice.Setup,
 		connection.Setup,
 		assignment.Setup,
 		tag.Setup,
