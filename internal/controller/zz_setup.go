@@ -13,6 +13,10 @@ import (
 	service "github.com/crossplane-contrib/provider-pagerduty/internal/controller/business/service"
 	servicesubscriber "github.com/crossplane-contrib/provider-pagerduty/internal/controller/business/servicesubscriber"
 	policy "github.com/crossplane-contrib/provider-pagerduty/internal/controller/escalation/policy"
+	orchestration "github.com/crossplane-contrib/provider-pagerduty/internal/controller/event/orchestration"
+	orchestrationrouter "github.com/crossplane-contrib/provider-pagerduty/internal/controller/event/orchestrationrouter"
+	orchestrationservice "github.com/crossplane-contrib/provider-pagerduty/internal/controller/event/orchestrationservice"
+	orchestrationunrouted "github.com/crossplane-contrib/provider-pagerduty/internal/controller/event/orchestrationunrouted"
 	extension "github.com/crossplane-contrib/provider-pagerduty/internal/controller/extensions/extension"
 	servicenow "github.com/crossplane-contrib/provider-pagerduty/internal/controller/extensions/servicenow"
 	window "github.com/crossplane-contrib/provider-pagerduty/internal/controller/maintenance/window"
@@ -44,6 +48,10 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 		service.Setup,
 		servicesubscriber.Setup,
 		policy.Setup,
+		orchestration.Setup,
+		orchestrationrouter.Setup,
+		orchestrationservice.Setup,
+		orchestrationunrouted.Setup,
 		extension.Setup,
 		servicenow.Setup,
 		window.Setup,

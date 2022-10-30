@@ -13,6 +13,7 @@ import (
 	addon "github.com/crossplane-contrib/provider-pagerduty/config/addon"
 	business "github.com/crossplane-contrib/provider-pagerduty/config/business"
 	escalation "github.com/crossplane-contrib/provider-pagerduty/config/escalation"
+	event "github.com/crossplane-contrib/provider-pagerduty/config/event"
 	extensions "github.com/crossplane-contrib/provider-pagerduty/config/extensions"
 	maintenance "github.com/crossplane-contrib/provider-pagerduty/config/maintenance"
 	response "github.com/crossplane-contrib/provider-pagerduty/config/response"
@@ -52,6 +53,7 @@ func GetProvider() *ujconfig.Provider {
 		addon.Configure,
 		business.Configure,
 		escalation.Configure,
+		event.Configure,
 		extensions.Configure,
 		maintenance.Configure,
 		response.Configure,
