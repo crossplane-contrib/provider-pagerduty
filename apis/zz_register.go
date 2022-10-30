@@ -13,7 +13,9 @@ import (
 	v1alpha1 "github.com/crossplane-contrib/provider-pagerduty/apis/addon/v1alpha1"
 	v1alpha1business "github.com/crossplane-contrib/provider-pagerduty/apis/business/v1alpha1"
 	v1alpha1escalation "github.com/crossplane-contrib/provider-pagerduty/apis/escalation/v1alpha1"
+	v1alpha1extensions "github.com/crossplane-contrib/provider-pagerduty/apis/extensions/v1alpha1"
 	v1alpha1maintenance "github.com/crossplane-contrib/provider-pagerduty/apis/maintenance/v1alpha1"
+	v1alpha1response "github.com/crossplane-contrib/provider-pagerduty/apis/response/v1alpha1"
 	v1alpha1ruleset "github.com/crossplane-contrib/provider-pagerduty/apis/ruleset/v1alpha1"
 	v1alpha1schedule "github.com/crossplane-contrib/provider-pagerduty/apis/schedule/v1alpha1"
 	v1alpha1service "github.com/crossplane-contrib/provider-pagerduty/apis/service/v1alpha1"
@@ -32,7 +34,9 @@ func init() {
 		v1alpha1.SchemeBuilder.AddToScheme,
 		v1alpha1business.SchemeBuilder.AddToScheme,
 		v1alpha1escalation.SchemeBuilder.AddToScheme,
+		v1alpha1extensions.SchemeBuilder.AddToScheme,
 		v1alpha1maintenance.SchemeBuilder.AddToScheme,
+		v1alpha1response.SchemeBuilder.AddToScheme,
 		v1alpha1ruleset.SchemeBuilder.AddToScheme,
 		v1alpha1schedule.SchemeBuilder.AddToScheme,
 		v1alpha1service.SchemeBuilder.AddToScheme,

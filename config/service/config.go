@@ -5,8 +5,7 @@ import "github.com/upbound/upjet/pkg/config"
 // Configure configures individual resources by adding custom ResourceConfigurators.
 func Configure(p *config.Provider) {
 	p.AddResourceConfigurator("pagerduty_service", func(r *config.Resource) {
-		// We need to override the default group that upjet generated for
-		// this resource, which would be "github"
+
 		r.ShortGroup = "service"
 		r.References = config.References{
 			"escalation_policy": {
@@ -16,14 +15,12 @@ func Configure(p *config.Provider) {
 	})
 
 	p.AddResourceConfigurator("pagerduty_service_dependency", func(r *config.Resource) {
-		// We need to override the default group that upjet generated for
-		// this resource, which would be "github"
+
 		r.ShortGroup = "service"
 	})
 
 	p.AddResourceConfigurator("pagerduty_service_event_rule", func(r *config.Resource) {
-		// We need to override the default group that upjet generated for
-		// this resource, which would be "github"
+
 		r.ShortGroup = "service"
 		r.References = config.References{
 			"service": {
@@ -33,8 +30,7 @@ func Configure(p *config.Provider) {
 	})
 
 	p.AddResourceConfigurator("pagerduty_service_integration", func(r *config.Resource) {
-		// We need to override the default group that upjet generated for
-		// this resource, which would be "github"
+
 		r.ShortGroup = "service"
 		r.References = config.References{
 			"service": {

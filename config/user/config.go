@@ -5,8 +5,7 @@ import "github.com/upbound/upjet/pkg/config"
 // Configure configures individual resources by adding custom ResourceConfigurators.
 func Configure(p *config.Provider) {
 	p.AddResourceConfigurator("pagerduty_user", func(r *config.Resource) {
-		// We need to override the default group that upjet generated for
-		// this resource, which would be "github"
+
 		r.ShortGroup = "user"
 		// Managed by pagerduty_team_membership resource.
 		if s, ok := r.TerraformResource.Schema["teams"]; ok {
@@ -16,8 +15,7 @@ func Configure(p *config.Provider) {
 	})
 
 	p.AddResourceConfigurator("pagerduty_user_notification_rule", func(r *config.Resource) {
-		// We need to override the default group that upjet generated for
-		// this resource, which would be "github"
+
 		r.ShortGroup = "user"
 		r.References = config.References{
 			"user_id": {
@@ -27,8 +25,7 @@ func Configure(p *config.Provider) {
 	})
 
 	p.AddResourceConfigurator("pagerduty_user_contact_method", func(r *config.Resource) {
-		// We need to override the default group that upjet generated for
-		// this resource, which would be "github"
+
 		r.ShortGroup = "user"
 		r.References = config.References{
 			"user_id": {

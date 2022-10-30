@@ -13,8 +13,11 @@ import (
 	service "github.com/crossplane-contrib/provider-pagerduty/internal/controller/business/service"
 	servicesubscriber "github.com/crossplane-contrib/provider-pagerduty/internal/controller/business/servicesubscriber"
 	policy "github.com/crossplane-contrib/provider-pagerduty/internal/controller/escalation/policy"
+	extension "github.com/crossplane-contrib/provider-pagerduty/internal/controller/extensions/extension"
+	servicenow "github.com/crossplane-contrib/provider-pagerduty/internal/controller/extensions/servicenow"
 	window "github.com/crossplane-contrib/provider-pagerduty/internal/controller/maintenance/window"
 	providerconfig "github.com/crossplane-contrib/provider-pagerduty/internal/controller/providerconfig"
+	play "github.com/crossplane-contrib/provider-pagerduty/internal/controller/response/play"
 	rule "github.com/crossplane-contrib/provider-pagerduty/internal/controller/ruleset/rule"
 	ruleset "github.com/crossplane-contrib/provider-pagerduty/internal/controller/ruleset/ruleset"
 	schedule "github.com/crossplane-contrib/provider-pagerduty/internal/controller/schedule/schedule"
@@ -41,8 +44,11 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 		service.Setup,
 		servicesubscriber.Setup,
 		policy.Setup,
+		extension.Setup,
+		servicenow.Setup,
 		window.Setup,
 		providerconfig.Setup,
+		play.Setup,
 		rule.Setup,
 		ruleset.Setup,
 		schedule.Setup,

@@ -30,6 +30,9 @@ var ExternalNameConfigs = map[string]config.ExternalName{
 	"pagerduty_addon":                       config.IdentifierFromProvider,
 	"pagerduty_business_service":            config.IdentifierFromProvider,
 	"pagerduty_business_service_subscriber": config.IdentifierFromProvider,
+	"pagerduty_response_play":               config.IdentifierFromProvider,
+	"pagerduty_extension":                   config.IdentifierFromProvider,
+	"pagerduty_extension_servicenow":        config.IdentifierFromProvider,
 }
 
 // ExternalNameConfigurations applies all external name configs listed in the
