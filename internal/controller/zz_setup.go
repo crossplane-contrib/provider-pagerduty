@@ -10,6 +10,7 @@ import (
 	"github.com/upbound/upjet/pkg/controller"
 
 	policy "github.com/crossplane-contrib/provider-pagerduty/internal/controller/escalation/policy"
+	window "github.com/crossplane-contrib/provider-pagerduty/internal/controller/maintenance/window"
 	providerconfig "github.com/crossplane-contrib/provider-pagerduty/internal/controller/providerconfig"
 	rule "github.com/crossplane-contrib/provider-pagerduty/internal/controller/ruleset/rule"
 	ruleset "github.com/crossplane-contrib/provider-pagerduty/internal/controller/ruleset/ruleset"
@@ -34,6 +35,7 @@ import (
 func Setup(mgr ctrl.Manager, o controller.Options) error {
 	for _, setup := range []func(ctrl.Manager, controller.Options) error{
 		policy.Setup,
+		window.Setup,
 		providerconfig.Setup,
 		rule.Setup,
 		ruleset.Setup,

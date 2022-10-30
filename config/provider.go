@@ -11,6 +11,7 @@ import (
 	ujconfig "github.com/upbound/upjet/pkg/config"
 
 	escalation "github.com/crossplane-contrib/provider-pagerduty/config/escalation"
+	maintenance "github.com/crossplane-contrib/provider-pagerduty/config/maintenance"
 	ruleset "github.com/crossplane-contrib/provider-pagerduty/config/ruleset"
 	schedule "github.com/crossplane-contrib/provider-pagerduty/config/schedule"
 	service "github.com/crossplane-contrib/provider-pagerduty/config/service"
@@ -45,6 +46,7 @@ func GetProvider() *ujconfig.Provider {
 	for _, configure := range []func(provider *ujconfig.Provider){
 		// add custom config functions
 		escalation.Configure,
+		maintenance.Configure,
 		ruleset.Configure,
 		schedule.Configure,
 		service.Configure,

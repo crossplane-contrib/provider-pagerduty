@@ -26,6 +26,7 @@ var ExternalNameConfigs = map[string]config.ExternalName{
 	"pagerduty_schedule":               config.IdentifierFromProvider,
 	"pagerduty_ruleset":                config.IdentifierFromProvider,
 	"pagerduty_ruleset_rule":           config.IdentifierFromProvider,
+	"pagerduty_maintenance_window":     config.IdentifierFromProvider,
 }
 
 // ExternalNameConfigurations applies all external name configs listed in the
