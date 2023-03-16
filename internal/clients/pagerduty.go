@@ -26,6 +26,7 @@ const (
 	errExtractCredentials   = "cannot extract credentials"
 	errUnmarshalCredentials = "cannot unmarshal pagerduty credentials as JSON"
 	keyToken                = "token"
+	userToken               = "user_token"
 )
 
 // TerraformSetupBuilder builds Terraform a terraform.SetupFn function which
@@ -68,6 +69,10 @@ func TerraformSetupBuilder(version, providerSource, providerVersion string) terr
 
 		if v, ok := creds[keyToken]; ok {
 			ps.Configuration[keyToken] = v
+		}
+
+		if v, ok := creds[userToken]; ok {
+			ps.Configuration[userToken] = v
 		}
 
 		return ps, nil
