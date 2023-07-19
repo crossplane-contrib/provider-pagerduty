@@ -83,6 +83,12 @@ spec:
                   jobTitle:
                     description: The user's title.
                     type: string
+                  license:
+                    description: The license id assigned to the user. If provided
+                      the user's role must exist in the assigned license's valid_roles
+                      list. To reference purchased licenses' ids see data source pagerduty_licenses
+                      data source.
+                    type: string
                   name:
                     description: The name of the user.
                     type: string

@@ -202,7 +202,7 @@ spec:
                                 type: string
                               routeTo:
                                 description: The ID of a Set from this Service Orchestration
-                                  whose rules you also want to use with event that
+                                  whose rules you also want to use with events that
                                   match this rule.
                                 type: string
                               severity:
@@ -218,8 +218,7 @@ spec:
                                   resulting alert before triggering. This effectively
                                   pauses incident notifications. If a resolve event
                                   arrives before the alert triggers then PagerDuty
-                                  won't create an incident for this the resulting
-                                  alert.
+                                  won't create an incident for this alert.
                                 type: number
                               variable:
                                 description: Populate variables from event payloads
@@ -257,6 +256,9 @@ spec:
                       - actions
                       type: object
                     type: array
+                  enableEventOrchestrationForService:
+                    description: Opt-in/out for switching the Service to Service Orchestrations.
+                    type: boolean
                   service:
                     description: ID of the Service to which this Service Orchestration
                       belongs to.
@@ -492,7 +494,7 @@ spec:
                                     routeTo:
                                       description: The ID of a Set from this Service
                                         Orchestration whose rules you also want to
-                                        use with event that match this rule.
+                                        use with events that match this rule.
                                       type: string
                                     severity:
                                       description: 'sets Severity of the resulting
@@ -510,7 +512,7 @@ spec:
                                         effectively pauses incident notifications.
                                         If a resolve event arrives before the alert
                                         triggers then PagerDuty won't create an incident
-                                        for this the resulting alert.
+                                        for this alert.
                                       type: number
                                     variable:
                                       description: Populate variables from event payloads

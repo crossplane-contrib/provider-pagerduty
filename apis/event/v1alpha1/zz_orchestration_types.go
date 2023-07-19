@@ -18,6 +18,8 @@ type IntegrationObservation struct {
 	// The ID of the Event Orchestration.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
+	Label *string `json:"label,omitempty" tf:"label,omitempty"`
+
 	Parameters []ParametersObservation `json:"parameters,omitempty" tf:"parameters,omitempty"`
 }
 
@@ -90,7 +92,7 @@ type OrchestrationStatus struct {
 
 // +kubebuilder:object:root=true
 
-// Orchestration is the Schema for the Orchestrations API. Creates and manages a Global Event Orchestration in PagerDuty.
+// Orchestration is the Schema for the Orchestrations API. Creates and manages an Event Orchestration in PagerDuty.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"

@@ -49,6 +49,10 @@ type UserParameters struct {
 	// +kubebuilder:validation:Optional
 	JobTitle *string `json:"jobTitle,omitempty" tf:"job_title,omitempty"`
 
+	// The license id assigned to the user. If provided the user's role must exist in the assigned license's valid_roles list. To reference purchased licenses' ids see data source pagerduty_licenses data source.
+	// +kubebuilder:validation:Optional
+	License *string `json:"license,omitempty" tf:"license,omitempty"`
+
 	// The name of the user.
 	// +kubebuilder:validation:Required
 	Name *string `json:"name" tf:"name,omitempty"`

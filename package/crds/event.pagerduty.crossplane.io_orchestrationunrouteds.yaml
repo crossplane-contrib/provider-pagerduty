@@ -311,7 +311,7 @@ spec:
                                     routeTo:
                                       description: The ID of a Set from this Unrouted
                                         Orchestration whose rules you also want to
-                                        use with event that match this rule.
+                                        use with events that match this rule.
                                       type: string
                                     severity:
                                       description: 'sets Severity of the resulting

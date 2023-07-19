@@ -176,7 +176,7 @@ type CatchAllActionsParameters struct {
 	// +kubebuilder:validation:Optional
 	Priority *string `json:"priority,omitempty" tf:"priority,omitempty"`
 
-	// The ID of a Set from this Service Orchestration whose rules you also want to use with event that match this rule.
+	// The ID of a Set from this Service Orchestration whose rules you also want to use with events that match this rule.
 	// +kubebuilder:validation:Optional
 	RouteTo *string `json:"routeTo,omitempty" tf:"route_to,omitempty"`
 
@@ -188,7 +188,7 @@ type CatchAllActionsParameters struct {
 	// +kubebuilder:validation:Optional
 	Suppress *bool `json:"suppress,omitempty" tf:"suppress,omitempty"`
 
-	// The number of seconds to suspend the resulting alert before triggering. This effectively pauses incident notifications. If a resolve event arrives before the alert triggers then PagerDuty won't create an incident for this the resulting alert.
+	// The number of seconds to suspend the resulting alert before triggering. This effectively pauses incident notifications. If a resolve event arrives before the alert triggers then PagerDuty won't create an incident for this alert.
 	// +kubebuilder:validation:Optional
 	Suspend *float64 `json:"suspend,omitempty" tf:"suspend,omitempty"`
 
@@ -258,6 +258,10 @@ type OrchestrationServiceParameters struct {
 	// the catch_all actions will be applied if an Event reaches the end of any set without matching any rules in that set.
 	// +kubebuilder:validation:Required
 	CatchAll []OrchestrationServiceCatchAllParameters `json:"catchAll" tf:"catch_all,omitempty"`
+
+	// Opt-in/out for switching the Service to Service Orchestrations.
+	// +kubebuilder:validation:Optional
+	EnableEventOrchestrationForService *bool `json:"enableEventOrchestrationForService,omitempty" tf:"enable_event_orchestration_for_service,omitempty"`
 
 	// ID of the Service to which this Service Orchestration belongs to.
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-pagerduty/apis/service/v1alpha1.Service
@@ -358,7 +362,7 @@ type SetRuleActionsParameters struct {
 	// +kubebuilder:validation:Optional
 	Priority *string `json:"priority,omitempty" tf:"priority,omitempty"`
 
-	// The ID of a Set from this Service Orchestration whose rules you also want to use with event that match this rule.
+	// The ID of a Set from this Service Orchestration whose rules you also want to use with events that match this rule.
 	// +kubebuilder:validation:Optional
 	RouteTo *string `json:"routeTo,omitempty" tf:"route_to,omitempty"`
 
@@ -370,7 +374,7 @@ type SetRuleActionsParameters struct {
 	// +kubebuilder:validation:Optional
 	Suppress *bool `json:"suppress,omitempty" tf:"suppress,omitempty"`
 
-	// The number of seconds to suspend the resulting alert before triggering. This effectively pauses incident notifications. If a resolve event arrives before the alert triggers then PagerDuty won't create an incident for this the resulting alert.
+	// The number of seconds to suspend the resulting alert before triggering. This effectively pauses incident notifications. If a resolve event arrives before the alert triggers then PagerDuty won't create an incident for this alert.
 	// +kubebuilder:validation:Optional
 	Suspend *float64 `json:"suspend,omitempty" tf:"suspend,omitempty"`
 

@@ -163,7 +163,7 @@ type OrchestrationUnroutedSetRuleActionsParameters struct {
 	// +kubebuilder:validation:Optional
 	Extraction []RuleActionsExtractionParameters `json:"extraction,omitempty" tf:"extraction,omitempty"`
 
-	// The ID of a Set from this Unrouted Orchestration whose rules you also want to use with event that match this rule.
+	// The ID of a Set from this Unrouted Orchestration whose rules you also want to use with events that match this rule.
 	// +kubebuilder:validation:Optional
 	RouteTo *string `json:"routeTo,omitempty" tf:"route_to,omitempty"`
 

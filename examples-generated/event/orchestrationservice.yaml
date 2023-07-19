@@ -11,6 +11,7 @@ spec:
     catchAll:
     - actions:
       - {}
+    enableEventOrchestrationForService: true
     serviceSelector:
       matchLabels:
         testing.upbound.io/example-name: example

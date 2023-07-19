@@ -36,7 +36,7 @@ spec:
     schema:
       openAPIV3Schema:
         description: Orchestration is the Schema for the Orchestrations API. Creates
-          and manages a Global Event Orchestration in PagerDuty.
+          and manages an Event Orchestration in PagerDuty.
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -340,6 +340,8 @@ spec:
                       properties:
                         id:
                           description: The ID of the Event Orchestration.
+                          type: string
+                        label:
                           type: string
                         parameters:
                           items:

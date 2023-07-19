@@ -106,9 +106,9 @@ spec:
                       service_reference.
                     type: string
                   workspaceId:
-                    description: The ID of the connected Slack workspace. Can also
-                      be defined by the SLACK_CONNECTION_WORKSPACE_ID environment
-                      variable.
+                    description: The slack team (workspace) ID of the connected Slack
+                      workspace. Can also be defined by the SLACK_CONNECTION_WORKSPACE_ID
+                      environment variable.
                     type: string
                 required:
                 - channelId
