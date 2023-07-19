@@ -488,6 +488,11 @@ func (in *UserParameters) DeepCopyInto(out *UserParameters) {
 		*out = new(string)
 		**out = **in
 	}
+	if in.License != nil {
+		in, out := &in.License, &out.License
+		*out = new(string)
+		**out = **in
+	}
 	if in.Name != nil {
 		in, out := &in.Name, &out.Name
 		*out = new(string)

@@ -745,6 +745,11 @@ func (in *IntegrationObservation) DeepCopyInto(out *IntegrationObservation) {
 		*out = new(string)
 		**out = **in
 	}
+	if in.Label != nil {
+		in, out := &in.Label, &out.Label
+		*out = new(string)
+		**out = **in
+	}
 	if in.Parameters != nil {
 		in, out := &in.Parameters, &out.Parameters
 		*out = make([]ParametersObservation, len(*in))
@@ -1211,6 +1216,11 @@ func (in *OrchestrationServiceParameters) DeepCopyInto(out *OrchestrationService
 		for i := range *in {
 			(*in)[i].DeepCopyInto(&(*out)[i])
 		}
+	}
+	if in.EnableEventOrchestrationForService != nil {
+		in, out := &in.EnableEventOrchestrationForService, &out.EnableEventOrchestrationForService
+		*out = new(bool)
+		**out = **in
 	}
 	if in.Service != nil {
 		in, out := &in.Service, &out.Service

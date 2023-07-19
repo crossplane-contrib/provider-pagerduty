@@ -180,8 +180,9 @@ spec:
                         type: object
                     type: object
                   teams:
-                    description: Teams associated with the policy. Account must have
-                      the teams ability to use this parameter.
+                    description: Team associated with the policy (Only 1 team can
+                      be assigned to an Escalation Policy). Account must have the
+                      teams ability to use this parameter.
                     items:
                       type: string
                     type: array

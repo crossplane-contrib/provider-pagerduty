@@ -49,7 +49,7 @@ type PolicyParameters struct {
 	// +kubebuilder:validation:Optional
 	TeamSelector *v1.Selector `json:"teamSelector,omitempty" tf:"-"`
 
-	// Teams associated with the policy. Account must have the teams ability to use this parameter.
+	// Team associated with the policy (Only 1 team can be assigned to an Escalation Policy). Account must have the teams ability to use this parameter.
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-pagerduty/apis/team/v1alpha1.Team
 	// +crossplane:generate:reference:refFieldName=TeamRefs
 	// +crossplane:generate:reference:selectorFieldName=TeamSelector
