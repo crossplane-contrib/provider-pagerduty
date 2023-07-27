@@ -18,6 +18,15 @@ type UserObservation struct {
 	// The URL of the user's avatar.
 	AvatarURL *string `json:"avatarUrl,omitempty" tf:"avatar_url,omitempty"`
 
+	// The schedule color for the user. Valid options are purple, red, green, blue, teal, orange, brown, turquoise, dark-slate-blue, cayenne, orange-red, dark-orchid, dark-slate-grey, lime, dark-magenta, lime-green, midnight-blue, deep-pink, dark-green, dark-orange, dark-cyan, darkolive-green, dark-slate-gray, grey20, firebrick, maroon, crimson, dark-red, dark-goldenrod, chocolate, medium-violet-red, sea-green, olivedrab, forest-green, dark-olive-green, blue-violet, royal-blue, indigo, slate-blue, saddle-brown, or steel-blue.
+	Color *string `json:"color,omitempty" tf:"color,omitempty"`
+
+	// A human-friendly description of the user.
+	Description *string `json:"description,omitempty" tf:"description,omitempty"`
+
+	// The user's email address.
+	Email *string `json:"email,omitempty" tf:"email,omitempty"`
+
 	// URL at which the entity is uniquely displayed in the Web app
 	HTMLURL *string `json:"htmlUrl,omitempty" tf:"html_url,omitempty"`
 
@@ -27,8 +36,24 @@ type UserObservation struct {
 	// If true, the user has an outstanding invitation.
 	InvitationSent *bool `json:"invitationSent,omitempty" tf:"invitation_sent,omitempty"`
 
+	// The user's title.
+	JobTitle *string `json:"jobTitle,omitempty" tf:"job_title,omitempty"`
+
+	// The license id assigned to the user. If provided the user's role must exist in the assigned license's valid_roles list. To reference purchased licenses' ids see data source pagerduty_licenses data source.
+	License *string `json:"license,omitempty" tf:"license,omitempty"`
+
+	// The name of the user.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// The user role. Can be admin, limited_user, observer, owner, read_only_user, read_only_limited_user, restricted_access, or user.
+	// Notes:
+	Role *string `json:"role,omitempty" tf:"role,omitempty"`
+
 	// A list of teams the user should belong to. Please use pagerduty_team_membership instead.
 	Teams []*string `json:"teams,omitempty" tf:"teams,omitempty"`
+
+	// The time zone of the user. Default is account default timezone.
+	TimeZone *string `json:"timeZone,omitempty" tf:"time_zone,omitempty"`
 }
 
 type UserParameters struct {
@@ -42,8 +67,8 @@ type UserParameters struct {
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
 
 	// The user's email address.
-	// +kubebuilder:validation:Required
-	Email *string `json:"email" tf:"email,omitempty"`
+	// +kubebuilder:validation:Optional
+	Email *string `json:"email,omitempty" tf:"email,omitempty"`
 
 	// The user's title.
 	// +kubebuilder:validation:Optional
@@ -54,8 +79,8 @@ type UserParameters struct {
 	License *string `json:"license,omitempty" tf:"license,omitempty"`
 
 	// The name of the user.
-	// +kubebuilder:validation:Required
-	Name *string `json:"name" tf:"name,omitempty"`
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
 	// The user role. Can be admin, limited_user, observer, owner, read_only_user, read_only_limited_user, restricted_access, or user.
 	// Notes:
@@ -91,8 +116,10 @@ type UserStatus struct {
 type User struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              UserSpec   `json:"spec"`
-	Status            UserStatus `json:"status,omitempty"`
+	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.email)",message="email is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.name)",message="name is a required parameter"
+	Spec   UserSpec   `json:"spec"`
+	Status UserStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true

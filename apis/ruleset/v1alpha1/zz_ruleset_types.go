@@ -18,8 +18,14 @@ type RulesetObservation struct {
 	// The ID of the ruleset.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
+	// Name of the ruleset.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
 	// Routing keys routed to this ruleset.
 	RoutingKeys []*string `json:"routingKeys,omitempty" tf:"routing_keys,omitempty"`
+
+	// Reference to the team that owns the ruleset. If none is specified, only admins have access.
+	Team []TeamObservation `json:"team,omitempty" tf:"team,omitempty"`
 
 	// Type of ruleset. Currently, only sets to global.
 	Type *string `json:"type,omitempty" tf:"type,omitempty"`
@@ -28,8 +34,8 @@ type RulesetObservation struct {
 type RulesetParameters struct {
 
 	// Name of the ruleset.
-	// +kubebuilder:validation:Required
-	Name *string `json:"name" tf:"name,omitempty"`
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
 	// Reference to the team that owns the ruleset. If none is specified, only admins have access.
 	// +kubebuilder:validation:Optional
@@ -37,6 +43,9 @@ type RulesetParameters struct {
 }
 
 type TeamObservation struct {
+
+	// The ID of the ruleset.
+	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 }
 
 type TeamParameters struct {
@@ -79,8 +88,9 @@ type RulesetStatus struct {
 type Ruleset struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              RulesetSpec   `json:"spec"`
-	Status            RulesetStatus `json:"status,omitempty"`
+	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.name)",message="name is a required parameter"
+	Spec   RulesetSpec   `json:"spec"`
+	Status RulesetStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true

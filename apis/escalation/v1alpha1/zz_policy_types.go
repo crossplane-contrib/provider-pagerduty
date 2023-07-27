@@ -15,12 +15,23 @@ import (
 
 type PolicyObservation struct {
 
+	// A human-friendly description of the escalation policy.
+	Description *string `json:"description,omitempty" tf:"description,omitempty"`
+
 	// A target ID
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
+	// The name of the escalation policy.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// The number of times the escalation policy will repeat after reaching the end of its escalation.
+	NumLoops *float64 `json:"numLoops,omitempty" tf:"num_loops,omitempty"`
+
 	// An Escalation rule block. Escalation rules documented below.
-	// +kubebuilder:validation:Required
 	Rule []RuleObservation `json:"rule,omitempty" tf:"rule,omitempty"`
+
+	// Team associated with the policy (Only 1 team can be assigned to an Escalation Policy). Account must have the teams ability to use this parameter.
+	Teams []*string `json:"teams,omitempty" tf:"teams,omitempty"`
 }
 
 type PolicyParameters struct {
@@ -30,16 +41,16 @@ type PolicyParameters struct {
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
 
 	// The name of the escalation policy.
-	// +kubebuilder:validation:Required
-	Name *string `json:"name" tf:"name,omitempty"`
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
 	// The number of times the escalation policy will repeat after reaching the end of its escalation.
 	// +kubebuilder:validation:Optional
 	NumLoops *float64 `json:"numLoops,omitempty" tf:"num_loops,omitempty"`
 
 	// An Escalation rule block. Escalation rules documented below.
-	// +kubebuilder:validation:Required
-	Rule []RuleParameters `json:"rule" tf:"rule,omitempty"`
+	// +kubebuilder:validation:Optional
+	Rule []RuleParameters `json:"rule,omitempty" tf:"rule,omitempty"`
 
 	// References to Team in team to populate teams.
 	// +kubebuilder:validation:Optional
@@ -59,8 +70,13 @@ type PolicyParameters struct {
 
 type RuleObservation struct {
 
+	// The number of minutes before an unacknowledged incident escalates away from this rule.
+	EscalationDelayInMinutes *float64 `json:"escalationDelayInMinutes,omitempty" tf:"escalation_delay_in_minutes,omitempty"`
+
 	// A target ID
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	Target []TargetObservation `json:"target,omitempty" tf:"target,omitempty"`
 }
 
 type RuleParameters struct {
@@ -74,6 +90,12 @@ type RuleParameters struct {
 }
 
 type TargetObservation struct {
+
+	// A target ID
+	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// Can be user_reference or schedule_reference. Defaults to user_reference. For multiple users as example, repeat the target.
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 }
 
 type TargetParameters struct {
@@ -111,8 +133,10 @@ type PolicyStatus struct {
 type Policy struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              PolicySpec   `json:"spec"`
-	Status            PolicyStatus `json:"status,omitempty"`
+	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.name)",message="name is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.rule)",message="rule is a required parameter"
+	Spec   PolicySpec   `json:"spec"`
+	Status PolicyStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true

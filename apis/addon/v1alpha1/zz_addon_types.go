@@ -17,17 +17,23 @@ type AddonObservation struct {
 
 	// The ID of the add-on.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// The name of the add-on.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// The source URL to display in a frame in the PagerDuty UI. HTTPS is required.
+	Src *string `json:"src,omitempty" tf:"src,omitempty"`
 }
 
 type AddonParameters struct {
 
 	// The name of the add-on.
-	// +kubebuilder:validation:Required
-	Name *string `json:"name" tf:"name,omitempty"`
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
 	// The source URL to display in a frame in the PagerDuty UI. HTTPS is required.
-	// +kubebuilder:validation:Required
-	Src *string `json:"src" tf:"src,omitempty"`
+	// +kubebuilder:validation:Optional
+	Src *string `json:"src,omitempty" tf:"src,omitempty"`
 }
 
 // AddonSpec defines the desired state of Addon
@@ -54,8 +60,10 @@ type AddonStatus struct {
 type Addon struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              AddonSpec   `json:"spec"`
-	Status            AddonStatus `json:"status,omitempty"`
+	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.name)",message="name is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.src)",message="src is a required parameter"
+	Spec   AddonSpec   `json:"spec"`
+	Status AddonStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true

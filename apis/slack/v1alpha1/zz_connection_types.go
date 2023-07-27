@@ -14,6 +14,15 @@ import (
 )
 
 type ConfigObservation struct {
+
+	// A list of strings to filter events by PagerDuty event type. "incident.triggered" is required. The follow event types are also possible:
+	Events []*string `json:"events,omitempty" tf:"events,omitempty"`
+
+	// Allows you to filter events by priority. Needs to be an array of PagerDuty priority IDs. Available through pagerduty_priority data source.
+	Priorities []*string `json:"priorities,omitempty" tf:"priorities,omitempty"`
+
+	// Allows you to filter events by urgency. Either high or low.
+	Urgency *string `json:"urgency,omitempty" tf:"urgency,omitempty"`
 }
 
 type ConfigParameters struct {
@@ -33,41 +42,59 @@ type ConfigParameters struct {
 
 type ConnectionObservation struct {
 
+	// The ID of a Slack channel in the workspace.
+	ChannelID *string `json:"channelId,omitempty" tf:"channel_id,omitempty"`
+
 	// Name of the Slack channel in Slack connection.
 	ChannelName *string `json:"channelName,omitempty" tf:"channel_name,omitempty"`
+
+	// Configuration options for the Slack connection that provide options to filter events.
+	Config []ConfigObservation `json:"config,omitempty" tf:"config,omitempty"`
 
 	// The ID of the slack connection.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
+	// Type of notification. Either responder or stakeholder.
+	NotificationType *string `json:"notificationType,omitempty" tf:"notification_type,omitempty"`
+
+	// The ID of the source in PagerDuty. Valid sources are services or teams.
+	SourceID *string `json:"sourceId,omitempty" tf:"source_id,omitempty"`
+
 	// Name of the source (team or service) in Slack connection.
 	SourceName *string `json:"sourceName,omitempty" tf:"source_name,omitempty"`
+
+	// The type of the source. Either team_reference or service_reference.
+	SourceType *string `json:"sourceType,omitempty" tf:"source_type,omitempty"`
+
+	// The slack team (workspace) ID of the connected Slack workspace. Can also be defined by the SLACK_CONNECTION_WORKSPACE_ID environment variable.
+	WorkspaceID *string `json:"workspaceId,omitempty" tf:"workspace_id,omitempty"`
 }
 
 type ConnectionParameters struct {
 
 	// The ID of a Slack channel in the workspace.
-	// +kubebuilder:validation:Required
-	ChannelID *string `json:"channelId" tf:"channel_id,omitempty"`
+	// +kubebuilder:validation:Optional
+	ChannelID *string `json:"channelId,omitempty" tf:"channel_id,omitempty"`
 
 	// Configuration options for the Slack connection that provide options to filter events.
-	// +kubebuilder:validation:Required
-	Config []ConfigParameters `json:"config" tf:"config,omitempty"`
+	// +kubebuilder:validation:Optional
+	Config []ConfigParameters `json:"config,omitempty" tf:"config,omitempty"`
 
 	// Type of notification. Either responder or stakeholder.
-	// +kubebuilder:validation:Required
-	NotificationType *string `json:"notificationType" tf:"notification_type,omitempty"`
+	// +kubebuilder:validation:Optional
+	NotificationType *string `json:"notificationType,omitempty" tf:"notification_type,omitempty"`
 
 	// The ID of the source in PagerDuty. Valid sources are services or teams.
-	// +kubebuilder:validation:Required
-	SourceID *string `json:"sourceId" tf:"source_id,omitempty"`
+	// +kubebuilder:validation:Optional
+	SourceID *string `json:"sourceId,omitempty" tf:"source_id,omitempty"`
 
 	// The type of the source. Either team_reference or service_reference.
-	// +kubebuilder:validation:Required
-	SourceType *string `json:"sourceType" tf:"source_type,omitempty"`
+	// +kubebuilder:validation:Optional
+	SourceType *string `json:"sourceType,omitempty" tf:"source_type,omitempty"`
 
 	// The slack team (workspace) ID of the connected Slack workspace. Can also be defined by the SLACK_CONNECTION_WORKSPACE_ID environment variable.
-	// +kubebuilder:validation:Required
-	WorkspaceID *string `json:"workspaceId" tf:"workspace_id,omitempty"`
+	// +kubebuilder:validation:Optional
+	WorkspaceID *string `json:"workspaceId,omitempty" tf:"workspace_id,omitempty"`
 }
 
 // ConnectionSpec defines the desired state of Connection
@@ -94,8 +121,14 @@ type ConnectionStatus struct {
 type Connection struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              ConnectionSpec   `json:"spec"`
-	Status            ConnectionStatus `json:"status,omitempty"`
+	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.channelId)",message="channelId is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.config)",message="config is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.notificationType)",message="notificationType is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.sourceId)",message="sourceId is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.sourceType)",message="sourceType is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.workspaceId)",message="workspaceId is a required parameter"
+	Spec   ConnectionSpec   `json:"spec"`
+	Status ConnectionStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true

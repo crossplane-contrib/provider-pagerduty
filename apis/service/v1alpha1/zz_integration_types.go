@@ -15,8 +15,26 @@ import (
 
 type EmailFilterObservation struct {
 
+	// Can be always or match.
+	BodyMode *string `json:"bodyMode,omitempty" tf:"body_mode,omitempty"`
+
+	// Should be a valid regex or null
+	BodyRegex *string `json:"bodyRegex,omitempty" tf:"body_regex,omitempty"`
+
+	// Can be always or match.
+	FromEmailMode *string `json:"fromEmailMode,omitempty" tf:"from_email_mode,omitempty"`
+
+	// Should be a valid regex or null
+	FromEmailRegex *string `json:"fromEmailRegex,omitempty" tf:"from_email_regex,omitempty"`
+
 	// The ID of the service integration.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// Can be always or match.
+	SubjectMode *string `json:"subjectMode,omitempty" tf:"subject_mode,omitempty"`
+
+	// Should be a valid regex or null
+	SubjectRegex *string `json:"subjectRegex,omitempty" tf:"subject_regex,omitempty"`
 }
 
 type EmailFilterParameters struct {
@@ -48,8 +66,15 @@ type EmailFilterParameters struct {
 
 type EmailParserObservation struct {
 
+	// Can be resolve or trigger.
+	Action *string `json:"action,omitempty" tf:"action,omitempty"`
+
 	// The ID of the service integration.
 	ID *float64 `json:"id,omitempty" tf:"id,omitempty"`
+
+	MatchPredicate []MatchPredicateObservation `json:"matchPredicate,omitempty" tf:"match_predicate,omitempty"`
+
+	ValueExtractor []ValueExtractorObservation `json:"valueExtractor,omitempty" tf:"value_extractor,omitempty"`
 }
 
 type EmailParserParameters struct {
@@ -66,18 +91,51 @@ type EmailParserParameters struct {
 }
 
 type IntegrationObservation struct {
-
-	// +kubebuilder:validation:Optional
 	EmailFilter []EmailFilterObservation `json:"emailFilter,omitempty" tf:"email_filter,omitempty"`
 
-	// +kubebuilder:validation:Optional
+	// Mode of Emails Filters feature (explained in PD docs). Can be all-email, or-rules-email or and-rules-email.
+	EmailFilterMode *string `json:"emailFilterMode,omitempty" tf:"email_filter_mode,omitempty"`
+
+	// Behaviour of Email Management feature (explained in PD docs). Can be on_new_email, on_new_email_subject, only_if_no_open_incidents or use_rules.
+	EmailIncidentCreation *string `json:"emailIncidentCreation,omitempty" tf:"email_incident_creation,omitempty"`
+
 	EmailParser []EmailParserObservation `json:"emailParser,omitempty" tf:"email_parser,omitempty"`
+
+	// Can be open_new_incident or discard.
+	EmailParsingFallback *string `json:"emailParsingFallback,omitempty" tf:"email_parsing_fallback,omitempty"`
 
 	// URL at which the entity is uniquely displayed in the Web app.
 	HTMLURL *string `json:"htmlUrl,omitempty" tf:"html_url,omitempty"`
 
 	// The ID of the service integration.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// This is the unique fully-qualified email address used for routing emails to this integration for processing.
+	IntegrationEmail *string `json:"integrationEmail,omitempty" tf:"integration_email,omitempty"`
+
+	// This is the unique key used to route events to this integration when received via the PagerDuty Events API.
+	IntegrationKey *string `json:"integrationKey,omitempty" tf:"integration_key,omitempty"`
+
+	// The name of the service integration.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// The ID of the service the integration should belong to.
+	Service *string `json:"service,omitempty" tf:"service,omitempty"`
+
+	// The service type. Can be:
+	// aws_cloudwatch_inbound_integration,
+	// cloudkick_inbound_integration,
+	// event_transformer_api_inbound_integration,
+	// events_api_v2_inbound_integration (requires service alert_creation to be create_alerts_and_incidents),
+	// generic_email_inbound_integration,
+	// generic_events_api_inbound_integration,
+	// keynote_inbound_integration,
+	// nagios_inbound_integration,
+	// pingdom_inbound_integrationor sql_monitor_inbound_integration.
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+
+	// field instead.
+	Vendor *string `json:"vendor,omitempty" tf:"vendor,omitempty"`
 }
 
 type IntegrationParameters struct {
@@ -144,6 +202,19 @@ type IntegrationParameters struct {
 }
 
 type MatchPredicateObservation struct {
+	Predicate []PredicateObservation `json:"predicate,omitempty" tf:"predicate,omitempty"`
+
+	// The service type. Can be:
+	// aws_cloudwatch_inbound_integration,
+	// cloudkick_inbound_integration,
+	// event_transformer_api_inbound_integration,
+	// events_api_v2_inbound_integration (requires service alert_creation to be create_alerts_and_incidents),
+	// generic_email_inbound_integration,
+	// generic_events_api_inbound_integration,
+	// keynote_inbound_integration,
+	// nagios_inbound_integration,
+	// pingdom_inbound_integrationor sql_monitor_inbound_integration.
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 }
 
 type MatchPredicateParameters struct {
@@ -166,6 +237,26 @@ type MatchPredicateParameters struct {
 }
 
 type PredicateObservation struct {
+
+	// Predicate value or valid regex.
+	Matcher *string `json:"matcher,omitempty" tf:"matcher,omitempty"`
+
+	// Can be subject, body or from_addresses.
+	Part *string `json:"part,omitempty" tf:"part,omitempty"`
+
+	Predicate []PredicatePredicateObservation `json:"predicate,omitempty" tf:"predicate,omitempty"`
+
+	// The service type. Can be:
+	// aws_cloudwatch_inbound_integration,
+	// cloudkick_inbound_integration,
+	// event_transformer_api_inbound_integration,
+	// events_api_v2_inbound_integration (requires service alert_creation to be create_alerts_and_incidents),
+	// generic_email_inbound_integration,
+	// generic_events_api_inbound_integration,
+	// keynote_inbound_integration,
+	// nagios_inbound_integration,
+	// pingdom_inbound_integrationor sql_monitor_inbound_integration.
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 }
 
 type PredicateParameters struct {
@@ -196,6 +287,24 @@ type PredicateParameters struct {
 }
 
 type PredicatePredicateObservation struct {
+
+	// Predicate value or valid regex.
+	Matcher *string `json:"matcher,omitempty" tf:"matcher,omitempty"`
+
+	// Can be subject, body or from_addresses.
+	Part *string `json:"part,omitempty" tf:"part,omitempty"`
+
+	// The service type. Can be:
+	// aws_cloudwatch_inbound_integration,
+	// cloudkick_inbound_integration,
+	// event_transformer_api_inbound_integration,
+	// events_api_v2_inbound_integration (requires service alert_creation to be create_alerts_and_incidents),
+	// generic_email_inbound_integration,
+	// generic_events_api_inbound_integration,
+	// keynote_inbound_integration,
+	// nagios_inbound_integration,
+	// pingdom_inbound_integrationor sql_monitor_inbound_integration.
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 }
 
 type PredicatePredicateParameters struct {
@@ -223,6 +332,30 @@ type PredicatePredicateParameters struct {
 }
 
 type ValueExtractorObservation struct {
+	EndsBefore *string `json:"endsBefore,omitempty" tf:"ends_before,omitempty"`
+
+	// Can be subject, body or from_addresses.
+	Part *string `json:"part,omitempty" tf:"part,omitempty"`
+
+	// If type has value regex this value should contain valid regex.
+	Regex *string `json:"regex,omitempty" tf:"regex,omitempty"`
+
+	StartsAfter *string `json:"startsAfter,omitempty" tf:"starts_after,omitempty"`
+
+	// The service type. Can be:
+	// aws_cloudwatch_inbound_integration,
+	// cloudkick_inbound_integration,
+	// event_transformer_api_inbound_integration,
+	// events_api_v2_inbound_integration (requires service alert_creation to be create_alerts_and_incidents),
+	// generic_email_inbound_integration,
+	// generic_events_api_inbound_integration,
+	// keynote_inbound_integration,
+	// nagios_inbound_integration,
+	// pingdom_inbound_integrationor sql_monitor_inbound_integration.
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+
+	// First value extractor should have name incident_key other value extractors should contain custom names.
+	ValueName *string `json:"valueName,omitempty" tf:"value_name,omitempty"`
 }
 
 type ValueExtractorParameters struct {

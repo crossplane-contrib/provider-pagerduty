@@ -15,23 +15,35 @@ import (
 
 type NotificationRuleObservation struct {
 
+	// A contact method block, configured as a block described below.
+	ContactMethod map[string]*string `json:"contactMethod,omitempty" tf:"contact_method,omitempty"`
+
 	// The id of the referenced contact method.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// The delay before firing the rule, in minutes.
+	StartDelayInMinutes *float64 `json:"startDelayInMinutes,omitempty" tf:"start_delay_in_minutes,omitempty"`
+
+	// Which incident urgency this rule is used for. Account must have the urgencies ability to have a low urgency notification rule. Can be high or low.
+	Urgency *string `json:"urgency,omitempty" tf:"urgency,omitempty"`
+
+	// The ID of the user.
+	UserID *string `json:"userId,omitempty" tf:"user_id,omitempty"`
 }
 
 type NotificationRuleParameters struct {
 
 	// A contact method block, configured as a block described below.
-	// +kubebuilder:validation:Required
-	ContactMethod map[string]*string `json:"contactMethod" tf:"contact_method,omitempty"`
+	// +kubebuilder:validation:Optional
+	ContactMethod map[string]*string `json:"contactMethod,omitempty" tf:"contact_method,omitempty"`
 
 	// The delay before firing the rule, in minutes.
-	// +kubebuilder:validation:Required
-	StartDelayInMinutes *float64 `json:"startDelayInMinutes" tf:"start_delay_in_minutes,omitempty"`
+	// +kubebuilder:validation:Optional
+	StartDelayInMinutes *float64 `json:"startDelayInMinutes,omitempty" tf:"start_delay_in_minutes,omitempty"`
 
 	// Which incident urgency this rule is used for. Account must have the urgencies ability to have a low urgency notification rule. Can be high or low.
-	// +kubebuilder:validation:Required
-	Urgency *string `json:"urgency" tf:"urgency,omitempty"`
+	// +kubebuilder:validation:Optional
+	Urgency *string `json:"urgency,omitempty" tf:"urgency,omitempty"`
 
 	// The ID of the user.
 	// +crossplane:generate:reference:type=User
@@ -71,8 +83,11 @@ type NotificationRuleStatus struct {
 type NotificationRule struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              NotificationRuleSpec   `json:"spec"`
-	Status            NotificationRuleStatus `json:"status,omitempty"`
+	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.contactMethod)",message="contactMethod is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.startDelayInMinutes)",message="startDelayInMinutes is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.urgency)",message="urgency is a required parameter"
+	Spec   NotificationRuleSpec   `json:"spec"`
+	Status NotificationRuleStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true

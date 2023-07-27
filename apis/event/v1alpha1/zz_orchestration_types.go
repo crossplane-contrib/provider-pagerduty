@@ -28,14 +28,22 @@ type IntegrationParameters struct {
 
 type OrchestrationObservation struct {
 
+	// A human-friendly description of the Event Orchestration.
+	Description *string `json:"description,omitempty" tf:"description,omitempty"`
+
 	// The ID of the Event Orchestration.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
 	// An integration for the Event Orchestration.
-	// +kubebuilder:validation:Optional
 	Integration []IntegrationObservation `json:"integration,omitempty" tf:"integration,omitempty"`
 
+	// Name of the Event Orchestration.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
 	Routes *float64 `json:"routes,omitempty" tf:"routes,omitempty"`
+
+	// ID of the team that owns the Event Orchestration. If none is specified, only admins have access.
+	Team *string `json:"team,omitempty" tf:"team,omitempty"`
 }
 
 type OrchestrationParameters struct {
@@ -49,8 +57,8 @@ type OrchestrationParameters struct {
 	Integration []IntegrationParameters `json:"integration,omitempty" tf:"integration,omitempty"`
 
 	// Name of the Event Orchestration.
-	// +kubebuilder:validation:Required
-	Name *string `json:"name" tf:"name,omitempty"`
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
 	// ID of the team that owns the Event Orchestration. If none is specified, only admins have access.
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-pagerduty/apis/team/v1alpha1.Team
@@ -102,8 +110,9 @@ type OrchestrationStatus struct {
 type Orchestration struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              OrchestrationSpec   `json:"spec"`
-	Status            OrchestrationStatus `json:"status,omitempty"`
+	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.name)",message="name is a required parameter"
+	Spec   OrchestrationSpec   `json:"spec"`
+	Status OrchestrationStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true

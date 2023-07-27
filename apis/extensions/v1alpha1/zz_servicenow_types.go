@@ -15,11 +15,40 @@ import (
 
 type ServicenowObservation struct {
 
+	// This is the objects for which the extension applies (An array of service ids).
+	ExtensionObjects []*string `json:"extensionObjects,omitempty" tf:"extension_objects,omitempty"`
+
+	// This is the schema for this extension.
+	ExtensionSchema *string `json:"extensionSchema,omitempty" tf:"extension_schema,omitempty"`
+
 	// URL at which the entity is uniquely displayed in the Web app.
 	HTMLURL *string `json:"htmlUrl,omitempty" tf:"html_url,omitempty"`
 
 	// The ID of the extension.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// The name of the service extension.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// The ServiceNow referer.
+	Referer *string `json:"referer,omitempty" tf:"referer,omitempty"`
+
+	// The ServiceNow username.
+	SnowUser *string `json:"snowUser,omitempty" tf:"snow_user,omitempty"`
+
+	// A short-form, server-generated string that provides succinct, important information about an object suitable for primary labeling of an entity in a client. In many cases, this will be identical to name, though it is not intended to be an identifier.
+	Summary *string `json:"summary,omitempty" tf:"summary,omitempty"`
+
+	// The ServiceNow sync option.
+	SyncOptions *string `json:"syncOptions,omitempty" tf:"sync_options,omitempty"`
+
+	// Target Webhook URL.
+	Target *string `json:"target,omitempty" tf:"target,omitempty"`
+
+	// The ServiceNow task type, typically incident.
+	TaskType *string `json:"taskType,omitempty" tf:"task_type,omitempty"`
+
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 }
 
 type ServicenowParameters struct {
@@ -28,44 +57,44 @@ type ServicenowParameters struct {
 	EndpointURLSecretRef *v1.SecretKeySelector `json:"endpointUrlSecretRef,omitempty" tf:"-"`
 
 	// This is the objects for which the extension applies (An array of service ids).
-	// +kubebuilder:validation:Required
-	ExtensionObjects []*string `json:"extensionObjects" tf:"extension_objects,omitempty"`
+	// +kubebuilder:validation:Optional
+	ExtensionObjects []*string `json:"extensionObjects,omitempty" tf:"extension_objects,omitempty"`
 
 	// This is the schema for this extension.
-	// +kubebuilder:validation:Required
-	ExtensionSchema *string `json:"extensionSchema" tf:"extension_schema,omitempty"`
+	// +kubebuilder:validation:Optional
+	ExtensionSchema *string `json:"extensionSchema,omitempty" tf:"extension_schema,omitempty"`
 
 	// The name of the service extension.
 	// +kubebuilder:validation:Optional
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
 	// The ServiceNow referer.
-	// +kubebuilder:validation:Required
-	Referer *string `json:"referer" tf:"referer,omitempty"`
+	// +kubebuilder:validation:Optional
+	Referer *string `json:"referer,omitempty" tf:"referer,omitempty"`
 
 	// The ServiceNow password.
-	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Optional
 	SnowPasswordSecretRef v1.SecretKeySelector `json:"snowPasswordSecretRef" tf:"-"`
 
 	// The ServiceNow username.
-	// +kubebuilder:validation:Required
-	SnowUser *string `json:"snowUser" tf:"snow_user,omitempty"`
+	// +kubebuilder:validation:Optional
+	SnowUser *string `json:"snowUser,omitempty" tf:"snow_user,omitempty"`
 
 	// A short-form, server-generated string that provides succinct, important information about an object suitable for primary labeling of an entity in a client. In many cases, this will be identical to name, though it is not intended to be an identifier.
 	// +kubebuilder:validation:Optional
 	Summary *string `json:"summary,omitempty" tf:"summary,omitempty"`
 
 	// The ServiceNow sync option.
-	// +kubebuilder:validation:Required
-	SyncOptions *string `json:"syncOptions" tf:"sync_options,omitempty"`
+	// +kubebuilder:validation:Optional
+	SyncOptions *string `json:"syncOptions,omitempty" tf:"sync_options,omitempty"`
 
 	// Target Webhook URL.
-	// +kubebuilder:validation:Required
-	Target *string `json:"target" tf:"target,omitempty"`
+	// +kubebuilder:validation:Optional
+	Target *string `json:"target,omitempty" tf:"target,omitempty"`
 
 	// The ServiceNow task type, typically incident.
-	// +kubebuilder:validation:Required
-	TaskType *string `json:"taskType" tf:"task_type,omitempty"`
+	// +kubebuilder:validation:Optional
+	TaskType *string `json:"taskType,omitempty" tf:"task_type,omitempty"`
 
 	// +kubebuilder:validation:Optional
 	Type *string `json:"type,omitempty" tf:"type,omitempty"`
@@ -95,8 +124,16 @@ type ServicenowStatus struct {
 type Servicenow struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              ServicenowSpec   `json:"spec"`
-	Status            ServicenowStatus `json:"status,omitempty"`
+	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.extensionObjects)",message="extensionObjects is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.extensionSchema)",message="extensionSchema is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.referer)",message="referer is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.snowPasswordSecretRef)",message="snowPasswordSecretRef is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.snowUser)",message="snowUser is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.syncOptions)",message="syncOptions is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.target)",message="target is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.taskType)",message="taskType is a required parameter"
+	Spec   ServicenowSpec   `json:"spec"`
+	Status ServicenowStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true

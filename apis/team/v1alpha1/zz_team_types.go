@@ -15,11 +15,20 @@ import (
 
 type TeamObservation struct {
 
+	// A human-friendly description of the team.
+	Description *string `json:"description,omitempty" tf:"description,omitempty"`
+
 	// URL at which the entity is uniquely displayed in the Web app
 	HTMLURL *string `json:"htmlUrl,omitempty" tf:"html_url,omitempty"`
 
 	// The ID of the team.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// The name of the group.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// ID of the parent team. This is available to accounts with the Team Hierarchy feature enabled. Please contact your account manager for more information.
+	Parent *string `json:"parent,omitempty" tf:"parent,omitempty"`
 }
 
 type TeamParameters struct {
@@ -29,8 +38,8 @@ type TeamParameters struct {
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
 
 	// The name of the group.
-	// +kubebuilder:validation:Required
-	Name *string `json:"name" tf:"name,omitempty"`
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
 	// ID of the parent team. This is available to accounts with the Team Hierarchy feature enabled. Please contact your account manager for more information.
 	// +kubebuilder:validation:Optional
@@ -61,8 +70,9 @@ type TeamStatus struct {
 type Team struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              TeamSpec   `json:"spec"`
-	Status            TeamStatus `json:"status,omitempty"`
+	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.name)",message="name is a required parameter"
+	Spec   TeamSpec   `json:"spec"`
+	Status TeamStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true

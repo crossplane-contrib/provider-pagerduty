@@ -26,10 +26,31 @@ type FinalScheduleParameters struct {
 
 type LayerObservation struct {
 
+	// The end time of the schedule layer. If not specified, the layer does not end.
+	End *string `json:"end,omitempty" tf:"end,omitempty"`
+
 	// The ID of the schedule.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
+	// The name of the schedule.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
 	RenderedCoveragePercentage *string `json:"renderedCoveragePercentage,omitempty" tf:"rendered_coverage_percentage,omitempty"`
+
+	// A schedule layer restriction block. Restriction blocks documented below.
+	Restriction []RestrictionObservation `json:"restriction,omitempty" tf:"restriction,omitempty"`
+
+	// The duration of each on-call shift in seconds.
+	RotationTurnLengthSeconds *float64 `json:"rotationTurnLengthSeconds,omitempty" tf:"rotation_turn_length_seconds,omitempty"`
+
+	// The effective start time of the schedule layer. This can be before the start time of the schedule.
+	RotationVirtualStart *string `json:"rotationVirtualStart,omitempty" tf:"rotation_virtual_start,omitempty"`
+
+	// The start time of the schedule layer.
+	Start *string `json:"start,omitempty" tf:"start,omitempty"`
+
+	// The ordered list of users on this layer. The position of the user on the list determines their order in the layer.
+	Users []*string `json:"users,omitempty" tf:"users,omitempty"`
 }
 
 type LayerParameters struct {
@@ -75,6 +96,18 @@ type LayerParameters struct {
 }
 
 type RestrictionObservation struct {
+
+	// The duration of the restriction in seconds.
+	DurationSeconds *float64 `json:"durationSeconds,omitempty" tf:"duration_seconds,omitempty"`
+
+	// Number of the day when restriction starts. From 1 to 7 where 1 is Monday and 7 is Sunday.
+	StartDayOfWeek *float64 `json:"startDayOfWeek,omitempty" tf:"start_day_of_week,omitempty"`
+
+	// The start time in HH:mm:ss format.
+	StartTimeOfDay *string `json:"startTimeOfDay,omitempty" tf:"start_time_of_day,omitempty"`
+
+	// Can be daily_restriction or weekly_restriction.
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 }
 
 type RestrictionParameters struct {
@@ -97,14 +130,31 @@ type RestrictionParameters struct {
 }
 
 type ScheduleObservation struct {
+
+	// The description of the schedule.
+	Description *string `json:"description,omitempty" tf:"description,omitempty"`
+
 	FinalSchedule []FinalScheduleObservation `json:"finalSchedule,omitempty" tf:"final_schedule,omitempty"`
 
 	// The ID of the schedule.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
 	// A schedule layer block. Schedule layers documented below.
-	// +kubebuilder:validation:Required
 	Layer []LayerObservation `json:"layer,omitempty" tf:"layer,omitempty"`
+
+	// The name of the schedule.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// Any on-call schedule entries that pass the date range bounds will be truncated at the bounds, unless the parameter overflow is passed. For instance, if your schedule is a rotation that changes daily at midnight UTC, and your date range is from 2011-06-01T10:00:00Z to 2011-06-01T14:00:00Z:
+	// If you don't pass the overflow=true parameter, you will get one schedule entry returned with a start of 2011-06-01T10:00:00Z and end of 2011-06-01T14:00:00Z.
+	// If you do pass the overflow parameter, you will get one schedule entry returned with a start of 2011-06-01T00:00:00Z and end of 2011-06-02T00:00:00Z.
+	Overflow *bool `json:"overflow,omitempty" tf:"overflow,omitempty"`
+
+	// Teams associated with the schedule.
+	Teams []*string `json:"teams,omitempty" tf:"teams,omitempty"`
+
+	// The time zone of the schedule (e.g. Europe/Berlin).
+	TimeZone *string `json:"timeZone,omitempty" tf:"time_zone,omitempty"`
 }
 
 type ScheduleParameters struct {
@@ -114,8 +164,8 @@ type ScheduleParameters struct {
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
 
 	// A schedule layer block. Schedule layers documented below.
-	// +kubebuilder:validation:Required
-	Layer []LayerParameters `json:"layer" tf:"layer,omitempty"`
+	// +kubebuilder:validation:Optional
+	Layer []LayerParameters `json:"layer,omitempty" tf:"layer,omitempty"`
 
 	// The name of the schedule.
 	// +kubebuilder:validation:Optional
@@ -143,8 +193,8 @@ type ScheduleParameters struct {
 	Teams []*string `json:"teams,omitempty" tf:"teams,omitempty"`
 
 	// The time zone of the schedule (e.g. Europe/Berlin).
-	// +kubebuilder:validation:Required
-	TimeZone *string `json:"timeZone" tf:"time_zone,omitempty"`
+	// +kubebuilder:validation:Optional
+	TimeZone *string `json:"timeZone,omitempty" tf:"time_zone,omitempty"`
 }
 
 // ScheduleSpec defines the desired state of Schedule
@@ -171,8 +221,10 @@ type ScheduleStatus struct {
 type Schedule struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              ScheduleSpec   `json:"spec"`
-	Status            ScheduleStatus `json:"status,omitempty"`
+	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.layer)",message="layer is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.timeZone)",message="timeZone is a required parameter"
+	Spec   ScheduleSpec   `json:"spec"`
+	Status ScheduleStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true
