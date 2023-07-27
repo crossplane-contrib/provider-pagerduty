@@ -14,6 +14,15 @@ import (
 )
 
 type DependencyDependencyObservation struct {
+
+	// The service that dependents on the supporting service. Dependency dependent service documented below.
+	DependentService []DependentServiceObservation `json:"dependentService,omitempty" tf:"dependent_service,omitempty"`
+
+	// The service that supports the dependent service. Dependency supporting service documented below.
+	SupportingService []SupportingServiceObservation `json:"supportingService,omitempty" tf:"supporting_service,omitempty"`
+
+	// Can be business_service,  service, business_service_reference or technical_service_reference.
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 }
 
 type DependencyDependencyParameters struct {
@@ -33,6 +42,9 @@ type DependencyDependencyParameters struct {
 
 type DependencyObservation struct {
 
+	// The relationship between the supporting_service and dependent_service. One and only one dependency block must be defined.
+	Dependency []DependencyDependencyObservation `json:"dependency,omitempty" tf:"dependency,omitempty"`
+
 	// The ID of the service dependency.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 }
@@ -40,11 +52,17 @@ type DependencyObservation struct {
 type DependencyParameters struct {
 
 	// The relationship between the supporting_service and dependent_service. One and only one dependency block must be defined.
-	// +kubebuilder:validation:Required
-	Dependency []DependencyDependencyParameters `json:"dependency" tf:"dependency,omitempty"`
+	// +kubebuilder:validation:Optional
+	Dependency []DependencyDependencyParameters `json:"dependency,omitempty" tf:"dependency,omitempty"`
 }
 
 type DependentServiceObservation struct {
+
+	// The ID of the service dependency.
+	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// Can be business_service,  service, business_service_reference or technical_service_reference.
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 }
 
 type DependentServiceParameters struct {
@@ -59,6 +77,12 @@ type DependentServiceParameters struct {
 }
 
 type SupportingServiceObservation struct {
+
+	// The ID of the service dependency.
+	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// Can be business_service,  service, business_service_reference or technical_service_reference.
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 }
 
 type SupportingServiceParameters struct {
@@ -96,8 +120,9 @@ type DependencyStatus struct {
 type Dependency struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              DependencySpec   `json:"spec"`
-	Status            DependencyStatus `json:"status,omitempty"`
+	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.dependency)",message="dependency is a required parameter"
+	Spec   DependencySpec   `json:"spec"`
+	Status DependencyStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true

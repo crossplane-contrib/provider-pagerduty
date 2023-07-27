@@ -3,7 +3,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.8.0
+    controller-gen.kubebuilder.io/version: v0.11.3
   creationTimestamp: null
   name: orchestrationservices.event.pagerduty.crossplane.io
 spec:
@@ -55,9 +55,13 @@ spec:
             properties:
               deletionPolicy:
                 default: Delete
-                description: DeletionPolicy specifies what will happen to the underlying
+                description: 'DeletionPolicy specifies what will happen to the underlying
                   external when this managed resource is deleted - either "Delete"
-                  or "Orphan" the external resource.
+                  or "Orphan" the external resource. This field is planned to be deprecated
+                  in favor of the ManagementPolicy field in a future release. Currently,
+                  both could be set independently and non-default values would be
+                  honored if the feature flag is enabled. See the design doc for more
+                  information: https://github.com/crossplane/crossplane/blob/499895a25d1a1a0ba1604944ef98ac7a1a71f197/design/design-doc-observe-only-resources.md?plain=1#L223'
                 enum:
                 - Orphan
                 - Delete
@@ -576,10 +580,22 @@ spec:
                       - id
                       type: object
                     type: array
-                required:
-                - catchAll
-                - set
                 type: object
+              managementPolicy:
+                default: FullControl
+                description: 'THIS IS AN ALPHA FIELD. Do not use it in production.
+                  It is not honored unless the relevant Crossplane feature flag is
+                  enabled, and may be changed or removed without notice. ManagementPolicy
+                  specifies the level of control Crossplane has over the managed external
+                  resource. This field is planned to replace the DeletionPolicy field
+                  in a future release. Currently, both could be set independently
+                  and non-default values would be honored if the feature flag is enabled.
+                  See the design doc for more information: https://github.com/crossplane/crossplane/blob/499895a25d1a1a0ba1604944ef98ac7a1a71f197/design/design-doc-observe-only-resources.md?plain=1#L223'
+                enum:
+                - FullControl
+                - ObserveOnly
+                - OrphanOnDelete
+                type: string
               providerConfigRef:
                 default:
                   name: default
@@ -751,15 +767,199 @@ spec:
             required:
             - forProvider
             type: object
+            x-kubernetes-validations:
+            - message: catchAll is a required parameter
+              rule: self.managementPolicy == 'ObserveOnly' || has(self.forProvider.catchAll)
+            - message: set is a required parameter
+              rule: self.managementPolicy == 'ObserveOnly' || has(self.forProvider.set)
           status:
             description: OrchestrationServiceStatus defines the observed state of
               OrchestrationService.
             properties:
               atProvider:
                 properties:
+                  catchAll:
+                    description: the catch_all actions will be applied if an Event
+                      reaches the end of any set without matching any rules in that
+                      set.
+                    items:
+                      properties:
+                        actions:
+                          description: Actions that will be taken to change the resulting
+                            alert and incident, when an event matches this rule.
+                          items:
+                            properties:
+                              annotate:
+                                description: Add this text as a note on the resulting
+                                  incident.
+                                type: string
+                              automationAction:
+                                description: Create a Webhook associated with the
+                                  resulting incident.
+                                items:
+                                  properties:
+                                    autoSend:
+                                      description: When true, PagerDuty's servers
+                                        will automatically send this webhook request
+                                        as soon as the resulting incident is created.
+                                        When false, your incident responder will be
+                                        able to manually trigger the Webhook via the
+                                        PagerDuty website and mobile app.
+                                      type: boolean
+                                    header:
+                                      description: Specify custom key/value pairs
+                                        that'll be sent with the webhook request as
+                                        request headers.
+                                      items:
+                                        properties:
+                                          key:
+                                            description: Name to identify the header
+                                            type: string
+                                          value:
+                                            description: Value of this header
+                                            type: string
+                                        type: object
+                                      type: array
+                                    name:
+                                      description: Name of this Webhook.
+                                      type: string
+                                    parameter:
+                                      description: Specify custom key/value pairs
+                                        that'll be included in the webhook request's
+                                        JSON payload.
+                                      items:
+                                        properties:
+                                          key:
+                                            description: Name to identify the header
+                                            type: string
+                                          value:
+                                            description: Value of this header
+                                            type: string
+                                        type: object
+                                      type: array
+                                    url:
+                                      description: The API endpoint where PagerDuty's
+                                        servers will send the webhook request.
+                                      type: string
+                                  type: object
+                                type: array
+                              eventAction:
+                                description: 'sets whether the resulting alert status
+                                  is trigger or resolve. Allowed values are: trigger,
+                                  resolve'
+                                type: string
+                              extraction:
+                                description: Replace any CEF field or Custom Details
+                                  object field using custom variables.
+                                items:
+                                  properties:
+                                    regex:
+                                      description: A RE2 regular expression that will
+                                        be matched against field specified via the
+                                        source argument. If the regex contains one
+                                        or more capture groups, their values will
+                                        be extracted and appended together. If it
+                                        contains no capture groups, the whole match
+                                        is used. This field can be ignored for template
+                                        based extractions.
+                                      type: string
+                                    source:
+                                      description: The path to the event field where
+                                        the regex will be applied to extract a value.
+                                        You can use any valid PCL path like event.summary
+                                        and you can reference previously-defined variables
+                                        using a path like variables.hostname. This
+                                        field can be ignored for template based extractions.
+                                      type: string
+                                    target:
+                                      description: The PagerDuty Common Event Format
+                                        PD-CEF field that will be set with the value
+                                        from the template or based on regex and source
+                                        fields.
+                                      type: string
+                                    template:
+                                      description: 'A string that will be used to
+                                        populate the target field. You can reference
+                                        variables or event data within your template
+                                        using double curly braces. For example:'
+                                      type: string
+                                  type: object
+                                type: array
+                              pagerdutyAutomationAction:
+                                description: Configure a Process Automation associated
+                                  with the resulting incident.
+                                items:
+                                  properties:
+                                    actionId:
+                                      description: Id of the Process Automation action
+                                        to be triggered.
+                                      type: string
+                                  type: object
+                                type: array
+                              priority:
+                                description: The ID of the priority you want to set
+                                  on resulting incident. Consider using the pagerduty_priority
+                                  data source.
+                                type: string
+                              routeTo:
+                                description: The ID of a Set from this Service Orchestration
+                                  whose rules you also want to use with events that
+                                  match this rule.
+                                type: string
+                              severity:
+                                description: 'sets Severity of the resulting alert.
+                                  Allowed values are: info, error, warning, critical'
+                                type: string
+                              suppress:
+                                description: Set whether the resulting alert is suppressed.
+                                  Suppressed alerts will not trigger an incident.
+                                type: boolean
+                              suspend:
+                                description: The number of seconds to suspend the
+                                  resulting alert before triggering. This effectively
+                                  pauses incident notifications. If a resolve event
+                                  arrives before the alert triggers then PagerDuty
+                                  won't create an incident for this alert.
+                                type: number
+                              variable:
+                                description: Populate variables from event payloads
+                                  and use those variables in other event actions.
+                                items:
+                                  properties:
+                                    name:
+                                      description: Name of this Webhook.
+                                      type: string
+                                    path:
+                                      description: 'Path to a field in an event, in
+                                        dot-notation. This supports both PagerDuty
+                                        Common Event Format PD-CEF and non-CEF fields.
+                                        Eg: Use event.summary for the summary CEF
+                                        field. Use raw_event.fieldname to read from
+                                        the original event fieldname data. You can
+                                        use any valid PCL path.'
+                                      type: string
+                                    type:
+                                      description: Only regex is supported
+                                      type: string
+                                    value:
+                                      description: Value of this header
+                                      type: string
+                                  type: object
+                                type: array
+                            type: object
+                          type: array
+                      type: object
+                    type: array
+                  enableEventOrchestrationForService:
+                    description: Opt-in/out for switching the Service to Service Orchestrations.
+                    type: boolean
                   id:
                     description: The ID of this set of rules. Rules in other sets
                       can route events into this set using the rule's route_to property.
+                    type: string
+                  service:
+                    description: ID of the Service to which this Service Orchestration
+                      belongs to.
                     type: string
                   set:
                     description: A Service Orchestration must contain at least a "start"
@@ -767,6 +967,11 @@ spec:
                       routed to by other rules to form a directional graph.
                     items:
                       properties:
+                        id:
+                          description: The ID of this set of rules. Rules in other
+                            sets can route events into this set using the rule's route_to
+                            property.
+                          type: string
                         rule:
                           description: The service orchestration evaluates Events
                             against these Rules, one at a time, and applies all the
@@ -774,10 +979,204 @@ spec:
                             the rule's conditions.
                           items:
                             properties:
+                              actions:
+                                description: Actions that will be taken to change
+                                  the resulting alert and incident, when an event
+                                  matches this rule.
+                                items:
+                                  properties:
+                                    annotate:
+                                      description: Add this text as a note on the
+                                        resulting incident.
+                                      type: string
+                                    automationAction:
+                                      description: Create a Webhook associated with
+                                        the resulting incident.
+                                      items:
+                                        properties:
+                                          autoSend:
+                                            description: When true, PagerDuty's servers
+                                              will automatically send this webhook
+                                              request as soon as the resulting incident
+                                              is created. When false, your incident
+                                              responder will be able to manually trigger
+                                              the Webhook via the PagerDuty website
+                                              and mobile app.
+                                            type: boolean
+                                          header:
+                                            description: Specify custom key/value
+                                              pairs that'll be sent with the webhook
+                                              request as request headers.
+                                            items:
+                                              properties:
+                                                key:
+                                                  description: Name to identify the
+                                                    header
+                                                  type: string
+                                                value:
+                                                  description: Value of this header
+                                                  type: string
+                                              type: object
+                                            type: array
+                                          name:
+                                            description: Name of this Webhook.
+                                            type: string
+                                          parameter:
+                                            description: Specify custom key/value
+                                              pairs that'll be included in the webhook
+                                              request's JSON payload.
+                                            items:
+                                              properties:
+                                                key:
+                                                  description: Name to identify the
+                                                    header
+                                                  type: string
+                                                value:
+                                                  description: Value of this header
+                                                  type: string
+                                              type: object
+                                            type: array
+                                          url:
+                                            description: The API endpoint where PagerDuty's
+                                              servers will send the webhook request.
+                                            type: string
+                                        type: object
+                                      type: array
+                                    eventAction:
+                                      description: 'sets whether the resulting alert
+                                        status is trigger or resolve. Allowed values
+                                        are: trigger, resolve'
+                                      type: string
+                                    extraction:
+                                      description: Replace any CEF field or Custom
+                                        Details object field using custom variables.
+                                      items:
+                                        properties:
+                                          regex:
+                                            description: A RE2 regular expression
+                                              that will be matched against field specified
+                                              via the source argument. If the regex
+                                              contains one or more capture groups,
+                                              their values will be extracted and appended
+                                              together. If it contains no capture
+                                              groups, the whole match is used. This
+                                              field can be ignored for template based
+                                              extractions.
+                                            type: string
+                                          source:
+                                            description: The path to the event field
+                                              where the regex will be applied to extract
+                                              a value. You can use any valid PCL path
+                                              like event.summary and you can reference
+                                              previously-defined variables using a
+                                              path like variables.hostname. This field
+                                              can be ignored for template based extractions.
+                                            type: string
+                                          target:
+                                            description: The PagerDuty Common Event
+                                              Format PD-CEF field that will be set
+                                              with the value from the template or
+                                              based on regex and source fields.
+                                            type: string
+                                          template:
+                                            description: 'A string that will be used
+                                              to populate the target field. You can
+                                              reference variables or event data within
+                                              your template using double curly braces.
+                                              For example:'
+                                            type: string
+                                        type: object
+                                      type: array
+                                    pagerdutyAutomationAction:
+                                      description: Configure a Process Automation
+                                        associated with the resulting incident.
+                                      items:
+                                        properties:
+                                          actionId:
+                                            description: Id of the Process Automation
+                                              action to be triggered.
+                                            type: string
+                                        type: object
+                                      type: array
+                                    priority:
+                                      description: The ID of the priority you want
+                                        to set on resulting incident. Consider using
+                                        the pagerduty_priority data source.
+                                      type: string
+                                    routeTo:
+                                      description: The ID of a Set from this Service
+                                        Orchestration whose rules you also want to
+                                        use with events that match this rule.
+                                      type: string
+                                    severity:
+                                      description: 'sets Severity of the resulting
+                                        alert. Allowed values are: info, error, warning,
+                                        critical'
+                                      type: string
+                                    suppress:
+                                      description: Set whether the resulting alert
+                                        is suppressed. Suppressed alerts will not
+                                        trigger an incident.
+                                      type: boolean
+                                    suspend:
+                                      description: The number of seconds to suspend
+                                        the resulting alert before triggering. This
+                                        effectively pauses incident notifications.
+                                        If a resolve event arrives before the alert
+                                        triggers then PagerDuty won't create an incident
+                                        for this alert.
+                                      type: number
+                                    variable:
+                                      description: Populate variables from event payloads
+                                        and use those variables in other event actions.
+                                      items:
+                                        properties:
+                                          name:
+                                            description: Name of this Webhook.
+                                            type: string
+                                          path:
+                                            description: 'Path to a field in an event,
+                                              in dot-notation. This supports both
+                                              PagerDuty Common Event Format PD-CEF
+                                              and non-CEF fields. Eg: Use event.summary
+                                              for the summary CEF field. Use raw_event.fieldname
+                                              to read from the original event fieldname
+                                              data. You can use any valid PCL path.'
+                                            type: string
+                                          type:
+                                            description: Only regex is supported
+                                            type: string
+                                          value:
+                                            description: Value of this header
+                                            type: string
+                                        type: object
+                                      type: array
+                                  type: object
+                                type: array
+                              condition:
+                                description: Each of these conditions is evaluated
+                                  to check if an event matches this rule. The rule
+                                  is considered a match if any of these conditions
+                                  match. If none are provided, the event will always
+                                  match against the rule.
+                                items:
+                                  properties:
+                                    expression:
+                                      description: A PCL condition string.
+                                      type: string
+                                  type: object
+                                type: array
+                              disabled:
+                                description: Indicates whether the rule is disabled
+                                  and would therefore not be evaluated.
+                                type: boolean
                               id:
                                 description: The ID of this set of rules. Rules in
                                   other sets can route events into this set using
                                   the rule's route_to property.
+                                type: string
+                              label:
+                                description: A description of this rule's purpose.
                                 type: string
                             type: object
                           type: array
@@ -825,9 +1224,3 @@ spec:
     storage: true
     subresources:
       status: {}
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []

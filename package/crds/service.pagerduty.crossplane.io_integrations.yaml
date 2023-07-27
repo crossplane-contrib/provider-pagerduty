@@ -3,7 +3,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.8.0
+    controller-gen.kubebuilder.io/version: v0.11.3
   creationTimestamp: null
   name: integrations.service.pagerduty.crossplane.io
 spec:
@@ -55,9 +55,13 @@ spec:
             properties:
               deletionPolicy:
                 default: Delete
-                description: DeletionPolicy specifies what will happen to the underlying
+                description: 'DeletionPolicy specifies what will happen to the underlying
                   external when this managed resource is deleted - either "Delete"
-                  or "Orphan" the external resource.
+                  or "Orphan" the external resource. This field is planned to be deprecated
+                  in favor of the ManagementPolicy field in a future release. Currently,
+                  both could be set independently and non-default values would be
+                  honored if the feature flag is enabled. See the design doc for more
+                  information: https://github.com/crossplane/crossplane/blob/499895a25d1a1a0ba1604944ef98ac7a1a71f197/design/design-doc-observe-only-resources.md?plain=1#L223'
                 enum:
                 - Orphan
                 - Delete
@@ -308,6 +312,21 @@ spec:
                     description: field instead.
                     type: string
                 type: object
+              managementPolicy:
+                default: FullControl
+                description: 'THIS IS AN ALPHA FIELD. Do not use it in production.
+                  It is not honored unless the relevant Crossplane feature flag is
+                  enabled, and may be changed or removed without notice. ManagementPolicy
+                  specifies the level of control Crossplane has over the managed external
+                  resource. This field is planned to replace the DeletionPolicy field
+                  in a future release. Currently, both could be set independently
+                  and non-default values would be honored if the feature flag is enabled.
+                  See the design doc for more information: https://github.com/crossplane/crossplane/blob/499895a25d1a1a0ba1604944ef98ac7a1a71f197/design/design-doc-observe-only-resources.md?plain=1#L223'
+                enum:
+                - FullControl
+                - ObserveOnly
+                - OrphanOnDelete
+                type: string
               providerConfigRef:
                 default:
                   name: default
@@ -487,25 +506,170 @@ spec:
                   emailFilter:
                     items:
                       properties:
+                        bodyMode:
+                          description: Can be always or match.
+                          type: string
+                        bodyRegex:
+                          description: Should be a valid regex or null
+                          type: string
+                        fromEmailMode:
+                          description: Can be always or match.
+                          type: string
+                        fromEmailRegex:
+                          description: Should be a valid regex or null
+                          type: string
                         id:
                           description: The ID of the service integration.
                           type: string
+                        subjectMode:
+                          description: Can be always or match.
+                          type: string
+                        subjectRegex:
+                          description: Should be a valid regex or null
+                          type: string
                       type: object
                     type: array
+                  emailFilterMode:
+                    description: Mode of Emails Filters feature (explained in PD docs).
+                      Can be all-email, or-rules-email or and-rules-email.
+                    type: string
+                  emailIncidentCreation:
+                    description: Behaviour of Email Management feature (explained
+                      in PD docs). Can be on_new_email, on_new_email_subject, only_if_no_open_incidents
+                      or use_rules.
+                    type: string
                   emailParser:
                     items:
                       properties:
+                        action:
+                          description: Can be resolve or trigger.
+                          type: string
                         id:
                           description: The ID of the service integration.
                           type: number
+                        matchPredicate:
+                          items:
+                            properties:
+                              predicate:
+                                items:
+                                  properties:
+                                    matcher:
+                                      description: Predicate value or valid regex.
+                                      type: string
+                                    part:
+                                      description: Can be subject, body or from_addresses.
+                                      type: string
+                                    predicate:
+                                      items:
+                                        properties:
+                                          matcher:
+                                            description: Predicate value or valid
+                                              regex.
+                                            type: string
+                                          part:
+                                            description: Can be subject, body or from_addresses.
+                                            type: string
+                                          type:
+                                            description: 'The service type. Can be:
+                                              aws_cloudwatch_inbound_integration,
+                                              cloudkick_inbound_integration, event_transformer_api_inbound_integration,
+                                              events_api_v2_inbound_integration (requires
+                                              service alert_creation to be create_alerts_and_incidents),
+                                              generic_email_inbound_integration, generic_events_api_inbound_integration,
+                                              keynote_inbound_integration, nagios_inbound_integration,
+                                              pingdom_inbound_integrationor sql_monitor_inbound_integration.'
+                                            type: string
+                                        type: object
+                                      type: array
+                                    type:
+                                      description: 'The service type. Can be: aws_cloudwatch_inbound_integration,
+                                        cloudkick_inbound_integration, event_transformer_api_inbound_integration,
+                                        events_api_v2_inbound_integration (requires
+                                        service alert_creation to be create_alerts_and_incidents),
+                                        generic_email_inbound_integration, generic_events_api_inbound_integration,
+                                        keynote_inbound_integration, nagios_inbound_integration,
+                                        pingdom_inbound_integrationor sql_monitor_inbound_integration.'
+                                      type: string
+                                  type: object
+                                type: array
+                              type:
+                                description: 'The service type. Can be: aws_cloudwatch_inbound_integration,
+                                  cloudkick_inbound_integration, event_transformer_api_inbound_integration,
+                                  events_api_v2_inbound_integration (requires service
+                                  alert_creation to be create_alerts_and_incidents),
+                                  generic_email_inbound_integration, generic_events_api_inbound_integration,
+                                  keynote_inbound_integration, nagios_inbound_integration,
+                                  pingdom_inbound_integrationor sql_monitor_inbound_integration.'
+                                type: string
+                            type: object
+                          type: array
+                        valueExtractor:
+                          items:
+                            properties:
+                              endsBefore:
+                                type: string
+                              part:
+                                description: Can be subject, body or from_addresses.
+                                type: string
+                              regex:
+                                description: If type has value regex this value should
+                                  contain valid regex.
+                                type: string
+                              startsAfter:
+                                type: string
+                              type:
+                                description: 'The service type. Can be: aws_cloudwatch_inbound_integration,
+                                  cloudkick_inbound_integration, event_transformer_api_inbound_integration,
+                                  events_api_v2_inbound_integration (requires service
+                                  alert_creation to be create_alerts_and_incidents),
+                                  generic_email_inbound_integration, generic_events_api_inbound_integration,
+                                  keynote_inbound_integration, nagios_inbound_integration,
+                                  pingdom_inbound_integrationor sql_monitor_inbound_integration.'
+                                type: string
+                              valueName:
+                                description: First value extractor should have name
+                                  incident_key other value extractors should contain
+                                  custom names.
+                                type: string
+                            type: object
+                          type: array
                       type: object
                     type: array
+                  emailParsingFallback:
+                    description: Can be open_new_incident or discard.
+                    type: string
                   htmlUrl:
                     description: URL at which the entity is uniquely displayed in
                       the Web app.
                     type: string
                   id:
                     description: The ID of the service integration.
+                    type: string
+                  integrationEmail:
+                    description: This is the unique fully-qualified email address
+                      used for routing emails to this integration for processing.
+                    type: string
+                  integrationKey:
+                    description: This is the unique key used to route events to this
+                      integration when received via the PagerDuty Events API.
+                    type: string
+                  name:
+                    description: The name of the service integration.
+                    type: string
+                  service:
+                    description: The ID of the service the integration should belong
+                      to.
+                    type: string
+                  type:
+                    description: 'The service type. Can be: aws_cloudwatch_inbound_integration,
+                      cloudkick_inbound_integration, event_transformer_api_inbound_integration,
+                      events_api_v2_inbound_integration (requires service alert_creation
+                      to be create_alerts_and_incidents), generic_email_inbound_integration,
+                      generic_events_api_inbound_integration, keynote_inbound_integration,
+                      nagios_inbound_integration, pingdom_inbound_integrationor sql_monitor_inbound_integration.'
+                    type: string
+                  vendor:
+                    description: field instead.
                     type: string
                 type: object
               conditions:
@@ -549,9 +713,3 @@ spec:
     storage: true
     subresources:
       status: {}
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []

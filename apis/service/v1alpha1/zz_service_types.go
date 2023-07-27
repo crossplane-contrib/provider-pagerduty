@@ -14,6 +14,12 @@ import (
 )
 
 type AlertGroupingParametersObservation struct {
+
+	// Alert grouping parameters dependent on type. If type is set to intelligent or empty then config can be empty.
+	Config []ConfigObservation `json:"config,omitempty" tf:"config,omitempty"`
+
+	// The type of alert grouping; one of intelligent, time or content_based.
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 }
 
 type AlertGroupingParametersParameters struct {
@@ -28,6 +34,12 @@ type AlertGroupingParametersParameters struct {
 }
 
 type AtObservation struct {
+
+	// The name of the service.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// The type of support hours. Can be fixed_time_per_day.
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 }
 
 type AtParameters struct {
@@ -42,6 +54,12 @@ type AtParameters struct {
 }
 
 type AutoPauseNotificationsParametersObservation struct {
+
+	// Indicates whether alerts should be automatically suspended when identified as transient.  If not passed in, will default to 'false'.
+	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
+
+	// Indicates in seconds how long alerts should be suspended before triggering. Allowed values: 120, 180, 300, 600, 900 if enabled is true. Must be omitted or set to null if enabled is false.
+	Timeout *float64 `json:"timeout,omitempty" tf:"timeout,omitempty"`
 }
 
 type AutoPauseNotificationsParametersParameters struct {
@@ -56,6 +74,15 @@ type AutoPauseNotificationsParametersParameters struct {
 }
 
 type ConfigObservation struct {
+
+	// One of any or all. This setting applies only when type is set to content_based. Group alerts based on one or all of fields value(s).
+	Aggregate *string `json:"aggregate,omitempty" tf:"aggregate,omitempty"`
+
+	// Alerts will be grouped together if the content of these fields match. This setting applies only when type is set to content_based.
+	Fields []*string `json:"fields,omitempty" tf:"fields,omitempty"`
+
+	// The duration in minutes within which to automatically group incoming alerts. This setting applies only when type is set to time. To continue grouping alerts until the incident is resolved, set this value to 0.
+	Timeout *float64 `json:"timeout,omitempty" tf:"timeout,omitempty"`
 }
 
 type ConfigParameters struct {
@@ -74,6 +101,12 @@ type ConfigParameters struct {
 }
 
 type DuringSupportHoursObservation struct {
+
+	// The type of support hours. Can be fixed_time_per_day.
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+
+	// The urgency: low Notify responders (does not escalate), high (follows escalation rules) or severity_based Set's the urgency of the incident based on the severity set by the triggering monitoring tool.
+	Urgency *string `json:"urgency,omitempty" tf:"urgency,omitempty"`
 }
 
 type DuringSupportHoursParameters struct {
@@ -88,6 +121,18 @@ type DuringSupportHoursParameters struct {
 }
 
 type IncidentUrgencyRuleObservation struct {
+
+	// Incidents' urgency during support hours.
+	DuringSupportHours []DuringSupportHoursObservation `json:"duringSupportHours,omitempty" tf:"during_support_hours,omitempty"`
+
+	// Incidents' urgency outside support hours.
+	OutsideSupportHours []OutsideSupportHoursObservation `json:"outsideSupportHours,omitempty" tf:"outside_support_hours,omitempty"`
+
+	// The type of incident urgency: constant or use_support_hours (when depending on specific support hours; see support_hours).
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+
+	// The urgency: low Notify responders (does not escalate), high (follows escalation rules) or severity_based Set's the urgency of the incident based on the severity set by the triggering monitoring tool.
+	Urgency *string `json:"urgency,omitempty" tf:"urgency,omitempty"`
 }
 
 type IncidentUrgencyRuleParameters struct {
@@ -110,6 +155,12 @@ type IncidentUrgencyRuleParameters struct {
 }
 
 type OutsideSupportHoursObservation struct {
+
+	// The type of support hours. Can be fixed_time_per_day.
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+
+	// The urgency: low Notify responders (does not escalate), high (follows escalation rules) or severity_based Set's the urgency of the incident based on the severity set by the triggering monitoring tool.
+	Urgency *string `json:"urgency,omitempty" tf:"urgency,omitempty"`
 }
 
 type OutsideSupportHoursParameters struct {
@@ -124,6 +175,15 @@ type OutsideSupportHoursParameters struct {
 }
 
 type ScheduledActionsObservation struct {
+
+	// A block representing when the scheduled action will occur.
+	At []AtObservation `json:"at,omitempty" tf:"at,omitempty"`
+
+	// The urgency to change to: low (does not escalate), or high (follows escalation rules).
+	ToUrgency *string `json:"toUrgency,omitempty" tf:"to_urgency,omitempty"`
+
+	// The type of support hours. Can be fixed_time_per_day.
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 }
 
 type ScheduledActionsParameters struct {
@@ -143,8 +203,35 @@ type ScheduledActionsParameters struct {
 
 type ServiceObservation struct {
 
+	// Time in seconds that an incident changes to the Triggered State after being Acknowledged. Disabled if set to the "null" string.  If not passed in, will default to '"1800"'.
+	AcknowledgementTimeout *string `json:"acknowledgementTimeout,omitempty" tf:"acknowledgement_timeout,omitempty"`
+
+	// Must be one of two values. PagerDuty receives events from your monitoring systems and can then create incidents in different ways. Value "create_incidents" is default: events will create an incident that cannot be merged. Value "create_alerts_and_incidents" is the alternative: events will create an alert and then add it to a new incident, these incidents can be merged. This option is recommended.
+	AlertCreation *string `json:"alertCreation,omitempty" tf:"alert_creation,omitempty"`
+
+	// (Deprecated) Defines how alerts on this service will be automatically grouped into incidents. Note that the alert grouping features are available only on certain plans. If not set, each alert will create a separate incident; If value is set to time: All alerts within a specified duration will be grouped into the same incident. This duration is set in the alert_grouping_timeout setting (described below). Available on Standard, Enterprise, and Event Intelligence plans; If value is set to intelligent - Alerts will be intelligently grouped based on a machine learning model that looks at the alert summary, timing, and the history of grouped alerts. Available on Enterprise and Event Intelligence plan. This field is deprecated, use alert_grouping_parameters.type instead,
+	AlertGrouping *string `json:"alertGrouping,omitempty" tf:"alert_grouping,omitempty"`
+
+	// Defines how alerts on this service will be automatically grouped into incidents. Note that the alert grouping features are available only on certain plans. If not set, each alert will create a separate incident.
+	AlertGroupingParameters []AlertGroupingParametersObservation `json:"alertGroupingParameters,omitempty" tf:"alert_grouping_parameters,omitempty"`
+
+	// (Deprecated) The duration in minutes within which to automatically group incoming alerts. This setting applies only when alert_grouping is set to time. To continue grouping alerts until the incident is resolved, set this value to 0. This field is deprecated, use alert_grouping_parameters.config.timeout instead,
+	AlertGroupingTimeout *string `json:"alertGroupingTimeout,omitempty" tf:"alert_grouping_timeout,omitempty"`
+
+	// Defines how alerts on this service are automatically suspended for a period of time before triggering, when identified as likely being transient. Note that automatically pausing notifications is only available on certain plans as mentioned here.
+	AutoPauseNotificationsParameters []AutoPauseNotificationsParametersObservation `json:"autoPauseNotificationsParameters,omitempty" tf:"auto_pause_notifications_parameters,omitempty"`
+
+	// Time in seconds that an incident is automatically resolved if left open for that long. Disabled if set to the "null" string.
+	AutoResolveTimeout *string `json:"autoResolveTimeout,omitempty" tf:"auto_resolve_timeout,omitempty"`
+
 	// Creation timestamp of the service.
 	CreatedAt *string `json:"createdAt,omitempty" tf:"created_at,omitempty"`
+
+	// A human-friendly description of the service.
+	Description *string `json:"description,omitempty" tf:"description,omitempty"`
+
+	// The escalation policy used by this service.
+	EscalationPolicy *string `json:"escalationPolicy,omitempty" tf:"escalation_policy,omitempty"`
 
 	// URL at which the entity is uniquely displayed in the Web app.
 	HTMLURL *string `json:"htmlUrl,omitempty" tf:"html_url,omitempty"`
@@ -152,11 +239,23 @@ type ServiceObservation struct {
 	// The ID of the service.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
+	IncidentUrgencyRule []IncidentUrgencyRuleObservation `json:"incidentUrgencyRule,omitempty" tf:"incident_urgency_rule,omitempty"`
+
 	// Last incident timestamp of the service.
 	LastIncidentTimestamp *string `json:"lastIncidentTimestamp,omitempty" tf:"last_incident_timestamp,omitempty"`
 
+	// The name of the service.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// The response play used by this service.
+	ResponsePlay *string `json:"responsePlay,omitempty" tf:"response_play,omitempty"`
+
+	ScheduledActions []ScheduledActionsObservation `json:"scheduledActions,omitempty" tf:"scheduled_actions,omitempty"`
+
 	// The status of the service.
 	Status *string `json:"status,omitempty" tf:"status,omitempty"`
+
+	SupportHours []SupportHoursObservation `json:"supportHours,omitempty" tf:"support_hours,omitempty"`
 
 	// The type of scheduled action. Currently, this must be set to urgency_change.
 	Type *string `json:"type,omitempty" tf:"type,omitempty"`
@@ -213,8 +312,8 @@ type ServiceParameters struct {
 	IncidentUrgencyRule []IncidentUrgencyRuleParameters `json:"incidentUrgencyRule,omitempty" tf:"incident_urgency_rule,omitempty"`
 
 	// The name of the service.
-	// +kubebuilder:validation:Required
-	Name *string `json:"name" tf:"name,omitempty"`
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
 	// The response play used by this service.
 	// +kubebuilder:validation:Optional
@@ -228,6 +327,22 @@ type ServiceParameters struct {
 }
 
 type SupportHoursObservation struct {
+
+	// Array of days of week as integers. 1 to 7, 1 being
+	// Monday and 7 being Sunday.
+	DaysOfWeek []*float64 `json:"daysOfWeek,omitempty" tf:"days_of_week,omitempty"`
+
+	// The support hours' ending time of day.
+	EndTime *string `json:"endTime,omitempty" tf:"end_time,omitempty"`
+
+	// The support hours' starting time of day.
+	StartTime *string `json:"startTime,omitempty" tf:"start_time,omitempty"`
+
+	// The time zone for the support hours.
+	TimeZone *string `json:"timeZone,omitempty" tf:"time_zone,omitempty"`
+
+	// The type of support hours. Can be fixed_time_per_day.
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 }
 
 type SupportHoursParameters struct {
@@ -278,8 +393,9 @@ type ServiceStatus struct {
 type Service struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              ServiceSpec   `json:"spec"`
-	Status            ServiceStatus `json:"status,omitempty"`
+	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.name)",message="name is a required parameter"
+	Spec   ServiceSpec   `json:"spec"`
+	Status ServiceStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true

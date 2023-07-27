@@ -3,7 +3,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.8.0
+    controller-gen.kubebuilder.io/version: v0.11.3
   creationTimestamp: null
   name: servicenows.extensions.pagerduty.crossplane.io
 spec:
@@ -55,9 +55,13 @@ spec:
             properties:
               deletionPolicy:
                 default: Delete
-                description: DeletionPolicy specifies what will happen to the underlying
+                description: 'DeletionPolicy specifies what will happen to the underlying
                   external when this managed resource is deleted - either "Delete"
-                  or "Orphan" the external resource.
+                  or "Orphan" the external resource. This field is planned to be deprecated
+                  in favor of the ManagementPolicy field in a future release. Currently,
+                  both could be set independently and non-default values would be
+                  honored if the feature flag is enabled. See the design doc for more
+                  information: https://github.com/crossplane/crossplane/blob/499895a25d1a1a0ba1604944ef98ac7a1a71f197/design/design-doc-observe-only-resources.md?plain=1#L223'
                 enum:
                 - Orphan
                 - Delete
@@ -135,16 +139,22 @@ spec:
                     type: string
                   type:
                     type: string
-                required:
-                - extensionObjects
-                - extensionSchema
-                - referer
-                - snowPasswordSecretRef
-                - snowUser
-                - syncOptions
-                - target
-                - taskType
                 type: object
+              managementPolicy:
+                default: FullControl
+                description: 'THIS IS AN ALPHA FIELD. Do not use it in production.
+                  It is not honored unless the relevant Crossplane feature flag is
+                  enabled, and may be changed or removed without notice. ManagementPolicy
+                  specifies the level of control Crossplane has over the managed external
+                  resource. This field is planned to replace the DeletionPolicy field
+                  in a future release. Currently, both could be set independently
+                  and non-default values would be honored if the feature flag is enabled.
+                  See the design doc for more information: https://github.com/crossplane/crossplane/blob/499895a25d1a1a0ba1604944ef98ac7a1a71f197/design/design-doc-observe-only-resources.md?plain=1#L223'
+                enum:
+                - FullControl
+                - ObserveOnly
+                - OrphanOnDelete
+                type: string
               providerConfigRef:
                 default:
                   name: default
@@ -316,17 +326,70 @@ spec:
             required:
             - forProvider
             type: object
+            x-kubernetes-validations:
+            - message: extensionObjects is a required parameter
+              rule: self.managementPolicy == 'ObserveOnly' || has(self.forProvider.extensionObjects)
+            - message: extensionSchema is a required parameter
+              rule: self.managementPolicy == 'ObserveOnly' || has(self.forProvider.extensionSchema)
+            - message: referer is a required parameter
+              rule: self.managementPolicy == 'ObserveOnly' || has(self.forProvider.referer)
+            - message: snowPasswordSecretRef is a required parameter
+              rule: self.managementPolicy == 'ObserveOnly' || has(self.forProvider.snowPasswordSecretRef)
+            - message: snowUser is a required parameter
+              rule: self.managementPolicy == 'ObserveOnly' || has(self.forProvider.snowUser)
+            - message: syncOptions is a required parameter
+              rule: self.managementPolicy == 'ObserveOnly' || has(self.forProvider.syncOptions)
+            - message: target is a required parameter
+              rule: self.managementPolicy == 'ObserveOnly' || has(self.forProvider.target)
+            - message: taskType is a required parameter
+              rule: self.managementPolicy == 'ObserveOnly' || has(self.forProvider.taskType)
           status:
             description: ServicenowStatus defines the observed state of Servicenow.
             properties:
               atProvider:
                 properties:
+                  extensionObjects:
+                    description: This is the objects for which the extension applies
+                      (An array of service ids).
+                    items:
+                      type: string
+                    type: array
+                  extensionSchema:
+                    description: This is the schema for this extension.
+                    type: string
                   htmlUrl:
                     description: URL at which the entity is uniquely displayed in
                       the Web app.
                     type: string
                   id:
                     description: The ID of the extension.
+                    type: string
+                  name:
+                    description: The name of the service extension.
+                    type: string
+                  referer:
+                    description: The ServiceNow referer.
+                    type: string
+                  snowUser:
+                    description: The ServiceNow username.
+                    type: string
+                  summary:
+                    description: A short-form, server-generated string that provides
+                      succinct, important information about an object suitable for
+                      primary labeling of an entity in a client. In many cases, this
+                      will be identical to name, though it is not intended to be an
+                      identifier.
+                    type: string
+                  syncOptions:
+                    description: The ServiceNow sync option.
+                    type: string
+                  target:
+                    description: Target Webhook URL.
+                    type: string
+                  taskType:
+                    description: The ServiceNow task type, typically incident.
+                    type: string
+                  type:
                     type: string
                 type: object
               conditions:
@@ -370,9 +433,3 @@ spec:
     storage: true
     subresources:
       status: {}
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []

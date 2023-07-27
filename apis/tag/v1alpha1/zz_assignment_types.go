@@ -15,23 +15,32 @@ import (
 
 type AssignmentObservation struct {
 
+	// The ID of the entity.
+	EntityID *string `json:"entityId,omitempty" tf:"entity_id,omitempty"`
+
+	// Type of entity in the tag assignment. Possible values can be users, teams, and escalation_policies.
+	EntityType *string `json:"entityType,omitempty" tf:"entity_type,omitempty"`
+
 	// The ID of the tag assignment.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// The ID of the tag.
+	TagID *string `json:"tagId,omitempty" tf:"tag_id,omitempty"`
 }
 
 type AssignmentParameters struct {
 
 	// The ID of the entity.
-	// +kubebuilder:validation:Required
-	EntityID *string `json:"entityId" tf:"entity_id,omitempty"`
+	// +kubebuilder:validation:Optional
+	EntityID *string `json:"entityId,omitempty" tf:"entity_id,omitempty"`
 
 	// Type of entity in the tag assignment. Possible values can be users, teams, and escalation_policies.
-	// +kubebuilder:validation:Required
-	EntityType *string `json:"entityType" tf:"entity_type,omitempty"`
+	// +kubebuilder:validation:Optional
+	EntityType *string `json:"entityType,omitempty" tf:"entity_type,omitempty"`
 
 	// The ID of the tag.
-	// +kubebuilder:validation:Required
-	TagID *string `json:"tagId" tf:"tag_id,omitempty"`
+	// +kubebuilder:validation:Optional
+	TagID *string `json:"tagId,omitempty" tf:"tag_id,omitempty"`
 }
 
 // AssignmentSpec defines the desired state of Assignment
@@ -58,8 +67,11 @@ type AssignmentStatus struct {
 type Assignment struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              AssignmentSpec   `json:"spec"`
-	Status            AssignmentStatus `json:"status,omitempty"`
+	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.entityId)",message="entityId is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.entityType)",message="entityType is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.tagId)",message="tagId is a required parameter"
+	Spec   AssignmentSpec   `json:"spec"`
+	Status AssignmentStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true

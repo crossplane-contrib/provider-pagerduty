@@ -21,6 +21,9 @@ type TagObservation struct {
 	// The ID of the tag.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
+	// The label of the tag.
+	Label *string `json:"label,omitempty" tf:"label,omitempty"`
+
 	// A short-form, server-generated string that provides succinct, important information about an object suitable for primary labeling of an entity in a client. In many cases, this will be identical to name, though it is not intended to be an identifier.
 	Summary *string `json:"summary,omitempty" tf:"summary,omitempty"`
 }
@@ -28,8 +31,8 @@ type TagObservation struct {
 type TagParameters struct {
 
 	// The label of the tag.
-	// +kubebuilder:validation:Required
-	Label *string `json:"label" tf:"label,omitempty"`
+	// +kubebuilder:validation:Optional
+	Label *string `json:"label,omitempty" tf:"label,omitempty"`
 }
 
 // TagSpec defines the desired state of Tag
@@ -56,8 +59,9 @@ type TagStatus struct {
 type Tag struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              TagSpec   `json:"spec"`
-	Status            TagStatus `json:"status,omitempty"`
+	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.label)",message="label is a required parameter"
+	Spec   TagSpec   `json:"spec"`
+	Status TagStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true

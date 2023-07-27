@@ -15,14 +15,28 @@ import (
 
 type ExtensionObservation struct {
 
+	// The configuration of the service extension as string containing plain JSON-encoded data.
+	Config *string `json:"config,omitempty" tf:"config,omitempty"`
+
+	// This is the objects for which the extension applies (An array of service ids).
+	ExtensionObjects []*string `json:"extensionObjects,omitempty" tf:"extension_objects,omitempty"`
+
+	// This is the schema for this extension.
+	ExtensionSchema *string `json:"extensionSchema,omitempty" tf:"extension_schema,omitempty"`
+
 	// URL at which the entity is uniquely displayed in the Web app
 	HTMLURL *string `json:"htmlUrl,omitempty" tf:"html_url,omitempty"`
 
 	// The ID of the extension.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
+	// The name of the service extension.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
 	// A short-form, server-generated string that provides succinct, important information about an object suitable for primary labeling of an entity in a client. In many cases, this will be identical to name, though it is not intended to be an identifier.
 	Summary *string `json:"summary,omitempty" tf:"summary,omitempty"`
+
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 }
 
 type ExtensionParameters struct {
@@ -50,8 +64,8 @@ type ExtensionParameters struct {
 	ExtensionObjectsSelector *v1.Selector `json:"extensionObjectsSelector,omitempty" tf:"-"`
 
 	// This is the schema for this extension.
-	// +kubebuilder:validation:Required
-	ExtensionSchema *string `json:"extensionSchema" tf:"extension_schema,omitempty"`
+	// +kubebuilder:validation:Optional
+	ExtensionSchema *string `json:"extensionSchema,omitempty" tf:"extension_schema,omitempty"`
 
 	// The name of the service extension.
 	// +kubebuilder:validation:Optional
@@ -85,8 +99,9 @@ type ExtensionStatus struct {
 type Extension struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              ExtensionSpec   `json:"spec"`
-	Status            ExtensionStatus `json:"status,omitempty"`
+	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.extensionSchema)",message="extensionSchema is a required parameter"
+	Spec   ExtensionSpec   `json:"spec"`
+	Status ExtensionStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true

@@ -15,8 +15,17 @@ import (
 
 type ServiceSubscriberObservation struct {
 
+	// The ID of the business service to subscribe to.
+	BusinessServiceID *string `json:"businessServiceId,omitempty" tf:"business_service_id,omitempty"`
+
 	// The ID of the business service subscriber assignment.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// The ID of the subscriber entity.
+	SubscriberID *string `json:"subscriberId,omitempty" tf:"subscriber_id,omitempty"`
+
+	// Type of subscriber entity in the subscriber assignment. Possible values can be user and team.
+	SubscriberType *string `json:"subscriberType,omitempty" tf:"subscriber_type,omitempty"`
 }
 
 type ServiceSubscriberParameters struct {
@@ -35,12 +44,12 @@ type ServiceSubscriberParameters struct {
 	BusinessServiceIDSelector *v1.Selector `json:"businessServiceIdSelector,omitempty" tf:"-"`
 
 	// The ID of the subscriber entity.
-	// +kubebuilder:validation:Required
-	SubscriberID *string `json:"subscriberId" tf:"subscriber_id,omitempty"`
+	// +kubebuilder:validation:Optional
+	SubscriberID *string `json:"subscriberId,omitempty" tf:"subscriber_id,omitempty"`
 
 	// Type of subscriber entity in the subscriber assignment. Possible values can be user and team.
-	// +kubebuilder:validation:Required
-	SubscriberType *string `json:"subscriberType" tf:"subscriber_type,omitempty"`
+	// +kubebuilder:validation:Optional
+	SubscriberType *string `json:"subscriberType,omitempty" tf:"subscriber_type,omitempty"`
 }
 
 // ServiceSubscriberSpec defines the desired state of ServiceSubscriber
@@ -67,8 +76,10 @@ type ServiceSubscriberStatus struct {
 type ServiceSubscriber struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              ServiceSubscriberSpec   `json:"spec"`
-	Status            ServiceSubscriberStatus `json:"status,omitempty"`
+	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.subscriberId)",message="subscriberId is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.subscriberType)",message="subscriberType is a required parameter"
+	Spec   ServiceSubscriberSpec   `json:"spec"`
+	Status ServiceSubscriberStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true

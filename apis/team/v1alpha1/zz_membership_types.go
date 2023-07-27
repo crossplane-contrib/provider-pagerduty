@@ -15,6 +15,16 @@ import (
 
 type MembershipObservation struct {
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// The role of the user in the team. One of observer, responder, or manager. Defaults to manager.
+	// These roles match up to user roles in the following ways:
+	Role *string `json:"role,omitempty" tf:"role,omitempty"`
+
+	// The ID of the team in which the user will belong.
+	TeamID *string `json:"teamId,omitempty" tf:"team_id,omitempty"`
+
+	// The ID of the user to add to the team.
+	UserID *string `json:"userId,omitempty" tf:"user_id,omitempty"`
 }
 
 type MembershipParameters struct {

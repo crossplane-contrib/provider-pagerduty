@@ -15,17 +15,29 @@ import (
 
 type ServiceObservation struct {
 
+	// A human-friendly description of the service.
+	Description *string `json:"description,omitempty" tf:"description,omitempty"`
+
 	// A URL at which the entity is uniquely displayed in the Web app.
 	HTMLURL *string `json:"htmlUrl,omitempty" tf:"html_url,omitempty"`
 
 	// The ID of the service.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
+	// The name of the business service.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// The owner of the business service.
+	PointOfContact *string `json:"pointOfContact,omitempty" tf:"point_of_contact,omitempty"`
+
 	// The API show URL at which the object is accessible.
 	Self *string `json:"self,omitempty" tf:"self,omitempty"`
 
 	// A short-form, server-generated string that provides succinct, important information about an object suitable for primary labeling of an entity in a client. In many cases, this will be identical to name, though it is not intended to be an identifier.
 	Summary *string `json:"summary,omitempty" tf:"summary,omitempty"`
+
+	// ID of the team that owns the business service.
+	Team *string `json:"team,omitempty" tf:"team,omitempty"`
 
 	// Deprecated  Default (and only supported) value is business_service.
 	Type *string `json:"type,omitempty" tf:"type,omitempty"`
@@ -38,8 +50,8 @@ type ServiceParameters struct {
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
 
 	// The name of the business service.
-	// +kubebuilder:validation:Required
-	Name *string `json:"name" tf:"name,omitempty"`
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
 	// The owner of the business service.
 	// +kubebuilder:validation:Optional
@@ -83,8 +95,9 @@ type ServiceStatus struct {
 type Service struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              ServiceSpec   `json:"spec"`
-	Status            ServiceStatus `json:"status,omitempty"`
+	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.name)",message="name is a required parameter"
+	Spec   ServiceSpec   `json:"spec"`
+	Status ServiceStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true

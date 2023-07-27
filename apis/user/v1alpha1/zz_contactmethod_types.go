@@ -15,37 +15,55 @@ import (
 
 type ContactMethodObservation struct {
 
+	// The "address" to deliver to: email, phone number, etc., depending on the type.
+	Address *string `json:"address,omitempty" tf:"address,omitempty"`
+
 	// If true, this phone has been blacklisted by PagerDuty and no messages will be sent to it.
 	Blacklisted *bool `json:"blacklisted,omitempty" tf:"blacklisted,omitempty"`
+
+	// The 1-to-3 digit country calling code. Required when using phone_contact_method or sms_contact_method.
+	CountryCode *float64 `json:"countryCode,omitempty" tf:"country_code,omitempty"`
 
 	// If true, this phone is capable of receiving SMS messages.
 	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
 
 	// The ID of the contact method.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// The label (e.g., "Work", "Mobile", etc.).
+	Label *string `json:"label,omitempty" tf:"label,omitempty"`
+
+	// Send an abbreviated email message instead of the standard email output.
+	SendShortEmail *bool `json:"sendShortEmail,omitempty" tf:"send_short_email,omitempty"`
+
+	// The contact method type. May be (email_contact_method, phone_contact_method, sms_contact_method, push_notification_contact_method).
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+
+	// The ID of the user.
+	UserID *string `json:"userId,omitempty" tf:"user_id,omitempty"`
 }
 
 type ContactMethodParameters struct {
 
 	// The "address" to deliver to: email, phone number, etc., depending on the type.
-	// +kubebuilder:validation:Required
-	Address *string `json:"address" tf:"address,omitempty"`
+	// +kubebuilder:validation:Optional
+	Address *string `json:"address,omitempty" tf:"address,omitempty"`
 
 	// The 1-to-3 digit country calling code. Required when using phone_contact_method or sms_contact_method.
 	// +kubebuilder:validation:Optional
 	CountryCode *float64 `json:"countryCode,omitempty" tf:"country_code,omitempty"`
 
 	// The label (e.g., "Work", "Mobile", etc.).
-	// +kubebuilder:validation:Required
-	Label *string `json:"label" tf:"label,omitempty"`
+	// +kubebuilder:validation:Optional
+	Label *string `json:"label,omitempty" tf:"label,omitempty"`
 
 	// Send an abbreviated email message instead of the standard email output.
 	// +kubebuilder:validation:Optional
 	SendShortEmail *bool `json:"sendShortEmail,omitempty" tf:"send_short_email,omitempty"`
 
 	// The contact method type. May be (email_contact_method, phone_contact_method, sms_contact_method, push_notification_contact_method).
-	// +kubebuilder:validation:Required
-	Type *string `json:"type" tf:"type,omitempty"`
+	// +kubebuilder:validation:Optional
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 
 	// The ID of the user.
 	// +crossplane:generate:reference:type=User
@@ -85,8 +103,11 @@ type ContactMethodStatus struct {
 type ContactMethod struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              ContactMethodSpec   `json:"spec"`
-	Status            ContactMethodStatus `json:"status,omitempty"`
+	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.address)",message="address is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.label)",message="label is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.type)",message="type is a required parameter"
+	Spec   ContactMethodSpec   `json:"spec"`
+	Status ContactMethodStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true

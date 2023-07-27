@@ -15,8 +15,20 @@ import (
 
 type WindowObservation struct {
 
+	// A description for the maintenance window.
+	Description *string `json:"description,omitempty" tf:"description,omitempty"`
+
+	// The maintenance window's end time. This is when the services will start creating incidents again. This date must be in the future and after the start_time.
+	EndTime *string `json:"endTime,omitempty" tf:"end_time,omitempty"`
+
 	// The ID of the maintenance window.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// A list of service IDs to include in the maintenance window.
+	Services []*string `json:"services,omitempty" tf:"services,omitempty"`
+
+	// The maintenance window's start time. This is when the services will stop creating incidents. If this date is in the past, it will be updated to be the current time.
+	StartTime *string `json:"startTime,omitempty" tf:"start_time,omitempty"`
 }
 
 type WindowParameters struct {
@@ -26,8 +38,8 @@ type WindowParameters struct {
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
 
 	// The maintenance window's end time. This is when the services will start creating incidents again. This date must be in the future and after the start_time.
-	// +kubebuilder:validation:Required
-	EndTime *string `json:"endTime" tf:"end_time,omitempty"`
+	// +kubebuilder:validation:Optional
+	EndTime *string `json:"endTime,omitempty" tf:"end_time,omitempty"`
 
 	// References to Service in service to populate services.
 	// +kubebuilder:validation:Optional
@@ -45,8 +57,8 @@ type WindowParameters struct {
 	Services []*string `json:"services,omitempty" tf:"services,omitempty"`
 
 	// The maintenance window's start time. This is when the services will stop creating incidents. If this date is in the past, it will be updated to be the current time.
-	// +kubebuilder:validation:Required
-	StartTime *string `json:"startTime" tf:"start_time,omitempty"`
+	// +kubebuilder:validation:Optional
+	StartTime *string `json:"startTime,omitempty" tf:"start_time,omitempty"`
 }
 
 // WindowSpec defines the desired state of Window
@@ -73,8 +85,10 @@ type WindowStatus struct {
 type Window struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              WindowSpec   `json:"spec"`
-	Status            WindowStatus `json:"status,omitempty"`
+	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.endTime)",message="endTime is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.startTime)",message="startTime is a required parameter"
+	Spec   WindowSpec   `json:"spec"`
+	Status WindowStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true
