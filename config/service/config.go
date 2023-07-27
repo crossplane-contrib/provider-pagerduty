@@ -31,6 +31,10 @@ func Configure(p *config.Provider) {
 
 	p.AddResourceConfigurator("pagerduty_service_integration", func(r *config.Resource) {
 
+		r.LateInitializer = config.LateInitializer{
+			// type and vendor are mutually-exclusive, so these cannot be late-initialized
+			IgnoredFields: []string{"type", "vendor"},
+		}
 		r.ShortGroup = "service"
 		r.References = config.References{
 			"service": {
