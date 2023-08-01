@@ -13,6 +13,24 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type ContactMethodInitParameters struct {
+
+	// The "address" to deliver to: email, phone number, etc., depending on the type.
+	Address *string `json:"address,omitempty" tf:"address,omitempty"`
+
+	// The 1-to-3 digit country calling code. Required when using phone_contact_method or sms_contact_method.
+	CountryCode *float64 `json:"countryCode,omitempty" tf:"country_code,omitempty"`
+
+	// The label (e.g., "Work", "Mobile", etc.).
+	Label *string `json:"label,omitempty" tf:"label,omitempty"`
+
+	// Send an abbreviated email message instead of the standard email output.
+	SendShortEmail *bool `json:"sendShortEmail,omitempty" tf:"send_short_email,omitempty"`
+
+	// The contact method type. May be (email_contact_method, phone_contact_method, sms_contact_method, push_notification_contact_method).
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+}
+
 type ContactMethodObservation struct {
 
 	// The "address" to deliver to: email, phone number, etc., depending on the type.
@@ -83,6 +101,18 @@ type ContactMethodParameters struct {
 type ContactMethodSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     ContactMethodParameters `json:"forProvider"`
+	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
+	// unless the relevant Crossplane feature flag is enabled, and may be
+	// changed or removed without notice.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider ContactMethodInitParameters `json:"initProvider,omitempty"`
 }
 
 // ContactMethodStatus defines the observed state of ContactMethod.
@@ -103,9 +133,9 @@ type ContactMethodStatus struct {
 type ContactMethod struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.address)",message="address is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.label)",message="label is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.type)",message="type is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.address) || has(self.initProvider.address)",message="address is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.label) || has(self.initProvider.label)",message="label is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.type) || has(self.initProvider.type)",message="type is a required parameter"
 	Spec   ContactMethodSpec   `json:"spec"`
 	Status ContactMethodStatus `json:"status,omitempty"`
 }

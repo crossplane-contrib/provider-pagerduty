@@ -13,6 +13,12 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type ActionsInitParameters struct {
+
+	// The ID of the target Service for the resulting alert.
+	RouteTo *string `json:"routeTo,omitempty" tf:"route_to,omitempty"`
+}
+
 type ActionsObservation struct {
 
 	// The ID of the target Service for the resulting alert.
@@ -22,8 +28,14 @@ type ActionsObservation struct {
 type ActionsParameters struct {
 
 	// The ID of the target Service for the resulting alert.
-	// +kubebuilder:validation:Required
-	RouteTo *string `json:"routeTo" tf:"route_to,omitempty"`
+	// +kubebuilder:validation:Optional
+	RouteTo *string `json:"routeTo,omitempty" tf:"route_to,omitempty"`
+}
+
+type CatchAllInitParameters struct {
+
+	// Actions that will be taken to change the resulting alert and incident, when an event matches this rule.
+	Actions []ActionsInitParameters `json:"actions,omitempty" tf:"actions,omitempty"`
 }
 
 type CatchAllObservation struct {
@@ -35,8 +47,14 @@ type CatchAllObservation struct {
 type CatchAllParameters struct {
 
 	// Actions that will be taken to change the resulting alert and incident, when an event matches this rule.
-	// +kubebuilder:validation:Required
-	Actions []ActionsParameters `json:"actions" tf:"actions,omitempty"`
+	// +kubebuilder:validation:Optional
+	Actions []ActionsParameters `json:"actions,omitempty" tf:"actions,omitempty"`
+}
+
+type ConditionInitParameters struct {
+
+	// A PCL condition string.
+	Expression *string `json:"expression,omitempty" tf:"expression,omitempty"`
 }
 
 type ConditionObservation struct {
@@ -48,8 +66,17 @@ type ConditionObservation struct {
 type ConditionParameters struct {
 
 	// A PCL condition string.
-	// +kubebuilder:validation:Required
-	Expression *string `json:"expression" tf:"expression,omitempty"`
+	// +kubebuilder:validation:Optional
+	Expression *string `json:"expression,omitempty" tf:"expression,omitempty"`
+}
+
+type OrchestrationRouterInitParameters struct {
+
+	// When none of the rules match an event, the event will be routed according to the catch_all settings.
+	CatchAll []CatchAllInitParameters `json:"catchAll,omitempty" tf:"catch_all,omitempty"`
+
+	// The Router contains a single set of rules  (the "start" set).
+	Set []SetInitParameters `json:"set,omitempty" tf:"set,omitempty"`
 }
 
 type OrchestrationRouterObservation struct {
@@ -91,6 +118,12 @@ type OrchestrationRouterParameters struct {
 	Set []SetParameters `json:"set,omitempty" tf:"set,omitempty"`
 }
 
+type RuleActionsInitParameters struct {
+
+	// The ID of the target Service for the resulting alert.
+	RouteTo *string `json:"routeTo,omitempty" tf:"route_to,omitempty"`
+}
+
 type RuleActionsObservation struct {
 
 	// The ID of the target Service for the resulting alert.
@@ -100,8 +133,23 @@ type RuleActionsObservation struct {
 type RuleActionsParameters struct {
 
 	// The ID of the target Service for the resulting alert.
-	// +kubebuilder:validation:Required
-	RouteTo *string `json:"routeTo" tf:"route_to,omitempty"`
+	// +kubebuilder:validation:Optional
+	RouteTo *string `json:"routeTo,omitempty" tf:"route_to,omitempty"`
+}
+
+type RuleInitParameters struct {
+
+	// Actions that will be taken to change the resulting alert and incident, when an event matches this rule.
+	Actions []RuleActionsInitParameters `json:"actions,omitempty" tf:"actions,omitempty"`
+
+	// Each of these conditions is evaluated to check if an event matches this rule. The rule is considered a match if any of these conditions match. If none are provided, the event will always match against the rule.
+	Condition []ConditionInitParameters `json:"condition,omitempty" tf:"condition,omitempty"`
+
+	// Indicates whether the rule is disabled and would therefore not be evaluated.
+	Disabled *bool `json:"disabled,omitempty" tf:"disabled,omitempty"`
+
+	// A description of this rule's purpose.
+	Label *string `json:"label,omitempty" tf:"label,omitempty"`
 }
 
 type RuleObservation struct {
@@ -125,8 +173,8 @@ type RuleObservation struct {
 type RuleParameters struct {
 
 	// Actions that will be taken to change the resulting alert and incident, when an event matches this rule.
-	// +kubebuilder:validation:Required
-	Actions []RuleActionsParameters `json:"actions" tf:"actions,omitempty"`
+	// +kubebuilder:validation:Optional
+	Actions []RuleActionsParameters `json:"actions,omitempty" tf:"actions,omitempty"`
 
 	// Each of these conditions is evaluated to check if an event matches this rule. The rule is considered a match if any of these conditions match. If none are provided, the event will always match against the rule.
 	// +kubebuilder:validation:Optional
@@ -141,6 +189,15 @@ type RuleParameters struct {
 	Label *string `json:"label,omitempty" tf:"label,omitempty"`
 }
 
+type SetInitParameters struct {
+
+	// ID of the start set. Router supports only one set and it's id has to be start
+	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// The Router evaluates Events against these Rules, one at a time, and routes each Event to a specific Service based on the first rule that matches.
+	Rule []RuleInitParameters `json:"rule,omitempty" tf:"rule,omitempty"`
+}
+
 type SetObservation struct {
 
 	// ID of the start set. Router supports only one set and it's id has to be start
@@ -153,8 +210,8 @@ type SetObservation struct {
 type SetParameters struct {
 
 	// ID of the start set. Router supports only one set and it's id has to be start
-	// +kubebuilder:validation:Required
-	ID *string `json:"id" tf:"id,omitempty"`
+	// +kubebuilder:validation:Optional
+	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
 	// The Router evaluates Events against these Rules, one at a time, and routes each Event to a specific Service based on the first rule that matches.
 	// +kubebuilder:validation:Optional
@@ -165,6 +222,18 @@ type SetParameters struct {
 type OrchestrationRouterSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     OrchestrationRouterParameters `json:"forProvider"`
+	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
+	// unless the relevant Crossplane feature flag is enabled, and may be
+	// changed or removed without notice.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider OrchestrationRouterInitParameters `json:"initProvider,omitempty"`
 }
 
 // OrchestrationRouterStatus defines the observed state of OrchestrationRouter.
@@ -185,8 +254,8 @@ type OrchestrationRouterStatus struct {
 type OrchestrationRouter struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.catchAll)",message="catchAll is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.set)",message="set is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.catchAll) || has(self.initProvider.catchAll)",message="catchAll is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.set) || has(self.initProvider.set)",message="set is a required parameter"
 	Spec   OrchestrationRouterSpec   `json:"spec"`
 	Status OrchestrationRouterStatus `json:"status,omitempty"`
 }

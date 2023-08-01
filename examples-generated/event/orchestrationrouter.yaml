@@ -27,6 +27,3 @@ spec:
         - routeTo: ${pagerduty_service.www.id}
         condition:
         - expression: event.summary matches part 'www'
-
----
-

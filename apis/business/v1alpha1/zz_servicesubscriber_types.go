@@ -13,6 +13,15 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type ServiceSubscriberInitParameters struct {
+
+	// The ID of the subscriber entity.
+	SubscriberID *string `json:"subscriberId,omitempty" tf:"subscriber_id,omitempty"`
+
+	// Type of subscriber entity in the subscriber assignment. Possible values can be user and team.
+	SubscriberType *string `json:"subscriberType,omitempty" tf:"subscriber_type,omitempty"`
+}
+
 type ServiceSubscriberObservation struct {
 
 	// The ID of the business service to subscribe to.
@@ -56,6 +65,18 @@ type ServiceSubscriberParameters struct {
 type ServiceSubscriberSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     ServiceSubscriberParameters `json:"forProvider"`
+	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
+	// unless the relevant Crossplane feature flag is enabled, and may be
+	// changed or removed without notice.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider ServiceSubscriberInitParameters `json:"initProvider,omitempty"`
 }
 
 // ServiceSubscriberStatus defines the observed state of ServiceSubscriber.
@@ -76,8 +97,8 @@ type ServiceSubscriberStatus struct {
 type ServiceSubscriber struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.subscriberId)",message="subscriberId is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.subscriberType)",message="subscriberType is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.subscriberId) || has(self.initProvider.subscriberId)",message="subscriberId is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.subscriberType) || has(self.initProvider.subscriberType)",message="subscriberType is a required parameter"
 	Spec   ServiceSubscriberSpec   `json:"spec"`
 	Status ServiceSubscriberStatus `json:"status,omitempty"`
 }

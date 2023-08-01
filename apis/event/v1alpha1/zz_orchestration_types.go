@@ -13,11 +13,15 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type IntegrationInitParameters struct {
+}
+
 type IntegrationObservation struct {
 
-	// The ID of the Event Orchestration.
+	// ID of this Integration.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
+	// Name/description of the Integration.
 	Label *string `json:"label,omitempty" tf:"label,omitempty"`
 
 	Parameters []ParametersObservation `json:"parameters,omitempty" tf:"parameters,omitempty"`
@@ -26,41 +30,40 @@ type IntegrationObservation struct {
 type IntegrationParameters struct {
 }
 
-type OrchestrationObservation struct {
-
-	// A human-friendly description of the Event Orchestration.
+type OrchestrationInitParameters struct {
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
 
-	// The ID of the Event Orchestration.
+	Integration []IntegrationInitParameters `json:"integration,omitempty" tf:"integration,omitempty"`
+
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+}
+
+type OrchestrationObservation struct {
+	Description *string `json:"description,omitempty" tf:"description,omitempty"`
+
+	// ID of this Integration.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
-	// An integration for the Event Orchestration.
 	Integration []IntegrationObservation `json:"integration,omitempty" tf:"integration,omitempty"`
 
-	// Name of the Event Orchestration.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
 	Routes *float64 `json:"routes,omitempty" tf:"routes,omitempty"`
 
-	// ID of the team that owns the Event Orchestration. If none is specified, only admins have access.
 	Team *string `json:"team,omitempty" tf:"team,omitempty"`
 }
 
 type OrchestrationParameters struct {
 
-	// A human-friendly description of the Event Orchestration.
 	// +kubebuilder:validation:Optional
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
 
-	// An integration for the Event Orchestration.
 	// +kubebuilder:validation:Optional
 	Integration []IntegrationParameters `json:"integration,omitempty" tf:"integration,omitempty"`
 
-	// Name of the Event Orchestration.
 	// +kubebuilder:validation:Optional
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
-	// ID of the team that owns the Event Orchestration. If none is specified, only admins have access.
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-pagerduty/apis/team/v1alpha1.Team
 	// +kubebuilder:validation:Optional
 	Team *string `json:"team,omitempty" tf:"team,omitempty"`
@@ -72,6 +75,9 @@ type OrchestrationParameters struct {
 	// Selector for a Team in team to populate team.
 	// +kubebuilder:validation:Optional
 	TeamSelector *v1.Selector `json:"teamSelector,omitempty" tf:"-"`
+}
+
+type ParametersInitParameters struct {
 }
 
 type ParametersObservation struct {
@@ -90,6 +96,18 @@ type ParametersParameters struct {
 type OrchestrationSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     OrchestrationParameters `json:"forProvider"`
+	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
+	// unless the relevant Crossplane feature flag is enabled, and may be
+	// changed or removed without notice.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider OrchestrationInitParameters `json:"initProvider,omitempty"`
 }
 
 // OrchestrationStatus defines the observed state of Orchestration.
@@ -100,7 +118,7 @@ type OrchestrationStatus struct {
 
 // +kubebuilder:object:root=true
 
-// Orchestration is the Schema for the Orchestrations API. Creates and manages an Event Orchestration in PagerDuty.
+// Orchestration is the Schema for the Orchestrations API. Creates and manages an Integration for an Event Orchestration.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
@@ -110,7 +128,7 @@ type OrchestrationStatus struct {
 type Orchestration struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.name)",message="name is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || has(self.initProvider.name)",message="name is a required parameter"
 	Spec   OrchestrationSpec   `json:"spec"`
 	Status OrchestrationStatus `json:"status,omitempty"`
 }

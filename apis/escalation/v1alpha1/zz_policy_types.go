@@ -13,6 +13,21 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type PolicyInitParameters struct {
+
+	// A human-friendly description of the escalation policy.
+	Description *string `json:"description,omitempty" tf:"description,omitempty"`
+
+	// The name of the escalation policy.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// The number of times the escalation policy will repeat after reaching the end of its escalation.
+	NumLoops *float64 `json:"numLoops,omitempty" tf:"num_loops,omitempty"`
+
+	// An Escalation rule block. Escalation rules documented below.
+	Rule []RuleInitParameters `json:"rule,omitempty" tf:"rule,omitempty"`
+}
+
 type PolicyObservation struct {
 
 	// A human-friendly description of the escalation policy.
@@ -68,6 +83,14 @@ type PolicyParameters struct {
 	Teams []*string `json:"teams,omitempty" tf:"teams,omitempty"`
 }
 
+type RuleInitParameters struct {
+
+	// The number of minutes before an unacknowledged incident escalates away from this rule.
+	EscalationDelayInMinutes *float64 `json:"escalationDelayInMinutes,omitempty" tf:"escalation_delay_in_minutes,omitempty"`
+
+	Target []TargetInitParameters `json:"target,omitempty" tf:"target,omitempty"`
+}
+
 type RuleObservation struct {
 
 	// The number of minutes before an unacknowledged incident escalates away from this rule.
@@ -82,11 +105,20 @@ type RuleObservation struct {
 type RuleParameters struct {
 
 	// The number of minutes before an unacknowledged incident escalates away from this rule.
-	// +kubebuilder:validation:Required
-	EscalationDelayInMinutes *float64 `json:"escalationDelayInMinutes" tf:"escalation_delay_in_minutes,omitempty"`
+	// +kubebuilder:validation:Optional
+	EscalationDelayInMinutes *float64 `json:"escalationDelayInMinutes,omitempty" tf:"escalation_delay_in_minutes,omitempty"`
 
-	// +kubebuilder:validation:Required
-	Target []TargetParameters `json:"target" tf:"target,omitempty"`
+	// +kubebuilder:validation:Optional
+	Target []TargetParameters `json:"target,omitempty" tf:"target,omitempty"`
+}
+
+type TargetInitParameters struct {
+
+	// A target ID
+	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// Can be user_reference or schedule_reference. Defaults to user_reference. For multiple users as example, repeat the target.
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 }
 
 type TargetObservation struct {
@@ -101,8 +133,8 @@ type TargetObservation struct {
 type TargetParameters struct {
 
 	// A target ID
-	// +kubebuilder:validation:Required
-	ID *string `json:"id" tf:"id,omitempty"`
+	// +kubebuilder:validation:Optional
+	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
 	// Can be user_reference or schedule_reference. Defaults to user_reference. For multiple users as example, repeat the target.
 	// +kubebuilder:validation:Optional
@@ -113,6 +145,18 @@ type TargetParameters struct {
 type PolicySpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     PolicyParameters `json:"forProvider"`
+	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
+	// unless the relevant Crossplane feature flag is enabled, and may be
+	// changed or removed without notice.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider PolicyInitParameters `json:"initProvider,omitempty"`
 }
 
 // PolicyStatus defines the observed state of Policy.
@@ -133,8 +177,8 @@ type PolicyStatus struct {
 type Policy struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.name)",message="name is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.rule)",message="rule is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || has(self.initProvider.name)",message="name is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.rule) || has(self.initProvider.rule)",message="rule is a required parameter"
 	Spec   PolicySpec   `json:"spec"`
 	Status PolicyStatus `json:"status,omitempty"`
 }

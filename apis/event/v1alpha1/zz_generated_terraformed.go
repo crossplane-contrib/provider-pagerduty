@@ -69,6 +69,16 @@ func (tr *Orchestration) SetParameters(params map[string]any) error {
 	return json.TFParser.Unmarshal(p, &tr.Spec.ForProvider)
 }
 
+// GetInitParameters of this Orchestration
+func (tr *Orchestration) GetInitParameters() (map[string]any, error) {
+	p, err := json.TFParser.Marshal(tr.Spec.InitProvider)
+	if err != nil {
+		return nil, err
+	}
+	base := map[string]any{}
+	return base, json.TFParser.Unmarshal(p, &base)
+}
+
 // LateInitialize this Orchestration using its observed tfState.
 // returns True if there are any spec changes for the resource.
 func (tr *Orchestration) LateInitialize(attrs []byte) (bool, error) {
@@ -141,6 +151,16 @@ func (tr *OrchestrationRouter) SetParameters(params map[string]any) error {
 		return err
 	}
 	return json.TFParser.Unmarshal(p, &tr.Spec.ForProvider)
+}
+
+// GetInitParameters of this OrchestrationRouter
+func (tr *OrchestrationRouter) GetInitParameters() (map[string]any, error) {
+	p, err := json.TFParser.Marshal(tr.Spec.InitProvider)
+	if err != nil {
+		return nil, err
+	}
+	base := map[string]any{}
+	return base, json.TFParser.Unmarshal(p, &base)
 }
 
 // LateInitialize this OrchestrationRouter using its observed tfState.
@@ -217,6 +237,16 @@ func (tr *OrchestrationService) SetParameters(params map[string]any) error {
 	return json.TFParser.Unmarshal(p, &tr.Spec.ForProvider)
 }
 
+// GetInitParameters of this OrchestrationService
+func (tr *OrchestrationService) GetInitParameters() (map[string]any, error) {
+	p, err := json.TFParser.Marshal(tr.Spec.InitProvider)
+	if err != nil {
+		return nil, err
+	}
+	base := map[string]any{}
+	return base, json.TFParser.Unmarshal(p, &base)
+}
+
 // LateInitialize this OrchestrationService using its observed tfState.
 // returns True if there are any spec changes for the resource.
 func (tr *OrchestrationService) LateInitialize(attrs []byte) (bool, error) {
@@ -289,6 +319,16 @@ func (tr *OrchestrationUnrouted) SetParameters(params map[string]any) error {
 		return err
 	}
 	return json.TFParser.Unmarshal(p, &tr.Spec.ForProvider)
+}
+
+// GetInitParameters of this OrchestrationUnrouted
+func (tr *OrchestrationUnrouted) GetInitParameters() (map[string]any, error) {
+	p, err := json.TFParser.Marshal(tr.Spec.InitProvider)
+	if err != nil {
+		return nil, err
+	}
+	base := map[string]any{}
+	return base, json.TFParser.Unmarshal(p, &base)
 }
 
 // LateInitialize this OrchestrationUnrouted using its observed tfState.

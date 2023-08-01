@@ -45,6 +45,3 @@ spec:
   forProvider:
     email: foo@bar.com
     name: foo
-
----
-

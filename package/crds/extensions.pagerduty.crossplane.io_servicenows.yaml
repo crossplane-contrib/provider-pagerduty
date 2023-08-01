@@ -3,8 +3,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.11.3
-  creationTimestamp: null
+    controller-gen.kubebuilder.io/version: v0.12.1
   name: servicenows.extensions.pagerduty.crossplane.io
 spec:
   group: extensions.pagerduty.crossplane.io
@@ -58,7 +57,7 @@ spec:
                 description: 'DeletionPolicy specifies what will happen to the underlying
                   external when this managed resource is deleted - either "Delete"
                   or "Orphan" the external resource. This field is planned to be deprecated
-                  in favor of the ManagementPolicy field in a future release. Currently,
+                  in favor of the ManagementPolicies field in a future release. Currently,
                   both could be set independently and non-default values would be
                   honored if the feature flag is enabled. See the design doc for more
                   information: https://github.com/crossplane/crossplane/blob/499895a25d1a1a0ba1604944ef98ac7a1a71f197/design/design-doc-observe-only-resources.md?plain=1#L223'
@@ -140,21 +139,82 @@ spec:
                   type:
                     type: string
                 type: object
-              managementPolicy:
-                default: FullControl
+              initProvider:
+                description: THIS IS AN ALPHA FIELD. Do not use it in production.
+                  It is not honored unless the relevant Crossplane feature flag is
+                  enabled, and may be changed or removed without notice. InitProvider
+                  holds the same fields as ForProvider, with the exception of Identifier
+                  and other resource reference fields. The fields that are in InitProvider
+                  are merged into ForProvider when the resource is created. The same
+                  fields are also added to the terraform ignore_changes hook, to avoid
+                  updating them after creation. This is useful for fields that are
+                  required on creation, but we do not desire to update them after
+                  creation, for example because of an external controller is managing
+                  them, like an autoscaler.
+                properties:
+                  extensionObjects:
+                    description: This is the objects for which the extension applies
+                      (An array of service ids).
+                    items:
+                      type: string
+                    type: array
+                  extensionSchema:
+                    description: This is the schema for this extension.
+                    type: string
+                  name:
+                    description: The name of the service extension.
+                    type: string
+                  referer:
+                    description: The ServiceNow referer.
+                    type: string
+                  snowUser:
+                    description: The ServiceNow username.
+                    type: string
+                  summary:
+                    description: A short-form, server-generated string that provides
+                      succinct, important information about an object suitable for
+                      primary labeling of an entity in a client. In many cases, this
+                      will be identical to name, though it is not intended to be an
+                      identifier.
+                    type: string
+                  syncOptions:
+                    description: The ServiceNow sync option.
+                    type: string
+                  target:
+                    description: Target Webhook URL.
+                    type: string
+                  taskType:
+                    description: The ServiceNow task type, typically incident.
+                    type: string
+                  type:
+                    type: string
+                type: object
+              managementPolicies:
+                default:
+                - '*'
                 description: 'THIS IS AN ALPHA FIELD. Do not use it in production.
                   It is not honored unless the relevant Crossplane feature flag is
-                  enabled, and may be changed or removed without notice. ManagementPolicy
-                  specifies the level of control Crossplane has over the managed external
-                  resource. This field is planned to replace the DeletionPolicy field
-                  in a future release. Currently, both could be set independently
-                  and non-default values would be honored if the feature flag is enabled.
-                  See the design doc for more information: https://github.com/crossplane/crossplane/blob/499895a25d1a1a0ba1604944ef98ac7a1a71f197/design/design-doc-observe-only-resources.md?plain=1#L223'
-                enum:
-                - FullControl
-                - ObserveOnly
-                - OrphanOnDelete
-                type: string
+                  enabled, and may be changed or removed without notice. ManagementPolicies
+                  specify the array of actions Crossplane is allowed to take on the
+                  managed and external resources. This field is planned to replace
+                  the DeletionPolicy field in a future release. Currently, both could
+                  be set independently and non-default values would be honored if
+                  the feature flag is enabled. If both are custom, the DeletionPolicy
+                  field will be ignored. See the design doc for more information:
+                  https://github.com/crossplane/crossplane/blob/499895a25d1a1a0ba1604944ef98ac7a1a71f197/design/design-doc-observe-only-resources.md?plain=1#L223
+                  and this one: https://github.com/crossplane/crossplane/blob/444267e84783136daa93568b364a5f01228cacbe/design/one-pager-ignore-changes.md'
+                items:
+                  description: A ManagementAction represents an action that the Crossplane
+                    controllers can take on an external resource.
+                  enum:
+                  - Observe
+                  - Create
+                  - Update
+                  - Delete
+                  - LateInitialize
+                  - '*'
+                  type: string
+                type: array
               providerConfigRef:
                 default:
                   name: default
@@ -328,21 +388,36 @@ spec:
             type: object
             x-kubernetes-validations:
             - message: extensionObjects is a required parameter
-              rule: self.managementPolicy == 'ObserveOnly' || has(self.forProvider.extensionObjects)
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.extensionObjects)
+                || has(self.initProvider.extensionObjects)'
             - message: extensionSchema is a required parameter
-              rule: self.managementPolicy == 'ObserveOnly' || has(self.forProvider.extensionSchema)
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.extensionSchema)
+                || has(self.initProvider.extensionSchema)'
             - message: referer is a required parameter
-              rule: self.managementPolicy == 'ObserveOnly' || has(self.forProvider.referer)
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.referer)
+                || has(self.initProvider.referer)'
             - message: snowPasswordSecretRef is a required parameter
-              rule: self.managementPolicy == 'ObserveOnly' || has(self.forProvider.snowPasswordSecretRef)
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.snowPasswordSecretRef)'
             - message: snowUser is a required parameter
-              rule: self.managementPolicy == 'ObserveOnly' || has(self.forProvider.snowUser)
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.snowUser)
+                || has(self.initProvider.snowUser)'
             - message: syncOptions is a required parameter
-              rule: self.managementPolicy == 'ObserveOnly' || has(self.forProvider.syncOptions)
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.syncOptions)
+                || has(self.initProvider.syncOptions)'
             - message: target is a required parameter
-              rule: self.managementPolicy == 'ObserveOnly' || has(self.forProvider.target)
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.target)
+                || has(self.initProvider.target)'
             - message: taskType is a required parameter
-              rule: self.managementPolicy == 'ObserveOnly' || has(self.forProvider.taskType)
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.taskType)
+                || has(self.initProvider.taskType)'
           status:
             description: ServicenowStatus defines the observed state of Servicenow.
             properties:

@@ -13,6 +13,18 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type DependencyDependencyInitParameters struct {
+
+	// The service that dependents on the supporting service. Dependency dependent service documented below.
+	DependentService []DependentServiceInitParameters `json:"dependentService,omitempty" tf:"dependent_service,omitempty"`
+
+	// The service that supports the dependent service. Dependency supporting service documented below.
+	SupportingService []SupportingServiceInitParameters `json:"supportingService,omitempty" tf:"supporting_service,omitempty"`
+
+	// Can be business_service,  service, business_service_reference or technical_service_reference.
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+}
+
 type DependencyDependencyObservation struct {
 
 	// The service that dependents on the supporting service. Dependency dependent service documented below.
@@ -28,16 +40,22 @@ type DependencyDependencyObservation struct {
 type DependencyDependencyParameters struct {
 
 	// The service that dependents on the supporting service. Dependency dependent service documented below.
-	// +kubebuilder:validation:Required
-	DependentService []DependentServiceParameters `json:"dependentService" tf:"dependent_service,omitempty"`
+	// +kubebuilder:validation:Optional
+	DependentService []DependentServiceParameters `json:"dependentService,omitempty" tf:"dependent_service,omitempty"`
 
 	// The service that supports the dependent service. Dependency supporting service documented below.
-	// +kubebuilder:validation:Required
-	SupportingService []SupportingServiceParameters `json:"supportingService" tf:"supporting_service,omitempty"`
+	// +kubebuilder:validation:Optional
+	SupportingService []SupportingServiceParameters `json:"supportingService,omitempty" tf:"supporting_service,omitempty"`
 
 	// Can be business_service,  service, business_service_reference or technical_service_reference.
 	// +kubebuilder:validation:Optional
 	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+}
+
+type DependencyInitParameters struct {
+
+	// The relationship between the supporting_service and dependent_service. One and only one dependency block must be defined.
+	Dependency []DependencyDependencyInitParameters `json:"dependency,omitempty" tf:"dependency,omitempty"`
 }
 
 type DependencyObservation struct {
@@ -56,6 +74,15 @@ type DependencyParameters struct {
 	Dependency []DependencyDependencyParameters `json:"dependency,omitempty" tf:"dependency,omitempty"`
 }
 
+type DependentServiceInitParameters struct {
+
+	// The ID of the service dependency.
+	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// Can be business_service,  service, business_service_reference or technical_service_reference.
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+}
+
 type DependentServiceObservation struct {
 
 	// The ID of the service dependency.
@@ -68,12 +95,21 @@ type DependentServiceObservation struct {
 type DependentServiceParameters struct {
 
 	// The ID of the service dependency.
-	// +kubebuilder:validation:Required
-	ID *string `json:"id" tf:"id,omitempty"`
+	// +kubebuilder:validation:Optional
+	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
 	// Can be business_service,  service, business_service_reference or technical_service_reference.
-	// +kubebuilder:validation:Required
-	Type *string `json:"type" tf:"type,omitempty"`
+	// +kubebuilder:validation:Optional
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+}
+
+type SupportingServiceInitParameters struct {
+
+	// The ID of the service dependency.
+	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// Can be business_service,  service, business_service_reference or technical_service_reference.
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 }
 
 type SupportingServiceObservation struct {
@@ -88,18 +124,30 @@ type SupportingServiceObservation struct {
 type SupportingServiceParameters struct {
 
 	// The ID of the service dependency.
-	// +kubebuilder:validation:Required
-	ID *string `json:"id" tf:"id,omitempty"`
+	// +kubebuilder:validation:Optional
+	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
 	// Can be business_service,  service, business_service_reference or technical_service_reference.
-	// +kubebuilder:validation:Required
-	Type *string `json:"type" tf:"type,omitempty"`
+	// +kubebuilder:validation:Optional
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 }
 
 // DependencySpec defines the desired state of Dependency
 type DependencySpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     DependencyParameters `json:"forProvider"`
+	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
+	// unless the relevant Crossplane feature flag is enabled, and may be
+	// changed or removed without notice.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider DependencyInitParameters `json:"initProvider,omitempty"`
 }
 
 // DependencyStatus defines the observed state of Dependency.
@@ -120,7 +168,7 @@ type DependencyStatus struct {
 type Dependency struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.dependency)",message="dependency is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.dependency) || has(self.initProvider.dependency)",message="dependency is a required parameter"
 	Spec   DependencySpec   `json:"spec"`
 	Status DependencyStatus `json:"status,omitempty"`
 }

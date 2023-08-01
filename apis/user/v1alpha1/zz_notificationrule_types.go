@@ -13,6 +13,18 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type NotificationRuleInitParameters struct {
+
+	// A contact method block, configured as a block described below.
+	ContactMethod map[string]*string `json:"contactMethod,omitempty" tf:"contact_method,omitempty"`
+
+	// The delay before firing the rule, in minutes.
+	StartDelayInMinutes *float64 `json:"startDelayInMinutes,omitempty" tf:"start_delay_in_minutes,omitempty"`
+
+	// Which incident urgency this rule is used for. Account must have the urgencies ability to have a low urgency notification rule. Can be high or low.
+	Urgency *string `json:"urgency,omitempty" tf:"urgency,omitempty"`
+}
+
 type NotificationRuleObservation struct {
 
 	// A contact method block, configured as a block described below.
@@ -63,6 +75,18 @@ type NotificationRuleParameters struct {
 type NotificationRuleSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     NotificationRuleParameters `json:"forProvider"`
+	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
+	// unless the relevant Crossplane feature flag is enabled, and may be
+	// changed or removed without notice.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider NotificationRuleInitParameters `json:"initProvider,omitempty"`
 }
 
 // NotificationRuleStatus defines the observed state of NotificationRule.
@@ -83,9 +107,9 @@ type NotificationRuleStatus struct {
 type NotificationRule struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.contactMethod)",message="contactMethod is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.startDelayInMinutes)",message="startDelayInMinutes is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.urgency)",message="urgency is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.contactMethod) || has(self.initProvider.contactMethod)",message="contactMethod is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.startDelayInMinutes) || has(self.initProvider.startDelayInMinutes)",message="startDelayInMinutes is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.urgency) || has(self.initProvider.urgency)",message="urgency is a required parameter"
 	Spec   NotificationRuleSpec   `json:"spec"`
 	Status NotificationRuleStatus `json:"status,omitempty"`
 }

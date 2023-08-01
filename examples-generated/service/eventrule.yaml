@@ -55,6 +55,3 @@ spec:
       matchLabels:
         testing.upbound.io/example-name: example
     name: Checkout API Service
-
----
-

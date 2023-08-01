@@ -15,6 +15,3 @@ spec:
       supportingService:
       - id: ${pagerduty_service.foo.id}
         type: ${pagerduty_service.foo.type}
-
----
-

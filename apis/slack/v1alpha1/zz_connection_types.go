@@ -13,6 +13,18 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type ConfigInitParameters struct {
+
+	// A list of strings to filter events by PagerDuty event type. "incident.triggered" is required. The follow event types are also possible:
+	Events []*string `json:"events,omitempty" tf:"events,omitempty"`
+
+	// Allows you to filter events by priority. Needs to be an array of PagerDuty priority IDs. Available through pagerduty_priority data source.
+	Priorities []*string `json:"priorities,omitempty" tf:"priorities,omitempty"`
+
+	// Allows you to filter events by urgency. Either high or low.
+	Urgency *string `json:"urgency,omitempty" tf:"urgency,omitempty"`
+}
+
 type ConfigObservation struct {
 
 	// A list of strings to filter events by PagerDuty event type. "incident.triggered" is required. The follow event types are also possible:
@@ -28,8 +40,8 @@ type ConfigObservation struct {
 type ConfigParameters struct {
 
 	// A list of strings to filter events by PagerDuty event type. "incident.triggered" is required. The follow event types are also possible:
-	// +kubebuilder:validation:Required
-	Events []*string `json:"events" tf:"events,omitempty"`
+	// +kubebuilder:validation:Optional
+	Events []*string `json:"events,omitempty" tf:"events,omitempty"`
 
 	// Allows you to filter events by priority. Needs to be an array of PagerDuty priority IDs. Available through pagerduty_priority data source.
 	// +kubebuilder:validation:Optional
@@ -38,6 +50,27 @@ type ConfigParameters struct {
 	// Allows you to filter events by urgency. Either high or low.
 	// +kubebuilder:validation:Optional
 	Urgency *string `json:"urgency,omitempty" tf:"urgency,omitempty"`
+}
+
+type ConnectionInitParameters struct {
+
+	// The ID of a Slack channel in the workspace.
+	ChannelID *string `json:"channelId,omitempty" tf:"channel_id,omitempty"`
+
+	// Configuration options for the Slack connection that provide options to filter events.
+	Config []ConfigInitParameters `json:"config,omitempty" tf:"config,omitempty"`
+
+	// Type of notification. Either responder or stakeholder.
+	NotificationType *string `json:"notificationType,omitempty" tf:"notification_type,omitempty"`
+
+	// The ID of the source in PagerDuty. Valid sources are services or teams.
+	SourceID *string `json:"sourceId,omitempty" tf:"source_id,omitempty"`
+
+	// The type of the source. Either team_reference or service_reference.
+	SourceType *string `json:"sourceType,omitempty" tf:"source_type,omitempty"`
+
+	// The slack team (workspace) ID of the connected Slack workspace. Can also be defined by the SLACK_CONNECTION_WORKSPACE_ID environment variable.
+	WorkspaceID *string `json:"workspaceId,omitempty" tf:"workspace_id,omitempty"`
 }
 
 type ConnectionObservation struct {
@@ -101,6 +134,18 @@ type ConnectionParameters struct {
 type ConnectionSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     ConnectionParameters `json:"forProvider"`
+	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
+	// unless the relevant Crossplane feature flag is enabled, and may be
+	// changed or removed without notice.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider ConnectionInitParameters `json:"initProvider,omitempty"`
 }
 
 // ConnectionStatus defines the observed state of Connection.
@@ -121,12 +166,12 @@ type ConnectionStatus struct {
 type Connection struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.channelId)",message="channelId is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.config)",message="config is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.notificationType)",message="notificationType is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.sourceId)",message="sourceId is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.sourceType)",message="sourceType is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.workspaceId)",message="workspaceId is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.channelId) || has(self.initProvider.channelId)",message="channelId is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.config) || has(self.initProvider.config)",message="config is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.notificationType) || has(self.initProvider.notificationType)",message="notificationType is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.sourceId) || has(self.initProvider.sourceId)",message="sourceId is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.sourceType) || has(self.initProvider.sourceType)",message="sourceType is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.workspaceId) || has(self.initProvider.workspaceId)",message="workspaceId is a required parameter"
 	Spec   ConnectionSpec   `json:"spec"`
 	Status ConnectionStatus `json:"status,omitempty"`
 }
