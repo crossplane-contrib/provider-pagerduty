@@ -35,7 +35,7 @@ spec:
     schema:
       openAPIV3Schema:
         description: Orchestration is the Schema for the Orchestrations API. Creates
-          and manages an Integration for an Event Orchestration.
+          and manages an Event Orchestration in PagerDuty.
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -68,14 +68,19 @@ spec:
               forProvider:
                 properties:
                   description:
+                    description: A human-friendly description of the Event Orchestration.
                     type: string
                   integration:
+                    description: An integration for the Event Orchestration.
                     items:
                       type: object
                     type: array
                   name:
+                    description: Name of the Event Orchestration.
                     type: string
                   team:
+                    description: ID of the team that owns the Event Orchestration.
+                      If none is specified, only admins have access.
                     type: string
                   teamRef:
                     description: Reference to a Team in team to populate team.
@@ -165,12 +170,15 @@ spec:
                   them, like an autoscaler.
                 properties:
                   description:
+                    description: A human-friendly description of the Event Orchestration.
                     type: string
                   integration:
+                    description: An integration for the Event Orchestration.
                     items:
                       type: object
                     type: array
                   name:
+                    description: Name of the Event Orchestration.
                     type: string
                 type: object
               managementPolicies:
@@ -381,18 +389,19 @@ spec:
               atProvider:
                 properties:
                   description:
+                    description: A human-friendly description of the Event Orchestration.
                     type: string
                   id:
-                    description: ID of this Integration.
+                    description: The ID of the Event Orchestration.
                     type: string
                   integration:
+                    description: An integration for the Event Orchestration.
                     items:
                       properties:
                         id:
-                          description: ID of this Integration.
+                          description: The ID of the Event Orchestration.
                           type: string
                         label:
-                          description: Name/description of the Integration.
                           type: string
                         parameters:
                           items:
@@ -409,10 +418,13 @@ spec:
                       type: object
                     type: array
                   name:
+                    description: Name of the Event Orchestration.
                     type: string
                   routes:
                     type: number
                   team:
+                    description: ID of the team that owns the Event Orchestration.
+                      If none is specified, only admins have access.
                     type: string
                 type: object
               conditions:

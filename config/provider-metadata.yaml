@@ -563,34 +563,32 @@ resources:
         importStatements: []
     pagerduty_event_orchestration:
         subCategory: ""
-        description: Creates and manages an Integration for an Event Orchestration.
+        description: Creates and manages an Event Orchestration in PagerDuty.
         name: pagerduty_event_orchestration
-        title: pagerduty_event_orchestration_integration'
+        title: pagerduty_event_orchestration
         examples:
-            - name: event_orchestration
+            - name: my_monitor
               manifest: |-
                 {
-                  "name": "Example Orchestration",
-                  "team": "${pagerduty_team.database_team.id}"
+                  "description": "Send events to a pair of services",
+                  "name": "My Monitoring Orchestration",
+                  "team": "${pagerduty_team.engineering.id}"
                 }
               references:
-                team: pagerduty_team.database_team.id
+                team: pagerduty_team.engineering.id
               dependencies:
-                pagerduty_event_orchestration_integration.integration: |-
+                pagerduty_team.engineering: |-
                     {
-                      "event_orchestration": "${pagerduty_event_orchestration.event_orchestration.id}",
-                      "label": "Example integration"
-                    }
-                pagerduty_team.database_team: |-
-                    {
-                      "name": "Database Team"
+                      "name": "Engineering"
                     }
         argumentDocs:
-            event_orchestration: '- (Required) ID of the Event Orchestration to which this Integration belongs to. If value is changed, current Integration is associated with a newly provided ID.'
-            id: '- ID of this Integration.'
-            label: '- (Required) Name/description of the Integration.'
+            description: '- (Optional) A human-friendly description of the Event Orchestration.'
+            id: '- The ID of the Event Orchestration.'
+            integration: '- An integration for the Event Orchestration.'
+            name: '- (Required) Name of the Event Orchestration.'
             parameters: ""
             routing_key: '- Routing key that routes to this Orchestration.'
+            team: '- (Optional) ID of the team that owns the Event Orchestration. If none is specified, only admins have access.'
             type: '- Type of the routing key. global is the default type.'
         importStatements: []
     pagerduty_event_orchestration_global:
@@ -723,6 +721,38 @@ resources:
             url: '- (Required) The API endpoint where PagerDuty''s servers will send the webhook request.'
             value: '- (Required) Value of this header'
             variable: '- (Optional) Populate variables from event payloads and use those variables in other event actions.'
+        importStatements: []
+    pagerduty_event_orchestration_integration:
+        subCategory: ""
+        description: Creates and manages an Integration for an Event Orchestration.
+        name: pagerduty_event_orchestration_integration
+        title: pagerduty_event_orchestration_integration'
+        examples:
+            - name: integration
+              manifest: |-
+                {
+                  "event_orchestration": "${pagerduty_event_orchestration.event_orchestration.id}",
+                  "label": "Example integration"
+                }
+              references:
+                event_orchestration: pagerduty_event_orchestration.event_orchestration.id
+              dependencies:
+                pagerduty_event_orchestration.event_orchestration: |-
+                    {
+                      "name": "Example Orchestration",
+                      "team": "${pagerduty_team.database_team.id}"
+                    }
+                pagerduty_team.database_team: |-
+                    {
+                      "name": "Database Team"
+                    }
+        argumentDocs:
+            event_orchestration: '- (Required) ID of the Event Orchestration to which this Integration belongs to. If value is changed, current Integration is associated with a newly provided ID.'
+            id: '- ID of this Integration.'
+            label: '- (Required) Name/description of the Integration.'
+            parameters: ""
+            routing_key: '- Routing key that routes to this Orchestration.'
+            type: '- Type of the routing key. global is the default type.'
         importStatements: []
     pagerduty_event_orchestration_router:
         subCategory: ""

@@ -4,14 +4,15 @@ metadata:
   annotations:
     meta.upbound.io/example-id: event/v1alpha1/orchestration
   labels:
-    testing.upbound.io/example-name: event_orchestration
-  name: event-orchestration
+    testing.upbound.io/example-name: my_monitor
+  name: my-monitor
 spec:
   forProvider:
-    name: Example Orchestration
+    description: Send events to a pair of services
+    name: My Monitoring Orchestration
     teamSelector:
       matchLabels:
-        testing.upbound.io/example-name: database_team
+        testing.upbound.io/example-name: engineering
 
 ---
 
@@ -21,8 +22,8 @@ metadata:
   annotations:
     meta.upbound.io/example-id: event/v1alpha1/orchestration
   labels:
-    testing.upbound.io/example-name: database_team
-  name: database-team
+    testing.upbound.io/example-name: engineering
+  name: engineering
 spec:
   forProvider:
-    name: Database Team
+    name: Engineering

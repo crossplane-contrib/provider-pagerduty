@@ -18,10 +18,9 @@ type IntegrationInitParameters struct {
 
 type IntegrationObservation struct {
 
-	// ID of this Integration.
+	// The ID of the Event Orchestration.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
-	// Name/description of the Integration.
 	Label *string `json:"label,omitempty" tf:"label,omitempty"`
 
 	Parameters []ParametersObservation `json:"parameters,omitempty" tf:"parameters,omitempty"`
@@ -31,39 +30,52 @@ type IntegrationParameters struct {
 }
 
 type OrchestrationInitParameters struct {
+
+	// A human-friendly description of the Event Orchestration.
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
 
+	// An integration for the Event Orchestration.
 	Integration []IntegrationInitParameters `json:"integration,omitempty" tf:"integration,omitempty"`
 
+	// Name of the Event Orchestration.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 }
 
 type OrchestrationObservation struct {
+
+	// A human-friendly description of the Event Orchestration.
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
 
-	// ID of this Integration.
+	// The ID of the Event Orchestration.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
+	// An integration for the Event Orchestration.
 	Integration []IntegrationObservation `json:"integration,omitempty" tf:"integration,omitempty"`
 
+	// Name of the Event Orchestration.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
 	Routes *float64 `json:"routes,omitempty" tf:"routes,omitempty"`
 
+	// ID of the team that owns the Event Orchestration. If none is specified, only admins have access.
 	Team *string `json:"team,omitempty" tf:"team,omitempty"`
 }
 
 type OrchestrationParameters struct {
 
+	// A human-friendly description of the Event Orchestration.
 	// +kubebuilder:validation:Optional
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
 
+	// An integration for the Event Orchestration.
 	// +kubebuilder:validation:Optional
 	Integration []IntegrationParameters `json:"integration,omitempty" tf:"integration,omitempty"`
 
+	// Name of the Event Orchestration.
 	// +kubebuilder:validation:Optional
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// ID of the team that owns the Event Orchestration. If none is specified, only admins have access.
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-pagerduty/apis/team/v1alpha1.Team
 	// +kubebuilder:validation:Optional
 	Team *string `json:"team,omitempty" tf:"team,omitempty"`
@@ -118,7 +130,7 @@ type OrchestrationStatus struct {
 
 // +kubebuilder:object:root=true
 
-// Orchestration is the Schema for the Orchestrations API. Creates and manages an Integration for an Event Orchestration.
+// Orchestration is the Schema for the Orchestrations API. Creates and manages an Event Orchestration in PagerDuty.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
