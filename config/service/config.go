@@ -6,6 +6,10 @@ import "github.com/upbound/upjet/pkg/config"
 func Configure(p *config.Provider) {
 	p.AddResourceConfigurator("pagerduty_service", func(r *config.Resource) {
 
+		r.LateInitializer = config.LateInitializer{
+			// alert_grouping_parameters and alert_grouping_timeout are mutually exclusive
+			IgnoredFields: []string{"alert_grouping_parameters", "alert_grouping_timeout"},
+		}
 		r.ShortGroup = "service"
 		r.References = config.References{
 			"escalation_policy": {
