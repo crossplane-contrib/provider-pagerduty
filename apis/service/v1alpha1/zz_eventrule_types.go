@@ -13,6 +13,30 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type ActionsInitParameters struct {
+
+	// Note added to the event.
+	Annotate []AnnotateInitParameters `json:"annotate,omitempty" tf:"annotate,omitempty"`
+
+	// An object with a single value field. The value sets whether the resulting alert status is trigger or resolve.
+	EventAction []EventActionInitParameters `json:"eventAction,omitempty" tf:"event_action,omitempty"`
+
+	// Allows you to copy important data from one event field to another. Extraction objects may use either of the following field structures:
+	Extractions []ExtractionsInitParameters `json:"extractions,omitempty" tf:"extractions,omitempty"`
+
+	// The ID of the priority applied to the event.
+	Priority []PriorityInitParameters `json:"priority,omitempty" tf:"priority,omitempty"`
+
+	// The severity level of the event. Can be either info,error,warning, or critical.
+	Severity []SeverityInitParameters `json:"severity,omitempty" tf:"severity,omitempty"`
+
+	// Controls whether an alert is suppressed (does not create an incident).
+	Suppress []SuppressInitParameters `json:"suppress,omitempty" tf:"suppress,omitempty"`
+
+	// An object with a single value field. The value sets the length of time to suspend the resulting alert before triggering.
+	Suspend []SuspendInitParameters `json:"suspend,omitempty" tf:"suspend,omitempty"`
+}
+
 type ActionsObservation struct {
 
 	// Note added to the event.
@@ -68,6 +92,15 @@ type ActionsParameters struct {
 	Suspend []SuspendParameters `json:"suspend,omitempty" tf:"suspend,omitempty"`
 }
 
+type ActiveBetweenInitParameters struct {
+
+	// Ending of the scheduled time when the rule should execute.  Unix timestamp in milliseconds.
+	EndTime *float64 `json:"endTime,omitempty" tf:"end_time,omitempty"`
+
+	// Time when the schedule will start. Unix timestamp in milliseconds. For example, if you have a rule with a start_time of 0 and a duration of 60,000 then that rule would be active from 00:00 to 00:01. If the start_time was 3,600,000 the it would be active starting at 01:00.
+	StartTime *float64 `json:"startTime,omitempty" tf:"start_time,omitempty"`
+}
+
 type ActiveBetweenObservation struct {
 
 	// Ending of the scheduled time when the rule should execute.  Unix timestamp in milliseconds.
@@ -88,6 +121,12 @@ type ActiveBetweenParameters struct {
 	StartTime *float64 `json:"startTime,omitempty" tf:"start_time,omitempty"`
 }
 
+type AnnotateInitParameters struct {
+
+	// Boolean value that indicates if the alert should be suppressed before the indicated threshold values are met.
+	Value *string `json:"value,omitempty" tf:"value,omitempty"`
+}
+
 type AnnotateObservation struct {
 
 	// Boolean value that indicates if the alert should be suppressed before the indicated threshold values are met.
@@ -99,6 +138,15 @@ type AnnotateParameters struct {
 	// Boolean value that indicates if the alert should be suppressed before the indicated threshold values are met.
 	// +kubebuilder:validation:Optional
 	Value *string `json:"value,omitempty" tf:"value,omitempty"`
+}
+
+type ConditionsInitParameters struct {
+
+	// Operator to combine sub-conditions. Can be and or or.
+	Operator *string `json:"operator,omitempty" tf:"operator,omitempty"`
+
+	// List of sub-conditions that define the condition.
+	Subconditions []SubconditionsInitParameters `json:"subconditions,omitempty" tf:"subconditions,omitempty"`
 }
 
 type ConditionsObservation struct {
@@ -121,6 +169,12 @@ type ConditionsParameters struct {
 	Subconditions []SubconditionsParameters `json:"subconditions,omitempty" tf:"subconditions,omitempty"`
 }
 
+type EventActionInitParameters struct {
+
+	// Boolean value that indicates if the alert should be suppressed before the indicated threshold values are met.
+	Value *string `json:"value,omitempty" tf:"value,omitempty"`
+}
+
 type EventActionObservation struct {
 
 	// Boolean value that indicates if the alert should be suppressed before the indicated threshold values are met.
@@ -132,6 +186,27 @@ type EventActionParameters struct {
 	// Boolean value that indicates if the alert should be suppressed before the indicated threshold values are met.
 	// +kubebuilder:validation:Optional
 	Value *string `json:"value,omitempty" tf:"value,omitempty"`
+}
+
+type EventRuleInitParameters struct {
+
+	// Actions to apply to an event if the conditions match.
+	Actions []ActionsInitParameters `json:"actions,omitempty" tf:"actions,omitempty"`
+
+	// Conditions evaluated to check if an event matches this event rule.
+	Conditions []ConditionsInitParameters `json:"conditions,omitempty" tf:"conditions,omitempty"`
+
+	// Indicates whether the rule is disabled and would therefore not be evaluated.
+	Disabled *bool `json:"disabled,omitempty" tf:"disabled,omitempty"`
+
+	// Position/index of the rule within the service.
+	Position *float64 `json:"position,omitempty" tf:"position,omitempty"`
+
+	// Settings for scheduling the rule.
+	TimeFrame []TimeFrameInitParameters `json:"timeFrame,omitempty" tf:"time_frame,omitempty"`
+
+	// Populate variables from event payloads and use those variables in other event actions. NOTE: A rule can have multiple
+	Variable []VariableInitParameters `json:"variable,omitempty" tf:"variable,omitempty"`
 }
 
 type EventRuleObservation struct {
@@ -201,6 +276,21 @@ type EventRuleParameters struct {
 	Variable []VariableParameters `json:"variable,omitempty" tf:"variable,omitempty"`
 }
 
+type ExtractionsInitParameters struct {
+
+	// The conditions that need to be met for the extraction to happen. Must use valid RE2 regular expression syntax.
+	Regex *string `json:"regex,omitempty" tf:"regex,omitempty"`
+
+	// Field where the data is being copied from. Must be a PagerDuty Common Event Format (PD-CEF) field.
+	Source *string `json:"source,omitempty" tf:"source,omitempty"`
+
+	// Field where the data is being copied to. Must be a PagerDuty Common Event Format (PD-CEF) field.
+	Target *string `json:"target,omitempty" tf:"target,omitempty"`
+
+	// A customized field message. This can also include variables extracted from the payload by using string interpolation.
+	Template *string `json:"template,omitempty" tf:"template,omitempty"`
+}
+
 type ExtractionsObservation struct {
 
 	// The conditions that need to be met for the extraction to happen. Must use valid RE2 regular expression syntax.
@@ -235,6 +325,15 @@ type ExtractionsParameters struct {
 	Template *string `json:"template,omitempty" tf:"template,omitempty"`
 }
 
+type ParameterInitParameters struct {
+
+	// Path to a field in an event, in dot-notation. For Event Rules on a Service, this will have to be a PD-CEF field.
+	Path *string `json:"path,omitempty" tf:"path,omitempty"`
+
+	// Boolean value that indicates if the alert should be suppressed before the indicated threshold values are met.
+	Value *string `json:"value,omitempty" tf:"value,omitempty"`
+}
+
 type ParameterObservation struct {
 
 	// Path to a field in an event, in dot-notation. For Event Rules on a Service, this will have to be a PD-CEF field.
@@ -252,6 +351,15 @@ type ParameterParameters struct {
 
 	// Boolean value that indicates if the alert should be suppressed before the indicated threshold values are met.
 	// +kubebuilder:validation:Optional
+	Value *string `json:"value,omitempty" tf:"value,omitempty"`
+}
+
+type ParametersInitParameters struct {
+
+	// Path to a field in an event, in dot-notation. For Event Rules on a Service, this will have to be a PD-CEF field.
+	Path *string `json:"path,omitempty" tf:"path,omitempty"`
+
+	// Boolean value that indicates if the alert should be suppressed before the indicated threshold values are met.
 	Value *string `json:"value,omitempty" tf:"value,omitempty"`
 }
 
@@ -275,6 +383,12 @@ type ParametersParameters struct {
 	Value *string `json:"value,omitempty" tf:"value,omitempty"`
 }
 
+type PriorityInitParameters struct {
+
+	// Boolean value that indicates if the alert should be suppressed before the indicated threshold values are met.
+	Value *string `json:"value,omitempty" tf:"value,omitempty"`
+}
+
 type PriorityObservation struct {
 
 	// Boolean value that indicates if the alert should be suppressed before the indicated threshold values are met.
@@ -286,6 +400,21 @@ type PriorityParameters struct {
 	// Boolean value that indicates if the alert should be suppressed before the indicated threshold values are met.
 	// +kubebuilder:validation:Optional
 	Value *string `json:"value,omitempty" tf:"value,omitempty"`
+}
+
+type ScheduledWeeklyInitParameters struct {
+
+	// Length of time the schedule will be active.  Unix timestamp in milliseconds.
+	Duration *float64 `json:"duration,omitempty" tf:"duration,omitempty"`
+
+	// Time when the schedule will start. Unix timestamp in milliseconds. For example, if you have a rule with a start_time of 0 and a duration of 60,000 then that rule would be active from 00:00 to 00:01. If the start_time was 3,600,000 the it would be active starting at 01:00.
+	StartTime *float64 `json:"startTime,omitempty" tf:"start_time,omitempty"`
+
+	// Timezone for the given schedule.
+	Timezone *string `json:"timezone,omitempty" tf:"timezone,omitempty"`
+
+	// An integer array representing which days during the week the rule executes. For example weekdays = [1,3,7] would execute on Monday, Wednesday and Sunday.
+	Weekdays []*float64 `json:"weekdays,omitempty" tf:"weekdays,omitempty"`
 }
 
 type ScheduledWeeklyObservation struct {
@@ -322,6 +451,12 @@ type ScheduledWeeklyParameters struct {
 	Weekdays []*float64 `json:"weekdays,omitempty" tf:"weekdays,omitempty"`
 }
 
+type SeverityInitParameters struct {
+
+	// Boolean value that indicates if the alert should be suppressed before the indicated threshold values are met.
+	Value *string `json:"value,omitempty" tf:"value,omitempty"`
+}
+
 type SeverityObservation struct {
 
 	// Boolean value that indicates if the alert should be suppressed before the indicated threshold values are met.
@@ -333,6 +468,15 @@ type SeverityParameters struct {
 	// Boolean value that indicates if the alert should be suppressed before the indicated threshold values are met.
 	// +kubebuilder:validation:Optional
 	Value *string `json:"value,omitempty" tf:"value,omitempty"`
+}
+
+type SubconditionsInitParameters struct {
+
+	// Operator to combine sub-conditions. Can be and or or.
+	Operator *string `json:"operator,omitempty" tf:"operator,omitempty"`
+
+	// Parameter for the sub-condition. It requires both a path and value to be set. The path value must be a PagerDuty Common Event Format (PD-CEF) field.
+	Parameter []ParameterInitParameters `json:"parameter,omitempty" tf:"parameter,omitempty"`
 }
 
 type SubconditionsObservation struct {
@@ -353,6 +497,21 @@ type SubconditionsParameters struct {
 	// Parameter for the sub-condition. It requires both a path and value to be set. The path value must be a PagerDuty Common Event Format (PD-CEF) field.
 	// +kubebuilder:validation:Optional
 	Parameter []ParameterParameters `json:"parameter,omitempty" tf:"parameter,omitempty"`
+}
+
+type SuppressInitParameters struct {
+
+	// The number value of the threshold_time_unit before an incident is created.
+	ThresholdTimeAmount *float64 `json:"thresholdTimeAmount,omitempty" tf:"threshold_time_amount,omitempty"`
+
+	// The seconds,minutes, or hours the threshold_time_amount should be measured.
+	ThresholdTimeUnit *string `json:"thresholdTimeUnit,omitempty" tf:"threshold_time_unit,omitempty"`
+
+	// The number of alerts that should be suppressed.
+	ThresholdValue *float64 `json:"thresholdValue,omitempty" tf:"threshold_value,omitempty"`
+
+	// Boolean value that indicates if the alert should be suppressed before the indicated threshold values are met.
+	Value *bool `json:"value,omitempty" tf:"value,omitempty"`
 }
 
 type SuppressObservation struct {
@@ -389,6 +548,12 @@ type SuppressParameters struct {
 	Value *bool `json:"value,omitempty" tf:"value,omitempty"`
 }
 
+type SuspendInitParameters struct {
+
+	// Boolean value that indicates if the alert should be suppressed before the indicated threshold values are met.
+	Value *float64 `json:"value,omitempty" tf:"value,omitempty"`
+}
+
 type SuspendObservation struct {
 
 	// Boolean value that indicates if the alert should be suppressed before the indicated threshold values are met.
@@ -400,6 +565,15 @@ type SuspendParameters struct {
 	// Boolean value that indicates if the alert should be suppressed before the indicated threshold values are met.
 	// +kubebuilder:validation:Optional
 	Value *float64 `json:"value,omitempty" tf:"value,omitempty"`
+}
+
+type TimeFrameInitParameters struct {
+
+	// Values for executing the rule during a specific time period.
+	ActiveBetween []ActiveBetweenInitParameters `json:"activeBetween,omitempty" tf:"active_between,omitempty"`
+
+	// Values for executing the rule on a recurring schedule.
+	ScheduledWeekly []ScheduledWeeklyInitParameters `json:"scheduledWeekly,omitempty" tf:"scheduled_weekly,omitempty"`
 }
 
 type TimeFrameObservation struct {
@@ -420,6 +594,18 @@ type TimeFrameParameters struct {
 	// Values for executing the rule on a recurring schedule.
 	// +kubebuilder:validation:Optional
 	ScheduledWeekly []ScheduledWeeklyParameters `json:"scheduledWeekly,omitempty" tf:"scheduled_weekly,omitempty"`
+}
+
+type VariableInitParameters struct {
+
+	// The name of the variable.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// The parameters for performing the operation to populate the variable.
+	Parameters []ParametersInitParameters `json:"parameters,omitempty" tf:"parameters,omitempty"`
+
+	// Type of operation to populate the variable. Usually regex.
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 }
 
 type VariableObservation struct {
@@ -453,6 +639,18 @@ type VariableParameters struct {
 type EventRuleSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     EventRuleParameters `json:"forProvider"`
+	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
+	// unless the relevant Crossplane feature flag is enabled, and may be
+	// changed or removed without notice.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider EventRuleInitParameters `json:"initProvider,omitempty"`
 }
 
 // EventRuleStatus defines the observed state of EventRule.

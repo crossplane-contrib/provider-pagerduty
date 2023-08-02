@@ -44,6 +44,3 @@ metadata:
 spec:
   forProvider:
     name: Team Foo
-
----
-

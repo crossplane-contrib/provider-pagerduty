@@ -26,6 +26,3 @@ spec:
         - expression: event.severity matches 'critical'
         label: Update the summary of un-matched Critical alerts so they're easier
           to spot
-
----
-

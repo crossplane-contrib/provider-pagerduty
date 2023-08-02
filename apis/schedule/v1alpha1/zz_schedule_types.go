@@ -13,6 +13,9 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type FinalScheduleInitParameters struct {
+}
+
 type FinalScheduleObservation struct {
 
 	// The name of the schedule.
@@ -22,6 +25,27 @@ type FinalScheduleObservation struct {
 }
 
 type FinalScheduleParameters struct {
+}
+
+type LayerInitParameters struct {
+
+	// The end time of the schedule layer. If not specified, the layer does not end.
+	End *string `json:"end,omitempty" tf:"end,omitempty"`
+
+	// The name of the schedule.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// A schedule layer restriction block. Restriction blocks documented below.
+	Restriction []RestrictionInitParameters `json:"restriction,omitempty" tf:"restriction,omitempty"`
+
+	// The duration of each on-call shift in seconds.
+	RotationTurnLengthSeconds *float64 `json:"rotationTurnLengthSeconds,omitempty" tf:"rotation_turn_length_seconds,omitempty"`
+
+	// The effective start time of the schedule layer. This can be before the start time of the schedule.
+	RotationVirtualStart *string `json:"rotationVirtualStart,omitempty" tf:"rotation_virtual_start,omitempty"`
+
+	// The start time of the schedule layer.
+	Start *string `json:"start,omitempty" tf:"start,omitempty"`
 }
 
 type LayerObservation struct {
@@ -68,16 +92,16 @@ type LayerParameters struct {
 	Restriction []RestrictionParameters `json:"restriction,omitempty" tf:"restriction,omitempty"`
 
 	// The duration of each on-call shift in seconds.
-	// +kubebuilder:validation:Required
-	RotationTurnLengthSeconds *float64 `json:"rotationTurnLengthSeconds" tf:"rotation_turn_length_seconds,omitempty"`
+	// +kubebuilder:validation:Optional
+	RotationTurnLengthSeconds *float64 `json:"rotationTurnLengthSeconds,omitempty" tf:"rotation_turn_length_seconds,omitempty"`
 
 	// The effective start time of the schedule layer. This can be before the start time of the schedule.
-	// +kubebuilder:validation:Required
-	RotationVirtualStart *string `json:"rotationVirtualStart" tf:"rotation_virtual_start,omitempty"`
+	// +kubebuilder:validation:Optional
+	RotationVirtualStart *string `json:"rotationVirtualStart,omitempty" tf:"rotation_virtual_start,omitempty"`
 
 	// The start time of the schedule layer.
-	// +kubebuilder:validation:Required
-	Start *string `json:"start" tf:"start,omitempty"`
+	// +kubebuilder:validation:Optional
+	Start *string `json:"start,omitempty" tf:"start,omitempty"`
 
 	// References to User in user to populate users.
 	// +kubebuilder:validation:Optional
@@ -93,6 +117,21 @@ type LayerParameters struct {
 	// +crossplane:generate:reference:selectorFieldName=UserSelector
 	// +kubebuilder:validation:Optional
 	Users []*string `json:"users,omitempty" tf:"users,omitempty"`
+}
+
+type RestrictionInitParameters struct {
+
+	// The duration of the restriction in seconds.
+	DurationSeconds *float64 `json:"durationSeconds,omitempty" tf:"duration_seconds,omitempty"`
+
+	// Number of the day when restriction starts. From 1 to 7 where 1 is Monday and 7 is Sunday.
+	StartDayOfWeek *float64 `json:"startDayOfWeek,omitempty" tf:"start_day_of_week,omitempty"`
+
+	// The start time in HH:mm:ss format.
+	StartTimeOfDay *string `json:"startTimeOfDay,omitempty" tf:"start_time_of_day,omitempty"`
+
+	// Can be daily_restriction or weekly_restriction.
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 }
 
 type RestrictionObservation struct {
@@ -113,20 +152,40 @@ type RestrictionObservation struct {
 type RestrictionParameters struct {
 
 	// The duration of the restriction in seconds.
-	// +kubebuilder:validation:Required
-	DurationSeconds *float64 `json:"durationSeconds" tf:"duration_seconds,omitempty"`
+	// +kubebuilder:validation:Optional
+	DurationSeconds *float64 `json:"durationSeconds,omitempty" tf:"duration_seconds,omitempty"`
 
 	// Number of the day when restriction starts. From 1 to 7 where 1 is Monday and 7 is Sunday.
 	// +kubebuilder:validation:Optional
 	StartDayOfWeek *float64 `json:"startDayOfWeek,omitempty" tf:"start_day_of_week,omitempty"`
 
 	// The start time in HH:mm:ss format.
-	// +kubebuilder:validation:Required
-	StartTimeOfDay *string `json:"startTimeOfDay" tf:"start_time_of_day,omitempty"`
+	// +kubebuilder:validation:Optional
+	StartTimeOfDay *string `json:"startTimeOfDay,omitempty" tf:"start_time_of_day,omitempty"`
 
 	// Can be daily_restriction or weekly_restriction.
-	// +kubebuilder:validation:Required
-	Type *string `json:"type" tf:"type,omitempty"`
+	// +kubebuilder:validation:Optional
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+}
+
+type ScheduleInitParameters struct {
+
+	// The description of the schedule.
+	Description *string `json:"description,omitempty" tf:"description,omitempty"`
+
+	// A schedule layer block. Schedule layers documented below.
+	Layer []LayerInitParameters `json:"layer,omitempty" tf:"layer,omitempty"`
+
+	// The name of the schedule.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// Any on-call schedule entries that pass the date range bounds will be truncated at the bounds, unless the parameter overflow is passed. For instance, if your schedule is a rotation that changes daily at midnight UTC, and your date range is from 2011-06-01T10:00:00Z to 2011-06-01T14:00:00Z:
+	// If you don't pass the overflow=true parameter, you will get one schedule entry returned with a start of 2011-06-01T10:00:00Z and end of 2011-06-01T14:00:00Z.
+	// If you do pass the overflow parameter, you will get one schedule entry returned with a start of 2011-06-01T00:00:00Z and end of 2011-06-02T00:00:00Z.
+	Overflow *bool `json:"overflow,omitempty" tf:"overflow,omitempty"`
+
+	// The time zone of the schedule (e.g. Europe/Berlin).
+	TimeZone *string `json:"timeZone,omitempty" tf:"time_zone,omitempty"`
 }
 
 type ScheduleObservation struct {
@@ -201,6 +260,18 @@ type ScheduleParameters struct {
 type ScheduleSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     ScheduleParameters `json:"forProvider"`
+	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
+	// unless the relevant Crossplane feature flag is enabled, and may be
+	// changed or removed without notice.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider ScheduleInitParameters `json:"initProvider,omitempty"`
 }
 
 // ScheduleStatus defines the observed state of Schedule.
@@ -221,8 +292,8 @@ type ScheduleStatus struct {
 type Schedule struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.layer)",message="layer is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.timeZone)",message="timeZone is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.layer) || has(self.initProvider.layer)",message="layer is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.timeZone) || has(self.initProvider.timeZone)",message="timeZone is a required parameter"
 	Spec   ScheduleSpec   `json:"spec"`
 	Status ScheduleStatus `json:"status,omitempty"`
 }

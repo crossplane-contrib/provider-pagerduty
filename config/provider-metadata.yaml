@@ -722,11 +722,30 @@ resources:
             value: '- (Required) Value of this header'
             variable: '- (Optional) Populate variables from event payloads and use those variables in other event actions.'
         importStatements: []
-    pagerduty_event_orchestration_integration':
+    pagerduty_event_orchestration_integration:
         subCategory: ""
         description: Creates and manages an Integration for an Event Orchestration.
-        name: pagerduty_event_orchestration_integration'
+        name: pagerduty_event_orchestration_integration
         title: pagerduty_event_orchestration_integration'
+        examples:
+            - name: integration
+              manifest: |-
+                {
+                  "event_orchestration": "${pagerduty_event_orchestration.event_orchestration.id}",
+                  "label": "Example integration"
+                }
+              references:
+                event_orchestration: pagerduty_event_orchestration.event_orchestration.id
+              dependencies:
+                pagerduty_event_orchestration.event_orchestration: |-
+                    {
+                      "name": "Example Orchestration",
+                      "team": "${pagerduty_team.database_team.id}"
+                    }
+                pagerduty_team.database_team: |-
+                    {
+                      "name": "Database Team"
+                    }
         argumentDocs:
             event_orchestration: '- (Required) ID of the Event Orchestration to which this Integration belongs to. If value is changed, current Integration is associated with a newly provided ID.'
             id: '- ID of this Integration.'

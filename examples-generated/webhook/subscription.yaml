@@ -36,6 +36,3 @@ spec:
     - id: ${data.pagerduty_service.example.id}
       type: service_reference
     type: webhook_subscription
-
----
-

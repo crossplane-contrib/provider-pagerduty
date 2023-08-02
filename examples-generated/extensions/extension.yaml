@@ -73,6 +73,3 @@ spec:
   forProvider:
     email: howard.james@example.domain
     name: Howard James
-
----
-

@@ -13,6 +13,21 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type CatchAllActionsExtractionInitParameters struct {
+
+	// A RE2 regular expression that will be matched against field specified via the source argument. If the regex contains one or more capture groups, their values will be extracted and appended together. If it contains no capture groups, the whole match is used. This field can be ignored for template based extractions.
+	Regex *string `json:"regex,omitempty" tf:"regex,omitempty"`
+
+	// The path to the event field where the regex will be applied to extract a value. You can use any valid PCL path like event.summary and you can reference previously-defined variables using a path like variables.hostname. This field can be ignored for template based extractions.
+	Source *string `json:"source,omitempty" tf:"source,omitempty"`
+
+	// The PagerDuty Common Event Format PD-CEF field that will be set with the value from the template or based on regex and source fields.
+	Target *string `json:"target,omitempty" tf:"target,omitempty"`
+
+	// A string that will be used to populate the target field. You can reference variables or event data within your template using double curly braces. For example:
+	Template *string `json:"template,omitempty" tf:"template,omitempty"`
+}
+
 type CatchAllActionsExtractionObservation struct {
 
 	// A RE2 regular expression that will be matched against field specified via the source argument. If the regex contains one or more capture groups, their values will be extracted and appended together. If it contains no capture groups, the whole match is used. This field can be ignored for template based extractions.
@@ -39,12 +54,27 @@ type CatchAllActionsExtractionParameters struct {
 	Source *string `json:"source,omitempty" tf:"source,omitempty"`
 
 	// The PagerDuty Common Event Format PD-CEF field that will be set with the value from the template or based on regex and source fields.
-	// +kubebuilder:validation:Required
-	Target *string `json:"target" tf:"target,omitempty"`
+	// +kubebuilder:validation:Optional
+	Target *string `json:"target,omitempty" tf:"target,omitempty"`
 
 	// A string that will be used to populate the target field. You can reference variables or event data within your template using double curly braces. For example:
 	// +kubebuilder:validation:Optional
 	Template *string `json:"template,omitempty" tf:"template,omitempty"`
+}
+
+type CatchAllActionsVariableInitParameters struct {
+
+	// The name of the variable
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// Path to a field in an event, in dot-notation. This supports both PD-CEF and non-CEF fields. Eg: Use event.summary for the summary CEF field. Use raw_event.fieldname to read from the original event fieldname data.
+	Path *string `json:"path,omitempty" tf:"path,omitempty"`
+
+	// Only regex is supported
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+
+	// The Regex expression to match against. Must use valid RE2 regular expression syntax.
+	Value *string `json:"value,omitempty" tf:"value,omitempty"`
 }
 
 type CatchAllActionsVariableObservation struct {
@@ -65,20 +95,35 @@ type CatchAllActionsVariableObservation struct {
 type CatchAllActionsVariableParameters struct {
 
 	// The name of the variable
-	// +kubebuilder:validation:Required
-	Name *string `json:"name" tf:"name,omitempty"`
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
 	// Path to a field in an event, in dot-notation. This supports both PD-CEF and non-CEF fields. Eg: Use event.summary for the summary CEF field. Use raw_event.fieldname to read from the original event fieldname data.
-	// +kubebuilder:validation:Required
-	Path *string `json:"path" tf:"path,omitempty"`
+	// +kubebuilder:validation:Optional
+	Path *string `json:"path,omitempty" tf:"path,omitempty"`
 
 	// Only regex is supported
-	// +kubebuilder:validation:Required
-	Type *string `json:"type" tf:"type,omitempty"`
+	// +kubebuilder:validation:Optional
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 
 	// The Regex expression to match against. Must use valid RE2 regular expression syntax.
-	// +kubebuilder:validation:Required
-	Value *string `json:"value" tf:"value,omitempty"`
+	// +kubebuilder:validation:Optional
+	Value *string `json:"value,omitempty" tf:"value,omitempty"`
+}
+
+type OrchestrationUnroutedCatchAllActionsInitParameters struct {
+
+	// sets whether the resulting alert status is trigger or resolve. Allowed values are: trigger, resolve
+	EventAction *string `json:"eventAction,omitempty" tf:"event_action,omitempty"`
+
+	// Replace any CEF field or Custom Details object field using custom variables.
+	Extraction []CatchAllActionsExtractionInitParameters `json:"extraction,omitempty" tf:"extraction,omitempty"`
+
+	// sets Severity of the resulting alert. Allowed values are: info, error, warning, critical
+	Severity *string `json:"severity,omitempty" tf:"severity,omitempty"`
+
+	// Populate variables from event payloads and use those variables in other event actions.
+	Variable []CatchAllActionsVariableInitParameters `json:"variable,omitempty" tf:"variable,omitempty"`
 }
 
 type OrchestrationUnroutedCatchAllActionsObservation struct {
@@ -117,6 +162,12 @@ type OrchestrationUnroutedCatchAllActionsParameters struct {
 	Variable []CatchAllActionsVariableParameters `json:"variable,omitempty" tf:"variable,omitempty"`
 }
 
+type OrchestrationUnroutedCatchAllInitParameters struct {
+
+	// Actions that will be taken to change the resulting alert and incident, when an event matches this rule.
+	Actions []OrchestrationUnroutedCatchAllActionsInitParameters `json:"actions,omitempty" tf:"actions,omitempty"`
+}
+
 type OrchestrationUnroutedCatchAllObservation struct {
 
 	// Actions that will be taken to change the resulting alert and incident, when an event matches this rule.
@@ -126,8 +177,17 @@ type OrchestrationUnroutedCatchAllObservation struct {
 type OrchestrationUnroutedCatchAllParameters struct {
 
 	// Actions that will be taken to change the resulting alert and incident, when an event matches this rule.
-	// +kubebuilder:validation:Required
-	Actions []OrchestrationUnroutedCatchAllActionsParameters `json:"actions" tf:"actions,omitempty"`
+	// +kubebuilder:validation:Optional
+	Actions []OrchestrationUnroutedCatchAllActionsParameters `json:"actions,omitempty" tf:"actions,omitempty"`
+}
+
+type OrchestrationUnroutedInitParameters struct {
+
+	// the catch_all actions will be applied if an Event reaches the end of any set without matching any rules in that set.
+	CatchAll []OrchestrationUnroutedCatchAllInitParameters `json:"catchAll,omitempty" tf:"catch_all,omitempty"`
+
+	// An Unrouted Orchestration must contain at least a "start" set, but can contain any number of additional sets that are routed to by other rules to form a directional graph.
+	Set []OrchestrationUnroutedSetInitParameters `json:"set,omitempty" tf:"set,omitempty"`
 }
 
 type OrchestrationUnroutedObservation struct {
@@ -169,6 +229,15 @@ type OrchestrationUnroutedParameters struct {
 	Set []OrchestrationUnroutedSetParameters `json:"set,omitempty" tf:"set,omitempty"`
 }
 
+type OrchestrationUnroutedSetInitParameters struct {
+
+	// The ID of this set of rules. Rules in other sets can route events into this set using the rule's route_to property.
+	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// The Unrouted Orchestration evaluates Events against these Rules, one at a time, and applies all the actions for first rule it finds where the event matches the rule's conditions.
+	Rule []OrchestrationUnroutedSetRuleInitParameters `json:"rule,omitempty" tf:"rule,omitempty"`
+}
+
 type OrchestrationUnroutedSetObservation struct {
 
 	// The ID of this set of rules. Rules in other sets can route events into this set using the rule's route_to property.
@@ -181,12 +250,30 @@ type OrchestrationUnroutedSetObservation struct {
 type OrchestrationUnroutedSetParameters struct {
 
 	// The ID of this set of rules. Rules in other sets can route events into this set using the rule's route_to property.
-	// +kubebuilder:validation:Required
-	ID *string `json:"id" tf:"id,omitempty"`
+	// +kubebuilder:validation:Optional
+	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
 	// The Unrouted Orchestration evaluates Events against these Rules, one at a time, and applies all the actions for first rule it finds where the event matches the rule's conditions.
 	// +kubebuilder:validation:Optional
 	Rule []OrchestrationUnroutedSetRuleParameters `json:"rule,omitempty" tf:"rule,omitempty"`
+}
+
+type OrchestrationUnroutedSetRuleActionsInitParameters struct {
+
+	// sets whether the resulting alert status is trigger or resolve. Allowed values are: trigger, resolve
+	EventAction *string `json:"eventAction,omitempty" tf:"event_action,omitempty"`
+
+	// Replace any CEF field or Custom Details object field using custom variables.
+	Extraction []RuleActionsExtractionInitParameters `json:"extraction,omitempty" tf:"extraction,omitempty"`
+
+	// The ID of a Set from this Unrouted Orchestration whose rules you also want to use with events that match this rule.
+	RouteTo *string `json:"routeTo,omitempty" tf:"route_to,omitempty"`
+
+	// sets Severity of the resulting alert. Allowed values are: info, error, warning, critical
+	Severity *string `json:"severity,omitempty" tf:"severity,omitempty"`
+
+	// Populate variables from event payloads and use those variables in other event actions.
+	Variable []RuleActionsVariableInitParameters `json:"variable,omitempty" tf:"variable,omitempty"`
 }
 
 type OrchestrationUnroutedSetRuleActionsObservation struct {
@@ -230,6 +317,21 @@ type OrchestrationUnroutedSetRuleActionsParameters struct {
 	Variable []RuleActionsVariableParameters `json:"variable,omitempty" tf:"variable,omitempty"`
 }
 
+type OrchestrationUnroutedSetRuleInitParameters struct {
+
+	// Actions that will be taken to change the resulting alert and incident, when an event matches this rule.
+	Actions []OrchestrationUnroutedSetRuleActionsInitParameters `json:"actions,omitempty" tf:"actions,omitempty"`
+
+	// Each of these conditions is evaluated to check if an event matches this rule. The rule is considered a match if any of these conditions match. If none are provided, the event will always match against the rule.
+	Condition []SetRuleConditionInitParameters `json:"condition,omitempty" tf:"condition,omitempty"`
+
+	// Indicates whether the rule is disabled and would therefore not be evaluated.
+	Disabled *bool `json:"disabled,omitempty" tf:"disabled,omitempty"`
+
+	// A description of this rule's purpose.
+	Label *string `json:"label,omitempty" tf:"label,omitempty"`
+}
+
 type OrchestrationUnroutedSetRuleObservation struct {
 
 	// Actions that will be taken to change the resulting alert and incident, when an event matches this rule.
@@ -251,8 +353,8 @@ type OrchestrationUnroutedSetRuleObservation struct {
 type OrchestrationUnroutedSetRuleParameters struct {
 
 	// Actions that will be taken to change the resulting alert and incident, when an event matches this rule.
-	// +kubebuilder:validation:Required
-	Actions []OrchestrationUnroutedSetRuleActionsParameters `json:"actions" tf:"actions,omitempty"`
+	// +kubebuilder:validation:Optional
+	Actions []OrchestrationUnroutedSetRuleActionsParameters `json:"actions,omitempty" tf:"actions,omitempty"`
 
 	// Each of these conditions is evaluated to check if an event matches this rule. The rule is considered a match if any of these conditions match. If none are provided, the event will always match against the rule.
 	// +kubebuilder:validation:Optional
@@ -265,6 +367,21 @@ type OrchestrationUnroutedSetRuleParameters struct {
 	// A description of this rule's purpose.
 	// +kubebuilder:validation:Optional
 	Label *string `json:"label,omitempty" tf:"label,omitempty"`
+}
+
+type RuleActionsExtractionInitParameters struct {
+
+	// A RE2 regular expression that will be matched against field specified via the source argument. If the regex contains one or more capture groups, their values will be extracted and appended together. If it contains no capture groups, the whole match is used. This field can be ignored for template based extractions.
+	Regex *string `json:"regex,omitempty" tf:"regex,omitempty"`
+
+	// The path to the event field where the regex will be applied to extract a value. You can use any valid PCL path like event.summary and you can reference previously-defined variables using a path like variables.hostname. This field can be ignored for template based extractions.
+	Source *string `json:"source,omitempty" tf:"source,omitempty"`
+
+	// The PagerDuty Common Event Format PD-CEF field that will be set with the value from the template or based on regex and source fields.
+	Target *string `json:"target,omitempty" tf:"target,omitempty"`
+
+	// A string that will be used to populate the target field. You can reference variables or event data within your template using double curly braces. For example:
+	Template *string `json:"template,omitempty" tf:"template,omitempty"`
 }
 
 type RuleActionsExtractionObservation struct {
@@ -293,12 +410,27 @@ type RuleActionsExtractionParameters struct {
 	Source *string `json:"source,omitempty" tf:"source,omitempty"`
 
 	// The PagerDuty Common Event Format PD-CEF field that will be set with the value from the template or based on regex and source fields.
-	// +kubebuilder:validation:Required
-	Target *string `json:"target" tf:"target,omitempty"`
+	// +kubebuilder:validation:Optional
+	Target *string `json:"target,omitempty" tf:"target,omitempty"`
 
 	// A string that will be used to populate the target field. You can reference variables or event data within your template using double curly braces. For example:
 	// +kubebuilder:validation:Optional
 	Template *string `json:"template,omitempty" tf:"template,omitempty"`
+}
+
+type RuleActionsVariableInitParameters struct {
+
+	// The name of the variable
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// Path to a field in an event, in dot-notation. This supports both PD-CEF and non-CEF fields. Eg: Use event.summary for the summary CEF field. Use raw_event.fieldname to read from the original event fieldname data.
+	Path *string `json:"path,omitempty" tf:"path,omitempty"`
+
+	// Only regex is supported
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+
+	// The Regex expression to match against. Must use valid RE2 regular expression syntax.
+	Value *string `json:"value,omitempty" tf:"value,omitempty"`
 }
 
 type RuleActionsVariableObservation struct {
@@ -319,20 +451,26 @@ type RuleActionsVariableObservation struct {
 type RuleActionsVariableParameters struct {
 
 	// The name of the variable
-	// +kubebuilder:validation:Required
-	Name *string `json:"name" tf:"name,omitempty"`
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
 	// Path to a field in an event, in dot-notation. This supports both PD-CEF and non-CEF fields. Eg: Use event.summary for the summary CEF field. Use raw_event.fieldname to read from the original event fieldname data.
-	// +kubebuilder:validation:Required
-	Path *string `json:"path" tf:"path,omitempty"`
+	// +kubebuilder:validation:Optional
+	Path *string `json:"path,omitempty" tf:"path,omitempty"`
 
 	// Only regex is supported
-	// +kubebuilder:validation:Required
-	Type *string `json:"type" tf:"type,omitempty"`
+	// +kubebuilder:validation:Optional
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 
 	// The Regex expression to match against. Must use valid RE2 regular expression syntax.
-	// +kubebuilder:validation:Required
-	Value *string `json:"value" tf:"value,omitempty"`
+	// +kubebuilder:validation:Optional
+	Value *string `json:"value,omitempty" tf:"value,omitempty"`
+}
+
+type SetRuleConditionInitParameters struct {
+
+	// A PCL condition string.
+	Expression *string `json:"expression,omitempty" tf:"expression,omitempty"`
 }
 
 type SetRuleConditionObservation struct {
@@ -344,14 +482,26 @@ type SetRuleConditionObservation struct {
 type SetRuleConditionParameters struct {
 
 	// A PCL condition string.
-	// +kubebuilder:validation:Required
-	Expression *string `json:"expression" tf:"expression,omitempty"`
+	// +kubebuilder:validation:Optional
+	Expression *string `json:"expression,omitempty" tf:"expression,omitempty"`
 }
 
 // OrchestrationUnroutedSpec defines the desired state of OrchestrationUnrouted
 type OrchestrationUnroutedSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     OrchestrationUnroutedParameters `json:"forProvider"`
+	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
+	// unless the relevant Crossplane feature flag is enabled, and may be
+	// changed or removed without notice.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider OrchestrationUnroutedInitParameters `json:"initProvider,omitempty"`
 }
 
 // OrchestrationUnroutedStatus defines the observed state of OrchestrationUnrouted.
@@ -372,8 +522,8 @@ type OrchestrationUnroutedStatus struct {
 type OrchestrationUnrouted struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.catchAll)",message="catchAll is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.set)",message="set is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.catchAll) || has(self.initProvider.catchAll)",message="catchAll is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.set) || has(self.initProvider.set)",message="set is a required parameter"
 	Spec   OrchestrationUnroutedSpec   `json:"spec"`
 	Status OrchestrationUnroutedStatus `json:"status,omitempty"`
 }

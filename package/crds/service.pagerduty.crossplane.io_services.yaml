@@ -3,8 +3,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.11.3
-  creationTimestamp: null
+    controller-gen.kubebuilder.io/version: v0.12.1
   name: services.service.pagerduty.crossplane.io
 spec:
   group: service.pagerduty.crossplane.io
@@ -58,7 +57,7 @@ spec:
                 description: 'DeletionPolicy specifies what will happen to the underlying
                   external when this managed resource is deleted - either "Delete"
                   or "Orphan" the external resource. This field is planned to be deprecated
-                  in favor of the ManagementPolicy field in a future release. Currently,
+                  in favor of the ManagementPolicies field in a future release. Currently,
                   both could be set independently and non-default values would be
                   honored if the feature flag is enabled. See the design doc for more
                   information: https://github.com/crossplane/crossplane/blob/499895a25d1a1a0ba1604944ef98ac7a1a71f197/design/design-doc-observe-only-resources.md?plain=1#L223'
@@ -295,8 +294,6 @@ spec:
                             Set''s the urgency of the incident based on the severity
                             set by the triggering monitoring tool.'
                           type: string
-                      required:
-                      - type
                       type: object
                     type: array
                   name:
@@ -354,21 +351,253 @@ spec:
                       type: object
                     type: array
                 type: object
-              managementPolicy:
-                default: FullControl
+              initProvider:
+                description: THIS IS AN ALPHA FIELD. Do not use it in production.
+                  It is not honored unless the relevant Crossplane feature flag is
+                  enabled, and may be changed or removed without notice. InitProvider
+                  holds the same fields as ForProvider, with the exception of Identifier
+                  and other resource reference fields. The fields that are in InitProvider
+                  are merged into ForProvider when the resource is created. The same
+                  fields are also added to the terraform ignore_changes hook, to avoid
+                  updating them after creation. This is useful for fields that are
+                  required on creation, but we do not desire to update them after
+                  creation, for example because of an external controller is managing
+                  them, like an autoscaler.
+                properties:
+                  acknowledgementTimeout:
+                    description: Time in seconds that an incident changes to the Triggered
+                      State after being Acknowledged. Disabled if set to the "null"
+                      string.  If not passed in, will default to '"1800"'.
+                    type: string
+                  alertCreation:
+                    description: 'Must be one of two values. PagerDuty receives events
+                      from your monitoring systems and can then create incidents in
+                      different ways. Value "create_incidents" is default: events
+                      will create an incident that cannot be merged. Value "create_alerts_and_incidents"
+                      is the alternative: events will create an alert and then add
+                      it to a new incident, these incidents can be merged. This option
+                      is recommended.'
+                    type: string
+                  alertGrouping:
+                    description: '(Deprecated) Defines how alerts on this service
+                      will be automatically grouped into incidents. Note that the
+                      alert grouping features are available only on certain plans.
+                      If not set, each alert will create a separate incident; If value
+                      is set to time: All alerts within a specified duration will
+                      be grouped into the same incident. This duration is set in the
+                      alert_grouping_timeout setting (described below). Available
+                      on Standard, Enterprise, and Event Intelligence plans; If value
+                      is set to intelligent - Alerts will be intelligently grouped
+                      based on a machine learning model that looks at the alert summary,
+                      timing, and the history of grouped alerts. Available on Enterprise
+                      and Event Intelligence plan. This field is deprecated, use alert_grouping_parameters.type
+                      instead,'
+                    type: string
+                  alertGroupingParameters:
+                    description: Defines how alerts on this service will be automatically
+                      grouped into incidents. Note that the alert grouping features
+                      are available only on certain plans. If not set, each alert
+                      will create a separate incident.
+                    items:
+                      properties:
+                        config:
+                          description: Alert grouping parameters dependent on type.
+                            If type is set to intelligent or empty then config can
+                            be empty.
+                          items:
+                            properties:
+                              aggregate:
+                                description: One of any or all. This setting applies
+                                  only when type is set to content_based. Group alerts
+                                  based on one or all of fields value(s).
+                                type: string
+                              fields:
+                                description: Alerts will be grouped together if the
+                                  content of these fields match. This setting applies
+                                  only when type is set to content_based.
+                                items:
+                                  type: string
+                                type: array
+                              timeout:
+                                description: The duration in minutes within which
+                                  to automatically group incoming alerts. This setting
+                                  applies only when type is set to time. To continue
+                                  grouping alerts until the incident is resolved,
+                                  set this value to 0.
+                                type: number
+                            type: object
+                          type: array
+                        type:
+                          description: The type of alert grouping; one of intelligent,
+                            time or content_based.
+                          type: string
+                      type: object
+                    type: array
+                  alertGroupingTimeout:
+                    description: (Deprecated) The duration in minutes within which
+                      to automatically group incoming alerts. This setting applies
+                      only when alert_grouping is set to time. To continue grouping
+                      alerts until the incident is resolved, set this value to 0.
+                      This field is deprecated, use alert_grouping_parameters.config.timeout
+                      instead,
+                    type: string
+                  autoPauseNotificationsParameters:
+                    description: Defines how alerts on this service are automatically
+                      suspended for a period of time before triggering, when identified
+                      as likely being transient. Note that automatically pausing notifications
+                      is only available on certain plans as mentioned here.
+                    items:
+                      properties:
+                        enabled:
+                          description: Indicates whether alerts should be automatically
+                            suspended when identified as transient.  If not passed
+                            in, will default to 'false'.
+                          type: boolean
+                        timeout:
+                          description: 'Indicates in seconds how long alerts should
+                            be suspended before triggering. Allowed values: 120, 180,
+                            300, 600, 900 if enabled is true. Must be omitted or set
+                            to null if enabled is false.'
+                          type: number
+                      type: object
+                    type: array
+                  autoResolveTimeout:
+                    description: Time in seconds that an incident is automatically
+                      resolved if left open for that long. Disabled if set to the
+                      "null" string.
+                    type: string
+                  description:
+                    description: A human-friendly description of the service.
+                    type: string
+                  incidentUrgencyRule:
+                    items:
+                      properties:
+                        duringSupportHours:
+                          description: Incidents' urgency during support hours.
+                          items:
+                            properties:
+                              type:
+                                description: The type of support hours. Can be fixed_time_per_day.
+                                type: string
+                              urgency:
+                                description: 'The urgency: low Notify responders (does
+                                  not escalate), high (follows escalation rules) or
+                                  severity_based Set''s the urgency of the incident
+                                  based on the severity set by the triggering monitoring
+                                  tool.'
+                                type: string
+                            type: object
+                          type: array
+                        outsideSupportHours:
+                          description: Incidents' urgency outside support hours.
+                          items:
+                            properties:
+                              type:
+                                description: The type of support hours. Can be fixed_time_per_day.
+                                type: string
+                              urgency:
+                                description: 'The urgency: low Notify responders (does
+                                  not escalate), high (follows escalation rules) or
+                                  severity_based Set''s the urgency of the incident
+                                  based on the severity set by the triggering monitoring
+                                  tool.'
+                                type: string
+                            type: object
+                          type: array
+                        type:
+                          description: 'The type of incident urgency: constant or
+                            use_support_hours (when depending on specific support
+                            hours; see support_hours).'
+                          type: string
+                        urgency:
+                          description: 'The urgency: low Notify responders (does not
+                            escalate), high (follows escalation rules) or severity_based
+                            Set''s the urgency of the incident based on the severity
+                            set by the triggering monitoring tool.'
+                          type: string
+                      type: object
+                    type: array
+                  name:
+                    description: The name of the service.
+                    type: string
+                  responsePlay:
+                    description: The response play used by this service.
+                    type: string
+                  scheduledActions:
+                    items:
+                      properties:
+                        at:
+                          description: A block representing when the scheduled action
+                            will occur.
+                          items:
+                            properties:
+                              name:
+                                description: The name of the service.
+                                type: string
+                              type:
+                                description: The type of support hours. Can be fixed_time_per_day.
+                                type: string
+                            type: object
+                          type: array
+                        toUrgency:
+                          description: 'The urgency to change to: low (does not escalate),
+                            or high (follows escalation rules).'
+                          type: string
+                        type:
+                          description: The type of support hours. Can be fixed_time_per_day.
+                          type: string
+                      type: object
+                    type: array
+                  supportHours:
+                    items:
+                      properties:
+                        daysOfWeek:
+                          description: Array of days of week as integers. 1 to 7,
+                            1 being Monday and 7 being Sunday.
+                          items:
+                            type: number
+                          type: array
+                        endTime:
+                          description: The support hours' ending time of day.
+                          type: string
+                        startTime:
+                          description: The support hours' starting time of day.
+                          type: string
+                        timeZone:
+                          description: The time zone for the support hours.
+                          type: string
+                        type:
+                          description: The type of support hours. Can be fixed_time_per_day.
+                          type: string
+                      type: object
+                    type: array
+                type: object
+              managementPolicies:
+                default:
+                - '*'
                 description: 'THIS IS AN ALPHA FIELD. Do not use it in production.
                   It is not honored unless the relevant Crossplane feature flag is
-                  enabled, and may be changed or removed without notice. ManagementPolicy
-                  specifies the level of control Crossplane has over the managed external
-                  resource. This field is planned to replace the DeletionPolicy field
-                  in a future release. Currently, both could be set independently
-                  and non-default values would be honored if the feature flag is enabled.
-                  See the design doc for more information: https://github.com/crossplane/crossplane/blob/499895a25d1a1a0ba1604944ef98ac7a1a71f197/design/design-doc-observe-only-resources.md?plain=1#L223'
-                enum:
-                - FullControl
-                - ObserveOnly
-                - OrphanOnDelete
-                type: string
+                  enabled, and may be changed or removed without notice. ManagementPolicies
+                  specify the array of actions Crossplane is allowed to take on the
+                  managed and external resources. This field is planned to replace
+                  the DeletionPolicy field in a future release. Currently, both could
+                  be set independently and non-default values would be honored if
+                  the feature flag is enabled. If both are custom, the DeletionPolicy
+                  field will be ignored. See the design doc for more information:
+                  https://github.com/crossplane/crossplane/blob/499895a25d1a1a0ba1604944ef98ac7a1a71f197/design/design-doc-observe-only-resources.md?plain=1#L223
+                  and this one: https://github.com/crossplane/crossplane/blob/444267e84783136daa93568b364a5f01228cacbe/design/one-pager-ignore-changes.md'
+                items:
+                  description: A ManagementAction represents an action that the Crossplane
+                    controllers can take on an external resource.
+                  enum:
+                  - Observe
+                  - Create
+                  - Update
+                  - Delete
+                  - LateInitialize
+                  - '*'
+                  type: string
+                type: array
               providerConfigRef:
                 default:
                   name: default
@@ -542,7 +771,9 @@ spec:
             type: object
             x-kubernetes-validations:
             - message: name is a required parameter
-              rule: self.managementPolicy == 'ObserveOnly' || has(self.forProvider.name)
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.name)
+                || has(self.initProvider.name)'
           status:
             description: ServiceStatus defines the observed state of Service.
             properties:

@@ -3,8 +3,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.11.3
-  creationTimestamp: null
+    controller-gen.kubebuilder.io/version: v0.12.1
   name: eventrules.service.pagerduty.crossplane.io
 spec:
   group: service.pagerduty.crossplane.io
@@ -58,7 +57,7 @@ spec:
                 description: 'DeletionPolicy specifies what will happen to the underlying
                   external when this managed resource is deleted - either "Delete"
                   or "Orphan" the external resource. This field is planned to be deprecated
-                  in favor of the ManagementPolicy field in a future release. Currently,
+                  in favor of the ManagementPolicies field in a future release. Currently,
                   both could be set independently and non-default values would be
                   honored if the feature flag is enabled. See the design doc for more
                   information: https://github.com/crossplane/crossplane/blob/499895a25d1a1a0ba1604944ef98ac7a1a71f197/design/design-doc-observe-only-resources.md?plain=1#L223'
@@ -395,21 +394,296 @@ spec:
                       type: object
                     type: array
                 type: object
-              managementPolicy:
-                default: FullControl
+              initProvider:
+                description: THIS IS AN ALPHA FIELD. Do not use it in production.
+                  It is not honored unless the relevant Crossplane feature flag is
+                  enabled, and may be changed or removed without notice. InitProvider
+                  holds the same fields as ForProvider, with the exception of Identifier
+                  and other resource reference fields. The fields that are in InitProvider
+                  are merged into ForProvider when the resource is created. The same
+                  fields are also added to the terraform ignore_changes hook, to avoid
+                  updating them after creation. This is useful for fields that are
+                  required on creation, but we do not desire to update them after
+                  creation, for example because of an external controller is managing
+                  them, like an autoscaler.
+                properties:
+                  actions:
+                    description: Actions to apply to an event if the conditions match.
+                    items:
+                      properties:
+                        annotate:
+                          description: Note added to the event.
+                          items:
+                            properties:
+                              value:
+                                description: Boolean value that indicates if the alert
+                                  should be suppressed before the indicated threshold
+                                  values are met.
+                                type: string
+                            type: object
+                          type: array
+                        eventAction:
+                          description: An object with a single value field. The value
+                            sets whether the resulting alert status is trigger or
+                            resolve.
+                          items:
+                            properties:
+                              value:
+                                description: Boolean value that indicates if the alert
+                                  should be suppressed before the indicated threshold
+                                  values are met.
+                                type: string
+                            type: object
+                          type: array
+                        extractions:
+                          description: 'Allows you to copy important data from one
+                            event field to another. Extraction objects may use either
+                            of the following field structures:'
+                          items:
+                            properties:
+                              regex:
+                                description: The conditions that need to be met for
+                                  the extraction to happen. Must use valid RE2 regular
+                                  expression syntax.
+                                type: string
+                              source:
+                                description: Field where the data is being copied
+                                  from. Must be a PagerDuty Common Event Format (PD-CEF)
+                                  field.
+                                type: string
+                              target:
+                                description: Field where the data is being copied
+                                  to. Must be a PagerDuty Common Event Format (PD-CEF)
+                                  field.
+                                type: string
+                              template:
+                                description: A customized field message. This can
+                                  also include variables extracted from the payload
+                                  by using string interpolation.
+                                type: string
+                            type: object
+                          type: array
+                        priority:
+                          description: The ID of the priority applied to the event.
+                          items:
+                            properties:
+                              value:
+                                description: Boolean value that indicates if the alert
+                                  should be suppressed before the indicated threshold
+                                  values are met.
+                                type: string
+                            type: object
+                          type: array
+                        severity:
+                          description: The severity level of the event. Can be either
+                            info,error,warning, or critical.
+                          items:
+                            properties:
+                              value:
+                                description: Boolean value that indicates if the alert
+                                  should be suppressed before the indicated threshold
+                                  values are met.
+                                type: string
+                            type: object
+                          type: array
+                        suppress:
+                          description: Controls whether an alert is suppressed (does
+                            not create an incident).
+                          items:
+                            properties:
+                              thresholdTimeAmount:
+                                description: The number value of the threshold_time_unit
+                                  before an incident is created.
+                                type: number
+                              thresholdTimeUnit:
+                                description: The seconds,minutes, or hours the threshold_time_amount
+                                  should be measured.
+                                type: string
+                              thresholdValue:
+                                description: The number of alerts that should be suppressed.
+                                type: number
+                              value:
+                                description: Boolean value that indicates if the alert
+                                  should be suppressed before the indicated threshold
+                                  values are met.
+                                type: boolean
+                            type: object
+                          type: array
+                        suspend:
+                          description: An object with a single value field. The value
+                            sets the length of time to suspend the resulting alert
+                            before triggering.
+                          items:
+                            properties:
+                              value:
+                                description: Boolean value that indicates if the alert
+                                  should be suppressed before the indicated threshold
+                                  values are met.
+                                type: number
+                            type: object
+                          type: array
+                      type: object
+                    type: array
+                  conditions:
+                    description: Conditions evaluated to check if an event matches
+                      this event rule.
+                    items:
+                      properties:
+                        operator:
+                          description: Operator to combine sub-conditions. Can be
+                            and or or.
+                          type: string
+                        subconditions:
+                          description: List of sub-conditions that define the condition.
+                          items:
+                            properties:
+                              operator:
+                                description: Operator to combine sub-conditions. Can
+                                  be and or or.
+                                type: string
+                              parameter:
+                                description: Parameter for the sub-condition. It requires
+                                  both a path and value to be set. The path value
+                                  must be a PagerDuty Common Event Format (PD-CEF)
+                                  field.
+                                items:
+                                  properties:
+                                    path:
+                                      description: Path to a field in an event, in
+                                        dot-notation. For Event Rules on a Service,
+                                        this will have to be a PD-CEF field.
+                                      type: string
+                                    value:
+                                      description: Boolean value that indicates if
+                                        the alert should be suppressed before the
+                                        indicated threshold values are met.
+                                      type: string
+                                  type: object
+                                type: array
+                            type: object
+                          type: array
+                      type: object
+                    type: array
+                  disabled:
+                    description: Indicates whether the rule is disabled and would
+                      therefore not be evaluated.
+                    type: boolean
+                  position:
+                    description: Position/index of the rule within the service.
+                    type: number
+                  timeFrame:
+                    description: Settings for scheduling the rule.
+                    items:
+                      properties:
+                        activeBetween:
+                          description: Values for executing the rule during a specific
+                            time period.
+                          items:
+                            properties:
+                              endTime:
+                                description: Ending of the scheduled time when the
+                                  rule should execute.  Unix timestamp in milliseconds.
+                                type: number
+                              startTime:
+                                description: Time when the schedule will start. Unix
+                                  timestamp in milliseconds. For example, if you have
+                                  a rule with a start_time of 0 and a duration of
+                                  60,000 then that rule would be active from 00:00
+                                  to 00:01. If the start_time was 3,600,000 the it
+                                  would be active starting at 01:00.
+                                type: number
+                            type: object
+                          type: array
+                        scheduledWeekly:
+                          description: Values for executing the rule on a recurring
+                            schedule.
+                          items:
+                            properties:
+                              duration:
+                                description: Length of time the schedule will be active.  Unix
+                                  timestamp in milliseconds.
+                                type: number
+                              startTime:
+                                description: Time when the schedule will start. Unix
+                                  timestamp in milliseconds. For example, if you have
+                                  a rule with a start_time of 0 and a duration of
+                                  60,000 then that rule would be active from 00:00
+                                  to 00:01. If the start_time was 3,600,000 the it
+                                  would be active starting at 01:00.
+                                type: number
+                              timezone:
+                                description: Timezone for the given schedule.
+                                type: string
+                              weekdays:
+                                description: An integer array representing which days
+                                  during the week the rule executes. For example weekdays
+                                  = [1,3,7] would execute on Monday, Wednesday and
+                                  Sunday.
+                                items:
+                                  type: number
+                                type: array
+                            type: object
+                          type: array
+                      type: object
+                    type: array
+                  variable:
+                    description: 'Populate variables from event payloads and use those
+                      variables in other event actions. NOTE: A rule can have multiple'
+                    items:
+                      properties:
+                        name:
+                          description: The name of the variable.
+                          type: string
+                        parameters:
+                          description: The parameters for performing the operation
+                            to populate the variable.
+                          items:
+                            properties:
+                              path:
+                                description: Path to a field in an event, in dot-notation.
+                                  For Event Rules on a Service, this will have to
+                                  be a PD-CEF field.
+                                type: string
+                              value:
+                                description: Boolean value that indicates if the alert
+                                  should be suppressed before the indicated threshold
+                                  values are met.
+                                type: string
+                            type: object
+                          type: array
+                        type:
+                          description: Type of operation to populate the variable.
+                            Usually regex.
+                          type: string
+                      type: object
+                    type: array
+                type: object
+              managementPolicies:
+                default:
+                - '*'
                 description: 'THIS IS AN ALPHA FIELD. Do not use it in production.
                   It is not honored unless the relevant Crossplane feature flag is
-                  enabled, and may be changed or removed without notice. ManagementPolicy
-                  specifies the level of control Crossplane has over the managed external
-                  resource. This field is planned to replace the DeletionPolicy field
-                  in a future release. Currently, both could be set independently
-                  and non-default values would be honored if the feature flag is enabled.
-                  See the design doc for more information: https://github.com/crossplane/crossplane/blob/499895a25d1a1a0ba1604944ef98ac7a1a71f197/design/design-doc-observe-only-resources.md?plain=1#L223'
-                enum:
-                - FullControl
-                - ObserveOnly
-                - OrphanOnDelete
-                type: string
+                  enabled, and may be changed or removed without notice. ManagementPolicies
+                  specify the array of actions Crossplane is allowed to take on the
+                  managed and external resources. This field is planned to replace
+                  the DeletionPolicy field in a future release. Currently, both could
+                  be set independently and non-default values would be honored if
+                  the feature flag is enabled. If both are custom, the DeletionPolicy
+                  field will be ignored. See the design doc for more information:
+                  https://github.com/crossplane/crossplane/blob/499895a25d1a1a0ba1604944ef98ac7a1a71f197/design/design-doc-observe-only-resources.md?plain=1#L223
+                  and this one: https://github.com/crossplane/crossplane/blob/444267e84783136daa93568b364a5f01228cacbe/design/one-pager-ignore-changes.md'
+                items:
+                  description: A ManagementAction represents an action that the Crossplane
+                    controllers can take on an external resource.
+                  enum:
+                  - Observe
+                  - Create
+                  - Update
+                  - Delete
+                  - LateInitialize
+                  - '*'
+                  type: string
+                type: array
               providerConfigRef:
                 default:
                   name: default

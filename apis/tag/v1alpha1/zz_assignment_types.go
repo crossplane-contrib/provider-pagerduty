@@ -13,6 +13,18 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type AssignmentInitParameters struct {
+
+	// The ID of the entity.
+	EntityID *string `json:"entityId,omitempty" tf:"entity_id,omitempty"`
+
+	// Type of entity in the tag assignment. Possible values can be users, teams, and escalation_policies.
+	EntityType *string `json:"entityType,omitempty" tf:"entity_type,omitempty"`
+
+	// The ID of the tag.
+	TagID *string `json:"tagId,omitempty" tf:"tag_id,omitempty"`
+}
+
 type AssignmentObservation struct {
 
 	// The ID of the entity.
@@ -47,6 +59,18 @@ type AssignmentParameters struct {
 type AssignmentSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     AssignmentParameters `json:"forProvider"`
+	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
+	// unless the relevant Crossplane feature flag is enabled, and may be
+	// changed or removed without notice.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider AssignmentInitParameters `json:"initProvider,omitempty"`
 }
 
 // AssignmentStatus defines the observed state of Assignment.
@@ -67,9 +91,9 @@ type AssignmentStatus struct {
 type Assignment struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.entityId)",message="entityId is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.entityType)",message="entityType is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.tagId)",message="tagId is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.entityId) || has(self.initProvider.entityId)",message="entityId is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.entityType) || has(self.initProvider.entityType)",message="entityType is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.tagId) || has(self.initProvider.tagId)",message="tagId is a required parameter"
 	Spec   AssignmentSpec   `json:"spec"`
 	Status AssignmentStatus `json:"status,omitempty"`
 }

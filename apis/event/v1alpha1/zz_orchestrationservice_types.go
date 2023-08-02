@@ -13,6 +13,24 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type ActionsAutomationActionInitParameters struct {
+
+	// When true, PagerDuty's servers will automatically send this webhook request as soon as the resulting incident is created. When false, your incident responder will be able to manually trigger the Webhook via the PagerDuty website and mobile app.
+	AutoSend *bool `json:"autoSend,omitempty" tf:"auto_send,omitempty"`
+
+	// Specify custom key/value pairs that'll be sent with the webhook request as request headers.
+	Header []AutomationActionHeaderInitParameters `json:"header,omitempty" tf:"header,omitempty"`
+
+	// Name of this Webhook.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// Specify custom key/value pairs that'll be included in the webhook request's JSON payload.
+	Parameter []AutomationActionParameterInitParameters `json:"parameter,omitempty" tf:"parameter,omitempty"`
+
+	// The API endpoint where PagerDuty's servers will send the webhook request.
+	URL *string `json:"url,omitempty" tf:"url,omitempty"`
+}
+
 type ActionsAutomationActionObservation struct {
 
 	// When true, PagerDuty's servers will automatically send this webhook request as soon as the resulting incident is created. When false, your incident responder will be able to manually trigger the Webhook via the PagerDuty website and mobile app.
@@ -42,16 +60,31 @@ type ActionsAutomationActionParameters struct {
 	Header []AutomationActionHeaderParameters `json:"header,omitempty" tf:"header,omitempty"`
 
 	// Name of this Webhook.
-	// +kubebuilder:validation:Required
-	Name *string `json:"name" tf:"name,omitempty"`
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
 	// Specify custom key/value pairs that'll be included in the webhook request's JSON payload.
 	// +kubebuilder:validation:Optional
 	Parameter []AutomationActionParameterParameters `json:"parameter,omitempty" tf:"parameter,omitempty"`
 
 	// The API endpoint where PagerDuty's servers will send the webhook request.
-	// +kubebuilder:validation:Required
-	URL *string `json:"url" tf:"url,omitempty"`
+	// +kubebuilder:validation:Optional
+	URL *string `json:"url,omitempty" tf:"url,omitempty"`
+}
+
+type ActionsExtractionInitParameters struct {
+
+	// A RE2 regular expression that will be matched against field specified via the source argument. If the regex contains one or more capture groups, their values will be extracted and appended together. If it contains no capture groups, the whole match is used. This field can be ignored for template based extractions.
+	Regex *string `json:"regex,omitempty" tf:"regex,omitempty"`
+
+	// The path to the event field where the regex will be applied to extract a value. You can use any valid PCL path like event.summary and you can reference previously-defined variables using a path like variables.hostname. This field can be ignored for template based extractions.
+	Source *string `json:"source,omitempty" tf:"source,omitempty"`
+
+	// The PagerDuty Common Event Format PD-CEF field that will be set with the value from the template or based on regex and source fields.
+	Target *string `json:"target,omitempty" tf:"target,omitempty"`
+
+	// A string that will be used to populate the target field. You can reference variables or event data within your template using double curly braces. For example:
+	Template *string `json:"template,omitempty" tf:"template,omitempty"`
 }
 
 type ActionsExtractionObservation struct {
@@ -80,12 +113,18 @@ type ActionsExtractionParameters struct {
 	Source *string `json:"source,omitempty" tf:"source,omitempty"`
 
 	// The PagerDuty Common Event Format PD-CEF field that will be set with the value from the template or based on regex and source fields.
-	// +kubebuilder:validation:Required
-	Target *string `json:"target" tf:"target,omitempty"`
+	// +kubebuilder:validation:Optional
+	Target *string `json:"target,omitempty" tf:"target,omitempty"`
 
 	// A string that will be used to populate the target field. You can reference variables or event data within your template using double curly braces. For example:
 	// +kubebuilder:validation:Optional
 	Template *string `json:"template,omitempty" tf:"template,omitempty"`
+}
+
+type ActionsPagerdutyAutomationActionInitParameters struct {
+
+	// Id of the Process Automation action to be triggered.
+	ActionID *string `json:"actionId,omitempty" tf:"action_id,omitempty"`
 }
 
 type ActionsPagerdutyAutomationActionObservation struct {
@@ -97,8 +136,23 @@ type ActionsPagerdutyAutomationActionObservation struct {
 type ActionsPagerdutyAutomationActionParameters struct {
 
 	// Id of the Process Automation action to be triggered.
-	// +kubebuilder:validation:Required
-	ActionID *string `json:"actionId" tf:"action_id,omitempty"`
+	// +kubebuilder:validation:Optional
+	ActionID *string `json:"actionId,omitempty" tf:"action_id,omitempty"`
+}
+
+type ActionsVariableInitParameters struct {
+
+	// Name of this Webhook.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// Path to a field in an event, in dot-notation. This supports both PagerDuty Common Event Format PD-CEF and non-CEF fields. Eg: Use event.summary for the summary CEF field. Use raw_event.fieldname to read from the original event fieldname data. You can use any valid PCL path.
+	Path *string `json:"path,omitempty" tf:"path,omitempty"`
+
+	// Only regex is supported
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+
+	// Value of this header
+	Value *string `json:"value,omitempty" tf:"value,omitempty"`
 }
 
 type ActionsVariableObservation struct {
@@ -119,20 +173,29 @@ type ActionsVariableObservation struct {
 type ActionsVariableParameters struct {
 
 	// Name of this Webhook.
-	// +kubebuilder:validation:Required
-	Name *string `json:"name" tf:"name,omitempty"`
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
 	// Path to a field in an event, in dot-notation. This supports both PagerDuty Common Event Format PD-CEF and non-CEF fields. Eg: Use event.summary for the summary CEF field. Use raw_event.fieldname to read from the original event fieldname data. You can use any valid PCL path.
-	// +kubebuilder:validation:Required
-	Path *string `json:"path" tf:"path,omitempty"`
+	// +kubebuilder:validation:Optional
+	Path *string `json:"path,omitempty" tf:"path,omitempty"`
 
 	// Only regex is supported
-	// +kubebuilder:validation:Required
-	Type *string `json:"type" tf:"type,omitempty"`
+	// +kubebuilder:validation:Optional
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 
 	// Value of this header
-	// +kubebuilder:validation:Required
-	Value *string `json:"value" tf:"value,omitempty"`
+	// +kubebuilder:validation:Optional
+	Value *string `json:"value,omitempty" tf:"value,omitempty"`
+}
+
+type AutomationActionHeaderInitParameters struct {
+
+	// Name to identify the header
+	Key *string `json:"key,omitempty" tf:"key,omitempty"`
+
+	// Value of this header
+	Value *string `json:"value,omitempty" tf:"value,omitempty"`
 }
 
 type AutomationActionHeaderObservation struct {
@@ -147,12 +210,30 @@ type AutomationActionHeaderObservation struct {
 type AutomationActionHeaderParameters struct {
 
 	// Name to identify the header
-	// +kubebuilder:validation:Required
-	Key *string `json:"key" tf:"key,omitempty"`
+	// +kubebuilder:validation:Optional
+	Key *string `json:"key,omitempty" tf:"key,omitempty"`
 
 	// Value of this header
-	// +kubebuilder:validation:Required
-	Value *string `json:"value" tf:"value,omitempty"`
+	// +kubebuilder:validation:Optional
+	Value *string `json:"value,omitempty" tf:"value,omitempty"`
+}
+
+type AutomationActionInitParameters struct {
+
+	// When true, PagerDuty's servers will automatically send this webhook request as soon as the resulting incident is created. When false, your incident responder will be able to manually trigger the Webhook via the PagerDuty website and mobile app.
+	AutoSend *bool `json:"autoSend,omitempty" tf:"auto_send,omitempty"`
+
+	// Specify custom key/value pairs that'll be sent with the webhook request as request headers.
+	Header []HeaderInitParameters `json:"header,omitempty" tf:"header,omitempty"`
+
+	// Name of this Webhook.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// Specify custom key/value pairs that'll be included in the webhook request's JSON payload.
+	Parameter []ParameterInitParameters `json:"parameter,omitempty" tf:"parameter,omitempty"`
+
+	// The API endpoint where PagerDuty's servers will send the webhook request.
+	URL *string `json:"url,omitempty" tf:"url,omitempty"`
 }
 
 type AutomationActionObservation struct {
@@ -173,6 +254,15 @@ type AutomationActionObservation struct {
 	URL *string `json:"url,omitempty" tf:"url,omitempty"`
 }
 
+type AutomationActionParameterInitParameters struct {
+
+	// Name to identify the header
+	Key *string `json:"key,omitempty" tf:"key,omitempty"`
+
+	// Value of this header
+	Value *string `json:"value,omitempty" tf:"value,omitempty"`
+}
+
 type AutomationActionParameterObservation struct {
 
 	// Name to identify the header
@@ -185,12 +275,12 @@ type AutomationActionParameterObservation struct {
 type AutomationActionParameterParameters struct {
 
 	// Name to identify the header
-	// +kubebuilder:validation:Required
-	Key *string `json:"key" tf:"key,omitempty"`
+	// +kubebuilder:validation:Optional
+	Key *string `json:"key,omitempty" tf:"key,omitempty"`
 
 	// Value of this header
-	// +kubebuilder:validation:Required
-	Value *string `json:"value" tf:"value,omitempty"`
+	// +kubebuilder:validation:Optional
+	Value *string `json:"value,omitempty" tf:"value,omitempty"`
 }
 
 type AutomationActionParameters struct {
@@ -204,16 +294,52 @@ type AutomationActionParameters struct {
 	Header []HeaderParameters `json:"header,omitempty" tf:"header,omitempty"`
 
 	// Name of this Webhook.
-	// +kubebuilder:validation:Required
-	Name *string `json:"name" tf:"name,omitempty"`
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
 	// Specify custom key/value pairs that'll be included in the webhook request's JSON payload.
 	// +kubebuilder:validation:Optional
 	Parameter []ParameterParameters `json:"parameter,omitempty" tf:"parameter,omitempty"`
 
 	// The API endpoint where PagerDuty's servers will send the webhook request.
-	// +kubebuilder:validation:Required
-	URL *string `json:"url" tf:"url,omitempty"`
+	// +kubebuilder:validation:Optional
+	URL *string `json:"url,omitempty" tf:"url,omitempty"`
+}
+
+type CatchAllActionsInitParameters struct {
+
+	// Add this text as a note on the resulting incident.
+	Annotate *string `json:"annotate,omitempty" tf:"annotate,omitempty"`
+
+	// Create a Webhook associated with the resulting incident.
+	AutomationAction []AutomationActionInitParameters `json:"automationAction,omitempty" tf:"automation_action,omitempty"`
+
+	// sets whether the resulting alert status is trigger or resolve. Allowed values are: trigger, resolve
+	EventAction *string `json:"eventAction,omitempty" tf:"event_action,omitempty"`
+
+	// Replace any CEF field or Custom Details object field using custom variables.
+	Extraction []ExtractionInitParameters `json:"extraction,omitempty" tf:"extraction,omitempty"`
+
+	// Configure a Process Automation associated with the resulting incident.
+	PagerdutyAutomationAction []PagerdutyAutomationActionInitParameters `json:"pagerdutyAutomationAction,omitempty" tf:"pagerduty_automation_action,omitempty"`
+
+	// The ID of the priority you want to set on resulting incident. Consider using the pagerduty_priority data source.
+	Priority *string `json:"priority,omitempty" tf:"priority,omitempty"`
+
+	// The ID of a Set from this Service Orchestration whose rules you also want to use with events that match this rule.
+	RouteTo *string `json:"routeTo,omitempty" tf:"route_to,omitempty"`
+
+	// sets Severity of the resulting alert. Allowed values are: info, error, warning, critical
+	Severity *string `json:"severity,omitempty" tf:"severity,omitempty"`
+
+	// Set whether the resulting alert is suppressed. Suppressed alerts will not trigger an incident.
+	Suppress *bool `json:"suppress,omitempty" tf:"suppress,omitempty"`
+
+	// The number of seconds to suspend the resulting alert before triggering. This effectively pauses incident notifications. If a resolve event arrives before the alert triggers then PagerDuty won't create an incident for this alert.
+	Suspend *float64 `json:"suspend,omitempty" tf:"suspend,omitempty"`
+
+	// Populate variables from event payloads and use those variables in other event actions.
+	Variable []VariableInitParameters `json:"variable,omitempty" tf:"variable,omitempty"`
 }
 
 type CatchAllActionsObservation struct {
@@ -299,6 +425,21 @@ type CatchAllActionsParameters struct {
 	Variable []VariableParameters `json:"variable,omitempty" tf:"variable,omitempty"`
 }
 
+type ExtractionInitParameters struct {
+
+	// A RE2 regular expression that will be matched against field specified via the source argument. If the regex contains one or more capture groups, their values will be extracted and appended together. If it contains no capture groups, the whole match is used. This field can be ignored for template based extractions.
+	Regex *string `json:"regex,omitempty" tf:"regex,omitempty"`
+
+	// The path to the event field where the regex will be applied to extract a value. You can use any valid PCL path like event.summary and you can reference previously-defined variables using a path like variables.hostname. This field can be ignored for template based extractions.
+	Source *string `json:"source,omitempty" tf:"source,omitempty"`
+
+	// The PagerDuty Common Event Format PD-CEF field that will be set with the value from the template or based on regex and source fields.
+	Target *string `json:"target,omitempty" tf:"target,omitempty"`
+
+	// A string that will be used to populate the target field. You can reference variables or event data within your template using double curly braces. For example:
+	Template *string `json:"template,omitempty" tf:"template,omitempty"`
+}
+
 type ExtractionObservation struct {
 
 	// A RE2 regular expression that will be matched against field specified via the source argument. If the regex contains one or more capture groups, their values will be extracted and appended together. If it contains no capture groups, the whole match is used. This field can be ignored for template based extractions.
@@ -325,12 +466,21 @@ type ExtractionParameters struct {
 	Source *string `json:"source,omitempty" tf:"source,omitempty"`
 
 	// The PagerDuty Common Event Format PD-CEF field that will be set with the value from the template or based on regex and source fields.
-	// +kubebuilder:validation:Required
-	Target *string `json:"target" tf:"target,omitempty"`
+	// +kubebuilder:validation:Optional
+	Target *string `json:"target,omitempty" tf:"target,omitempty"`
 
 	// A string that will be used to populate the target field. You can reference variables or event data within your template using double curly braces. For example:
 	// +kubebuilder:validation:Optional
 	Template *string `json:"template,omitempty" tf:"template,omitempty"`
+}
+
+type HeaderInitParameters struct {
+
+	// Name to identify the header
+	Key *string `json:"key,omitempty" tf:"key,omitempty"`
+
+	// Value of this header
+	Value *string `json:"value,omitempty" tf:"value,omitempty"`
 }
 
 type HeaderObservation struct {
@@ -345,12 +495,18 @@ type HeaderObservation struct {
 type HeaderParameters struct {
 
 	// Name to identify the header
-	// +kubebuilder:validation:Required
-	Key *string `json:"key" tf:"key,omitempty"`
+	// +kubebuilder:validation:Optional
+	Key *string `json:"key,omitempty" tf:"key,omitempty"`
 
 	// Value of this header
-	// +kubebuilder:validation:Required
-	Value *string `json:"value" tf:"value,omitempty"`
+	// +kubebuilder:validation:Optional
+	Value *string `json:"value,omitempty" tf:"value,omitempty"`
+}
+
+type OrchestrationServiceCatchAllInitParameters struct {
+
+	// Actions that will be taken to change the resulting alert and incident, when an event matches this rule.
+	Actions []CatchAllActionsInitParameters `json:"actions,omitempty" tf:"actions,omitempty"`
 }
 
 type OrchestrationServiceCatchAllObservation struct {
@@ -362,8 +518,20 @@ type OrchestrationServiceCatchAllObservation struct {
 type OrchestrationServiceCatchAllParameters struct {
 
 	// Actions that will be taken to change the resulting alert and incident, when an event matches this rule.
-	// +kubebuilder:validation:Required
-	Actions []CatchAllActionsParameters `json:"actions" tf:"actions,omitempty"`
+	// +kubebuilder:validation:Optional
+	Actions []CatchAllActionsParameters `json:"actions,omitempty" tf:"actions,omitempty"`
+}
+
+type OrchestrationServiceInitParameters struct {
+
+	// the catch_all actions will be applied if an Event reaches the end of any set without matching any rules in that set.
+	CatchAll []OrchestrationServiceCatchAllInitParameters `json:"catchAll,omitempty" tf:"catch_all,omitempty"`
+
+	// Opt-in/out for switching the Service to Service Orchestrations.
+	EnableEventOrchestrationForService *bool `json:"enableEventOrchestrationForService,omitempty" tf:"enable_event_orchestration_for_service,omitempty"`
+
+	// A Service Orchestration must contain at least a "start" set, but can contain any number of additional sets that are routed to by other rules to form a directional graph.
+	Set []OrchestrationServiceSetInitParameters `json:"set,omitempty" tf:"set,omitempty"`
 }
 
 type OrchestrationServiceObservation struct {
@@ -412,6 +580,15 @@ type OrchestrationServiceParameters struct {
 	Set []OrchestrationServiceSetParameters `json:"set,omitempty" tf:"set,omitempty"`
 }
 
+type OrchestrationServiceSetInitParameters struct {
+
+	// The ID of this set of rules. Rules in other sets can route events into this set using the rule's route_to property.
+	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// The service orchestration evaluates Events against these Rules, one at a time, and applies all the actions for first rule it finds where the event matches the rule's conditions.
+	Rule []SetRuleInitParameters `json:"rule,omitempty" tf:"rule,omitempty"`
+}
+
 type OrchestrationServiceSetObservation struct {
 
 	// The ID of this set of rules. Rules in other sets can route events into this set using the rule's route_to property.
@@ -424,12 +601,18 @@ type OrchestrationServiceSetObservation struct {
 type OrchestrationServiceSetParameters struct {
 
 	// The ID of this set of rules. Rules in other sets can route events into this set using the rule's route_to property.
-	// +kubebuilder:validation:Required
-	ID *string `json:"id" tf:"id,omitempty"`
+	// +kubebuilder:validation:Optional
+	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
 	// The service orchestration evaluates Events against these Rules, one at a time, and applies all the actions for first rule it finds where the event matches the rule's conditions.
 	// +kubebuilder:validation:Optional
 	Rule []SetRuleParameters `json:"rule,omitempty" tf:"rule,omitempty"`
+}
+
+type PagerdutyAutomationActionInitParameters struct {
+
+	// Id of the Process Automation action to be triggered.
+	ActionID *string `json:"actionId,omitempty" tf:"action_id,omitempty"`
 }
 
 type PagerdutyAutomationActionObservation struct {
@@ -441,8 +624,17 @@ type PagerdutyAutomationActionObservation struct {
 type PagerdutyAutomationActionParameters struct {
 
 	// Id of the Process Automation action to be triggered.
-	// +kubebuilder:validation:Required
-	ActionID *string `json:"actionId" tf:"action_id,omitempty"`
+	// +kubebuilder:validation:Optional
+	ActionID *string `json:"actionId,omitempty" tf:"action_id,omitempty"`
+}
+
+type ParameterInitParameters struct {
+
+	// Name to identify the header
+	Key *string `json:"key,omitempty" tf:"key,omitempty"`
+
+	// Value of this header
+	Value *string `json:"value,omitempty" tf:"value,omitempty"`
 }
 
 type ParameterObservation struct {
@@ -457,12 +649,18 @@ type ParameterObservation struct {
 type ParameterParameters struct {
 
 	// Name to identify the header
-	// +kubebuilder:validation:Required
-	Key *string `json:"key" tf:"key,omitempty"`
+	// +kubebuilder:validation:Optional
+	Key *string `json:"key,omitempty" tf:"key,omitempty"`
 
 	// Value of this header
-	// +kubebuilder:validation:Required
-	Value *string `json:"value" tf:"value,omitempty"`
+	// +kubebuilder:validation:Optional
+	Value *string `json:"value,omitempty" tf:"value,omitempty"`
+}
+
+type RuleConditionInitParameters struct {
+
+	// A PCL condition string.
+	Expression *string `json:"expression,omitempty" tf:"expression,omitempty"`
 }
 
 type RuleConditionObservation struct {
@@ -474,8 +672,44 @@ type RuleConditionObservation struct {
 type RuleConditionParameters struct {
 
 	// A PCL condition string.
-	// +kubebuilder:validation:Required
-	Expression *string `json:"expression" tf:"expression,omitempty"`
+	// +kubebuilder:validation:Optional
+	Expression *string `json:"expression,omitempty" tf:"expression,omitempty"`
+}
+
+type SetRuleActionsInitParameters struct {
+
+	// Add this text as a note on the resulting incident.
+	Annotate *string `json:"annotate,omitempty" tf:"annotate,omitempty"`
+
+	// Create a Webhook associated with the resulting incident.
+	AutomationAction []ActionsAutomationActionInitParameters `json:"automationAction,omitempty" tf:"automation_action,omitempty"`
+
+	// sets whether the resulting alert status is trigger or resolve. Allowed values are: trigger, resolve
+	EventAction *string `json:"eventAction,omitempty" tf:"event_action,omitempty"`
+
+	// Replace any CEF field or Custom Details object field using custom variables.
+	Extraction []ActionsExtractionInitParameters `json:"extraction,omitempty" tf:"extraction,omitempty"`
+
+	// Configure a Process Automation associated with the resulting incident.
+	PagerdutyAutomationAction []ActionsPagerdutyAutomationActionInitParameters `json:"pagerdutyAutomationAction,omitempty" tf:"pagerduty_automation_action,omitempty"`
+
+	// The ID of the priority you want to set on resulting incident. Consider using the pagerduty_priority data source.
+	Priority *string `json:"priority,omitempty" tf:"priority,omitempty"`
+
+	// The ID of a Set from this Service Orchestration whose rules you also want to use with events that match this rule.
+	RouteTo *string `json:"routeTo,omitempty" tf:"route_to,omitempty"`
+
+	// sets Severity of the resulting alert. Allowed values are: info, error, warning, critical
+	Severity *string `json:"severity,omitempty" tf:"severity,omitempty"`
+
+	// Set whether the resulting alert is suppressed. Suppressed alerts will not trigger an incident.
+	Suppress *bool `json:"suppress,omitempty" tf:"suppress,omitempty"`
+
+	// The number of seconds to suspend the resulting alert before triggering. This effectively pauses incident notifications. If a resolve event arrives before the alert triggers then PagerDuty won't create an incident for this alert.
+	Suspend *float64 `json:"suspend,omitempty" tf:"suspend,omitempty"`
+
+	// Populate variables from event payloads and use those variables in other event actions.
+	Variable []ActionsVariableInitParameters `json:"variable,omitempty" tf:"variable,omitempty"`
 }
 
 type SetRuleActionsObservation struct {
@@ -561,6 +795,21 @@ type SetRuleActionsParameters struct {
 	Variable []ActionsVariableParameters `json:"variable,omitempty" tf:"variable,omitempty"`
 }
 
+type SetRuleInitParameters struct {
+
+	// Actions that will be taken to change the resulting alert and incident, when an event matches this rule.
+	Actions []SetRuleActionsInitParameters `json:"actions,omitempty" tf:"actions,omitempty"`
+
+	// Each of these conditions is evaluated to check if an event matches this rule. The rule is considered a match if any of these conditions match. If none are provided, the event will always match against the rule.
+	Condition []RuleConditionInitParameters `json:"condition,omitempty" tf:"condition,omitempty"`
+
+	// Indicates whether the rule is disabled and would therefore not be evaluated.
+	Disabled *bool `json:"disabled,omitempty" tf:"disabled,omitempty"`
+
+	// A description of this rule's purpose.
+	Label *string `json:"label,omitempty" tf:"label,omitempty"`
+}
+
 type SetRuleObservation struct {
 
 	// Actions that will be taken to change the resulting alert and incident, when an event matches this rule.
@@ -582,8 +831,8 @@ type SetRuleObservation struct {
 type SetRuleParameters struct {
 
 	// Actions that will be taken to change the resulting alert and incident, when an event matches this rule.
-	// +kubebuilder:validation:Required
-	Actions []SetRuleActionsParameters `json:"actions" tf:"actions,omitempty"`
+	// +kubebuilder:validation:Optional
+	Actions []SetRuleActionsParameters `json:"actions,omitempty" tf:"actions,omitempty"`
 
 	// Each of these conditions is evaluated to check if an event matches this rule. The rule is considered a match if any of these conditions match. If none are provided, the event will always match against the rule.
 	// +kubebuilder:validation:Optional
@@ -596,6 +845,21 @@ type SetRuleParameters struct {
 	// A description of this rule's purpose.
 	// +kubebuilder:validation:Optional
 	Label *string `json:"label,omitempty" tf:"label,omitempty"`
+}
+
+type VariableInitParameters struct {
+
+	// Name of this Webhook.
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// Path to a field in an event, in dot-notation. This supports both PagerDuty Common Event Format PD-CEF and non-CEF fields. Eg: Use event.summary for the summary CEF field. Use raw_event.fieldname to read from the original event fieldname data. You can use any valid PCL path.
+	Path *string `json:"path,omitempty" tf:"path,omitempty"`
+
+	// Only regex is supported
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+
+	// Value of this header
+	Value *string `json:"value,omitempty" tf:"value,omitempty"`
 }
 
 type VariableObservation struct {
@@ -616,26 +880,38 @@ type VariableObservation struct {
 type VariableParameters struct {
 
 	// Name of this Webhook.
-	// +kubebuilder:validation:Required
-	Name *string `json:"name" tf:"name,omitempty"`
+	// +kubebuilder:validation:Optional
+	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
 	// Path to a field in an event, in dot-notation. This supports both PagerDuty Common Event Format PD-CEF and non-CEF fields. Eg: Use event.summary for the summary CEF field. Use raw_event.fieldname to read from the original event fieldname data. You can use any valid PCL path.
-	// +kubebuilder:validation:Required
-	Path *string `json:"path" tf:"path,omitempty"`
+	// +kubebuilder:validation:Optional
+	Path *string `json:"path,omitempty" tf:"path,omitempty"`
 
 	// Only regex is supported
-	// +kubebuilder:validation:Required
-	Type *string `json:"type" tf:"type,omitempty"`
+	// +kubebuilder:validation:Optional
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 
 	// Value of this header
-	// +kubebuilder:validation:Required
-	Value *string `json:"value" tf:"value,omitempty"`
+	// +kubebuilder:validation:Optional
+	Value *string `json:"value,omitempty" tf:"value,omitempty"`
 }
 
 // OrchestrationServiceSpec defines the desired state of OrchestrationService
 type OrchestrationServiceSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     OrchestrationServiceParameters `json:"forProvider"`
+	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
+	// unless the relevant Crossplane feature flag is enabled, and may be
+	// changed or removed without notice.
+	// InitProvider holds the same fields as ForProvider, with the exception
+	// of Identifier and other resource reference fields. The fields that are
+	// in InitProvider are merged into ForProvider when the resource is created.
+	// The same fields are also added to the terraform ignore_changes hook, to
+	// avoid updating them after creation. This is useful for fields that are
+	// required on creation, but we do not desire to update them after creation,
+	// for example because of an external controller is managing them, like an
+	// autoscaler.
+	InitProvider OrchestrationServiceInitParameters `json:"initProvider,omitempty"`
 }
 
 // OrchestrationServiceStatus defines the observed state of OrchestrationService.
@@ -656,8 +932,8 @@ type OrchestrationServiceStatus struct {
 type OrchestrationService struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.catchAll)",message="catchAll is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="self.managementPolicy == 'ObserveOnly' || has(self.forProvider.set)",message="set is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.catchAll) || has(self.initProvider.catchAll)",message="catchAll is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.set) || has(self.initProvider.set)",message="set is a required parameter"
 	Spec   OrchestrationServiceSpec   `json:"spec"`
 	Status OrchestrationServiceStatus `json:"status,omitempty"`
 }
