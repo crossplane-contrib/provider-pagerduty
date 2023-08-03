@@ -86,7 +86,7 @@ func main() {
 			GlobalRateLimiter:       ratelimiter.NewGlobal(*maxReconcileRate),
 			PollInterval:            *pollInterval,
 			MaxConcurrentReconciles: *maxReconcileRate,
-			Features:                &feature.Flags{},
+			Features:                featureFlags,
 		},
 		Provider:       config.GetProvider(),
 		SetupFn:        clients.TerraformSetupBuilder(*terraformVersion, *nativeProviderSource, *providerVersion),
