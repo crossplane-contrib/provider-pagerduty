@@ -19,6 +19,7 @@ import (
 	ctrl "sigs.k8s.io/controller-runtime"
 
 	v1alpha1 "github.com/crossplane-contrib/provider-pagerduty/apis/business/v1alpha1"
+	features "github.com/crossplane-contrib/provider-pagerduty/internal/features"
 )
 
 // Setup adds a controller that reconciles Service managed resources.
@@ -41,6 +42,9 @@ func Setup(mgr ctrl.Manager, o tjcontroller.Options) error {
 		managed.WithInitializers(initializers),
 		managed.WithConnectionPublishers(cps...),
 		managed.WithPollInterval(o.PollInterval),
+	}
+	if o.Features.Enabled(features.EnableAlphaManagementPolicies) {
+		opts = append(opts, managed.WithManagementPolicies())
 	}
 	r := managed.NewReconciler(mgr, xpresource.ManagedKind(v1alpha1.Service_GroupVersionKind), opts...)
 
