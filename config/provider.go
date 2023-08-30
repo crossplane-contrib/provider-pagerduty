@@ -43,6 +43,7 @@ func GetProvider() *ujconfig.Provider {
 	pc := ujconfig.NewProvider([]byte(providerSchema), resourcePrefix, modulePath, []byte(providerMetadata),
 		ujconfig.WithIncludeList(ExternalNameConfigured()),
 		ujconfig.WithShortName("pagerduty"),
+		ujconfig.WithFeaturesPackage("internal/features"),
 		ujconfig.WithRootGroup("pagerduty.crossplane.io"),
 		ujconfig.WithDefaultResourceOptions(
 			ExternalNameConfigurations(),
