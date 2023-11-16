@@ -45,6 +45,14 @@ func Configure(p *config.Provider) {
 				Type: "Service",
 			},
 		}
+
+		r.Sensitive.AdditionalConnectionDetailsFn = func(attr map[string]any) (map[string][]byte, error) {
+			conn := map[string][]byte{}
+			if a, ok := attr["integration_key"].(string); ok {
+				conn["integration_key"] = []byte(a)
+			}
+			return conn, nil
+		}
 	})
 
 }
