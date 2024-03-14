@@ -29,7 +29,7 @@ type ActionsParameters struct {
 
 	// The ID of the target Service for the resulting alert.
 	// +kubebuilder:validation:Optional
-	RouteTo *string `json:"routeTo,omitempty" tf:"route_to,omitempty"`
+	RouteTo *string `json:"routeTo" tf:"route_to,omitempty"`
 }
 
 type CatchAllInitParameters struct {
@@ -48,7 +48,7 @@ type CatchAllParameters struct {
 
 	// Actions that will be taken to change the resulting alert and incident, when an event matches this rule.
 	// +kubebuilder:validation:Optional
-	Actions []ActionsParameters `json:"actions,omitempty" tf:"actions,omitempty"`
+	Actions []ActionsParameters `json:"actions" tf:"actions,omitempty"`
 }
 
 type ConditionInitParameters struct {
@@ -67,13 +67,25 @@ type ConditionParameters struct {
 
 	// A PCL condition string.
 	// +kubebuilder:validation:Optional
-	Expression *string `json:"expression,omitempty" tf:"expression,omitempty"`
+	Expression *string `json:"expression" tf:"expression,omitempty"`
 }
 
 type OrchestrationRouterInitParameters struct {
 
 	// When none of the rules match an event, the event will be routed according to the catch_all settings.
 	CatchAll []CatchAllInitParameters `json:"catchAll,omitempty" tf:"catch_all,omitempty"`
+
+	// ID of the Event Orchestration to which the Router belongs.
+	// +crossplane:generate:reference:type=Orchestration
+	EventOrchestration *string `json:"eventOrchestration,omitempty" tf:"event_orchestration,omitempty"`
+
+	// Reference to a Orchestration to populate eventOrchestration.
+	// +kubebuilder:validation:Optional
+	EventOrchestrationRef *v1.Reference `json:"eventOrchestrationRef,omitempty" tf:"-"`
+
+	// Selector for a Orchestration to populate eventOrchestration.
+	// +kubebuilder:validation:Optional
+	EventOrchestrationSelector *v1.Selector `json:"eventOrchestrationSelector,omitempty" tf:"-"`
 
 	// The Router contains a single set of rules  (the "start" set).
 	Set []SetInitParameters `json:"set,omitempty" tf:"set,omitempty"`
@@ -134,7 +146,7 @@ type RuleActionsParameters struct {
 
 	// The ID of the target Service for the resulting alert.
 	// +kubebuilder:validation:Optional
-	RouteTo *string `json:"routeTo,omitempty" tf:"route_to,omitempty"`
+	RouteTo *string `json:"routeTo" tf:"route_to,omitempty"`
 }
 
 type RuleInitParameters struct {
@@ -174,7 +186,7 @@ type RuleParameters struct {
 
 	// Actions that will be taken to change the resulting alert and incident, when an event matches this rule.
 	// +kubebuilder:validation:Optional
-	Actions []RuleActionsParameters `json:"actions,omitempty" tf:"actions,omitempty"`
+	Actions []RuleActionsParameters `json:"actions" tf:"actions,omitempty"`
 
 	// Each of these conditions is evaluated to check if an event matches this rule. The rule is considered a match if any of these conditions match. If none are provided, the event will always match against the rule.
 	// +kubebuilder:validation:Optional
@@ -211,7 +223,7 @@ type SetParameters struct {
 
 	// ID of the start set. Router supports only one set and it's id has to be start
 	// +kubebuilder:validation:Optional
-	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+	ID *string `json:"id" tf:"id,omitempty"`
 
 	// The Router evaluates Events against these Rules, one at a time, and routes each Event to a specific Service based on the first rule that matches.
 	// +kubebuilder:validation:Optional
@@ -222,9 +234,8 @@ type SetParameters struct {
 type OrchestrationRouterSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     OrchestrationRouterParameters `json:"forProvider"`
-	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
-	// unless the relevant Crossplane feature flag is enabled, and may be
-	// changed or removed without notice.
+	// THIS IS A BETA FIELD. It will be honored
+	// unless the Management Policies feature flag is disabled.
 	// InitProvider holds the same fields as ForProvider, with the exception
 	// of Identifier and other resource reference fields. The fields that are
 	// in InitProvider are merged into ForProvider when the resource is created.
@@ -243,19 +254,20 @@ type OrchestrationRouterStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
 // OrchestrationRouter is the Schema for the OrchestrationRouters API. Creates and manages a Router for Global Event Orchestration in PagerDuty.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,pagerduty}
 type OrchestrationRouter struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.catchAll) || has(self.initProvider.catchAll)",message="catchAll is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.set) || has(self.initProvider.set)",message="set is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.catchAll) || (has(self.initProvider) && has(self.initProvider.catchAll))",message="spec.forProvider.catchAll is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.set) || (has(self.initProvider) && has(self.initProvider.set))",message="spec.forProvider.set is a required parameter"
 	Spec   OrchestrationRouterSpec   `json:"spec"`
 	Status OrchestrationRouterStatus `json:"status,omitempty"`
 }

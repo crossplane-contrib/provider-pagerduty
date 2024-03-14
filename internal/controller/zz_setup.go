@@ -1,13 +1,9 @@
-/*
-Copyright 2021 Upbound Inc.
-*/
-
 package controller
 
 import (
 	ctrl "sigs.k8s.io/controller-runtime"
 
-	"github.com/upbound/upjet/pkg/controller"
+	"github.com/crossplane/upjet/pkg/controller"
 
 	addon "github.com/crossplane-contrib/provider-pagerduty/internal/controller/addon/addon"
 	service "github.com/crossplane-contrib/provider-pagerduty/internal/controller/business/service"

@@ -36,5 +36,21 @@ func (mg *Extension) ResolveReferences(ctx context.Context, c client.Reader) err
 	mg.Spec.ForProvider.ExtensionObjects = reference.ToPtrValues(mrsp.ResolvedValues)
 	mg.Spec.ForProvider.ExtensionObjectsRefs = mrsp.ResolvedReferences
 
+	mrsp, err = r.ResolveMultiple(ctx, reference.MultiResolutionRequest{
+		CurrentValues: reference.FromPtrValues(mg.Spec.InitProvider.ExtensionObjects),
+		Extract:       reference.ExternalName(),
+		References:    mg.Spec.InitProvider.ExtensionObjectsRefs,
+		Selector:      mg.Spec.InitProvider.ExtensionObjectsSelector,
+		To: reference.To{
+			List:    &v1alpha1.ServiceList{},
+			Managed: &v1alpha1.Service{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.InitProvider.ExtensionObjects")
+	}
+	mg.Spec.InitProvider.ExtensionObjects = reference.ToPtrValues(mrsp.ResolvedValues)
+	mg.Spec.InitProvider.ExtensionObjectsRefs = mrsp.ResolvedReferences
+
 	return nil
 }

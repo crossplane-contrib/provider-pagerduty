@@ -7,9 +7,9 @@ PROJECT_REPO := github.com/crossplane-contrib/$(PROJECT_NAME)
 export TERRAFORM_VERSION := 1.3.3
 
 export TERRAFORM_PROVIDER_SOURCE := PagerDuty/pagerduty
-export TERRAFORM_PROVIDER_VERSION := 2.15.1
+export TERRAFORM_PROVIDER_VERSION := 3.9.0
 export TERRAFORM_PROVIDER_DOWNLOAD_NAME := terraform-provider-pagerduty
-export TERRAFORM_PROVIDER_DOWNLOAD_URL_PREFIX := https://github.com/PagerDuty/terraform-provider-pagerduty/releases/download/v2.15.1
+export TERRAFORM_PROVIDER_DOWNLOAD_URL_PREFIX := https://github.com/PagerDuty/terraform-provider-pagerduty/releases/download/v3.9.0
 export TERRAFORM_PROVIDER_REPO ?= https://github.com/PagerDuty/terraform-provider-pagerduty
 export TERRAFORM_DOCS_PATH := website/docs/r
 
@@ -38,8 +38,7 @@ NPROCS ?= 1
 # to half the number of CPU cores.
 GO_TEST_PARALLEL := $(shell echo $$(( $(NPROCS) / 2 )))
 
-GO_REQUIRED_VERSION ?= 1.19
-GOLANGCILINT_VERSION ?= 1.50.0
+GO_REQUIRED_VERSION ?= 1.20
 GO_STATIC_PACKAGES = $(GO_PROJECT)/cmd/provider $(GO_PROJECT)/cmd/generator
 GO_LDFLAGS += -X $(GO_PROJECT)/internal/version.Version=$(VERSION)
 GO_SUBDIRS += cmd internal apis
@@ -50,7 +49,7 @@ GO111MODULE = on
 # Setup Kubernetes tools
 
 KIND_VERSION = v0.15.0
-UP_VERSION = v0.14.0
+UP_VERSION = v0.24.1
 UP_CHANNEL = stable
 -include build/makelib/k8s_tools.mk
 

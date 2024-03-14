@@ -112,10 +112,10 @@ type EmailParserParameters struct {
 
 	// Can be resolve or trigger.
 	// +kubebuilder:validation:Optional
-	Action *string `json:"action,omitempty" tf:"action,omitempty"`
+	Action *string `json:"action" tf:"action,omitempty"`
 
 	// +kubebuilder:validation:Optional
-	MatchPredicate []MatchPredicateParameters `json:"matchPredicate,omitempty" tf:"match_predicate,omitempty"`
+	MatchPredicate []MatchPredicateParameters `json:"matchPredicate" tf:"match_predicate,omitempty"`
 
 	// +kubebuilder:validation:Optional
 	ValueExtractor []ValueExtractorParameters `json:"valueExtractor,omitempty" tf:"value_extractor,omitempty"`
@@ -138,11 +138,23 @@ type IntegrationInitParameters struct {
 	// This is the unique fully-qualified email address used for routing emails to this integration for processing.
 	IntegrationEmail *string `json:"integrationEmail,omitempty" tf:"integration_email,omitempty"`
 
-	// This is the unique key used to route events to this integration when received via the PagerDuty Events API.
+	// (Deprecated) This is the unique key used to route events to this integration when received via the PagerDuty Events API.
 	IntegrationKey *string `json:"integrationKey,omitempty" tf:"integration_key,omitempty"`
 
 	// The name of the service integration.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
+
+	// The ID of the service the integration should belong to.
+	// +crossplane:generate:reference:type=Service
+	Service *string `json:"service,omitempty" tf:"service,omitempty"`
+
+	// Reference to a Service to populate service.
+	// +kubebuilder:validation:Optional
+	ServiceRef *v1.Reference `json:"serviceRef,omitempty" tf:"-"`
+
+	// Selector for a Service to populate service.
+	// +kubebuilder:validation:Optional
+	ServiceSelector *v1.Selector `json:"serviceSelector,omitempty" tf:"-"`
 
 	// The service type. Can be:
 	// aws_cloudwatch_inbound_integration,
@@ -183,7 +195,7 @@ type IntegrationObservation struct {
 	// This is the unique fully-qualified email address used for routing emails to this integration for processing.
 	IntegrationEmail *string `json:"integrationEmail,omitempty" tf:"integration_email,omitempty"`
 
-	// This is the unique key used to route events to this integration when received via the PagerDuty Events API.
+	// (Deprecated) This is the unique key used to route events to this integration when received via the PagerDuty Events API.
 	IntegrationKey *string `json:"integrationKey,omitempty" tf:"integration_key,omitempty"`
 
 	// The name of the service integration.
@@ -232,7 +244,7 @@ type IntegrationParameters struct {
 	// +kubebuilder:validation:Optional
 	IntegrationEmail *string `json:"integrationEmail,omitempty" tf:"integration_email,omitempty"`
 
-	// This is the unique key used to route events to this integration when received via the PagerDuty Events API.
+	// (Deprecated) This is the unique key used to route events to this integration when received via the PagerDuty Events API.
 	// +kubebuilder:validation:Optional
 	IntegrationKey *string `json:"integrationKey,omitempty" tf:"integration_key,omitempty"`
 
@@ -319,7 +331,7 @@ type MatchPredicateParameters struct {
 	// nagios_inbound_integration,
 	// pingdom_inbound_integrationor sql_monitor_inbound_integration.
 	// +kubebuilder:validation:Optional
-	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+	Type *string `json:"type" tf:"type,omitempty"`
 }
 
 type PredicateInitParameters struct {
@@ -392,7 +404,7 @@ type PredicateParameters struct {
 	// nagios_inbound_integration,
 	// pingdom_inbound_integrationor sql_monitor_inbound_integration.
 	// +kubebuilder:validation:Optional
-	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+	Type *string `json:"type" tf:"type,omitempty"`
 }
 
 type PredicatePredicateInitParameters struct {
@@ -441,11 +453,11 @@ type PredicatePredicateParameters struct {
 
 	// Predicate value or valid regex.
 	// +kubebuilder:validation:Optional
-	Matcher *string `json:"matcher,omitempty" tf:"matcher,omitempty"`
+	Matcher *string `json:"matcher" tf:"matcher,omitempty"`
 
 	// Can be subject, body or from_addresses.
 	// +kubebuilder:validation:Optional
-	Part *string `json:"part,omitempty" tf:"part,omitempty"`
+	Part *string `json:"part" tf:"part,omitempty"`
 
 	// The service type. Can be:
 	// aws_cloudwatch_inbound_integration,
@@ -458,7 +470,7 @@ type PredicatePredicateParameters struct {
 	// nagios_inbound_integration,
 	// pingdom_inbound_integrationor sql_monitor_inbound_integration.
 	// +kubebuilder:validation:Optional
-	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+	Type *string `json:"type" tf:"type,omitempty"`
 }
 
 type ValueExtractorInitParameters struct {
@@ -522,7 +534,7 @@ type ValueExtractorParameters struct {
 
 	// Can be subject, body or from_addresses.
 	// +kubebuilder:validation:Optional
-	Part *string `json:"part,omitempty" tf:"part,omitempty"`
+	Part *string `json:"part" tf:"part,omitempty"`
 
 	// If type has value regex this value should contain valid regex.
 	// +kubebuilder:validation:Optional
@@ -542,20 +554,19 @@ type ValueExtractorParameters struct {
 	// nagios_inbound_integration,
 	// pingdom_inbound_integrationor sql_monitor_inbound_integration.
 	// +kubebuilder:validation:Optional
-	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+	Type *string `json:"type" tf:"type,omitempty"`
 
 	// First value extractor should have name incident_key other value extractors should contain custom names.
 	// +kubebuilder:validation:Optional
-	ValueName *string `json:"valueName,omitempty" tf:"value_name,omitempty"`
+	ValueName *string `json:"valueName" tf:"value_name,omitempty"`
 }
 
 // IntegrationSpec defines the desired state of Integration
 type IntegrationSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     IntegrationParameters `json:"forProvider"`
-	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
-	// unless the relevant Crossplane feature flag is enabled, and may be
-	// changed or removed without notice.
+	// THIS IS A BETA FIELD. It will be honored
+	// unless the Management Policies feature flag is disabled.
 	// InitProvider holds the same fields as ForProvider, with the exception
 	// of Identifier and other resource reference fields. The fields that are
 	// in InitProvider are merged into ForProvider when the resource is created.
@@ -574,13 +585,14 @@ type IntegrationStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
 // Integration is the Schema for the Integrations API. Creates and manages a service integration in PagerDuty.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,pagerduty}
 type Integration struct {
 	metav1.TypeMeta   `json:",inline"`

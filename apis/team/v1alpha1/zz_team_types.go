@@ -15,6 +15,9 @@ import (
 
 type TeamInitParameters struct {
 
+	// The team is private if the value is "none", or public if it is "manager" (the default permissions for a non-member of the team are either "none", or their base role up until "manager").
+	DefaultRole *string `json:"defaultRole,omitempty" tf:"default_role,omitempty"`
+
 	// A human-friendly description of the team.
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
 
@@ -26,6 +29,9 @@ type TeamInitParameters struct {
 }
 
 type TeamObservation struct {
+
+	// The team is private if the value is "none", or public if it is "manager" (the default permissions for a non-member of the team are either "none", or their base role up until "manager").
+	DefaultRole *string `json:"defaultRole,omitempty" tf:"default_role,omitempty"`
 
 	// A human-friendly description of the team.
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
@@ -45,6 +51,10 @@ type TeamObservation struct {
 
 type TeamParameters struct {
 
+	// The team is private if the value is "none", or public if it is "manager" (the default permissions for a non-member of the team are either "none", or their base role up until "manager").
+	// +kubebuilder:validation:Optional
+	DefaultRole *string `json:"defaultRole,omitempty" tf:"default_role,omitempty"`
+
 	// A human-friendly description of the team.
 	// +kubebuilder:validation:Optional
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
@@ -62,9 +72,8 @@ type TeamParameters struct {
 type TeamSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     TeamParameters `json:"forProvider"`
-	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
-	// unless the relevant Crossplane feature flag is enabled, and may be
-	// changed or removed without notice.
+	// THIS IS A BETA FIELD. It will be honored
+	// unless the Management Policies feature flag is disabled.
 	// InitProvider holds the same fields as ForProvider, with the exception
 	// of Identifier and other resource reference fields. The fields that are
 	// in InitProvider are merged into ForProvider when the resource is created.
@@ -83,18 +92,19 @@ type TeamStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
 // Team is the Schema for the Teams API. Creates and manages a team in PagerDuty.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,pagerduty}
 type Team struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || has(self.initProvider.name)",message="name is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || (has(self.initProvider) && has(self.initProvider.name))",message="spec.forProvider.name is a required parameter"
 	Spec   TeamSpec   `json:"spec"`
 	Status TeamStatus `json:"status,omitempty"`
 }

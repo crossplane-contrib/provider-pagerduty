@@ -322,186 +322,6 @@ resources:
             subscriber_id: '- (Required) The ID of the subscriber entity.'
             subscriber_type: '- (Required) Type of subscriber entity in the subscriber assignment. Possible values can be user and team.'
         importStatements: []
-    pagerduty_custom_field:
-        subCategory: ""
-        description: Creates and manages a custom field in PagerDuty.
-        name: pagerduty_custom_field
-        title: pagerduty_custom_field
-        examples:
-            - name: cs_impact
-              manifest: |-
-                {
-                  "datatype": "string",
-                  "name": "impact"
-                }
-            - name: sre_environment
-              manifest: |-
-                {
-                  "datatype": "string",
-                  "fixed_options": true,
-                  "name": "environment"
-                }
-        argumentDocs:
-            datatype: argument has been renamed data_type to match the Public API for the Custom Fields on Incidents feature.
-            fixed_options: '- (Optional) True if the field can only accept values from a set of options.'
-            id: '- The ID of the field.'
-            multi_value: |-
-                and fixed_options arguments have been merged into a single argument
-                named field_type.
-            name: '- (Required) The name of the field.'
-        importStatements: []
-    pagerduty_custom_field_option:
-        subCategory: ""
-        description: Creates and manages a custom field option in PagerDuty.
-        name: pagerduty_custom_field_option
-        title: pagerduty_custom_field_option
-        examples:
-            - name: dev_environment
-              manifest: |-
-                {
-                  "datatype": "string",
-                  "field": "${pagerduty_custom_field.sre_environment.id}",
-                  "value": "dev"
-                }
-              references:
-                field: pagerduty_custom_field.sre_environment.id
-              dependencies:
-                pagerduty_custom_field.sre_environment: |-
-                    {
-                      "datatype": "string",
-                      "fixed_options": true,
-                      "name": "environment"
-                    }
-            - name: stage_environment
-              manifest: |-
-                {
-                  "datatype": "string",
-                  "field": "${pagerduty_custom_field.sre_environment.id}",
-                  "value": "stage"
-                }
-              references:
-                field: pagerduty_custom_field.sre_environment.id
-              dependencies:
-                pagerduty_custom_field.sre_environment: |-
-                    {
-                      "datatype": "string",
-                      "fixed_options": true,
-                      "name": "environment"
-                    }
-            - name: prod_environment
-              manifest: |-
-                {
-                  "datatype": "string",
-                  "field": "${pagerduty_custom_field.sre_environment.id}",
-                  "value": "prod"
-                }
-              references:
-                field: pagerduty_custom_field.sre_environment.id
-              dependencies:
-                pagerduty_custom_field.sre_environment: |-
-                    {
-                      "datatype": "string",
-                      "fixed_options": true,
-                      "name": "environment"
-                    }
-        argumentDocs:
-            datatype: '- (Required) The datatype of the field option. Must be one of string, integer, float, boolean, datetime, or url.'
-            field: '- (Required) The ID of the field.'
-            id: '- The ID of the field option.'
-            value: '- (Required) The allowed value.'
-        importStatements: []
-    pagerduty_custom_field_schema:
-        subCategory: ""
-        description: Creates and manages a custom field schema in PagerDuty.
-        name: pagerduty_custom_field_schema
-        title: pagerduty_custom_field_schema
-        examples:
-            - name: my_schema
-              manifest: |-
-                {
-                  "description": "Fields used on incidents",
-                  "title": "My Schema"
-                }
-              dependencies:
-                pagerduty_custom_field.cs_impact: |-
-                    {
-                      "datatype": "string",
-                      "name": "impact"
-                    }
-        argumentDocs:
-            description: '- (Optional) The description of the field schema.'
-            id: '- The ID of the field schema.'
-            title: '- (Required) The title of the field schema.'
-        importStatements: []
-    pagerduty_custom_field_schema_assignment:
-        subCategory: ""
-        description: Creates and manages a custom field schema assignment in PagerDuty.
-        name: pagerduty_custom_field_schema_assignment
-        title: pagerduty_custom_field_schema_assignment
-        examples:
-            - name: assignment
-              manifest: |-
-                {
-                  "schema": "${pagerduty_custom_field_schema.my_schema.id}",
-                  "service": "${data.pagerduty_service.first_service.id}"
-                }
-              references:
-                schema: pagerduty_custom_field_schema.my_schema.id
-                service: data.pagerduty_service.first_service.id
-              dependencies:
-                pagerduty_custom_field.cs_impact: |-
-                    {
-                      "datatype": "string",
-                      "name": "impact"
-                    }
-                pagerduty_custom_field_schema.my_schema: |-
-                    {
-                      "description": "Fields used on incidents",
-                      "title": "My Schema"
-                    }
-        argumentDocs:
-            id: '- The ID of the field schema assignment.'
-            schema: '- (Required) The id of the field schema.'
-            service: '- (Required) The id of the service.'
-        importStatements: []
-    pagerduty_custom_field_schema_field_configuration:
-        subCategory: ""
-        description: Creates and manages a custom field configuration in PagerDuty.
-        name: pagerduty_custom_field_schema_field_configuration
-        title: pagerduty_custom_field_schema_field_configuration
-        examples:
-            - name: first_field_configuration
-              manifest: |-
-                {
-                  "default_value": "none",
-                  "default_value_datatype": "string",
-                  "field": "${pagerduty_custom_field.cs_impact.id}",
-                  "required": true,
-                  "schema": "${pagerduty_custom_field_schema.my_schema.id}"
-                }
-              references:
-                field: pagerduty_custom_field.cs_impact.id
-                schema: pagerduty_custom_field_schema.my_schema.id
-              dependencies:
-                pagerduty_custom_field.cs_impact: |-
-                    {
-                      "datatype": "string",
-                      "name": "impact"
-                    }
-                pagerduty_custom_field_schema.my_schema: |-
-                    {
-                      "description": "Fields used on incidents",
-                      "title": "My Schema"
-                    }
-        argumentDocs:
-            default_value: '- (Optional) The default value for the field.'
-            default_value_datatype: '- (Optional) The datatype of the default value.'
-            default_value_multi_value: '- (Optional) Whether or not the default value is multi-valued.'
-            field: '- (Required) The ID of the field.'
-            id: '- The ID of the field configuration.'
-            required: '- (Optional) True if the field is required'
-            schema: '- (Required) The ID of the schema.'
-        importStatements: []
     pagerduty_escalation_policy:
         subCategory: ""
         description: Creates and manages an escalation policy in PagerDuty.
@@ -553,13 +373,14 @@ resources:
                 - (Optional) A human-friendly description of the escalation policy.
                 If not set, a placeholder of "Managed by Terraform" will be set.
             escalation_delay_in_minutes: '- (Required) The number of minutes before an unacknowledged incident escalates away from this rule.'
+            escalation_rule_assignment_strategy: '- (Optional) The strategy used to assign the escalation rule to an incident. Documented below.'
             id: '- (Required) A target ID'
             name: '- (Required) The name of the escalation policy.'
             num_loops: '- (Optional) The number of times the escalation policy will repeat after reaching the end of its escalation.'
             rule: '- (Required) An Escalation rule block. Escalation rules documented below.'
             targets: '- (Required) A target block. Target blocks documented below.'
             teams: '- (Optional) Team associated with the policy (Only 1 team can be assigned to an Escalation Policy). Account must have the teams ability to use this parameter.'
-            type: '- (Optional) Can be user_reference or schedule_reference. Defaults to user_reference. For multiple users as example, repeat the target.'
+            type: '- (Optional) Can be round_robin or assign_to_everyone.'
         importStatements: []
     pagerduty_event_orchestration:
         subCategory: ""
@@ -699,6 +520,7 @@ resources:
             extraction: '- (Optional) Replace any CEF field or Custom Details object field using custom variables.'
             header: '- (Optional) Specify custom key/value pairs that''ll be sent with the webhook request as request headers.'
             id: '- (Required) The ID of this set of rules. Rules in other sets can route events into this set using the rule''s route_to property.'
+            incident_custom_field_update: '- (Optional) Assign a custom field to the resulting incident.'
             ip: 'and subnet with a template like: {{variables.ip}}/{{variables.subnet}}'
             key: '- (Required) Name to identify the header'
             label: '- (Optional) A description of this rule''s purpose.'
@@ -719,7 +541,7 @@ resources:
             template: '- (Optional) A string that will be used to populate the target field. You can reference variables or event data within your template using double curly braces. For example:'
             type: '- (Required) Only regex is supported'
             url: '- (Required) The API endpoint where PagerDuty''s servers will send the webhook request.'
-            value: '- (Required) Value of this header'
+            value: '- (Required) The value to assign to this custom field'
             variable: '- (Optional) Populate variables from event payloads and use those variables in other event actions.'
         importStatements: []
     pagerduty_event_orchestration_integration:
@@ -884,6 +706,12 @@ resources:
                           "actions": [
                             {
                               "annotate": "Please use our P1 runbook: https://docs.test/p1-runbook",
+                              "incident_custom_field_update": [
+                                {
+                                  "id": "${pagerduty_incident_custom_field.cs_impact.id}",
+                                  "value": "High Impact"
+                                }
+                              ],
                               "priority": "${data.pagerduty_priority.p1.id}"
                             }
                           ],
@@ -948,9 +776,10 @@ resources:
                 }
               references:
                 service: pagerduty_service.example.id
+                set.rule.actions.incident_custom_field_update.id: pagerduty_incident_custom_field.cs_impact.id
                 set.rule.actions.priority: data.pagerduty_priority.p1.id
               dependencies:
-                pagerduty_escalation_policy.foo: |-
+                pagerduty_escalation_policy.example: |-
                     {
                       "name": "Engineering Escalation Policy",
                       "num_loops": 2,
@@ -960,11 +789,17 @@ resources:
                           "target": [
                             {
                               "id": "${pagerduty_user.example.id}",
-                              "type": "user"
+                              "type": "user_reference"
                             }
                           ]
                         }
                       ]
+                    }
+                pagerduty_incident_custom_field.cs_impact: |-
+                    {
+                      "data_type": "string",
+                      "field_type": "single_value",
+                      "name": "impact"
                     }
                 pagerduty_service.example: |-
                     {
@@ -978,13 +813,16 @@ resources:
                     {
                       "name": "Engineering"
                     }
+                pagerduty_team_membership.foo: |-
+                    {
+                      "role": "manager",
+                      "team_id": "${pagerduty_team.engineering.id}",
+                      "user_id": "${pagerduty_user.example.id}"
+                    }
                 pagerduty_user.example: |-
                     {
                       "email": "125.greenholt.earline@graham.name",
-                      "name": "Earline Greenholt",
-                      "teams": [
-                        "${pagerduty_team.engineering.id}"
-                      ]
+                      "name": "Earline Greenholt"
                     }
         argumentDocs:
             action_id: '- (Required) Id of the Process Automation action to be triggered.'
@@ -1001,6 +839,7 @@ resources:
             extraction: '- (Optional) Replace any CEF field or Custom Details object field using custom variables.'
             header: '- (Optional) Specify custom key/value pairs that''ll be sent with the webhook request as request headers.'
             id: '- (Required) The ID of this set of rules. Rules in other sets can route events into this set using the rule''s route_to property.'
+            incident_custom_field_update: '- (Optional) Assign a custom field to the resulting incident.'
             ip: 'and subnet with a template like: {{variables.ip}}/{{variables.subnet}}'
             key: '- (Required) Name to identify the header'
             label: '- (Optional) A description of this rule''s purpose.'
@@ -1023,7 +862,7 @@ resources:
             template: '- (Optional) A string that will be used to populate the target field. You can reference variables or event data within your template using double curly braces. For example:'
             type: '- (Required) Only regex is supported'
             url: '- (Required) The API endpoint where PagerDuty''s servers will send the webhook request.'
-            value: '- (Required) Value of this header'
+            value: '- (Required) The value to assign to this custom field'
             variable: '- (Optional) Populate variables from event payloads and use those variables in other event actions.'
         importStatements: []
     pagerduty_event_orchestration_unrouted:
@@ -1268,6 +1107,7 @@ resources:
               manifest: |-
                 {
                   "data_type": "string",
+                  "display_name": "Customer Impact",
                   "field_type": "single_value",
                   "name": "impact"
                 }
@@ -1275,11 +1115,24 @@ resources:
               manifest: |-
                 {
                   "data_type": "string",
+                  "display_name": "Environment",
                   "field_type": "single_value_fixed",
                   "name": "environment"
                 }
+            - name: false_alarm
+              manifest: |-
+                {
+                  "data_type": "boolean",
+                  "default_value": "false",
+                  "display_name": "False Alarm",
+                  "field_type": "single_value",
+                  "name": "false_alarm"
+                }
         argumentDocs:
             data_type: '- (Required) The data type of the field. Must be one of string, integer, float, boolean, datetime, or url.'
+            default_value: '- (Optional) The default value to set when new incidents are created. Always specified as a string.'
+            description: '- (Optional) The description of the field.'
+            display_name: '- (Required) The display name of the field.'
             field_type: '- (Required) The field type of the field. Must be one of single_value, single_value_fixed, multi_value, or multi_value_fixed.'
             id: '- The ID of the field.'
             name: '- (Required) The name of the field.'
@@ -1303,6 +1156,7 @@ resources:
                 pagerduty_incident_custom_field.sre_environment: |-
                     {
                       "data_type": "string",
+                      "display_name": "Environment",
                       "field_type": "single_value_fixed",
                       "name": "environment"
                     }
@@ -1319,6 +1173,7 @@ resources:
                 pagerduty_incident_custom_field.sre_environment: |-
                     {
                       "data_type": "string",
+                      "display_name": "Environment",
                       "field_type": "single_value_fixed",
                       "name": "environment"
                     }
@@ -1335,6 +1190,7 @@ resources:
                 pagerduty_incident_custom_field.sre_environment: |-
                     {
                       "data_type": "string",
+                      "display_name": "Environment",
                       "field_type": "single_value_fixed",
                       "name": "environment"
                     }
@@ -1372,7 +1228,8 @@ resources:
             action: '- (Required) The action id for the workflow step, including the version. A list of actions available can be retrieved using the PagerDuty API.'
             description: '- (Optional) The description of the workflow.'
             id: '- The ID of the incident workflow.'
-            input: '- (Optional) The list of inputs for the workflow action.'
+            inline_steps_input: '- (Optional) The list of inputs that contain a series of inline steps for the workflow action.'
+            input: '- (Optional) The list of standard inputs for the workflow action.'
             name: '- (Required) The name of the workflow.'
             step: '- (Optional) The steps in the workflow.'
             team: '- (Optional) A team ID. If specified then workflow edit permissions will be scoped to members of this team.'
@@ -1449,7 +1306,7 @@ resources:
             id: '- The ID of the incident workflow.'
             services: '- (Optional) A list of service IDs. Incidents in any of the listed services are eligible to fire this trigger.'
             subscribed_to_all_services: '- (Required) Set to true if the trigger should be eligible for firing on all services. Only allowed to be true if the services list is not defined or empty.'
-            type: '- (Required) May be either manual or conditional.'
+            type: '- (Required) [Updating causes resource replacement] May be either manual or conditional.'
             workflow: '- (Required) The workflow ID for the workflow to trigger.'
         importStatements: []
     pagerduty_maintenance_window:
@@ -1977,6 +1834,7 @@ resources:
             name: '- (Required) The name of the service.'
             response_play: '- (Optional) The response play used by this service.'
             status: '- The status of the service.'
+            time_window: '- (Optional) The maximum amount of time allowed between Alerts. This setting applies only when type is set to intelligent or content_based. Value must be between 300 and 3600. Any Alerts arriving greater than time_window seconds apart will not be grouped together. This is a rolling time window and is counted from the most recently grouped alert. The window is extended every time a new alert is added to the group, up to 24 hours.'
             timeout: '- (Optional) The duration in minutes within which to automatically group incoming alerts. This setting applies only when type is set to time. To continue grouping alerts until the incident is resolved, set this value to 0.'
             to_urgency: '- The urgency to change to: low (does not escalate), or high (follows escalation rules).'
             type: '- The type of scheduled action. Currently, this must be set to urgency_change.'
@@ -2256,7 +2114,6 @@ resources:
             - name: apiv2
               manifest: |-
                 {
-                  "integration_key": "12345678910testtesttesttesttes",
                   "name": "API V2",
                   "service": "${pagerduty_service.example.id}",
                   "type": "events_api_v2_inbound_integration"
@@ -2543,7 +2400,7 @@ resources:
             html_url: '- URL at which the entity is uniquely displayed in the Web app.'
             id: '- The ID of the service integration.'
             integration_email: '- (Optional) This is the unique fully-qualified email address used for routing emails to this integration for processing.'
-            integration_key: '- (Optional) This is the unique key used to route events to this integration when received via the PagerDuty Events API.'
+            integration_key: '- (Optional) (Deprecated) This is the unique key used to route events to this integration when received via the PagerDuty Events API.'
             matcher: '- (Optional) Predicate value or valid regex.'
             name: '- (Optional) The name of the service integration.'
             pagerduty_vendor: data source to locate the appropriate vendor ID.
@@ -2698,6 +2555,7 @@ resources:
               references:
                 parent: pagerduty_team.parent.id
         argumentDocs:
+            default_role: '- (Optional) The team is private if the value is "none", or public if it is "manager" (the default permissions for a non-member of the team are either "none", or their base role up until "manager").'
             description: |-
                 - (Optional) A human-friendly description of the team.
                 If not set, a placeholder of "Managed by Terraform" will be set.

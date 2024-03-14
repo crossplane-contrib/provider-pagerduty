@@ -21,6 +21,21 @@ type WindowInitParameters struct {
 	// The maintenance window's end time. This is when the services will start creating incidents again. This date must be in the future and after the start_time.
 	EndTime *string `json:"endTime,omitempty" tf:"end_time,omitempty"`
 
+	// References to Service in service to populate services.
+	// +kubebuilder:validation:Optional
+	ServiceRefs []v1.Reference `json:"serviceRefs,omitempty" tf:"-"`
+
+	// Selector for a list of Service in service to populate services.
+	// +kubebuilder:validation:Optional
+	ServiceSelector *v1.Selector `json:"serviceSelector,omitempty" tf:"-"`
+
+	// A list of service IDs to include in the maintenance window.
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-pagerduty/apis/service/v1alpha1.Service
+	// +crossplane:generate:reference:refFieldName=ServiceRefs
+	// +crossplane:generate:reference:selectorFieldName=ServiceSelector
+	// +listType=set
+	Services []*string `json:"services,omitempty" tf:"services,omitempty"`
+
 	// The maintenance window's start time. This is when the services will stop creating incidents. If this date is in the past, it will be updated to be the current time.
 	StartTime *string `json:"startTime,omitempty" tf:"start_time,omitempty"`
 }
@@ -37,6 +52,7 @@ type WindowObservation struct {
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
 	// A list of service IDs to include in the maintenance window.
+	// +listType=set
 	Services []*string `json:"services,omitempty" tf:"services,omitempty"`
 
 	// The maintenance window's start time. This is when the services will stop creating incidents. If this date is in the past, it will be updated to be the current time.
@@ -66,6 +82,7 @@ type WindowParameters struct {
 	// +crossplane:generate:reference:refFieldName=ServiceRefs
 	// +crossplane:generate:reference:selectorFieldName=ServiceSelector
 	// +kubebuilder:validation:Optional
+	// +listType=set
 	Services []*string `json:"services,omitempty" tf:"services,omitempty"`
 
 	// The maintenance window's start time. This is when the services will stop creating incidents. If this date is in the past, it will be updated to be the current time.
@@ -77,9 +94,8 @@ type WindowParameters struct {
 type WindowSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     WindowParameters `json:"forProvider"`
-	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
-	// unless the relevant Crossplane feature flag is enabled, and may be
-	// changed or removed without notice.
+	// THIS IS A BETA FIELD. It will be honored
+	// unless the Management Policies feature flag is disabled.
 	// InitProvider holds the same fields as ForProvider, with the exception
 	// of Identifier and other resource reference fields. The fields that are
 	// in InitProvider are merged into ForProvider when the resource is created.
@@ -98,19 +114,20 @@ type WindowStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
 // Window is the Schema for the Windows API. Creates and manages a maintenance window in PagerDuty.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,pagerduty}
 type Window struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.endTime) || has(self.initProvider.endTime)",message="endTime is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.startTime) || has(self.initProvider.startTime)",message="startTime is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.endTime) || (has(self.initProvider) && has(self.initProvider.endTime))",message="spec.forProvider.endTime is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.startTime) || (has(self.initProvider) && has(self.initProvider.startTime))",message="spec.forProvider.startTime is a required parameter"
 	Spec   WindowSpec   `json:"spec"`
 	Status WindowStatus `json:"status,omitempty"`
 }

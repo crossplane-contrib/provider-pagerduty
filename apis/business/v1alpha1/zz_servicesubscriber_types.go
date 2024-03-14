@@ -15,6 +15,18 @@ import (
 
 type ServiceSubscriberInitParameters struct {
 
+	// The ID of the business service to subscribe to.
+	// +crossplane:generate:reference:type=Service
+	BusinessServiceID *string `json:"businessServiceId,omitempty" tf:"business_service_id,omitempty"`
+
+	// Reference to a Service to populate businessServiceId.
+	// +kubebuilder:validation:Optional
+	BusinessServiceIDRef *v1.Reference `json:"businessServiceIdRef,omitempty" tf:"-"`
+
+	// Selector for a Service to populate businessServiceId.
+	// +kubebuilder:validation:Optional
+	BusinessServiceIDSelector *v1.Selector `json:"businessServiceIdSelector,omitempty" tf:"-"`
+
 	// The ID of the subscriber entity.
 	SubscriberID *string `json:"subscriberId,omitempty" tf:"subscriber_id,omitempty"`
 
@@ -65,9 +77,8 @@ type ServiceSubscriberParameters struct {
 type ServiceSubscriberSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     ServiceSubscriberParameters `json:"forProvider"`
-	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
-	// unless the relevant Crossplane feature flag is enabled, and may be
-	// changed or removed without notice.
+	// THIS IS A BETA FIELD. It will be honored
+	// unless the Management Policies feature flag is disabled.
 	// InitProvider holds the same fields as ForProvider, with the exception
 	// of Identifier and other resource reference fields. The fields that are
 	// in InitProvider are merged into ForProvider when the resource is created.
@@ -86,19 +97,20 @@ type ServiceSubscriberStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
 // ServiceSubscriber is the Schema for the ServiceSubscribers API. Creates and manages a business service subscriber in PagerDuty.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,pagerduty}
 type ServiceSubscriber struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.subscriberId) || has(self.initProvider.subscriberId)",message="subscriberId is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.subscriberType) || has(self.initProvider.subscriberType)",message="subscriberType is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.subscriberId) || (has(self.initProvider) && has(self.initProvider.subscriberId))",message="spec.forProvider.subscriberId is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.subscriberType) || (has(self.initProvider) && has(self.initProvider.subscriberType))",message="spec.forProvider.subscriberType is a required parameter"
 	Spec   ServiceSubscriberSpec   `json:"spec"`
 	Status ServiceSubscriberStatus `json:"status,omitempty"`
 }

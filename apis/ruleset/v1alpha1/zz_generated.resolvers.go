@@ -36,6 +36,22 @@ func (mg *Rule) ResolveReferences(ctx context.Context, c client.Reader) error {
 	mg.Spec.ForProvider.Ruleset = reference.ToPtrValue(rsp.ResolvedValue)
 	mg.Spec.ForProvider.RulesetRef = rsp.ResolvedReference
 
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.Ruleset),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.InitProvider.RulesetRef,
+		Selector:     mg.Spec.InitProvider.RulesetSelector,
+		To: reference.To{
+			List:    &RulesetList{},
+			Managed: &Ruleset{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.InitProvider.Ruleset")
+	}
+	mg.Spec.InitProvider.Ruleset = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.RulesetRef = rsp.ResolvedReference
+
 	return nil
 }
 
@@ -62,6 +78,24 @@ func (mg *Ruleset) ResolveReferences(ctx context.Context, c client.Reader) error
 		}
 		mg.Spec.ForProvider.Team[i3].ID = reference.ToPtrValue(rsp.ResolvedValue)
 		mg.Spec.ForProvider.Team[i3].IDRef = rsp.ResolvedReference
+
+	}
+	for i3 := 0; i3 < len(mg.Spec.InitProvider.Team); i3++ {
+		rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+			CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.Team[i3].ID),
+			Extract:      reference.ExternalName(),
+			Reference:    mg.Spec.InitProvider.Team[i3].IDRef,
+			Selector:     mg.Spec.InitProvider.Team[i3].IDSelector,
+			To: reference.To{
+				List:    &v1alpha1.TeamList{},
+				Managed: &v1alpha1.Team{},
+			},
+		})
+		if err != nil {
+			return errors.Wrap(err, "mg.Spec.InitProvider.Team[i3].ID")
+		}
+		mg.Spec.InitProvider.Team[i3].ID = reference.ToPtrValue(rsp.ResolvedValue)
+		mg.Spec.InitProvider.Team[i3].IDRef = rsp.ResolvedReference
 
 	}
 

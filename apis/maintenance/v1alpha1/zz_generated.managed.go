@@ -27,14 +27,6 @@ func (mg *Window) GetProviderConfigReference() *xpv1.Reference {
 	return mg.Spec.ProviderConfigReference
 }
 
-/*
-GetProviderReference of this Window.
-Deprecated: Use GetProviderConfigReference.
-*/
-func (mg *Window) GetProviderReference() *xpv1.Reference {
-	return mg.Spec.ProviderReference
-}
-
 // GetPublishConnectionDetailsTo of this Window.
 func (mg *Window) GetPublishConnectionDetailsTo() *xpv1.PublishConnectionDetailsTo {
 	return mg.Spec.PublishConnectionDetailsTo
@@ -63,14 +55,6 @@ func (mg *Window) SetManagementPolicies(r xpv1.ManagementPolicies) {
 // SetProviderConfigReference of this Window.
 func (mg *Window) SetProviderConfigReference(r *xpv1.Reference) {
 	mg.Spec.ProviderConfigReference = r
-}
-
-/*
-SetProviderReference of this Window.
-Deprecated: Use SetProviderConfigReference.
-*/
-func (mg *Window) SetProviderReference(r *xpv1.Reference) {
-	mg.Spec.ProviderReference = r
 }
 
 // SetPublishConnectionDetailsTo of this Window.

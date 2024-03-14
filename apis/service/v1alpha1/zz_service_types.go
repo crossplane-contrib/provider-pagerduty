@@ -108,6 +108,9 @@ type ConfigInitParameters struct {
 	// Alerts will be grouped together if the content of these fields match. This setting applies only when type is set to content_based.
 	Fields []*string `json:"fields,omitempty" tf:"fields,omitempty"`
 
+	// The maximum amount of time allowed between Alerts. This setting applies only when type is set to intelligent or content_based. Value must be between 300 and 3600. Any Alerts arriving greater than time_window seconds apart will not be grouped together. This is a rolling time window and is counted from the most recently grouped alert. The window is extended every time a new alert is added to the group, up to 24 hours.
+	TimeWindow *float64 `json:"timeWindow,omitempty" tf:"time_window,omitempty"`
+
 	// The duration in minutes within which to automatically group incoming alerts. This setting applies only when type is set to time. To continue grouping alerts until the incident is resolved, set this value to 0.
 	Timeout *float64 `json:"timeout,omitempty" tf:"timeout,omitempty"`
 }
@@ -119,6 +122,9 @@ type ConfigObservation struct {
 
 	// Alerts will be grouped together if the content of these fields match. This setting applies only when type is set to content_based.
 	Fields []*string `json:"fields,omitempty" tf:"fields,omitempty"`
+
+	// The maximum amount of time allowed between Alerts. This setting applies only when type is set to intelligent or content_based. Value must be between 300 and 3600. Any Alerts arriving greater than time_window seconds apart will not be grouped together. This is a rolling time window and is counted from the most recently grouped alert. The window is extended every time a new alert is added to the group, up to 24 hours.
+	TimeWindow *float64 `json:"timeWindow,omitempty" tf:"time_window,omitempty"`
 
 	// The duration in minutes within which to automatically group incoming alerts. This setting applies only when type is set to time. To continue grouping alerts until the incident is resolved, set this value to 0.
 	Timeout *float64 `json:"timeout,omitempty" tf:"timeout,omitempty"`
@@ -133,6 +139,10 @@ type ConfigParameters struct {
 	// Alerts will be grouped together if the content of these fields match. This setting applies only when type is set to content_based.
 	// +kubebuilder:validation:Optional
 	Fields []*string `json:"fields,omitempty" tf:"fields,omitempty"`
+
+	// The maximum amount of time allowed between Alerts. This setting applies only when type is set to intelligent or content_based. Value must be between 300 and 3600. Any Alerts arriving greater than time_window seconds apart will not be grouped together. This is a rolling time window and is counted from the most recently grouped alert. The window is extended every time a new alert is added to the group, up to 24 hours.
+	// +kubebuilder:validation:Optional
+	TimeWindow *float64 `json:"timeWindow,omitempty" tf:"time_window,omitempty"`
 
 	// The duration in minutes within which to automatically group incoming alerts. This setting applies only when type is set to time. To continue grouping alerts until the incident is resolved, set this value to 0.
 	// +kubebuilder:validation:Optional
@@ -210,7 +220,7 @@ type IncidentUrgencyRuleParameters struct {
 
 	// The type of incident urgency: constant or use_support_hours (when depending on specific support hours; see support_hours).
 	// +kubebuilder:validation:Optional
-	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+	Type *string `json:"type" tf:"type,omitempty"`
 
 	// The urgency: low Notify responders (does not escalate), high (follows escalation rules) or severity_based Set's the urgency of the incident based on the severity set by the triggering monitoring tool.
 	// +kubebuilder:validation:Optional
@@ -310,6 +320,18 @@ type ServiceInitParameters struct {
 
 	// A human-friendly description of the service.
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
+
+	// The escalation policy used by this service.
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-pagerduty/apis/escalation/v1alpha1.Policy
+	EscalationPolicy *string `json:"escalationPolicy,omitempty" tf:"escalation_policy,omitempty"`
+
+	// Reference to a Policy in escalation to populate escalationPolicy.
+	// +kubebuilder:validation:Optional
+	EscalationPolicyRef *v1.Reference `json:"escalationPolicyRef,omitempty" tf:"-"`
+
+	// Selector for a Policy in escalation to populate escalationPolicy.
+	// +kubebuilder:validation:Optional
+	EscalationPolicySelector *v1.Selector `json:"escalationPolicySelector,omitempty" tf:"-"`
 
 	IncidentUrgencyRule []IncidentUrgencyRuleInitParameters `json:"incidentUrgencyRule,omitempty" tf:"incident_urgency_rule,omitempty"`
 
@@ -515,9 +537,8 @@ type SupportHoursParameters struct {
 type ServiceSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     ServiceParameters `json:"forProvider"`
-	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
-	// unless the relevant Crossplane feature flag is enabled, and may be
-	// changed or removed without notice.
+	// THIS IS A BETA FIELD. It will be honored
+	// unless the Management Policies feature flag is disabled.
 	// InitProvider holds the same fields as ForProvider, with the exception
 	// of Identifier and other resource reference fields. The fields that are
 	// in InitProvider are merged into ForProvider when the resource is created.
@@ -536,18 +557,19 @@ type ServiceStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
 // Service is the Schema for the Services API. Creates and manages a service in PagerDuty.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,pagerduty}
 type Service struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || has(self.initProvider.name)",message="name is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || (has(self.initProvider) && has(self.initProvider.name))",message="spec.forProvider.name is a required parameter"
 	Spec   ServiceSpec   `json:"spec"`
 	Status ServiceStatus `json:"status,omitempty"`
 }

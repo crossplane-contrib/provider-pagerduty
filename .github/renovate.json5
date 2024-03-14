@@ -1,0 +1,51 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended",
+    "helpers:pinGitHubActionDigests",
+    ":semanticCommits"
+  ],
+  "rebaseWhen": "conflicted",
+  "prConcurrentLimit": 5,
+  "baseBranches": ["main"],
+  "labels": ["automated"],
+  // only possible in self-hosted renovate instances
+  // "postUpgradeTasks": {
+  //   "commands": ["make submodules", "make generate"],
+  //   "fileFilters": ["Makefile"],
+  //   "executionMode": "update"
+  // },
+  "customManagers": [
+    {
+      "customType": "regex",
+      "description": "Bump pagerduty terraform provider version in the Makefile",
+      "fileMatch": ["^Makefile$"],
+      "matchStrings": [
+        "export TERRAFORM_PROVIDER_VERSION \\?= (?<currentValue>.*?)\\n",
+        "export TERRAFORM_PROVIDER_DOWNLOAD_URL_PREFIX \\?= https://github.com/PagerDuty/terraform-provider-pagerduty/releases/download/v(?<currentValue>.*?)\\n"
+      ],
+      "datasourceTemplate": "github-releases",
+      "extractVersionTemplate": "^v?(?<version>.*)$",
+      "depNameTemplate": "PagerDuty/terraform-provider-pagerduty",
+    },
+    {
+      "customType": "regex",
+      "description": "Bump up version in the Makefile",
+      "fileMatch": ["^Makefile$"],
+      "matchStrings": [
+        "UP_VERSION = (?<currentValue>.*?)\\n"
+      ],
+      "datasourceTemplate": "github-releases",
+      "depNameTemplate": "upbound/up",
+    }, {
+      "customType": "regex",
+      "description": "Bump uptest version in the Makefile",
+      "fileMatch": ["^Makefile$"],
+      "matchStrings": [
+        "UPTEST_VERSION = (?<currentValue>.*?)\\n"
+      ],
+      "datasourceTemplate": "github-releases",
+      "depNameTemplate": "upbound/uptest",
+    }
+  ]
+}

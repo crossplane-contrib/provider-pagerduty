@@ -37,6 +37,22 @@ func (mg *Orchestration) ResolveReferences(ctx context.Context, c client.Reader)
 	mg.Spec.ForProvider.Team = reference.ToPtrValue(rsp.ResolvedValue)
 	mg.Spec.ForProvider.TeamRef = rsp.ResolvedReference
 
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.Team),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.InitProvider.TeamRef,
+		Selector:     mg.Spec.InitProvider.TeamSelector,
+		To: reference.To{
+			List:    &v1alpha1.TeamList{},
+			Managed: &v1alpha1.Team{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.InitProvider.Team")
+	}
+	mg.Spec.InitProvider.Team = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.TeamRef = rsp.ResolvedReference
+
 	return nil
 }
 
@@ -62,6 +78,22 @@ func (mg *OrchestrationRouter) ResolveReferences(ctx context.Context, c client.R
 	}
 	mg.Spec.ForProvider.EventOrchestration = reference.ToPtrValue(rsp.ResolvedValue)
 	mg.Spec.ForProvider.EventOrchestrationRef = rsp.ResolvedReference
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.EventOrchestration),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.InitProvider.EventOrchestrationRef,
+		Selector:     mg.Spec.InitProvider.EventOrchestrationSelector,
+		To: reference.To{
+			List:    &OrchestrationList{},
+			Managed: &Orchestration{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.InitProvider.EventOrchestration")
+	}
+	mg.Spec.InitProvider.EventOrchestration = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.EventOrchestrationRef = rsp.ResolvedReference
 
 	return nil
 }
@@ -89,6 +121,22 @@ func (mg *OrchestrationService) ResolveReferences(ctx context.Context, c client.
 	mg.Spec.ForProvider.Service = reference.ToPtrValue(rsp.ResolvedValue)
 	mg.Spec.ForProvider.ServiceRef = rsp.ResolvedReference
 
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.Service),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.InitProvider.ServiceRef,
+		Selector:     mg.Spec.InitProvider.ServiceSelector,
+		To: reference.To{
+			List:    &v1alpha11.ServiceList{},
+			Managed: &v1alpha11.Service{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.InitProvider.Service")
+	}
+	mg.Spec.InitProvider.Service = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.ServiceRef = rsp.ResolvedReference
+
 	return nil
 }
 
@@ -114,6 +162,22 @@ func (mg *OrchestrationUnrouted) ResolveReferences(ctx context.Context, c client
 	}
 	mg.Spec.ForProvider.EventOrchestration = reference.ToPtrValue(rsp.ResolvedValue)
 	mg.Spec.ForProvider.EventOrchestrationRef = rsp.ResolvedReference
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.EventOrchestration),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.InitProvider.EventOrchestrationRef,
+		Selector:     mg.Spec.InitProvider.EventOrchestrationSelector,
+		To: reference.To{
+			List:    &OrchestrationList{},
+			Managed: &Orchestration{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.InitProvider.EventOrchestration")
+	}
+	mg.Spec.InitProvider.EventOrchestration = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.EventOrchestrationRef = rsp.ResolvedReference
 
 	return nil
 }
