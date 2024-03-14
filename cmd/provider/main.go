@@ -6,6 +6,8 @@ package main
 
 import (
 	"context"
+	"io"
+	"log"
 	"os"
 	"path/filepath"
 	"time"
@@ -52,6 +54,9 @@ func main() {
 	)
 
 	kingpin.MustParse(app.Parse(os.Args[1:]))
+
+	log.Default().SetOutput(io.Discard)
+	ctrl.SetLogger(zap.New(zap.WriteTo(io.Discard)))
 
 	zl := zap.New(zap.UseDevMode(*debug))
 	log := logging.NewLogrLogger(zl.WithName("provider-pagerduty"))
