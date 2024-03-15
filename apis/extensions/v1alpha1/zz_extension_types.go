@@ -18,6 +18,19 @@ type ExtensionInitParameters struct {
 	// The configuration of the service extension as string containing plain JSON-encoded data.
 	Config *string `json:"config,omitempty" tf:"config,omitempty"`
 
+	// This is the objects for which the extension applies (An array of service ids).
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-pagerduty/apis/service/v1alpha1.Service
+	// +listType=set
+	ExtensionObjects []*string `json:"extensionObjects,omitempty" tf:"extension_objects,omitempty"`
+
+	// References to Service in service to populate extensionObjects.
+	// +kubebuilder:validation:Optional
+	ExtensionObjectsRefs []v1.Reference `json:"extensionObjectsRefs,omitempty" tf:"-"`
+
+	// Selector for a list of Service in service to populate extensionObjects.
+	// +kubebuilder:validation:Optional
+	ExtensionObjectsSelector *v1.Selector `json:"extensionObjectsSelector,omitempty" tf:"-"`
+
 	// This is the schema for this extension.
 	ExtensionSchema *string `json:"extensionSchema,omitempty" tf:"extension_schema,omitempty"`
 
@@ -33,6 +46,7 @@ type ExtensionObservation struct {
 	Config *string `json:"config,omitempty" tf:"config,omitempty"`
 
 	// This is the objects for which the extension applies (An array of service ids).
+	// +listType=set
 	ExtensionObjects []*string `json:"extensionObjects,omitempty" tf:"extension_objects,omitempty"`
 
 	// This is the schema for this extension.
@@ -67,6 +81,7 @@ type ExtensionParameters struct {
 	// This is the objects for which the extension applies (An array of service ids).
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-pagerduty/apis/service/v1alpha1.Service
 	// +kubebuilder:validation:Optional
+	// +listType=set
 	ExtensionObjects []*string `json:"extensionObjects,omitempty" tf:"extension_objects,omitempty"`
 
 	// References to Service in service to populate extensionObjects.
@@ -93,9 +108,8 @@ type ExtensionParameters struct {
 type ExtensionSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     ExtensionParameters `json:"forProvider"`
-	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
-	// unless the relevant Crossplane feature flag is enabled, and may be
-	// changed or removed without notice.
+	// THIS IS A BETA FIELD. It will be honored
+	// unless the Management Policies feature flag is disabled.
 	// InitProvider holds the same fields as ForProvider, with the exception
 	// of Identifier and other resource reference fields. The fields that are
 	// in InitProvider are merged into ForProvider when the resource is created.
@@ -114,18 +128,19 @@ type ExtensionStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
 // Extension is the Schema for the Extensions API. Creates and manages a service extension in PagerDuty.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,pagerduty}
 type Extension struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.extensionSchema) || has(self.initProvider.extensionSchema)",message="extensionSchema is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.extensionSchema) || (has(self.initProvider) && has(self.initProvider.extensionSchema))",message="spec.forProvider.extensionSchema is a required parameter"
 	Spec   ExtensionSpec   `json:"spec"`
 	Status ExtensionStatus `json:"status,omitempty"`
 }

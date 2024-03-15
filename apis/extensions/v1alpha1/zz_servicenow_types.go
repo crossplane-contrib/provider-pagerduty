@@ -16,6 +16,7 @@ import (
 type ServicenowInitParameters struct {
 
 	// This is the objects for which the extension applies (An array of service ids).
+	// +listType=set
 	ExtensionObjects []*string `json:"extensionObjects,omitempty" tf:"extension_objects,omitempty"`
 
 	// This is the schema for this extension.
@@ -48,6 +49,7 @@ type ServicenowInitParameters struct {
 type ServicenowObservation struct {
 
 	// This is the objects for which the extension applies (An array of service ids).
+	// +listType=set
 	ExtensionObjects []*string `json:"extensionObjects,omitempty" tf:"extension_objects,omitempty"`
 
 	// This is the schema for this extension.
@@ -90,6 +92,7 @@ type ServicenowParameters struct {
 
 	// This is the objects for which the extension applies (An array of service ids).
 	// +kubebuilder:validation:Optional
+	// +listType=set
 	ExtensionObjects []*string `json:"extensionObjects,omitempty" tf:"extension_objects,omitempty"`
 
 	// This is the schema for this extension.
@@ -136,9 +139,8 @@ type ServicenowParameters struct {
 type ServicenowSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     ServicenowParameters `json:"forProvider"`
-	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
-	// unless the relevant Crossplane feature flag is enabled, and may be
-	// changed or removed without notice.
+	// THIS IS A BETA FIELD. It will be honored
+	// unless the Management Policies feature flag is disabled.
 	// InitProvider holds the same fields as ForProvider, with the exception
 	// of Identifier and other resource reference fields. The fields that are
 	// in InitProvider are merged into ForProvider when the resource is created.
@@ -157,25 +159,26 @@ type ServicenowStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
 // Servicenow is the Schema for the Servicenows API. Creates and manages a ServiceNow service extension in PagerDuty.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,pagerduty}
 type Servicenow struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.extensionObjects) || has(self.initProvider.extensionObjects)",message="extensionObjects is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.extensionSchema) || has(self.initProvider.extensionSchema)",message="extensionSchema is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.referer) || has(self.initProvider.referer)",message="referer is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.snowPasswordSecretRef)",message="snowPasswordSecretRef is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.snowUser) || has(self.initProvider.snowUser)",message="snowUser is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.syncOptions) || has(self.initProvider.syncOptions)",message="syncOptions is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.target) || has(self.initProvider.target)",message="target is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.taskType) || has(self.initProvider.taskType)",message="taskType is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.extensionObjects) || (has(self.initProvider) && has(self.initProvider.extensionObjects))",message="spec.forProvider.extensionObjects is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.extensionSchema) || (has(self.initProvider) && has(self.initProvider.extensionSchema))",message="spec.forProvider.extensionSchema is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.referer) || (has(self.initProvider) && has(self.initProvider.referer))",message="spec.forProvider.referer is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.snowPasswordSecretRef)",message="spec.forProvider.snowPasswordSecretRef is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.snowUser) || (has(self.initProvider) && has(self.initProvider.snowUser))",message="spec.forProvider.snowUser is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.syncOptions) || (has(self.initProvider) && has(self.initProvider.syncOptions))",message="spec.forProvider.syncOptions is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.target) || (has(self.initProvider) && has(self.initProvider.target))",message="spec.forProvider.target is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.taskType) || (has(self.initProvider) && has(self.initProvider.taskType))",message="spec.forProvider.taskType is a required parameter"
 	Spec   ServicenowSpec   `json:"spec"`
 	Status ServicenowStatus `json:"status,omitempty"`
 }

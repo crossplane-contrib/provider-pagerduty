@@ -13,6 +13,25 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
+type EscalationRuleAssignmentStrategyInitParameters struct {
+
+	// Can be round_robin or assign_to_everyone.
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+}
+
+type EscalationRuleAssignmentStrategyObservation struct {
+
+	// Can be round_robin or assign_to_everyone.
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+}
+
+type EscalationRuleAssignmentStrategyParameters struct {
+
+	// Can be round_robin or assign_to_everyone.
+	// +kubebuilder:validation:Optional
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+}
+
 type PolicyInitParameters struct {
 
 	// A human-friendly description of the escalation policy.
@@ -26,6 +45,20 @@ type PolicyInitParameters struct {
 
 	// An Escalation rule block. Escalation rules documented below.
 	Rule []RuleInitParameters `json:"rule,omitempty" tf:"rule,omitempty"`
+
+	// References to Team in team to populate teams.
+	// +kubebuilder:validation:Optional
+	TeamRefs []v1.Reference `json:"teamRefs,omitempty" tf:"-"`
+
+	// Selector for a list of Team in team to populate teams.
+	// +kubebuilder:validation:Optional
+	TeamSelector *v1.Selector `json:"teamSelector,omitempty" tf:"-"`
+
+	// Team associated with the policy (Only 1 team can be assigned to an Escalation Policy). Account must have the teams ability to use this parameter.
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-pagerduty/apis/team/v1alpha1.Team
+	// +crossplane:generate:reference:refFieldName=TeamRefs
+	// +crossplane:generate:reference:selectorFieldName=TeamSelector
+	Teams []*string `json:"teams,omitempty" tf:"teams,omitempty"`
 }
 
 type PolicyObservation struct {
@@ -88,6 +121,9 @@ type RuleInitParameters struct {
 	// The number of minutes before an unacknowledged incident escalates away from this rule.
 	EscalationDelayInMinutes *float64 `json:"escalationDelayInMinutes,omitempty" tf:"escalation_delay_in_minutes,omitempty"`
 
+	// The strategy used to assign the escalation rule to an incident. Documented below.
+	EscalationRuleAssignmentStrategy []EscalationRuleAssignmentStrategyInitParameters `json:"escalationRuleAssignmentStrategy,omitempty" tf:"escalation_rule_assignment_strategy,omitempty"`
+
 	Target []TargetInitParameters `json:"target,omitempty" tf:"target,omitempty"`
 }
 
@@ -95,6 +131,9 @@ type RuleObservation struct {
 
 	// The number of minutes before an unacknowledged incident escalates away from this rule.
 	EscalationDelayInMinutes *float64 `json:"escalationDelayInMinutes,omitempty" tf:"escalation_delay_in_minutes,omitempty"`
+
+	// The strategy used to assign the escalation rule to an incident. Documented below.
+	EscalationRuleAssignmentStrategy []EscalationRuleAssignmentStrategyObservation `json:"escalationRuleAssignmentStrategy,omitempty" tf:"escalation_rule_assignment_strategy,omitempty"`
 
 	// A target ID
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
@@ -106,10 +145,14 @@ type RuleParameters struct {
 
 	// The number of minutes before an unacknowledged incident escalates away from this rule.
 	// +kubebuilder:validation:Optional
-	EscalationDelayInMinutes *float64 `json:"escalationDelayInMinutes,omitempty" tf:"escalation_delay_in_minutes,omitempty"`
+	EscalationDelayInMinutes *float64 `json:"escalationDelayInMinutes" tf:"escalation_delay_in_minutes,omitempty"`
+
+	// The strategy used to assign the escalation rule to an incident. Documented below.
+	// +kubebuilder:validation:Optional
+	EscalationRuleAssignmentStrategy []EscalationRuleAssignmentStrategyParameters `json:"escalationRuleAssignmentStrategy,omitempty" tf:"escalation_rule_assignment_strategy,omitempty"`
 
 	// +kubebuilder:validation:Optional
-	Target []TargetParameters `json:"target,omitempty" tf:"target,omitempty"`
+	Target []TargetParameters `json:"target" tf:"target,omitempty"`
 }
 
 type TargetInitParameters struct {
@@ -117,7 +160,7 @@ type TargetInitParameters struct {
 	// A target ID
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
-	// Can be user_reference or schedule_reference. Defaults to user_reference. For multiple users as example, repeat the target.
+	// Can be round_robin or assign_to_everyone.
 	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 }
 
@@ -126,7 +169,7 @@ type TargetObservation struct {
 	// A target ID
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
-	// Can be user_reference or schedule_reference. Defaults to user_reference. For multiple users as example, repeat the target.
+	// Can be round_robin or assign_to_everyone.
 	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 }
 
@@ -134,9 +177,9 @@ type TargetParameters struct {
 
 	// A target ID
 	// +kubebuilder:validation:Optional
-	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+	ID *string `json:"id" tf:"id,omitempty"`
 
-	// Can be user_reference or schedule_reference. Defaults to user_reference. For multiple users as example, repeat the target.
+	// Can be round_robin or assign_to_everyone.
 	// +kubebuilder:validation:Optional
 	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 }
@@ -145,9 +188,8 @@ type TargetParameters struct {
 type PolicySpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     PolicyParameters `json:"forProvider"`
-	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
-	// unless the relevant Crossplane feature flag is enabled, and may be
-	// changed or removed without notice.
+	// THIS IS A BETA FIELD. It will be honored
+	// unless the Management Policies feature flag is disabled.
 	// InitProvider holds the same fields as ForProvider, with the exception
 	// of Identifier and other resource reference fields. The fields that are
 	// in InitProvider are merged into ForProvider when the resource is created.
@@ -166,19 +208,20 @@ type PolicyStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
 // Policy is the Schema for the Policys API. Creates and manages an escalation policy in PagerDuty.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,pagerduty}
 type Policy struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || has(self.initProvider.name)",message="name is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.rule) || has(self.initProvider.rule)",message="rule is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || (has(self.initProvider) && has(self.initProvider.name))",message="spec.forProvider.name is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.rule) || (has(self.initProvider) && has(self.initProvider.rule))",message="spec.forProvider.rule is a required parameter"
 	Spec   PolicySpec   `json:"spec"`
 	Status PolicyStatus `json:"status,omitempty"`
 }

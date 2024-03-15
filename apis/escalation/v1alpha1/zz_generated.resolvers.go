@@ -36,5 +36,21 @@ func (mg *Policy) ResolveReferences(ctx context.Context, c client.Reader) error 
 	mg.Spec.ForProvider.Teams = reference.ToPtrValues(mrsp.ResolvedValues)
 	mg.Spec.ForProvider.TeamRefs = mrsp.ResolvedReferences
 
+	mrsp, err = r.ResolveMultiple(ctx, reference.MultiResolutionRequest{
+		CurrentValues: reference.FromPtrValues(mg.Spec.InitProvider.Teams),
+		Extract:       reference.ExternalName(),
+		References:    mg.Spec.InitProvider.TeamRefs,
+		Selector:      mg.Spec.InitProvider.TeamSelector,
+		To: reference.To{
+			List:    &v1alpha1.TeamList{},
+			Managed: &v1alpha1.Team{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.InitProvider.Teams")
+	}
+	mg.Spec.InitProvider.Teams = reference.ToPtrValues(mrsp.ResolvedValues)
+	mg.Spec.InitProvider.TeamRefs = mrsp.ResolvedReferences
+
 	return nil
 }

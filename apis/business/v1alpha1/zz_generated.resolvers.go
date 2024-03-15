@@ -36,6 +36,22 @@ func (mg *Service) ResolveReferences(ctx context.Context, c client.Reader) error
 	mg.Spec.ForProvider.Team = reference.ToPtrValue(rsp.ResolvedValue)
 	mg.Spec.ForProvider.TeamRef = rsp.ResolvedReference
 
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.Team),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.InitProvider.TeamRef,
+		Selector:     mg.Spec.InitProvider.TeamSelector,
+		To: reference.To{
+			List:    &v1alpha1.TeamList{},
+			Managed: &v1alpha1.Team{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.InitProvider.Team")
+	}
+	mg.Spec.InitProvider.Team = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.TeamRef = rsp.ResolvedReference
+
 	return nil
 }
 
@@ -61,6 +77,22 @@ func (mg *ServiceSubscriber) ResolveReferences(ctx context.Context, c client.Rea
 	}
 	mg.Spec.ForProvider.BusinessServiceID = reference.ToPtrValue(rsp.ResolvedValue)
 	mg.Spec.ForProvider.BusinessServiceIDRef = rsp.ResolvedReference
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.BusinessServiceID),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.InitProvider.BusinessServiceIDRef,
+		Selector:     mg.Spec.InitProvider.BusinessServiceIDSelector,
+		To: reference.To{
+			List:    &ServiceList{},
+			Managed: &Service{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.InitProvider.BusinessServiceID")
+	}
+	mg.Spec.InitProvider.BusinessServiceID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.BusinessServiceIDRef = rsp.ResolvedReference
 
 	return nil
 }

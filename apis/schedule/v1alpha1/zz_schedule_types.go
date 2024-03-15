@@ -46,6 +46,20 @@ type LayerInitParameters struct {
 
 	// The start time of the schedule layer.
 	Start *string `json:"start,omitempty" tf:"start,omitempty"`
+
+	// References to User in user to populate users.
+	// +kubebuilder:validation:Optional
+	UserRefs []v1.Reference `json:"userRefs,omitempty" tf:"-"`
+
+	// Selector for a list of User in user to populate users.
+	// +kubebuilder:validation:Optional
+	UserSelector *v1.Selector `json:"userSelector,omitempty" tf:"-"`
+
+	// The ordered list of users on this layer. The position of the user on the list determines their order in the layer.
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-pagerduty/apis/user/v1alpha1.User
+	// +crossplane:generate:reference:refFieldName=UserRefs
+	// +crossplane:generate:reference:selectorFieldName=UserSelector
+	Users []*string `json:"users,omitempty" tf:"users,omitempty"`
 }
 
 type LayerObservation struct {
@@ -93,15 +107,15 @@ type LayerParameters struct {
 
 	// The duration of each on-call shift in seconds.
 	// +kubebuilder:validation:Optional
-	RotationTurnLengthSeconds *float64 `json:"rotationTurnLengthSeconds,omitempty" tf:"rotation_turn_length_seconds,omitempty"`
+	RotationTurnLengthSeconds *float64 `json:"rotationTurnLengthSeconds" tf:"rotation_turn_length_seconds,omitempty"`
 
 	// The effective start time of the schedule layer. This can be before the start time of the schedule.
 	// +kubebuilder:validation:Optional
-	RotationVirtualStart *string `json:"rotationVirtualStart,omitempty" tf:"rotation_virtual_start,omitempty"`
+	RotationVirtualStart *string `json:"rotationVirtualStart" tf:"rotation_virtual_start,omitempty"`
 
 	// The start time of the schedule layer.
 	// +kubebuilder:validation:Optional
-	Start *string `json:"start,omitempty" tf:"start,omitempty"`
+	Start *string `json:"start" tf:"start,omitempty"`
 
 	// References to User in user to populate users.
 	// +kubebuilder:validation:Optional
@@ -153,7 +167,7 @@ type RestrictionParameters struct {
 
 	// The duration of the restriction in seconds.
 	// +kubebuilder:validation:Optional
-	DurationSeconds *float64 `json:"durationSeconds,omitempty" tf:"duration_seconds,omitempty"`
+	DurationSeconds *float64 `json:"durationSeconds" tf:"duration_seconds,omitempty"`
 
 	// Number of the day when restriction starts. From 1 to 7 where 1 is Monday and 7 is Sunday.
 	// +kubebuilder:validation:Optional
@@ -161,11 +175,11 @@ type RestrictionParameters struct {
 
 	// The start time in HH:mm:ss format.
 	// +kubebuilder:validation:Optional
-	StartTimeOfDay *string `json:"startTimeOfDay,omitempty" tf:"start_time_of_day,omitempty"`
+	StartTimeOfDay *string `json:"startTimeOfDay" tf:"start_time_of_day,omitempty"`
 
 	// Can be daily_restriction or weekly_restriction.
 	// +kubebuilder:validation:Optional
-	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+	Type *string `json:"type" tf:"type,omitempty"`
 }
 
 type ScheduleInitParameters struct {
@@ -183,6 +197,20 @@ type ScheduleInitParameters struct {
 	// If you don't pass the overflow=true parameter, you will get one schedule entry returned with a start of 2011-06-01T10:00:00Z and end of 2011-06-01T14:00:00Z.
 	// If you do pass the overflow parameter, you will get one schedule entry returned with a start of 2011-06-01T00:00:00Z and end of 2011-06-02T00:00:00Z.
 	Overflow *bool `json:"overflow,omitempty" tf:"overflow,omitempty"`
+
+	// References to Team in team to populate teams.
+	// +kubebuilder:validation:Optional
+	TeamRefs []v1.Reference `json:"teamRefs,omitempty" tf:"-"`
+
+	// Selector for a list of Team in team to populate teams.
+	// +kubebuilder:validation:Optional
+	TeamSelector *v1.Selector `json:"teamSelector,omitempty" tf:"-"`
+
+	// Teams associated with the schedule.
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-pagerduty/apis/team/v1alpha1.Team
+	// +crossplane:generate:reference:refFieldName=TeamRefs
+	// +crossplane:generate:reference:selectorFieldName=TeamSelector
+	Teams []*string `json:"teams,omitempty" tf:"teams,omitempty"`
 
 	// The time zone of the schedule (e.g. Europe/Berlin).
 	TimeZone *string `json:"timeZone,omitempty" tf:"time_zone,omitempty"`
@@ -260,9 +288,8 @@ type ScheduleParameters struct {
 type ScheduleSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     ScheduleParameters `json:"forProvider"`
-	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
-	// unless the relevant Crossplane feature flag is enabled, and may be
-	// changed or removed without notice.
+	// THIS IS A BETA FIELD. It will be honored
+	// unless the Management Policies feature flag is disabled.
 	// InitProvider holds the same fields as ForProvider, with the exception
 	// of Identifier and other resource reference fields. The fields that are
 	// in InitProvider are merged into ForProvider when the resource is created.
@@ -281,19 +308,20 @@ type ScheduleStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
 // Schedule is the Schema for the Schedules API. Creates and manages a schedule in PagerDuty.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,pagerduty}
 type Schedule struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.layer) || has(self.initProvider.layer)",message="layer is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.timeZone) || has(self.initProvider.timeZone)",message="timeZone is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.layer) || (has(self.initProvider) && has(self.initProvider.layer))",message="spec.forProvider.layer is a required parameter"
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.timeZone) || (has(self.initProvider) && has(self.initProvider.timeZone))",message="spec.forProvider.timeZone is a required parameter"
 	Spec   ScheduleSpec   `json:"spec"`
 	Status ScheduleStatus `json:"status,omitempty"`
 }

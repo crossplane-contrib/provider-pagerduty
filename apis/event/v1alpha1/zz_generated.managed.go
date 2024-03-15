@@ -27,14 +27,6 @@ func (mg *Orchestration) GetProviderConfigReference() *xpv1.Reference {
 	return mg.Spec.ProviderConfigReference
 }
 
-/*
-GetProviderReference of this Orchestration.
-Deprecated: Use GetProviderConfigReference.
-*/
-func (mg *Orchestration) GetProviderReference() *xpv1.Reference {
-	return mg.Spec.ProviderReference
-}
-
 // GetPublishConnectionDetailsTo of this Orchestration.
 func (mg *Orchestration) GetPublishConnectionDetailsTo() *xpv1.PublishConnectionDetailsTo {
 	return mg.Spec.PublishConnectionDetailsTo
@@ -63,14 +55,6 @@ func (mg *Orchestration) SetManagementPolicies(r xpv1.ManagementPolicies) {
 // SetProviderConfigReference of this Orchestration.
 func (mg *Orchestration) SetProviderConfigReference(r *xpv1.Reference) {
 	mg.Spec.ProviderConfigReference = r
-}
-
-/*
-SetProviderReference of this Orchestration.
-Deprecated: Use SetProviderConfigReference.
-*/
-func (mg *Orchestration) SetProviderReference(r *xpv1.Reference) {
-	mg.Spec.ProviderReference = r
 }
 
 // SetPublishConnectionDetailsTo of this Orchestration.
@@ -103,14 +87,6 @@ func (mg *OrchestrationRouter) GetProviderConfigReference() *xpv1.Reference {
 	return mg.Spec.ProviderConfigReference
 }
 
-/*
-GetProviderReference of this OrchestrationRouter.
-Deprecated: Use GetProviderConfigReference.
-*/
-func (mg *OrchestrationRouter) GetProviderReference() *xpv1.Reference {
-	return mg.Spec.ProviderReference
-}
-
 // GetPublishConnectionDetailsTo of this OrchestrationRouter.
 func (mg *OrchestrationRouter) GetPublishConnectionDetailsTo() *xpv1.PublishConnectionDetailsTo {
 	return mg.Spec.PublishConnectionDetailsTo
@@ -139,14 +115,6 @@ func (mg *OrchestrationRouter) SetManagementPolicies(r xpv1.ManagementPolicies) 
 // SetProviderConfigReference of this OrchestrationRouter.
 func (mg *OrchestrationRouter) SetProviderConfigReference(r *xpv1.Reference) {
 	mg.Spec.ProviderConfigReference = r
-}
-
-/*
-SetProviderReference of this OrchestrationRouter.
-Deprecated: Use SetProviderConfigReference.
-*/
-func (mg *OrchestrationRouter) SetProviderReference(r *xpv1.Reference) {
-	mg.Spec.ProviderReference = r
 }
 
 // SetPublishConnectionDetailsTo of this OrchestrationRouter.
@@ -179,14 +147,6 @@ func (mg *OrchestrationService) GetProviderConfigReference() *xpv1.Reference {
 	return mg.Spec.ProviderConfigReference
 }
 
-/*
-GetProviderReference of this OrchestrationService.
-Deprecated: Use GetProviderConfigReference.
-*/
-func (mg *OrchestrationService) GetProviderReference() *xpv1.Reference {
-	return mg.Spec.ProviderReference
-}
-
 // GetPublishConnectionDetailsTo of this OrchestrationService.
 func (mg *OrchestrationService) GetPublishConnectionDetailsTo() *xpv1.PublishConnectionDetailsTo {
 	return mg.Spec.PublishConnectionDetailsTo
@@ -215,14 +175,6 @@ func (mg *OrchestrationService) SetManagementPolicies(r xpv1.ManagementPolicies)
 // SetProviderConfigReference of this OrchestrationService.
 func (mg *OrchestrationService) SetProviderConfigReference(r *xpv1.Reference) {
 	mg.Spec.ProviderConfigReference = r
-}
-
-/*
-SetProviderReference of this OrchestrationService.
-Deprecated: Use SetProviderConfigReference.
-*/
-func (mg *OrchestrationService) SetProviderReference(r *xpv1.Reference) {
-	mg.Spec.ProviderReference = r
 }
 
 // SetPublishConnectionDetailsTo of this OrchestrationService.
@@ -255,14 +207,6 @@ func (mg *OrchestrationUnrouted) GetProviderConfigReference() *xpv1.Reference {
 	return mg.Spec.ProviderConfigReference
 }
 
-/*
-GetProviderReference of this OrchestrationUnrouted.
-Deprecated: Use GetProviderConfigReference.
-*/
-func (mg *OrchestrationUnrouted) GetProviderReference() *xpv1.Reference {
-	return mg.Spec.ProviderReference
-}
-
 // GetPublishConnectionDetailsTo of this OrchestrationUnrouted.
 func (mg *OrchestrationUnrouted) GetPublishConnectionDetailsTo() *xpv1.PublishConnectionDetailsTo {
 	return mg.Spec.PublishConnectionDetailsTo
@@ -291,14 +235,6 @@ func (mg *OrchestrationUnrouted) SetManagementPolicies(r xpv1.ManagementPolicies
 // SetProviderConfigReference of this OrchestrationUnrouted.
 func (mg *OrchestrationUnrouted) SetProviderConfigReference(r *xpv1.Reference) {
 	mg.Spec.ProviderConfigReference = r
-}
-
-/*
-SetProviderReference of this OrchestrationUnrouted.
-Deprecated: Use SetProviderConfigReference.
-*/
-func (mg *OrchestrationUnrouted) SetProviderReference(r *xpv1.Reference) {
-	mg.Spec.ProviderReference = r
 }
 
 // SetPublishConnectionDetailsTo of this OrchestrationUnrouted.

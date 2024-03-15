@@ -36,5 +36,21 @@ func (mg *Window) ResolveReferences(ctx context.Context, c client.Reader) error 
 	mg.Spec.ForProvider.Services = reference.ToPtrValues(mrsp.ResolvedValues)
 	mg.Spec.ForProvider.ServiceRefs = mrsp.ResolvedReferences
 
+	mrsp, err = r.ResolveMultiple(ctx, reference.MultiResolutionRequest{
+		CurrentValues: reference.FromPtrValues(mg.Spec.InitProvider.Services),
+		Extract:       reference.ExternalName(),
+		References:    mg.Spec.InitProvider.ServiceRefs,
+		Selector:      mg.Spec.InitProvider.ServiceSelector,
+		To: reference.To{
+			List:    &v1alpha1.ServiceList{},
+			Managed: &v1alpha1.Service{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.InitProvider.Services")
+	}
+	mg.Spec.InitProvider.Services = reference.ToPtrValues(mrsp.ResolvedValues)
+	mg.Spec.InitProvider.ServiceRefs = mrsp.ResolvedReferences
+
 	return nil
 }

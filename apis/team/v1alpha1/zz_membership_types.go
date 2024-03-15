@@ -18,6 +18,30 @@ type MembershipInitParameters struct {
 	// The role of the user in the team. One of observer, responder, or manager. Defaults to manager.
 	// These roles match up to user roles in the following ways:
 	Role *string `json:"role,omitempty" tf:"role,omitempty"`
+
+	// The ID of the team in which the user will belong.
+	// +crossplane:generate:reference:type=Team
+	TeamID *string `json:"teamId,omitempty" tf:"team_id,omitempty"`
+
+	// Reference to a Team to populate teamId.
+	// +kubebuilder:validation:Optional
+	TeamIDRef *v1.Reference `json:"teamIdRef,omitempty" tf:"-"`
+
+	// Selector for a Team to populate teamId.
+	// +kubebuilder:validation:Optional
+	TeamIDSelector *v1.Selector `json:"teamIdSelector,omitempty" tf:"-"`
+
+	// The ID of the user to add to the team.
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-pagerduty/apis/user/v1alpha1.User
+	UserID *string `json:"userId,omitempty" tf:"user_id,omitempty"`
+
+	// Reference to a User in user to populate userId.
+	// +kubebuilder:validation:Optional
+	UserIDRef *v1.Reference `json:"userIdRef,omitempty" tf:"-"`
+
+	// Selector for a User in user to populate userId.
+	// +kubebuilder:validation:Optional
+	UserIDSelector *v1.Selector `json:"userIdSelector,omitempty" tf:"-"`
 }
 
 type MembershipObservation struct {
@@ -72,9 +96,8 @@ type MembershipParameters struct {
 type MembershipSpec struct {
 	v1.ResourceSpec `json:",inline"`
 	ForProvider     MembershipParameters `json:"forProvider"`
-	// THIS IS AN ALPHA FIELD. Do not use it in production. It is not honored
-	// unless the relevant Crossplane feature flag is enabled, and may be
-	// changed or removed without notice.
+	// THIS IS A BETA FIELD. It will be honored
+	// unless the Management Policies feature flag is disabled.
 	// InitProvider holds the same fields as ForProvider, with the exception
 	// of Identifier and other resource reference fields. The fields that are
 	// in InitProvider are merged into ForProvider when the resource is created.
@@ -93,13 +116,14 @@ type MembershipStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:storageversion
 
 // Membership is the Schema for the Memberships API. Creates and manages a team membership in PagerDuty.
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,pagerduty}
 type Membership struct {
 	metav1.TypeMeta   `json:",inline"`
