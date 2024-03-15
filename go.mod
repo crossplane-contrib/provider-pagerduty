@@ -1,6 +1,8 @@
 module github.com/crossplane-contrib/provider-pagerduty
 
-go 1.20
+go 1.21
+
+toolchain go1.22.1
 
 require (
 	dario.cat/mergo v1.0.0
@@ -11,7 +13,7 @@ require (
 	gopkg.in/alecthomas/kingpin.v2 v2.2.6
 	k8s.io/apimachinery v0.29.1
 	k8s.io/client-go v0.29.1
-	sigs.k8s.io/controller-runtime v0.17.0
+	sigs.k8s.io/controller-runtime v0.17.2
 	sigs.k8s.io/controller-tools v0.14.0
 )
 
