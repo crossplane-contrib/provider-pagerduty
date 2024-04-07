@@ -1,4 +1,4 @@
-package slack
+package escalation
 
 import "github.com/crossplane/upjet/pkg/config"
 

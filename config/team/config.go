@@ -1,4 +1,4 @@
-package user
+package team
 
 import "github.com/crossplane/upjet/pkg/config"
 
