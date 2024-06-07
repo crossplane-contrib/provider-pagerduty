@@ -1,12 +1,14 @@
 module github.com/crossplane-contrib/provider-pagerduty
 
-go 1.20
+go 1.21
+
+toolchain go1.22.4
 
 require (
 	dario.cat/mergo v1.0.0
-	github.com/crossplane/crossplane-runtime v1.15.1
+	github.com/crossplane/crossplane-runtime v1.16.0-rc.1.0.20240424114634-8641eb2ba384
 	github.com/crossplane/crossplane-tools v0.0.0-20230925130601-628280f8bf79
-	github.com/crossplane/upjet v1.2.3
+	github.com/crossplane/upjet v1.4.1
 	github.com/pkg/errors v0.9.1
 	gopkg.in/alecthomas/kingpin.v2 v2.2.6
 	k8s.io/apimachinery v0.29.1
@@ -23,6 +25,7 @@ require (
 	github.com/antchfx/xpath v1.2.0 // indirect
 	github.com/apparentlymart/go-textseg/v15 v15.0.0 // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
+	github.com/blang/semver/v4 v4.0.0 // indirect
 	github.com/cespare/xxhash/v2 v2.2.0 // indirect
 	github.com/dave/jennifer v1.4.1 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
@@ -99,10 +102,10 @@ require (
 	go.uber.org/zap v1.26.0 // indirect
 	golang.org/x/exp v0.0.0-20240112132812-db7319d0e0e3 // indirect
 	golang.org/x/mod v0.14.0 // indirect
-	golang.org/x/net v0.20.0 // indirect
+	golang.org/x/net v0.23.0 // indirect
 	golang.org/x/oauth2 v0.15.0 // indirect
-	golang.org/x/sys v0.16.0 // indirect
-	golang.org/x/term v0.16.0 // indirect
+	golang.org/x/sys v0.18.0 // indirect
+	golang.org/x/term v0.18.0 // indirect
 	golang.org/x/text v0.14.0 // indirect
 	golang.org/x/time v0.5.0 // indirect
 	golang.org/x/tools v0.17.0 // indirect
