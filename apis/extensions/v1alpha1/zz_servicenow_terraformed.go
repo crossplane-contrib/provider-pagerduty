@@ -21,7 +21,7 @@ func (mg *Servicenow) GetTerraformResourceType() string {
 
 // GetConnectionDetailsMapping for this Servicenow
 func (tr *Servicenow) GetConnectionDetailsMapping() map[string]string {
-	return map[string]string{"endpoint_url": "spec.forProvider.endpointUrlSecretRef", "snow_password": "spec.forProvider.snowPasswordSecretRef"}
+	return map[string]string{"endpoint_url": "endpointUrlSecretRef", "snow_password": "snowPasswordSecretRef"}
 }
 
 // GetObservation of this Servicenow

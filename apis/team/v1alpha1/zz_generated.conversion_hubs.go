@@ -7,7 +7,7 @@ Copyright 2022 Upbound Inc.
 package v1alpha1
 
 // Hub marks this type as a conversion hub.
-func (tr *Team) Hub() {}
+func (tr *Membership) Hub() {}
 
 // Hub marks this type as a conversion hub.
-func (tr *Membership) Hub() {}
+func (tr *Team) Hub() {}
