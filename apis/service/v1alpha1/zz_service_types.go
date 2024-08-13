@@ -108,7 +108,7 @@ type ConfigInitParameters struct {
 	// Alerts will be grouped together if the content of these fields match. This setting applies only when type is set to content_based.
 	Fields []*string `json:"fields,omitempty" tf:"fields,omitempty"`
 
-	// The maximum amount of time allowed between Alerts. This setting applies only when type is set to intelligent or content_based. Value must be between 300 and 3600. Any Alerts arriving greater than time_window seconds apart will not be grouped together. This is a rolling time window and is counted from the most recently grouped alert. The window is extended every time a new alert is added to the group, up to 24 hours.
+	// The maximum amount of time allowed between Alerts. This setting applies only when type is set to intelligent or content_based. Value must be between 300 and 3600 or exactly 86400 (86400 is supported only for content_based alert grouping). Any Alerts arriving greater than time_window seconds apart will not be grouped together. This is a rolling time window and is counted from the most recently grouped alert. The window is extended every time a new alert is added to the group, up to 24 hours.
 	TimeWindow *float64 `json:"timeWindow,omitempty" tf:"time_window,omitempty"`
 
 	// The duration in minutes within which to automatically group incoming alerts. This setting applies only when type is set to time. To continue grouping alerts until the incident is resolved, set this value to 0.
@@ -123,7 +123,7 @@ type ConfigObservation struct {
 	// Alerts will be grouped together if the content of these fields match. This setting applies only when type is set to content_based.
 	Fields []*string `json:"fields,omitempty" tf:"fields,omitempty"`
 
-	// The maximum amount of time allowed between Alerts. This setting applies only when type is set to intelligent or content_based. Value must be between 300 and 3600. Any Alerts arriving greater than time_window seconds apart will not be grouped together. This is a rolling time window and is counted from the most recently grouped alert. The window is extended every time a new alert is added to the group, up to 24 hours.
+	// The maximum amount of time allowed between Alerts. This setting applies only when type is set to intelligent or content_based. Value must be between 300 and 3600 or exactly 86400 (86400 is supported only for content_based alert grouping). Any Alerts arriving greater than time_window seconds apart will not be grouped together. This is a rolling time window and is counted from the most recently grouped alert. The window is extended every time a new alert is added to the group, up to 24 hours.
 	TimeWindow *float64 `json:"timeWindow,omitempty" tf:"time_window,omitempty"`
 
 	// The duration in minutes within which to automatically group incoming alerts. This setting applies only when type is set to time. To continue grouping alerts until the incident is resolved, set this value to 0.
@@ -140,7 +140,7 @@ type ConfigParameters struct {
 	// +kubebuilder:validation:Optional
 	Fields []*string `json:"fields,omitempty" tf:"fields,omitempty"`
 
-	// The maximum amount of time allowed between Alerts. This setting applies only when type is set to intelligent or content_based. Value must be between 300 and 3600. Any Alerts arriving greater than time_window seconds apart will not be grouped together. This is a rolling time window and is counted from the most recently grouped alert. The window is extended every time a new alert is added to the group, up to 24 hours.
+	// The maximum amount of time allowed between Alerts. This setting applies only when type is set to intelligent or content_based. Value must be between 300 and 3600 or exactly 86400 (86400 is supported only for content_based alert grouping). Any Alerts arriving greater than time_window seconds apart will not be grouped together. This is a rolling time window and is counted from the most recently grouped alert. The window is extended every time a new alert is added to the group, up to 24 hours.
 	// +kubebuilder:validation:Optional
 	TimeWindow *float64 `json:"timeWindow,omitempty" tf:"time_window,omitempty"`
 
@@ -300,7 +300,7 @@ type ServiceInitParameters struct {
 	// Time in seconds that an incident changes to the Triggered State after being Acknowledged. Disabled if set to the "null" string.  If not passed in, will default to '"1800"'.
 	AcknowledgementTimeout *string `json:"acknowledgementTimeout,omitempty" tf:"acknowledgement_timeout,omitempty"`
 
-	// Must be one of two values. PagerDuty receives events from your monitoring systems and can then create incidents in different ways. Value "create_incidents" is default: events will create an incident that cannot be merged. Value "create_alerts_and_incidents" is the alternative: events will create an alert and then add it to a new incident, these incidents can be merged. This option is recommended.
+	// (Deprecated) This attribute has been deprecated as all services will be migrated to use alerts and incidents. The incident only service setting will be no longer available and this attribute will be removed in an upcoming version. See knowledge base for details https://support.pagerduty.com/docs/alerts#enable-and-disable-alerts-on-a-service.
 	AlertCreation *string `json:"alertCreation,omitempty" tf:"alert_creation,omitempty"`
 
 	// (Deprecated) Defines how alerts on this service will be automatically grouped into incidents. Note that the alert grouping features are available only on certain plans. If not set, each alert will create a separate incident; If value is set to time: All alerts within a specified duration will be grouped into the same incident. This duration is set in the alert_grouping_timeout setting (described below). Available on Standard, Enterprise, and Event Intelligence plans; If value is set to intelligent - Alerts will be intelligently grouped based on a machine learning model that looks at the alert summary, timing, and the history of grouped alerts. Available on Enterprise and Event Intelligence plan. This field is deprecated, use alert_grouping_parameters.type instead,
@@ -351,7 +351,7 @@ type ServiceObservation struct {
 	// Time in seconds that an incident changes to the Triggered State after being Acknowledged. Disabled if set to the "null" string.  If not passed in, will default to '"1800"'.
 	AcknowledgementTimeout *string `json:"acknowledgementTimeout,omitempty" tf:"acknowledgement_timeout,omitempty"`
 
-	// Must be one of two values. PagerDuty receives events from your monitoring systems and can then create incidents in different ways. Value "create_incidents" is default: events will create an incident that cannot be merged. Value "create_alerts_and_incidents" is the alternative: events will create an alert and then add it to a new incident, these incidents can be merged. This option is recommended.
+	// (Deprecated) This attribute has been deprecated as all services will be migrated to use alerts and incidents. The incident only service setting will be no longer available and this attribute will be removed in an upcoming version. See knowledge base for details https://support.pagerduty.com/docs/alerts#enable-and-disable-alerts-on-a-service.
 	AlertCreation *string `json:"alertCreation,omitempty" tf:"alert_creation,omitempty"`
 
 	// (Deprecated) Defines how alerts on this service will be automatically grouped into incidents. Note that the alert grouping features are available only on certain plans. If not set, each alert will create a separate incident; If value is set to time: All alerts within a specified duration will be grouped into the same incident. This duration is set in the alert_grouping_timeout setting (described below). Available on Standard, Enterprise, and Event Intelligence plans; If value is set to intelligent - Alerts will be intelligently grouped based on a machine learning model that looks at the alert summary, timing, and the history of grouped alerts. Available on Enterprise and Event Intelligence plan. This field is deprecated, use alert_grouping_parameters.type instead,
@@ -412,7 +412,7 @@ type ServiceParameters struct {
 	// +kubebuilder:validation:Optional
 	AcknowledgementTimeout *string `json:"acknowledgementTimeout,omitempty" tf:"acknowledgement_timeout,omitempty"`
 
-	// Must be one of two values. PagerDuty receives events from your monitoring systems and can then create incidents in different ways. Value "create_incidents" is default: events will create an incident that cannot be merged. Value "create_alerts_and_incidents" is the alternative: events will create an alert and then add it to a new incident, these incidents can be merged. This option is recommended.
+	// (Deprecated) This attribute has been deprecated as all services will be migrated to use alerts and incidents. The incident only service setting will be no longer available and this attribute will be removed in an upcoming version. See knowledge base for details https://support.pagerduty.com/docs/alerts#enable-and-disable-alerts-on-a-service.
 	// +kubebuilder:validation:Optional
 	AlertCreation *string `json:"alertCreation,omitempty" tf:"alert_creation,omitempty"`
 

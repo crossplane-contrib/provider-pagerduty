@@ -343,6 +343,9 @@ type CatchAllActionsInitParameters struct {
 	// Create a Webhook associated with the resulting incident.
 	AutomationAction []AutomationActionInitParameters `json:"automationAction,omitempty" tf:"automation_action,omitempty"`
 
+	// The ID of the Escalation Policy you want to assign incidents to. Event rules with this action will override the Escalation Policy already set on a Service's settings, with what is configured by this action.
+	EscalationPolicy *string `json:"escalationPolicy,omitempty" tf:"escalation_policy,omitempty"`
+
 	// sets whether the resulting alert status is trigger or resolve. Allowed values are: trigger, resolve
 	EventAction *string `json:"eventAction,omitempty" tf:"event_action,omitempty"`
 
@@ -381,6 +384,9 @@ type CatchAllActionsObservation struct {
 
 	// Create a Webhook associated with the resulting incident.
 	AutomationAction []AutomationActionObservation `json:"automationAction,omitempty" tf:"automation_action,omitempty"`
+
+	// The ID of the Escalation Policy you want to assign incidents to. Event rules with this action will override the Escalation Policy already set on a Service's settings, with what is configured by this action.
+	EscalationPolicy *string `json:"escalationPolicy,omitempty" tf:"escalation_policy,omitempty"`
 
 	// sets whether the resulting alert status is trigger or resolve. Allowed values are: trigger, resolve
 	EventAction *string `json:"eventAction,omitempty" tf:"event_action,omitempty"`
@@ -422,6 +428,10 @@ type CatchAllActionsParameters struct {
 	// Create a Webhook associated with the resulting incident.
 	// +kubebuilder:validation:Optional
 	AutomationAction []AutomationActionParameters `json:"automationAction,omitempty" tf:"automation_action,omitempty"`
+
+	// The ID of the Escalation Policy you want to assign incidents to. Event rules with this action will override the Escalation Policy already set on a Service's settings, with what is configured by this action.
+	// +kubebuilder:validation:Optional
+	EscalationPolicy *string `json:"escalationPolicy,omitempty" tf:"escalation_policy,omitempty"`
 
 	// sets whether the resulting alert status is trigger or resolve. Allowed values are: trigger, resolve
 	// +kubebuilder:validation:Optional
@@ -764,6 +774,9 @@ type SetRuleActionsInitParameters struct {
 	// Create a Webhook associated with the resulting incident.
 	AutomationAction []ActionsAutomationActionInitParameters `json:"automationAction,omitempty" tf:"automation_action,omitempty"`
 
+	// The ID of the Escalation Policy you want to assign incidents to. Event rules with this action will override the Escalation Policy already set on a Service's settings, with what is configured by this action.
+	EscalationPolicy *string `json:"escalationPolicy,omitempty" tf:"escalation_policy,omitempty"`
+
 	// sets whether the resulting alert status is trigger or resolve. Allowed values are: trigger, resolve
 	EventAction *string `json:"eventAction,omitempty" tf:"event_action,omitempty"`
 
@@ -802,6 +815,9 @@ type SetRuleActionsObservation struct {
 
 	// Create a Webhook associated with the resulting incident.
 	AutomationAction []ActionsAutomationActionObservation `json:"automationAction,omitempty" tf:"automation_action,omitempty"`
+
+	// The ID of the Escalation Policy you want to assign incidents to. Event rules with this action will override the Escalation Policy already set on a Service's settings, with what is configured by this action.
+	EscalationPolicy *string `json:"escalationPolicy,omitempty" tf:"escalation_policy,omitempty"`
 
 	// sets whether the resulting alert status is trigger or resolve. Allowed values are: trigger, resolve
 	EventAction *string `json:"eventAction,omitempty" tf:"event_action,omitempty"`
@@ -843,6 +859,10 @@ type SetRuleActionsParameters struct {
 	// Create a Webhook associated with the resulting incident.
 	// +kubebuilder:validation:Optional
 	AutomationAction []ActionsAutomationActionParameters `json:"automationAction,omitempty" tf:"automation_action,omitempty"`
+
+	// The ID of the Escalation Policy you want to assign incidents to. Event rules with this action will override the Escalation Policy already set on a Service's settings, with what is configured by this action.
+	// +kubebuilder:validation:Optional
+	EscalationPolicy *string `json:"escalationPolicy,omitempty" tf:"escalation_policy,omitempty"`
 
 	// sets whether the resulting alert status is trigger or resolve. Allowed values are: trigger, resolve
 	// +kubebuilder:validation:Optional

@@ -79,13 +79,11 @@ spec:
                       string.  If not passed in, will default to '"1800"'.
                     type: string
                   alertCreation:
-                    description: 'Must be one of two values. PagerDuty receives events
-                      from your monitoring systems and can then create incidents in
-                      different ways. Value "create_incidents" is default: events
-                      will create an incident that cannot be merged. Value "create_alerts_and_incidents"
-                      is the alternative: events will create an alert and then add
-                      it to a new incident, these incidents can be merged. This option
-                      is recommended.'
+                    description: (Deprecated) This attribute has been deprecated as
+                      all services will be migrated to use alerts and incidents. The
+                      incident only service setting will be no longer available and
+                      this attribute will be removed in an upcoming version. See knowledge
+                      base for details https://support.pagerduty.com/docs/alerts#enable-and-disable-alerts-on-a-service.
                     type: string
                   alertGrouping:
                     description: '(Deprecated) Defines how alerts on this service
@@ -131,12 +129,13 @@ spec:
                                 description: The maximum amount of time allowed between
                                   Alerts. This setting applies only when type is set
                                   to intelligent or content_based. Value must be between
-                                  300 and 3600. Any Alerts arriving greater than time_window
-                                  seconds apart will not be grouped together. This
-                                  is a rolling time window and is counted from the
-                                  most recently grouped alert. The window is extended
-                                  every time a new alert is added to the group, up
-                                  to 24 hours.
+                                  300 and 3600 or exactly 86400 (86400 is supported
+                                  only for content_based alert grouping). Any Alerts
+                                  arriving greater than time_window seconds apart
+                                  will not be grouped together. This is a rolling
+                                  time window and is counted from the most recently
+                                  grouped alert. The window is extended every time
+                                  a new alert is added to the group, up to 24 hours.
                                 type: number
                               timeout:
                                 description: The duration in minutes within which
@@ -389,13 +388,11 @@ spec:
                       string.  If not passed in, will default to '"1800"'.
                     type: string
                   alertCreation:
-                    description: 'Must be one of two values. PagerDuty receives events
-                      from your monitoring systems and can then create incidents in
-                      different ways. Value "create_incidents" is default: events
-                      will create an incident that cannot be merged. Value "create_alerts_and_incidents"
-                      is the alternative: events will create an alert and then add
-                      it to a new incident, these incidents can be merged. This option
-                      is recommended.'
+                    description: (Deprecated) This attribute has been deprecated as
+                      all services will be migrated to use alerts and incidents. The
+                      incident only service setting will be no longer available and
+                      this attribute will be removed in an upcoming version. See knowledge
+                      base for details https://support.pagerduty.com/docs/alerts#enable-and-disable-alerts-on-a-service.
                     type: string
                   alertGrouping:
                     description: '(Deprecated) Defines how alerts on this service
@@ -441,12 +438,13 @@ spec:
                                 description: The maximum amount of time allowed between
                                   Alerts. This setting applies only when type is set
                                   to intelligent or content_based. Value must be between
-                                  300 and 3600. Any Alerts arriving greater than time_window
-                                  seconds apart will not be grouped together. This
-                                  is a rolling time window and is counted from the
-                                  most recently grouped alert. The window is extended
-                                  every time a new alert is added to the group, up
-                                  to 24 hours.
+                                  300 and 3600 or exactly 86400 (86400 is supported
+                                  only for content_based alert grouping). Any Alerts
+                                  arriving greater than time_window seconds apart
+                                  will not be grouped together. This is a rolling
+                                  time window and is counted from the most recently
+                                  grouped alert. The window is extended every time
+                                  a new alert is added to the group, up to 24 hours.
                                 type: number
                               timeout:
                                 description: The duration in minutes within which
@@ -863,13 +861,11 @@ spec:
                       string.  If not passed in, will default to '"1800"'.
                     type: string
                   alertCreation:
-                    description: 'Must be one of two values. PagerDuty receives events
-                      from your monitoring systems and can then create incidents in
-                      different ways. Value "create_incidents" is default: events
-                      will create an incident that cannot be merged. Value "create_alerts_and_incidents"
-                      is the alternative: events will create an alert and then add
-                      it to a new incident, these incidents can be merged. This option
-                      is recommended.'
+                    description: (Deprecated) This attribute has been deprecated as
+                      all services will be migrated to use alerts and incidents. The
+                      incident only service setting will be no longer available and
+                      this attribute will be removed in an upcoming version. See knowledge
+                      base for details https://support.pagerduty.com/docs/alerts#enable-and-disable-alerts-on-a-service.
                     type: string
                   alertGrouping:
                     description: '(Deprecated) Defines how alerts on this service
@@ -915,12 +911,13 @@ spec:
                                 description: The maximum amount of time allowed between
                                   Alerts. This setting applies only when type is set
                                   to intelligent or content_based. Value must be between
-                                  300 and 3600. Any Alerts arriving greater than time_window
-                                  seconds apart will not be grouped together. This
-                                  is a rolling time window and is counted from the
-                                  most recently grouped alert. The window is extended
-                                  every time a new alert is added to the group, up
-                                  to 24 hours.
+                                  300 and 3600 or exactly 86400 (86400 is supported
+                                  only for content_based alert grouping). Any Alerts
+                                  arriving greater than time_window seconds apart
+                                  will not be grouped together. This is a rolling
+                                  time window and is counted from the most recently
+                                  grouped alert. The window is extended every time
+                                  a new alert is added to the group, up to 24 hours.
                                 type: number
                               timeout:
                                 description: The duration in minutes within which
