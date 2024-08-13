@@ -18,6 +18,10 @@ type ExtensionInitParameters struct {
 	// The configuration of the service extension as string containing plain JSON-encoded data.
 	Config *string `json:"config,omitempty" tf:"config,omitempty"`
 
+	// The url of the extension.
+	// Note: The endpoint URL is Optional API wise in most cases. But in some cases it is a Required parameter. For example, pagerduty_extension_schema named Generic V2 Webhook doesn't accept pagerduty_extension with no endpoint_url, but one with named Slack accepts.
+	EndpointURLSecretRef *v1.SecretKeySelector `json:"endpointUrlSecretRef,omitempty" tf:"-"`
+
 	// This is the objects for which the extension applies (An array of service ids).
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-pagerduty/apis/service/v1alpha1.Service
 	// +listType=set
@@ -132,8 +136,8 @@ type ExtensionStatus struct {
 // +kubebuilder:storageversion
 
 // Extension is the Schema for the Extensions API. Creates and manages a service extension in PagerDuty.
-// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
+// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,pagerduty}

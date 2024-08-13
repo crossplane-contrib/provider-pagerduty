@@ -21,7 +21,7 @@ func (mg *Extension) GetTerraformResourceType() string {
 
 // GetConnectionDetailsMapping for this Extension
 func (tr *Extension) GetConnectionDetailsMapping() map[string]string {
-	return map[string]string{"endpoint_url": "spec.forProvider.endpointUrlSecretRef"}
+	return map[string]string{"endpoint_url": "endpointUrlSecretRef"}
 }
 
 // GetObservation of this Extension

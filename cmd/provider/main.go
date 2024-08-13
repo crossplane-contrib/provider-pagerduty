@@ -18,7 +18,9 @@ import (
 	"github.com/crossplane/crossplane-runtime/pkg/feature"
 	"github.com/crossplane/crossplane-runtime/pkg/logging"
 	"github.com/crossplane/crossplane-runtime/pkg/ratelimiter"
+	"github.com/crossplane/crossplane-runtime/pkg/reconciler/managed"
 	"github.com/crossplane/crossplane-runtime/pkg/resource"
+	"github.com/crossplane/crossplane-runtime/pkg/statemetrics"
 	tjcontroller "github.com/crossplane/upjet/pkg/controller"
 	"github.com/crossplane/upjet/pkg/terraform"
 	"gopkg.in/alecthomas/kingpin.v2"
@@ -28,6 +30,7 @@ import (
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/cache"
 	"sigs.k8s.io/controller-runtime/pkg/log/zap"
+	"sigs.k8s.io/controller-runtime/pkg/metrics"
 
 	"github.com/crossplane-contrib/provider-pagerduty/apis"
 	"github.com/crossplane-contrib/provider-pagerduty/apis/v1alpha1"
@@ -39,15 +42,16 @@ import (
 
 func main() {
 	var (
-		app              = kingpin.New(filepath.Base(os.Args[0]), "Terraform based Crossplane provider for PagerDuty").DefaultEnvars()
-		debug            = app.Flag("debug", "Run with debug logging.").Short('d').Bool()
-		syncInterval     = app.Flag("sync", "Sync interval controls how often all resources will be double checked for drift.").Short('s').Default("1h").Duration()
-		pollInterval     = app.Flag("poll", "Poll interval controls how often an individual resource should be checked for drift.").Default("10m").Duration()
-		leaderElection   = app.Flag("leader-election", "Use leader election for the controller manager.").Short('l').Default("false").OverrideDefaultFromEnvar("LEADER_ELECTION").Bool()
-		terraformVersion = app.Flag("terraform-version", "Terraform version.").Required().Envar("TERRAFORM_VERSION").String()
-		providerSource   = app.Flag("terraform-provider-source", "Terraform provider source.").Required().Envar("TERRAFORM_PROVIDER_SOURCE").String()
-		providerVersion  = app.Flag("terraform-provider-version", "Terraform provider version.").Required().Envar("TERRAFORM_PROVIDER_VERSION").String()
-		maxReconcileRate = app.Flag("max-reconcile-rate", "The global maximum rate per second at which resources may checked for drift from the desired state.").Default("10").Int()
+		app                     = kingpin.New(filepath.Base(os.Args[0]), "Terraform based Crossplane provider for PagerDuty").DefaultEnvars()
+		debug                   = app.Flag("debug", "Run with debug logging.").Short('d').Bool()
+		syncInterval            = app.Flag("sync", "Sync interval controls how often all resources will be double checked for drift.").Short('s').Default("1h").Duration()
+		pollInterval            = app.Flag("poll", "Poll interval controls how often an individual resource should be checked for drift.").Default("10m").Duration()
+		pollStateMetricInterval = app.Flag("poll-state-metric", "State metric recording interval").Default("5s").Duration()
+		leaderElection          = app.Flag("leader-election", "Use leader election for the controller manager.").Short('l').Default("false").OverrideDefaultFromEnvar("LEADER_ELECTION").Bool()
+		terraformVersion        = app.Flag("terraform-version", "Terraform version.").Required().Envar("TERRAFORM_VERSION").String()
+		providerSource          = app.Flag("terraform-provider-source", "Terraform provider source.").Required().Envar("TERRAFORM_PROVIDER_SOURCE").String()
+		providerVersion         = app.Flag("terraform-provider-version", "Terraform provider version.").Required().Envar("TERRAFORM_PROVIDER_VERSION").String()
+		maxReconcileRate        = app.Flag("max-reconcile-rate", "The global maximum rate per second at which resources may checked for drift from the desired state.").Default("10").Int()
 
 		namespace                  = app.Flag("namespace", "Namespace used to set as default scope in default secret store config.").Default("crossplane-system").Envar("POD_NAMESPACE").String()
 		essTLSCertsPath            = app.Flag("ess-tls-cert-dir", "Path of ESS TLS certificates.").Envar("ESS_TLS_CERTS_DIR").String()
@@ -90,6 +94,12 @@ func main() {
 	kingpin.FatalIfError(err, "Cannot create controller manager")
 	kingpin.FatalIfError(apis.AddToScheme(mgr.GetScheme()), "Cannot add PagerDuty APIs to scheme")
 
+	metricRecorder := managed.NewMRMetricRecorder()
+	stateMetrics := statemetrics.NewMRStateMetrics()
+
+	metrics.Registry.MustRegister(metricRecorder)
+	metrics.Registry.MustRegister(stateMetrics)
+
 	featureFlags := &feature.Flags{}
 	o := tjcontroller.Options{
 		Options: xpcontroller.Options{
@@ -98,6 +108,11 @@ func main() {
 			PollInterval:            *pollInterval,
 			MaxConcurrentReconciles: *maxReconcileRate,
 			Features:                featureFlags,
+			MetricOptions: &xpcontroller.MetricOptions{
+				PollStateMetricInterval: *pollStateMetricInterval,
+				MRMetrics:               metricRecorder,
+				MRStateMetrics:          stateMetrics,
+			},
 		},
 		Provider:       config.GetProvider(),
 		SetupFn:        clients.TerraformSetupBuilder(*terraformVersion, *providerSource, *providerVersion),

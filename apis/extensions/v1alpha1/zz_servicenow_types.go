@@ -14,6 +14,7 @@ import (
 )
 
 type ServicenowInitParameters struct {
+	EndpointURLSecretRef *v1.SecretKeySelector `json:"endpointUrlSecretRef,omitempty" tf:"-"`
 
 	// This is the objects for which the extension applies (An array of service ids).
 	// +listType=set
@@ -27,6 +28,9 @@ type ServicenowInitParameters struct {
 
 	// The ServiceNow referer.
 	Referer *string `json:"referer,omitempty" tf:"referer,omitempty"`
+
+	// The ServiceNow password.
+	SnowPasswordSecretRef v1.SecretKeySelector `json:"snowPasswordSecretRef" tf:"-"`
 
 	// The ServiceNow username.
 	SnowUser *string `json:"snowUser,omitempty" tf:"snow_user,omitempty"`
@@ -163,8 +167,8 @@ type ServicenowStatus struct {
 // +kubebuilder:storageversion
 
 // Servicenow is the Schema for the Servicenows API. Creates and manages a ServiceNow service extension in PagerDuty.
-// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
+// +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,pagerduty}
