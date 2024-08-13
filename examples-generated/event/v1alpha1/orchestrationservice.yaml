@@ -44,6 +44,12 @@ spec:
         - expression: event.severity matches 'critical'
         label: All critical alerts should be treated as P1 incident
       - actions:
+        - escalationPolicy: ${data.pagerduty_escalation_policy.sre_esc_policy.id}
+        condition:
+        - expression: event.custom_details.service_name matches part '-api' and event.custom_details.status_code
+            matches '502'
+        label: If any of the API apps are unavailable, page the SRE team
+      - actions:
         - automationAction:
           - autoSend: true
             header:

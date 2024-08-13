@@ -70,6 +70,45 @@ type ConditionParameters struct {
 	Expression *string `json:"expression" tf:"expression,omitempty"`
 }
 
+type DynamicRouteToInitParameters struct {
+
+	// Indicates whether the extracted value from the source is a service's name or ID. Allowed values are: service_name, service_id
+	LookupBy *string `json:"lookupBy,omitempty" tf:"lookup_by,omitempty"`
+
+	// The regular expression, used to extract a value from the source field. Must use valid RE2 regular expression syntax.
+	Regex *string `json:"regex,omitempty" tf:"regex,omitempty"`
+
+	// The path to a field in an event.
+	Source *string `json:"source,omitempty" tf:"source,omitempty"`
+}
+
+type DynamicRouteToObservation struct {
+
+	// Indicates whether the extracted value from the source is a service's name or ID. Allowed values are: service_name, service_id
+	LookupBy *string `json:"lookupBy,omitempty" tf:"lookup_by,omitempty"`
+
+	// The regular expression, used to extract a value from the source field. Must use valid RE2 regular expression syntax.
+	Regex *string `json:"regex,omitempty" tf:"regex,omitempty"`
+
+	// The path to a field in an event.
+	Source *string `json:"source,omitempty" tf:"source,omitempty"`
+}
+
+type DynamicRouteToParameters struct {
+
+	// Indicates whether the extracted value from the source is a service's name or ID. Allowed values are: service_name, service_id
+	// +kubebuilder:validation:Optional
+	LookupBy *string `json:"lookupBy" tf:"lookup_by,omitempty"`
+
+	// The regular expression, used to extract a value from the source field. Must use valid RE2 regular expression syntax.
+	// +kubebuilder:validation:Optional
+	Regex *string `json:"regex" tf:"regex,omitempty"`
+
+	// The path to a field in an event.
+	// +kubebuilder:validation:Optional
+	Source *string `json:"source" tf:"source,omitempty"`
+}
+
 type OrchestrationRouterInitParameters struct {
 
 	// When none of the rules match an event, the event will be routed according to the catch_all settings.
@@ -132,11 +171,17 @@ type OrchestrationRouterParameters struct {
 
 type RuleActionsInitParameters struct {
 
+	// supports the following:
+	DynamicRouteTo []DynamicRouteToInitParameters `json:"dynamicRouteTo,omitempty" tf:"dynamic_route_to,omitempty"`
+
 	// The ID of the target Service for the resulting alert.
 	RouteTo *string `json:"routeTo,omitempty" tf:"route_to,omitempty"`
 }
 
 type RuleActionsObservation struct {
+
+	// supports the following:
+	DynamicRouteTo []DynamicRouteToObservation `json:"dynamicRouteTo,omitempty" tf:"dynamic_route_to,omitempty"`
 
 	// The ID of the target Service for the resulting alert.
 	RouteTo *string `json:"routeTo,omitempty" tf:"route_to,omitempty"`
@@ -144,9 +189,13 @@ type RuleActionsObservation struct {
 
 type RuleActionsParameters struct {
 
+	// supports the following:
+	// +kubebuilder:validation:Optional
+	DynamicRouteTo []DynamicRouteToParameters `json:"dynamicRouteTo,omitempty" tf:"dynamic_route_to,omitempty"`
+
 	// The ID of the target Service for the resulting alert.
 	// +kubebuilder:validation:Optional
-	RouteTo *string `json:"routeTo" tf:"route_to,omitempty"`
+	RouteTo *string `json:"routeTo,omitempty" tf:"route_to,omitempty"`
 }
 
 type RuleInitParameters struct {

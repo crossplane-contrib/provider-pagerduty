@@ -41,11 +41,11 @@ type DependencyDependencyParameters struct {
 
 	// The service that dependents on the supporting service. Dependency dependent service documented below.
 	// +kubebuilder:validation:Optional
-	DependentService []DependentServiceParameters `json:"dependentService" tf:"dependent_service,omitempty"`
+	DependentService []DependentServiceParameters `json:"dependentService,omitempty" tf:"dependent_service,omitempty"`
 
 	// The service that supports the dependent service. Dependency supporting service documented below.
 	// +kubebuilder:validation:Optional
-	SupportingService []SupportingServiceParameters `json:"supportingService" tf:"supporting_service,omitempty"`
+	SupportingService []SupportingServiceParameters `json:"supportingService,omitempty" tf:"supporting_service,omitempty"`
 
 	// Can be business_service,  service, business_service_reference or technical_service_reference.
 	// +kubebuilder:validation:Optional
@@ -168,9 +168,8 @@ type DependencyStatus struct {
 type Dependency struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.dependency) || (has(self.initProvider) && has(self.initProvider.dependency))",message="spec.forProvider.dependency is a required parameter"
-	Spec   DependencySpec   `json:"spec"`
-	Status DependencyStatus `json:"status,omitempty"`
+	Spec              DependencySpec   `json:"spec"`
+	Status            DependencyStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true

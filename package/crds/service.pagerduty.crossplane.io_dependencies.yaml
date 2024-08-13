@@ -335,11 +335,6 @@ spec:
             required:
             - forProvider
             type: object
-            x-kubernetes-validations:
-            - message: spec.forProvider.dependency is a required parameter
-              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
-                || ''Update'' in self.managementPolicies) || has(self.forProvider.dependency)
-                || (has(self.initProvider) && has(self.initProvider.dependency))'
           status:
             description: DependencyStatus defines the observed state of Dependency.
             properties:

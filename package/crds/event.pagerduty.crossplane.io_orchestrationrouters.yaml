@@ -190,6 +190,28 @@ spec:
                                   matches this rule.
                                 items:
                                   properties:
+                                    dynamicRouteTo:
+                                      description: 'supports the following:'
+                                      items:
+                                        properties:
+                                          lookupBy:
+                                            description: 'Indicates whether the extracted
+                                              value from the source is a service''s
+                                              name or ID. Allowed values are: service_name,
+                                              service_id'
+                                            type: string
+                                          regex:
+                                            description: The regular expression, used
+                                              to extract a value from the source field.
+                                              Must use valid RE2 regular expression
+                                              syntax.
+                                            type: string
+                                          source:
+                                            description: The path to a field in an
+                                              event.
+                                            type: string
+                                        type: object
+                                      type: array
                                     routeTo:
                                       description: The ID of the target Service for
                                         the resulting alert.
@@ -351,6 +373,28 @@ spec:
                                   matches this rule.
                                 items:
                                   properties:
+                                    dynamicRouteTo:
+                                      description: 'supports the following:'
+                                      items:
+                                        properties:
+                                          lookupBy:
+                                            description: 'Indicates whether the extracted
+                                              value from the source is a service''s
+                                              name or ID. Allowed values are: service_name,
+                                              service_id'
+                                            type: string
+                                          regex:
+                                            description: The regular expression, used
+                                              to extract a value from the source field.
+                                              Must use valid RE2 regular expression
+                                              syntax.
+                                            type: string
+                                          source:
+                                            description: The path to a field in an
+                                              event.
+                                            type: string
+                                        type: object
+                                      type: array
                                     routeTo:
                                       description: The ID of the target Service for
                                         the resulting alert.
@@ -610,6 +654,28 @@ spec:
                                   matches this rule.
                                 items:
                                   properties:
+                                    dynamicRouteTo:
+                                      description: 'supports the following:'
+                                      items:
+                                        properties:
+                                          lookupBy:
+                                            description: 'Indicates whether the extracted
+                                              value from the source is a service''s
+                                              name or ID. Allowed values are: service_name,
+                                              service_id'
+                                            type: string
+                                          regex:
+                                            description: The regular expression, used
+                                              to extract a value from the source field.
+                                              Must use valid RE2 regular expression
+                                              syntax.
+                                            type: string
+                                          source:
+                                            description: The path to a field in an
+                                              event.
+                                            type: string
+                                        type: object
+                                      type: array
                                     routeTo:
                                       description: The ID of the target Service for
                                         the resulting alert.
