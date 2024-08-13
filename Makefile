@@ -49,7 +49,7 @@ GO111MODULE = on
 # Setup Kubernetes tools
 
 KIND_VERSION = v0.15.0
-UP_VERSION = v0.28.0
+UP_VERSION = v0.32.1
 UP_CHANNEL = stable
 -include build/makelib/k8s_tools.mk
 
