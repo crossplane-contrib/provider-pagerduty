@@ -14,6 +14,10 @@ import (
 type ProviderConfigSpec struct {
 	// Credentials required to authenticate to this provider.
 	Credentials ProviderCredentials `json:"credentials"`
+	// The PagerDuty service region to use. If omitted uses US region.
+	// +kubebuilder:validation:Enum=eu
+	// +optional
+	ServiceRegion string `json:"serviceRegion"`
 }
 
 // ProviderCredentials required to authenticate.
