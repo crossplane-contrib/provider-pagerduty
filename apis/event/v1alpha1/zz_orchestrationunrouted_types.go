@@ -13,7 +13,7 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
-type CatchAllActionsExtractionInitParameters struct {
+type OrchestrationUnroutedCatchAllActionsExtractionInitParameters struct {
 
 	// A RE2 regular expression that will be matched against field specified via the source argument. If the regex contains one or more capture groups, their values will be extracted and appended together. If it contains no capture groups, the whole match is used. This field can be ignored for template based extractions.
 	Regex *string `json:"regex,omitempty" tf:"regex,omitempty"`
@@ -28,7 +28,7 @@ type CatchAllActionsExtractionInitParameters struct {
 	Template *string `json:"template,omitempty" tf:"template,omitempty"`
 }
 
-type CatchAllActionsExtractionObservation struct {
+type OrchestrationUnroutedCatchAllActionsExtractionObservation struct {
 
 	// A RE2 regular expression that will be matched against field specified via the source argument. If the regex contains one or more capture groups, their values will be extracted and appended together. If it contains no capture groups, the whole match is used. This field can be ignored for template based extractions.
 	Regex *string `json:"regex,omitempty" tf:"regex,omitempty"`
@@ -43,7 +43,7 @@ type CatchAllActionsExtractionObservation struct {
 	Template *string `json:"template,omitempty" tf:"template,omitempty"`
 }
 
-type CatchAllActionsExtractionParameters struct {
+type OrchestrationUnroutedCatchAllActionsExtractionParameters struct {
 
 	// A RE2 regular expression that will be matched against field specified via the source argument. If the regex contains one or more capture groups, their values will be extracted and appended together. If it contains no capture groups, the whole match is used. This field can be ignored for template based extractions.
 	// +kubebuilder:validation:Optional
@@ -62,7 +62,58 @@ type CatchAllActionsExtractionParameters struct {
 	Template *string `json:"template,omitempty" tf:"template,omitempty"`
 }
 
-type CatchAllActionsVariableInitParameters struct {
+type OrchestrationUnroutedCatchAllActionsInitParameters struct {
+
+	// sets whether the resulting alert status is trigger or resolve. Allowed values are: trigger, resolve
+	EventAction *string `json:"eventAction,omitempty" tf:"event_action,omitempty"`
+
+	// Replace any CEF field or Custom Details object field using custom variables.
+	Extraction []OrchestrationUnroutedCatchAllActionsExtractionInitParameters `json:"extraction,omitempty" tf:"extraction,omitempty"`
+
+	// sets Severity of the resulting alert. Allowed values are: info, error, warning, critical
+	Severity *string `json:"severity,omitempty" tf:"severity,omitempty"`
+
+	// Populate variables from event payloads and use those variables in other event actions.
+	Variable []OrchestrationUnroutedCatchAllActionsVariableInitParameters `json:"variable,omitempty" tf:"variable,omitempty"`
+}
+
+type OrchestrationUnroutedCatchAllActionsObservation struct {
+
+	// sets whether the resulting alert status is trigger or resolve. Allowed values are: trigger, resolve
+	EventAction *string `json:"eventAction,omitempty" tf:"event_action,omitempty"`
+
+	// Replace any CEF field or Custom Details object field using custom variables.
+	Extraction []OrchestrationUnroutedCatchAllActionsExtractionObservation `json:"extraction,omitempty" tf:"extraction,omitempty"`
+
+	// sets Severity of the resulting alert. Allowed values are: info, error, warning, critical
+	Severity *string `json:"severity,omitempty" tf:"severity,omitempty"`
+
+	Suppress *bool `json:"suppress,omitempty" tf:"suppress,omitempty"`
+
+	// Populate variables from event payloads and use those variables in other event actions.
+	Variable []OrchestrationUnroutedCatchAllActionsVariableObservation `json:"variable,omitempty" tf:"variable,omitempty"`
+}
+
+type OrchestrationUnroutedCatchAllActionsParameters struct {
+
+	// sets whether the resulting alert status is trigger or resolve. Allowed values are: trigger, resolve
+	// +kubebuilder:validation:Optional
+	EventAction *string `json:"eventAction,omitempty" tf:"event_action,omitempty"`
+
+	// Replace any CEF field or Custom Details object field using custom variables.
+	// +kubebuilder:validation:Optional
+	Extraction []OrchestrationUnroutedCatchAllActionsExtractionParameters `json:"extraction,omitempty" tf:"extraction,omitempty"`
+
+	// sets Severity of the resulting alert. Allowed values are: info, error, warning, critical
+	// +kubebuilder:validation:Optional
+	Severity *string `json:"severity,omitempty" tf:"severity,omitempty"`
+
+	// Populate variables from event payloads and use those variables in other event actions.
+	// +kubebuilder:validation:Optional
+	Variable []OrchestrationUnroutedCatchAllActionsVariableParameters `json:"variable,omitempty" tf:"variable,omitempty"`
+}
+
+type OrchestrationUnroutedCatchAllActionsVariableInitParameters struct {
 
 	// The name of the variable
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
@@ -77,7 +128,7 @@ type CatchAllActionsVariableInitParameters struct {
 	Value *string `json:"value,omitempty" tf:"value,omitempty"`
 }
 
-type CatchAllActionsVariableObservation struct {
+type OrchestrationUnroutedCatchAllActionsVariableObservation struct {
 
 	// The name of the variable
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
@@ -92,7 +143,7 @@ type CatchAllActionsVariableObservation struct {
 	Value *string `json:"value,omitempty" tf:"value,omitempty"`
 }
 
-type CatchAllActionsVariableParameters struct {
+type OrchestrationUnroutedCatchAllActionsVariableParameters struct {
 
 	// The name of the variable
 	// +kubebuilder:validation:Optional
@@ -109,57 +160,6 @@ type CatchAllActionsVariableParameters struct {
 	// The Regex expression to match against. Must use valid RE2 regular expression syntax.
 	// +kubebuilder:validation:Optional
 	Value *string `json:"value" tf:"value,omitempty"`
-}
-
-type OrchestrationUnroutedCatchAllActionsInitParameters struct {
-
-	// sets whether the resulting alert status is trigger or resolve. Allowed values are: trigger, resolve
-	EventAction *string `json:"eventAction,omitempty" tf:"event_action,omitempty"`
-
-	// Replace any CEF field or Custom Details object field using custom variables.
-	Extraction []CatchAllActionsExtractionInitParameters `json:"extraction,omitempty" tf:"extraction,omitempty"`
-
-	// sets Severity of the resulting alert. Allowed values are: info, error, warning, critical
-	Severity *string `json:"severity,omitempty" tf:"severity,omitempty"`
-
-	// Populate variables from event payloads and use those variables in other event actions.
-	Variable []CatchAllActionsVariableInitParameters `json:"variable,omitempty" tf:"variable,omitempty"`
-}
-
-type OrchestrationUnroutedCatchAllActionsObservation struct {
-
-	// sets whether the resulting alert status is trigger or resolve. Allowed values are: trigger, resolve
-	EventAction *string `json:"eventAction,omitempty" tf:"event_action,omitempty"`
-
-	// Replace any CEF field or Custom Details object field using custom variables.
-	Extraction []CatchAllActionsExtractionObservation `json:"extraction,omitempty" tf:"extraction,omitempty"`
-
-	// sets Severity of the resulting alert. Allowed values are: info, error, warning, critical
-	Severity *string `json:"severity,omitempty" tf:"severity,omitempty"`
-
-	Suppress *bool `json:"suppress,omitempty" tf:"suppress,omitempty"`
-
-	// Populate variables from event payloads and use those variables in other event actions.
-	Variable []CatchAllActionsVariableObservation `json:"variable,omitempty" tf:"variable,omitempty"`
-}
-
-type OrchestrationUnroutedCatchAllActionsParameters struct {
-
-	// sets whether the resulting alert status is trigger or resolve. Allowed values are: trigger, resolve
-	// +kubebuilder:validation:Optional
-	EventAction *string `json:"eventAction,omitempty" tf:"event_action,omitempty"`
-
-	// Replace any CEF field or Custom Details object field using custom variables.
-	// +kubebuilder:validation:Optional
-	Extraction []CatchAllActionsExtractionParameters `json:"extraction,omitempty" tf:"extraction,omitempty"`
-
-	// sets Severity of the resulting alert. Allowed values are: info, error, warning, critical
-	// +kubebuilder:validation:Optional
-	Severity *string `json:"severity,omitempty" tf:"severity,omitempty"`
-
-	// Populate variables from event payloads and use those variables in other event actions.
-	// +kubebuilder:validation:Optional
-	Variable []CatchAllActionsVariableParameters `json:"variable,omitempty" tf:"variable,omitempty"`
 }
 
 type OrchestrationUnroutedCatchAllInitParameters struct {
@@ -276,7 +276,7 @@ type OrchestrationUnroutedSetRuleActionsInitParameters struct {
 	EventAction *string `json:"eventAction,omitempty" tf:"event_action,omitempty"`
 
 	// Replace any CEF field or Custom Details object field using custom variables.
-	Extraction []RuleActionsExtractionInitParameters `json:"extraction,omitempty" tf:"extraction,omitempty"`
+	Extraction []SetRuleActionsExtractionInitParameters `json:"extraction,omitempty" tf:"extraction,omitempty"`
 
 	// The ID of a Set from this Unrouted Orchestration whose rules you also want to use with events that match this rule.
 	RouteTo *string `json:"routeTo,omitempty" tf:"route_to,omitempty"`
@@ -285,7 +285,7 @@ type OrchestrationUnroutedSetRuleActionsInitParameters struct {
 	Severity *string `json:"severity,omitempty" tf:"severity,omitempty"`
 
 	// Populate variables from event payloads and use those variables in other event actions.
-	Variable []RuleActionsVariableInitParameters `json:"variable,omitempty" tf:"variable,omitempty"`
+	Variable []SetRuleActionsVariableInitParameters `json:"variable,omitempty" tf:"variable,omitempty"`
 }
 
 type OrchestrationUnroutedSetRuleActionsObservation struct {
@@ -294,7 +294,7 @@ type OrchestrationUnroutedSetRuleActionsObservation struct {
 	EventAction *string `json:"eventAction,omitempty" tf:"event_action,omitempty"`
 
 	// Replace any CEF field or Custom Details object field using custom variables.
-	Extraction []RuleActionsExtractionObservation `json:"extraction,omitempty" tf:"extraction,omitempty"`
+	Extraction []SetRuleActionsExtractionObservation `json:"extraction,omitempty" tf:"extraction,omitempty"`
 
 	// The ID of a Set from this Unrouted Orchestration whose rules you also want to use with events that match this rule.
 	RouteTo *string `json:"routeTo,omitempty" tf:"route_to,omitempty"`
@@ -303,7 +303,7 @@ type OrchestrationUnroutedSetRuleActionsObservation struct {
 	Severity *string `json:"severity,omitempty" tf:"severity,omitempty"`
 
 	// Populate variables from event payloads and use those variables in other event actions.
-	Variable []RuleActionsVariableObservation `json:"variable,omitempty" tf:"variable,omitempty"`
+	Variable []SetRuleActionsVariableObservation `json:"variable,omitempty" tf:"variable,omitempty"`
 }
 
 type OrchestrationUnroutedSetRuleActionsParameters struct {
@@ -314,7 +314,7 @@ type OrchestrationUnroutedSetRuleActionsParameters struct {
 
 	// Replace any CEF field or Custom Details object field using custom variables.
 	// +kubebuilder:validation:Optional
-	Extraction []RuleActionsExtractionParameters `json:"extraction,omitempty" tf:"extraction,omitempty"`
+	Extraction []SetRuleActionsExtractionParameters `json:"extraction,omitempty" tf:"extraction,omitempty"`
 
 	// The ID of a Set from this Unrouted Orchestration whose rules you also want to use with events that match this rule.
 	// +kubebuilder:validation:Optional
@@ -326,7 +326,26 @@ type OrchestrationUnroutedSetRuleActionsParameters struct {
 
 	// Populate variables from event payloads and use those variables in other event actions.
 	// +kubebuilder:validation:Optional
-	Variable []RuleActionsVariableParameters `json:"variable,omitempty" tf:"variable,omitempty"`
+	Variable []SetRuleActionsVariableParameters `json:"variable,omitempty" tf:"variable,omitempty"`
+}
+
+type OrchestrationUnroutedSetRuleConditionInitParameters struct {
+
+	// A PCL condition string.
+	Expression *string `json:"expression,omitempty" tf:"expression,omitempty"`
+}
+
+type OrchestrationUnroutedSetRuleConditionObservation struct {
+
+	// A PCL condition string.
+	Expression *string `json:"expression,omitempty" tf:"expression,omitempty"`
+}
+
+type OrchestrationUnroutedSetRuleConditionParameters struct {
+
+	// A PCL condition string.
+	// +kubebuilder:validation:Optional
+	Expression *string `json:"expression" tf:"expression,omitempty"`
 }
 
 type OrchestrationUnroutedSetRuleInitParameters struct {
@@ -335,7 +354,7 @@ type OrchestrationUnroutedSetRuleInitParameters struct {
 	Actions []OrchestrationUnroutedSetRuleActionsInitParameters `json:"actions,omitempty" tf:"actions,omitempty"`
 
 	// Each of these conditions is evaluated to check if an event matches this rule. The rule is considered a match if any of these conditions match. If none are provided, the event will always match against the rule.
-	Condition []SetRuleConditionInitParameters `json:"condition,omitempty" tf:"condition,omitempty"`
+	Condition []OrchestrationUnroutedSetRuleConditionInitParameters `json:"condition,omitempty" tf:"condition,omitempty"`
 
 	// Indicates whether the rule is disabled and would therefore not be evaluated.
 	Disabled *bool `json:"disabled,omitempty" tf:"disabled,omitempty"`
@@ -350,7 +369,7 @@ type OrchestrationUnroutedSetRuleObservation struct {
 	Actions []OrchestrationUnroutedSetRuleActionsObservation `json:"actions,omitempty" tf:"actions,omitempty"`
 
 	// Each of these conditions is evaluated to check if an event matches this rule. The rule is considered a match if any of these conditions match. If none are provided, the event will always match against the rule.
-	Condition []SetRuleConditionObservation `json:"condition,omitempty" tf:"condition,omitempty"`
+	Condition []OrchestrationUnroutedSetRuleConditionObservation `json:"condition,omitempty" tf:"condition,omitempty"`
 
 	// Indicates whether the rule is disabled and would therefore not be evaluated.
 	Disabled *bool `json:"disabled,omitempty" tf:"disabled,omitempty"`
@@ -370,7 +389,7 @@ type OrchestrationUnroutedSetRuleParameters struct {
 
 	// Each of these conditions is evaluated to check if an event matches this rule. The rule is considered a match if any of these conditions match. If none are provided, the event will always match against the rule.
 	// +kubebuilder:validation:Optional
-	Condition []SetRuleConditionParameters `json:"condition,omitempty" tf:"condition,omitempty"`
+	Condition []OrchestrationUnroutedSetRuleConditionParameters `json:"condition,omitempty" tf:"condition,omitempty"`
 
 	// Indicates whether the rule is disabled and would therefore not be evaluated.
 	// +kubebuilder:validation:Optional
@@ -381,7 +400,7 @@ type OrchestrationUnroutedSetRuleParameters struct {
 	Label *string `json:"label,omitempty" tf:"label,omitempty"`
 }
 
-type RuleActionsExtractionInitParameters struct {
+type SetRuleActionsExtractionInitParameters struct {
 
 	// A RE2 regular expression that will be matched against field specified via the source argument. If the regex contains one or more capture groups, their values will be extracted and appended together. If it contains no capture groups, the whole match is used. This field can be ignored for template based extractions.
 	Regex *string `json:"regex,omitempty" tf:"regex,omitempty"`
@@ -396,7 +415,7 @@ type RuleActionsExtractionInitParameters struct {
 	Template *string `json:"template,omitempty" tf:"template,omitempty"`
 }
 
-type RuleActionsExtractionObservation struct {
+type SetRuleActionsExtractionObservation struct {
 
 	// A RE2 regular expression that will be matched against field specified via the source argument. If the regex contains one or more capture groups, their values will be extracted and appended together. If it contains no capture groups, the whole match is used. This field can be ignored for template based extractions.
 	Regex *string `json:"regex,omitempty" tf:"regex,omitempty"`
@@ -411,7 +430,7 @@ type RuleActionsExtractionObservation struct {
 	Template *string `json:"template,omitempty" tf:"template,omitempty"`
 }
 
-type RuleActionsExtractionParameters struct {
+type SetRuleActionsExtractionParameters struct {
 
 	// A RE2 regular expression that will be matched against field specified via the source argument. If the regex contains one or more capture groups, their values will be extracted and appended together. If it contains no capture groups, the whole match is used. This field can be ignored for template based extractions.
 	// +kubebuilder:validation:Optional
@@ -430,7 +449,7 @@ type RuleActionsExtractionParameters struct {
 	Template *string `json:"template,omitempty" tf:"template,omitempty"`
 }
 
-type RuleActionsVariableInitParameters struct {
+type SetRuleActionsVariableInitParameters struct {
 
 	// The name of the variable
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
@@ -445,7 +464,7 @@ type RuleActionsVariableInitParameters struct {
 	Value *string `json:"value,omitempty" tf:"value,omitempty"`
 }
 
-type RuleActionsVariableObservation struct {
+type SetRuleActionsVariableObservation struct {
 
 	// The name of the variable
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
@@ -460,7 +479,7 @@ type RuleActionsVariableObservation struct {
 	Value *string `json:"value,omitempty" tf:"value,omitempty"`
 }
 
-type RuleActionsVariableParameters struct {
+type SetRuleActionsVariableParameters struct {
 
 	// The name of the variable
 	// +kubebuilder:validation:Optional
@@ -477,25 +496,6 @@ type RuleActionsVariableParameters struct {
 	// The Regex expression to match against. Must use valid RE2 regular expression syntax.
 	// +kubebuilder:validation:Optional
 	Value *string `json:"value" tf:"value,omitempty"`
-}
-
-type SetRuleConditionInitParameters struct {
-
-	// A PCL condition string.
-	Expression *string `json:"expression,omitempty" tf:"expression,omitempty"`
-}
-
-type SetRuleConditionObservation struct {
-
-	// A PCL condition string.
-	Expression *string `json:"expression,omitempty" tf:"expression,omitempty"`
-}
-
-type SetRuleConditionParameters struct {
-
-	// A PCL condition string.
-	// +kubebuilder:validation:Optional
-	Expression *string `json:"expression" tf:"expression,omitempty"`
 }
 
 // OrchestrationUnroutedSpec defines the desired state of OrchestrationUnrouted
