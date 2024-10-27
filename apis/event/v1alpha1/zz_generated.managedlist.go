@@ -7,6 +7,33 @@ package v1alpha1
 
 import resource "github.com/crossplane/crossplane-runtime/pkg/resource"
 
+// GetItems of this OrchestrationGlobalCacheVariableList.
+func (l *OrchestrationGlobalCacheVariableList) GetItems() []resource.Managed {
+	items := make([]resource.Managed, len(l.Items))
+	for i := range l.Items {
+		items[i] = &l.Items[i]
+	}
+	return items
+}
+
+// GetItems of this OrchestrationGlobalList.
+func (l *OrchestrationGlobalList) GetItems() []resource.Managed {
+	items := make([]resource.Managed, len(l.Items))
+	for i := range l.Items {
+		items[i] = &l.Items[i]
+	}
+	return items
+}
+
+// GetItems of this OrchestrationIntegrationList.
+func (l *OrchestrationIntegrationList) GetItems() []resource.Managed {
+	items := make([]resource.Managed, len(l.Items))
+	for i := range l.Items {
+		items[i] = &l.Items[i]
+	}
+	return items
+}
+
 // GetItems of this OrchestrationList.
 func (l *OrchestrationList) GetItems() []resource.Managed {
 	items := make([]resource.Managed, len(l.Items))
@@ -25,6 +52,15 @@ func (l *OrchestrationRouterList) GetItems() []resource.Managed {
 	return items
 }
 
+// GetItems of this OrchestrationServiceCacheVariableList.
+func (l *OrchestrationServiceCacheVariableList) GetItems() []resource.Managed {
+	items := make([]resource.Managed, len(l.Items))
+	for i := range l.Items {
+		items[i] = &l.Items[i]
+	}
+	return items
+}
+
 // GetItems of this OrchestrationServiceList.
 func (l *OrchestrationServiceList) GetItems() []resource.Managed {
 	items := make([]resource.Managed, len(l.Items))
@@ -36,6 +72,15 @@ func (l *OrchestrationServiceList) GetItems() []resource.Managed {
 
 // GetItems of this OrchestrationUnroutedList.
 func (l *OrchestrationUnroutedList) GetItems() []resource.Managed {
+	items := make([]resource.Managed, len(l.Items))
+	for i := range l.Items {
+		items[i] = &l.Items[i]
+	}
+	return items
+}
+
+// GetItems of this RuleList.
+func (l *RuleList) GetItems() []resource.Managed {
 	items := make([]resource.Managed, len(l.Items))
 	for i := range l.Items {
 		items[i] = &l.Items[i]

@@ -10,19 +10,33 @@ import (
 	"github.com/crossplane/upjet/pkg/controller"
 
 	addon "github.com/crossplane-contrib/provider-pagerduty/internal/controller/addon/addon"
+	groupingsetting "github.com/crossplane-contrib/provider-pagerduty/internal/controller/alert/groupingsetting"
+	actionsaction "github.com/crossplane-contrib/provider-pagerduty/internal/controller/automation/actionsaction"
+	actionsactionserviceassociation "github.com/crossplane-contrib/provider-pagerduty/internal/controller/automation/actionsactionserviceassociation"
+	actionsactionteamassociation "github.com/crossplane-contrib/provider-pagerduty/internal/controller/automation/actionsactionteamassociation"
+	actionsrunnerteamassociation "github.com/crossplane-contrib/provider-pagerduty/internal/controller/automation/actionsrunnerteamassociation"
 	service "github.com/crossplane-contrib/provider-pagerduty/internal/controller/business/service"
 	servicesubscriber "github.com/crossplane-contrib/provider-pagerduty/internal/controller/business/servicesubscriber"
 	policy "github.com/crossplane-contrib/provider-pagerduty/internal/controller/escalation/policy"
 	orchestration "github.com/crossplane-contrib/provider-pagerduty/internal/controller/event/orchestration"
+	orchestrationglobal "github.com/crossplane-contrib/provider-pagerduty/internal/controller/event/orchestrationglobal"
+	orchestrationglobalcachevariable "github.com/crossplane-contrib/provider-pagerduty/internal/controller/event/orchestrationglobalcachevariable"
+	orchestrationintegration "github.com/crossplane-contrib/provider-pagerduty/internal/controller/event/orchestrationintegration"
 	orchestrationrouter "github.com/crossplane-contrib/provider-pagerduty/internal/controller/event/orchestrationrouter"
 	orchestrationservice "github.com/crossplane-contrib/provider-pagerduty/internal/controller/event/orchestrationservice"
+	orchestrationservicecachevariable "github.com/crossplane-contrib/provider-pagerduty/internal/controller/event/orchestrationservicecachevariable"
 	orchestrationunrouted "github.com/crossplane-contrib/provider-pagerduty/internal/controller/event/orchestrationunrouted"
+	rule "github.com/crossplane-contrib/provider-pagerduty/internal/controller/event/rule"
 	extension "github.com/crossplane-contrib/provider-pagerduty/internal/controller/extensions/extension"
 	servicenow "github.com/crossplane-contrib/provider-pagerduty/internal/controller/extensions/servicenow"
+	customfield "github.com/crossplane-contrib/provider-pagerduty/internal/controller/incident/customfield"
+	customfieldoption "github.com/crossplane-contrib/provider-pagerduty/internal/controller/incident/customfieldoption"
+	workflow "github.com/crossplane-contrib/provider-pagerduty/internal/controller/incident/workflow"
+	workflowtrigger "github.com/crossplane-contrib/provider-pagerduty/internal/controller/incident/workflowtrigger"
 	window "github.com/crossplane-contrib/provider-pagerduty/internal/controller/maintenance/window"
 	providerconfig "github.com/crossplane-contrib/provider-pagerduty/internal/controller/providerconfig"
 	play "github.com/crossplane-contrib/provider-pagerduty/internal/controller/response/play"
-	rule "github.com/crossplane-contrib/provider-pagerduty/internal/controller/ruleset/rule"
+	ruleruleset "github.com/crossplane-contrib/provider-pagerduty/internal/controller/ruleset/rule"
 	ruleset "github.com/crossplane-contrib/provider-pagerduty/internal/controller/ruleset/ruleset"
 	schedule "github.com/crossplane-contrib/provider-pagerduty/internal/controller/schedule/schedule"
 	dependency "github.com/crossplane-contrib/provider-pagerduty/internal/controller/service/dependency"
@@ -35,6 +49,7 @@ import (
 	membership "github.com/crossplane-contrib/provider-pagerduty/internal/controller/team/membership"
 	team "github.com/crossplane-contrib/provider-pagerduty/internal/controller/team/team"
 	contactmethod "github.com/crossplane-contrib/provider-pagerduty/internal/controller/user/contactmethod"
+	handoffnotificationrule "github.com/crossplane-contrib/provider-pagerduty/internal/controller/user/handoffnotificationrule"
 	notificationrule "github.com/crossplane-contrib/provider-pagerduty/internal/controller/user/notificationrule"
 	user "github.com/crossplane-contrib/provider-pagerduty/internal/controller/user/user"
 	subscription "github.com/crossplane-contrib/provider-pagerduty/internal/controller/webhook/subscription"
@@ -45,19 +60,33 @@ import (
 func Setup(mgr ctrl.Manager, o controller.Options) error {
 	for _, setup := range []func(ctrl.Manager, controller.Options) error{
 		addon.Setup,
+		groupingsetting.Setup,
+		actionsaction.Setup,
+		actionsactionserviceassociation.Setup,
+		actionsactionteamassociation.Setup,
+		actionsrunnerteamassociation.Setup,
 		service.Setup,
 		servicesubscriber.Setup,
 		policy.Setup,
 		orchestration.Setup,
+		orchestrationglobal.Setup,
+		orchestrationglobalcachevariable.Setup,
+		orchestrationintegration.Setup,
 		orchestrationrouter.Setup,
 		orchestrationservice.Setup,
+		orchestrationservicecachevariable.Setup,
 		orchestrationunrouted.Setup,
+		rule.Setup,
 		extension.Setup,
 		servicenow.Setup,
+		customfield.Setup,
+		customfieldoption.Setup,
+		workflow.Setup,
+		workflowtrigger.Setup,
 		window.Setup,
 		providerconfig.Setup,
 		play.Setup,
-		rule.Setup,
+		ruleruleset.Setup,
 		ruleset.Setup,
 		schedule.Setup,
 		dependency.Setup,
@@ -70,6 +99,7 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 		membership.Setup,
 		team.Setup,
 		contactmethod.Setup,
+		handoffnotificationrule.Setup,
 		notificationrule.Setup,
 		user.Setup,
 		subscription.Setup,

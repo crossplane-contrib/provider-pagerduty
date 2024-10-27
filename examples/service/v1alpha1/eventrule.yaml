@@ -1,0 +1,57 @@
+apiVersion: service.pagerduty.crossplane.io/v1alpha1
+kind: EventRule
+metadata:
+  annotations:
+    meta.upbound.io/example-id: service/v1alpha1/eventrule
+  labels:
+    testing.upbound.io/example-name: foo
+  name: foo
+spec:
+  forProvider:
+    actions:
+    - annotate:
+      - value: From Terraform
+      extractions:
+      - regex: (.*)
+        source: source
+        target: dedup_key
+      - target: summary
+        template: 'Warning: Disk Space Low on {{Src}}'
+    conditions:
+    - operator: and
+      subconditions:
+      - operator: contains
+        parameter:
+        - path: summary
+          value: disk space
+    disabled: true
+    position: 0
+    serviceSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    variable:
+    - name: Src
+      parameters:
+      - path: source
+        value: (.*)
+      type: regex
+
+---
+
+apiVersion: service.pagerduty.crossplane.io/v1alpha1
+kind: Service
+metadata:
+  annotations:
+    meta.upbound.io/example-id: service/v1alpha1/eventrule
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    acknowledgementTimeout: 600
+    alertCreation: create_alerts_and_incidents
+    autoResolveTimeout: 14400
+    escalationPolicySelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    name: Checkout API Service

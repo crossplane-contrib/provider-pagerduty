@@ -1,0 +1,54 @@
+apiVersion: response.pagerduty.crossplane.io/v1alpha1
+kind: Play
+metadata:
+  annotations:
+    meta.upbound.io/example-id: response/v1alpha1/play
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    from: 125.greenholt.earline@graham.name
+    name: My Response Play
+    responder:
+    - id: ${pagerduty_escalation_policy.example.id}
+      type: escalation_policy_reference
+    runnability: services
+    subscriber:
+    - id: ${pagerduty_user.example.id}
+      type: user_reference
+
+---
+
+apiVersion: escalation.pagerduty.crossplane.io/v1alpha1
+kind: Policy
+metadata:
+  annotations:
+    meta.upbound.io/example-id: response/v1alpha1/play
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    name: Engineering Escalation Policy
+    numLoops: 2
+    rule:
+    - escalationDelayInMinutes: 10
+      target:
+      - id: ${pagerduty_user.example.id}
+        type: user
+
+---
+
+apiVersion: user.pagerduty.crossplane.io/v1alpha1
+kind: User
+metadata:
+  annotations:
+    meta.upbound.io/example-id: response/v1alpha1/play
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    email: 125.greenholt.earline@graham.name
+    name: Earline Greenholt

@@ -108,10 +108,12 @@ spec:
                 - source
                 type: object
               serviceRegion:
+                default: ""
                 description: The PagerDuty service region to use. If omitted uses
                   US region.
                 enum:
                 - eu
+                - ""
                 type: string
             required:
             - credentials
