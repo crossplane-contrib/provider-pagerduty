@@ -16,7 +16,7 @@ type ProviderConfigSpec struct {
 	Credentials ProviderCredentials `json:"credentials"`
 	// The PagerDuty service region to use. If omitted uses US region.
 	// +kubebuilder:validation:Enum=eu
-	// +optional
+	// +kubebuilder:validation:Optional
 	ServiceRegion string `json:"serviceRegion"`
 }
 
