@@ -7,6 +7,7 @@ import (
 	"github.com/pkg/errors"
 )
 
+// Errors
 const (
 	ErrFmtNoAttribute    = `attribute not found: %s`
 	ErrFmtUnexpectedType = `unexpected type for attribute %s: Expecting a string`
