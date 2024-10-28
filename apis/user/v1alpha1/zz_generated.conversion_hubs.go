@@ -10,6 +10,9 @@ package v1alpha1
 func (tr *ContactMethod) Hub() {}
 
 // Hub marks this type as a conversion hub.
+func (tr *HandoffNotificationRule) Hub() {}
+
+// Hub marks this type as a conversion hub.
 func (tr *NotificationRule) Hub() {}
 
 // Hub marks this type as a conversion hub.

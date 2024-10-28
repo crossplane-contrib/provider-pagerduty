@@ -1,0 +1,12 @@
+apiVersion: team.pagerduty.crossplane.io/v1alpha1
+kind: Team
+metadata:
+  annotations:
+    meta.upbound.io/example-id: team/v1alpha1/team
+  labels:
+    testing.upbound.io/example-name: parent
+  name: parent
+spec:
+  forProvider:
+    description: Product and Engineering
+    name: Product Development

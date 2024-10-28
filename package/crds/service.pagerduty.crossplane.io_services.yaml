@@ -101,10 +101,12 @@ spec:
                       instead,'
                     type: string
                   alertGroupingParameters:
-                    description: Defines how alerts on this service will be automatically
-                      grouped into incidents. Note that the alert grouping features
-                      are available only on certain plans. If not set, each alert
-                      will create a separate incident.
+                    description: (Deprecated) Defines how alerts on this service will
+                      be automatically grouped into incidents. Note that the alert
+                      grouping features are available only on certain plans. If not
+                      set, each alert will create a separate incident. Instructions
+                      on how to migrate this configuration to pagerduty_alert_grouping_setting
+                      resource can be found here.
                     items:
                       properties:
                         config:
@@ -317,7 +319,7 @@ spec:
                     description: The name of the service.
                     type: string
                   responsePlay:
-                    description: The response play used by this service.
+                    description: (Deprecated) The response play used by this service.
                     type: string
                   scheduledActions:
                     items:
@@ -410,10 +412,12 @@ spec:
                       instead,'
                     type: string
                   alertGroupingParameters:
-                    description: Defines how alerts on this service will be automatically
-                      grouped into incidents. Note that the alert grouping features
-                      are available only on certain plans. If not set, each alert
-                      will create a separate incident.
+                    description: (Deprecated) Defines how alerts on this service will
+                      be automatically grouped into incidents. Note that the alert
+                      grouping features are available only on certain plans. If not
+                      set, each alert will create a separate incident. Instructions
+                      on how to migrate this configuration to pagerduty_alert_grouping_setting
+                      resource can be found here.
                     items:
                       properties:
                         config:
@@ -626,7 +630,7 @@ spec:
                     description: The name of the service.
                     type: string
                   responsePlay:
-                    description: The response play used by this service.
+                    description: (Deprecated) The response play used by this service.
                     type: string
                   scheduledActions:
                     items:
@@ -883,10 +887,12 @@ spec:
                       instead,'
                     type: string
                   alertGroupingParameters:
-                    description: Defines how alerts on this service will be automatically
-                      grouped into incidents. Note that the alert grouping features
-                      are available only on certain plans. If not set, each alert
-                      will create a separate incident.
+                    description: (Deprecated) Defines how alerts on this service will
+                      be automatically grouped into incidents. Note that the alert
+                      grouping features are available only on certain plans. If not
+                      set, each alert will create a separate incident. Instructions
+                      on how to migrate this configuration to pagerduty_alert_grouping_setting
+                      resource can be found here.
                     items:
                       properties:
                         config:
@@ -1038,7 +1044,7 @@ spec:
                     description: The name of the service.
                     type: string
                   responsePlay:
-                    description: The response play used by this service.
+                    description: (Deprecated) The response play used by this service.
                     type: string
                   scheduledActions:
                     items:
