@@ -8,7 +8,7 @@ import (
 )
 
 const (
-	ErrFmtNoAttribute    = `"attribute not found: %s`
+	ErrFmtNoAttribute    = `attribute not found: %s`
 	ErrFmtUnexpectedType = `unexpected type for attribute %s: Expecting a string`
 )
 
