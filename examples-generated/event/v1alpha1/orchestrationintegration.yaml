@@ -1,0 +1,43 @@
+apiVersion: event.pagerduty.crossplane.io/v1alpha1
+kind: OrchestrationIntegration
+metadata:
+  annotations:
+    meta.upbound.io/example-id: event/v1alpha1/orchestrationintegration
+  labels:
+    testing.upbound.io/example-name: integration
+  name: integration
+spec:
+  forProvider:
+    eventOrchestration: ${pagerduty_event_orchestration.event_orchestration.id}
+    label: Example integration
+
+---
+
+apiVersion: event.pagerduty.crossplane.io/v1alpha1
+kind: Orchestration
+metadata:
+  annotations:
+    meta.upbound.io/example-id: event/v1alpha1/orchestrationintegration
+  labels:
+    testing.upbound.io/example-name: event_orchestration
+  name: event-orchestration
+spec:
+  forProvider:
+    name: Example Orchestration
+    teamSelector:
+      matchLabels:
+        testing.upbound.io/example-name: database_team
+
+---
+
+apiVersion: team.pagerduty.crossplane.io/v1alpha1
+kind: Team
+metadata:
+  annotations:
+    meta.upbound.io/example-id: event/v1alpha1/orchestrationintegration
+  labels:
+    testing.upbound.io/example-name: database_team
+  name: database-team
+spec:
+  forProvider:
+    name: Database Team

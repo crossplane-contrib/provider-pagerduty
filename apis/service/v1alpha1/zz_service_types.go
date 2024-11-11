@@ -306,7 +306,7 @@ type ServiceInitParameters struct {
 	// (Deprecated) Defines how alerts on this service will be automatically grouped into incidents. Note that the alert grouping features are available only on certain plans. If not set, each alert will create a separate incident; If value is set to time: All alerts within a specified duration will be grouped into the same incident. This duration is set in the alert_grouping_timeout setting (described below). Available on Standard, Enterprise, and Event Intelligence plans; If value is set to intelligent - Alerts will be intelligently grouped based on a machine learning model that looks at the alert summary, timing, and the history of grouped alerts. Available on Enterprise and Event Intelligence plan. This field is deprecated, use alert_grouping_parameters.type instead,
 	AlertGrouping *string `json:"alertGrouping,omitempty" tf:"alert_grouping,omitempty"`
 
-	// Defines how alerts on this service will be automatically grouped into incidents. Note that the alert grouping features are available only on certain plans. If not set, each alert will create a separate incident.
+	// (Deprecated) Defines how alerts on this service will be automatically grouped into incidents. Note that the alert grouping features are available only on certain plans. If not set, each alert will create a separate incident. Instructions on how to migrate this configuration to pagerduty_alert_grouping_setting resource can be found here.
 	AlertGroupingParameters []AlertGroupingParametersInitParameters `json:"alertGroupingParameters,omitempty" tf:"alert_grouping_parameters,omitempty"`
 
 	// (Deprecated) The duration in minutes within which to automatically group incoming alerts. This setting applies only when alert_grouping is set to time. To continue grouping alerts until the incident is resolved, set this value to 0. This field is deprecated, use alert_grouping_parameters.config.timeout instead,
@@ -338,7 +338,7 @@ type ServiceInitParameters struct {
 	// The name of the service.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
-	// The response play used by this service.
+	// (Deprecated) The response play used by this service.
 	ResponsePlay *string `json:"responsePlay,omitempty" tf:"response_play,omitempty"`
 
 	ScheduledActions []ScheduledActionsInitParameters `json:"scheduledActions,omitempty" tf:"scheduled_actions,omitempty"`
@@ -357,7 +357,7 @@ type ServiceObservation struct {
 	// (Deprecated) Defines how alerts on this service will be automatically grouped into incidents. Note that the alert grouping features are available only on certain plans. If not set, each alert will create a separate incident; If value is set to time: All alerts within a specified duration will be grouped into the same incident. This duration is set in the alert_grouping_timeout setting (described below). Available on Standard, Enterprise, and Event Intelligence plans; If value is set to intelligent - Alerts will be intelligently grouped based on a machine learning model that looks at the alert summary, timing, and the history of grouped alerts. Available on Enterprise and Event Intelligence plan. This field is deprecated, use alert_grouping_parameters.type instead,
 	AlertGrouping *string `json:"alertGrouping,omitempty" tf:"alert_grouping,omitempty"`
 
-	// Defines how alerts on this service will be automatically grouped into incidents. Note that the alert grouping features are available only on certain plans. If not set, each alert will create a separate incident.
+	// (Deprecated) Defines how alerts on this service will be automatically grouped into incidents. Note that the alert grouping features are available only on certain plans. If not set, each alert will create a separate incident. Instructions on how to migrate this configuration to pagerduty_alert_grouping_setting resource can be found here.
 	AlertGroupingParameters []AlertGroupingParametersObservation `json:"alertGroupingParameters,omitempty" tf:"alert_grouping_parameters,omitempty"`
 
 	// (Deprecated) The duration in minutes within which to automatically group incoming alerts. This setting applies only when alert_grouping is set to time. To continue grouping alerts until the incident is resolved, set this value to 0. This field is deprecated, use alert_grouping_parameters.config.timeout instead,
@@ -392,7 +392,7 @@ type ServiceObservation struct {
 	// The name of the service.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
-	// The response play used by this service.
+	// (Deprecated) The response play used by this service.
 	ResponsePlay *string `json:"responsePlay,omitempty" tf:"response_play,omitempty"`
 
 	ScheduledActions []ScheduledActionsObservation `json:"scheduledActions,omitempty" tf:"scheduled_actions,omitempty"`
@@ -420,7 +420,7 @@ type ServiceParameters struct {
 	// +kubebuilder:validation:Optional
 	AlertGrouping *string `json:"alertGrouping,omitempty" tf:"alert_grouping,omitempty"`
 
-	// Defines how alerts on this service will be automatically grouped into incidents. Note that the alert grouping features are available only on certain plans. If not set, each alert will create a separate incident.
+	// (Deprecated) Defines how alerts on this service will be automatically grouped into incidents. Note that the alert grouping features are available only on certain plans. If not set, each alert will create a separate incident. Instructions on how to migrate this configuration to pagerduty_alert_grouping_setting resource can be found here.
 	// +kubebuilder:validation:Optional
 	AlertGroupingParameters []AlertGroupingParametersParameters `json:"alertGroupingParameters,omitempty" tf:"alert_grouping_parameters,omitempty"`
 
@@ -460,7 +460,7 @@ type ServiceParameters struct {
 	// +kubebuilder:validation:Optional
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
-	// The response play used by this service.
+	// (Deprecated) The response play used by this service.
 	// +kubebuilder:validation:Optional
 	ResponsePlay *string `json:"responsePlay,omitempty" tf:"response_play,omitempty"`
 

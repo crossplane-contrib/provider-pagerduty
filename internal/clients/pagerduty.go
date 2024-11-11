@@ -27,6 +27,7 @@ const (
 	errUnmarshalCredentials = "cannot unmarshal pagerduty credentials as JSON"
 	keyToken                = "token"
 	userToken               = "user_token"
+	serviceRegion           = "service_region"
 )
 
 // TerraformSetupBuilder builds Terraform a terraform.SetupFn function which
@@ -73,6 +74,10 @@ func TerraformSetupBuilder(version, providerSource, providerVersion string) terr
 
 		if v, ok := creds[userToken]; ok {
 			ps.Configuration[userToken] = v
+		}
+
+		if v := pc.Spec.ServiceRegion; v != "" {
+			ps.Configuration[serviceRegion] = v
 		}
 
 		return ps, nil

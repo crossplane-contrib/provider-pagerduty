@@ -17,6 +17,47 @@ resources:
             name: '- (Required) The name of the add-on.'
             src: '- (Required) The source URL to display in a frame in the PagerDuty UI. HTTPS is required.'
         importStatements: []
+    pagerduty_alert_grouping_setting:
+        subCategory: ""
+        description: Creates and manages an alert grouping setting in PagerDuty.
+        name: pagerduty_alert_grouping_setting
+        title: pagerduty_alert_grouping_setting
+        examples:
+            - name: '%[1]s'
+              manifest: |-
+                {
+                  "config": [
+                    {
+                      "aggregate": "all",
+                      "fields": [
+                        "fields"
+                      ],
+                      "time_window": 300
+                    }
+                  ],
+                  "name": "Configuration for type-1 devices",
+                  "services": [
+                    "${pagerduty_service.basic.id}"
+                  ],
+                  "type": "content_based"
+                }
+              dependencies:
+                pagerduty_service.basic: |-
+                    {
+                      "escalation_policy": "${data.pagerduty_escalation_policy.default.id}",
+                      "name": "Example"
+                    }
+        argumentDocs:
+            config: '- (Required) The set of values used for configuration.'
+            config.aggregate: '- (Optional) One of any or all. This setting is only required and applies when type is set to content_based or content_based_intelligent. Group alerts based on one or all of fields value(s).'
+            config.fields: '- (Optional) Alerts will be grouped together if the content of these fields match. This setting is only required and applies when type is set to content_based or content_based_intelligent.'
+            config.time_window: '- (Optional) The maximum amount of time allowed between Alerts. This setting applies only when type is set to intelligent, content_based, content_based_intelligent. Value must be between 300 and 3600 or exactly 86400 (86400 is supported only for content_based alert grouping). Any Alerts arriving greater than time_window seconds apart will not be grouped together. This is a rolling time window and is counted from the most recently grouped alert. The window is extended every time a new alert is added to the group, up to 24 hours. To use the recommended time window leave this value unset or set it to null.'
+            config.timeout: '- (Optional) The duration in minutes within which to automatically group incoming alerts. This setting is only required and applies when type is set to time. To continue grouping alerts until the incident is resolved leave this value unset or set it to null.'
+            id: '- The ID of the alert grouping setting.'
+            name: '- (Required) The name for the alert groupig settings.'
+            services: '- (Required)  [Updating can cause a resource replacement] The list IDs of services associated to this setting.'
+            type: '- (Required) The type of alert grouping; one of intelligent, time, content_based or  content_based_intelligent.'
+        importStatements: []
     pagerduty_automation_actions_action:
         subCategory: ""
         description: Creates and manages an Automation Actions action in PagerDuty.
@@ -2040,7 +2081,7 @@ resources:
             aggregate: '- (Optional) One of any or all. This setting applies only when type is set to content_based. Group alerts based on one or all of fields value(s).'
             alert_creation: '- (Optional) (Deprecated) This attribute has been deprecated as all services will be migrated to use alerts and incidents. The incident only service setting will be no longer available and this attribute will be removed in an upcoming version. See knowledge base for details https://support.pagerduty.com/docs/alerts#enable-and-disable-alerts-on-a-service.'
             alert_grouping: '- (Optional) (Deprecated) Defines how alerts on this service will be automatically grouped into incidents. Note that the alert grouping features are available only on certain plans. If not set, each alert will create a separate incident; If value is set to time: All alerts within a specified duration will be grouped into the same incident. This duration is set in the alert_grouping_timeout setting (described below). Available on Standard, Enterprise, and Event Intelligence plans; If value is set to intelligent - Alerts will be intelligently grouped based on a machine learning model that looks at the alert summary, timing, and the history of grouped alerts. Available on Enterprise and Event Intelligence plan. This field is deprecated, use alert_grouping_parameters.type instead,'
-            alert_grouping_parameters: '- (Optional) Defines how alerts on this service will be automatically grouped into incidents. Note that the alert grouping features are available only on certain plans. If not set, each alert will create a separate incident.'
+            alert_grouping_parameters: '- (Optional) (Deprecated) Defines how alerts on this service will be automatically grouped into incidents. Note that the alert grouping features are available only on certain plans. If not set, each alert will create a separate incident. Instructions on how to migrate this configuration to pagerduty_alert_grouping_setting resource can be found here.'
             alert_grouping_parameters.config: (Optional) - Alert grouping parameters dependent on type. If type is set to intelligent or empty then config can be empty.
             alert_grouping_parameters.type: (Optional) - The type of alert grouping; one of intelligent, time or content_based.
             alert_grouping_timeout: '- (Optional) (Deprecated) The duration in minutes within which to automatically group incoming alerts. This setting applies only when alert_grouping is set to time. To continue grouping alerts until the incident is resolved, set this value to 0. This field is deprecated, use alert_grouping_parameters.config.timeout instead,'
@@ -2065,7 +2106,7 @@ resources:
             incident_urgency_rule.urgency: '- The urgency: low Notify responders (does not escalate), high (follows escalation rules) or severity_based Set''s the urgency of the incident based on the severity set by the triggering monitoring tool.'
             last_incident_timestamp: '- Last incident timestamp of the service.'
             name: '- (Required) The name of the service.'
-            response_play: '- (Optional) The response play used by this service.'
+            response_play: '- (Optional) (Deprecated) The response play used by this service.'
             status: '- The status of the service.'
             time_window: '- (Optional) The maximum amount of time allowed between Alerts. This setting applies only when type is set to intelligent or content_based. Value must be between 300 and 3600 or exactly 86400 (86400 is supported only for content_based alert grouping). Any Alerts arriving greater than time_window seconds apart will not be grouped together. This is a rolling time window and is counted from the most recently grouped alert. The window is extended every time a new alert is added to the group, up to 24 hours.'
             timeout: '- (Optional) The duration in minutes within which to automatically group incoming alerts. This setting applies only when type is set to time. To continue grouping alerts until the incident is resolved, set this value to 0.'
