@@ -93,7 +93,16 @@ type OrchestrationGlobalCacheVariableInitParameters struct {
 	Disabled *bool `json:"disabled,omitempty" tf:"disabled,omitempty"`
 
 	// ID of the Global Event Orchestration to which this Cache Variable belongs.
+	// +crossplane:generate:reference:type=Orchestration
 	EventOrchestration *string `json:"eventOrchestration,omitempty" tf:"event_orchestration,omitempty"`
+
+	// Reference to a Orchestration to populate eventOrchestration.
+	// +kubebuilder:validation:Optional
+	EventOrchestrationRef *v1.Reference `json:"eventOrchestrationRef,omitempty" tf:"-"`
+
+	// Selector for a Orchestration to populate eventOrchestration.
+	// +kubebuilder:validation:Optional
+	EventOrchestrationSelector *v1.Selector `json:"eventOrchestrationSelector,omitempty" tf:"-"`
 
 	// Name of the Cache Variable associated with the Global Event Orchestration.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
@@ -135,8 +144,17 @@ type OrchestrationGlobalCacheVariableParameters struct {
 	Disabled *bool `json:"disabled,omitempty" tf:"disabled,omitempty"`
 
 	// ID of the Global Event Orchestration to which this Cache Variable belongs.
+	// +crossplane:generate:reference:type=Orchestration
 	// +kubebuilder:validation:Optional
 	EventOrchestration *string `json:"eventOrchestration,omitempty" tf:"event_orchestration,omitempty"`
+
+	// Reference to a Orchestration to populate eventOrchestration.
+	// +kubebuilder:validation:Optional
+	EventOrchestrationRef *v1.Reference `json:"eventOrchestrationRef,omitempty" tf:"-"`
+
+	// Selector for a Orchestration to populate eventOrchestration.
+	// +kubebuilder:validation:Optional
+	EventOrchestrationSelector *v1.Selector `json:"eventOrchestrationSelector,omitempty" tf:"-"`
 
 	// Name of the Cache Variable associated with the Global Event Orchestration.
 	// +kubebuilder:validation:Optional
@@ -180,7 +198,6 @@ type OrchestrationGlobalCacheVariable struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.configuration) || (has(self.initProvider) && has(self.initProvider.configuration))",message="spec.forProvider.configuration is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.eventOrchestration) || (has(self.initProvider) && has(self.initProvider.eventOrchestration))",message="spec.forProvider.eventOrchestration is a required parameter"
 	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || (has(self.initProvider) && has(self.initProvider.name))",message="spec.forProvider.name is a required parameter"
 	Spec   OrchestrationGlobalCacheVariableSpec   `json:"spec"`
 	Status OrchestrationGlobalCacheVariableStatus `json:"status,omitempty"`

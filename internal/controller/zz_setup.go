@@ -11,10 +11,11 @@ import (
 
 	addon "github.com/crossplane-contrib/provider-pagerduty/internal/controller/addon/addon"
 	groupingsetting "github.com/crossplane-contrib/provider-pagerduty/internal/controller/alert/groupingsetting"
-	actionsaction "github.com/crossplane-contrib/provider-pagerduty/internal/controller/automation/actionsaction"
-	actionsactionserviceassociation "github.com/crossplane-contrib/provider-pagerduty/internal/controller/automation/actionsactionserviceassociation"
-	actionsactionteamassociation "github.com/crossplane-contrib/provider-pagerduty/internal/controller/automation/actionsactionteamassociation"
-	actionsrunnerteamassociation "github.com/crossplane-contrib/provider-pagerduty/internal/controller/automation/actionsrunnerteamassociation"
+	action "github.com/crossplane-contrib/provider-pagerduty/internal/controller/automation/action"
+	runner "github.com/crossplane-contrib/provider-pagerduty/internal/controller/automation/runner"
+	runnerteamassociation "github.com/crossplane-contrib/provider-pagerduty/internal/controller/automation/runnerteamassociation"
+	serviceassociation "github.com/crossplane-contrib/provider-pagerduty/internal/controller/automation/serviceassociation"
+	teamassociation "github.com/crossplane-contrib/provider-pagerduty/internal/controller/automation/teamassociation"
 	service "github.com/crossplane-contrib/provider-pagerduty/internal/controller/business/service"
 	servicesubscriber "github.com/crossplane-contrib/provider-pagerduty/internal/controller/business/servicesubscriber"
 	policy "github.com/crossplane-contrib/provider-pagerduty/internal/controller/escalation/policy"
@@ -33,6 +34,7 @@ import (
 	customfieldoption "github.com/crossplane-contrib/provider-pagerduty/internal/controller/incident/customfieldoption"
 	workflow "github.com/crossplane-contrib/provider-pagerduty/internal/controller/incident/workflow"
 	workflowtrigger "github.com/crossplane-contrib/provider-pagerduty/internal/controller/incident/workflowtrigger"
+	cloudaccountmappingrule "github.com/crossplane-contrib/provider-pagerduty/internal/controller/jira/cloudaccountmappingrule"
 	window "github.com/crossplane-contrib/provider-pagerduty/internal/controller/maintenance/window"
 	providerconfig "github.com/crossplane-contrib/provider-pagerduty/internal/controller/providerconfig"
 	play "github.com/crossplane-contrib/provider-pagerduty/internal/controller/response/play"
@@ -61,10 +63,11 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 	for _, setup := range []func(ctrl.Manager, controller.Options) error{
 		addon.Setup,
 		groupingsetting.Setup,
-		actionsaction.Setup,
-		actionsactionserviceassociation.Setup,
-		actionsactionteamassociation.Setup,
-		actionsrunnerteamassociation.Setup,
+		action.Setup,
+		runner.Setup,
+		runnerteamassociation.Setup,
+		serviceassociation.Setup,
+		teamassociation.Setup,
 		service.Setup,
 		servicesubscriber.Setup,
 		policy.Setup,
@@ -83,6 +86,7 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 		customfieldoption.Setup,
 		workflow.Setup,
 		workflowtrigger.Setup,
+		cloudaccountmappingrule.Setup,
 		window.Setup,
 		providerconfig.Setup,
 		play.Setup,

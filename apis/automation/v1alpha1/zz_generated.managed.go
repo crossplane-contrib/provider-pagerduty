@@ -7,242 +7,302 @@ package v1alpha1
 
 import xpv1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 
-// GetCondition of this ActionsAction.
-func (mg *ActionsAction) GetCondition(ct xpv1.ConditionType) xpv1.Condition {
+// GetCondition of this Action.
+func (mg *Action) GetCondition(ct xpv1.ConditionType) xpv1.Condition {
 	return mg.Status.GetCondition(ct)
 }
 
-// GetDeletionPolicy of this ActionsAction.
-func (mg *ActionsAction) GetDeletionPolicy() xpv1.DeletionPolicy {
+// GetDeletionPolicy of this Action.
+func (mg *Action) GetDeletionPolicy() xpv1.DeletionPolicy {
 	return mg.Spec.DeletionPolicy
 }
 
-// GetManagementPolicies of this ActionsAction.
-func (mg *ActionsAction) GetManagementPolicies() xpv1.ManagementPolicies {
+// GetManagementPolicies of this Action.
+func (mg *Action) GetManagementPolicies() xpv1.ManagementPolicies {
 	return mg.Spec.ManagementPolicies
 }
 
-// GetProviderConfigReference of this ActionsAction.
-func (mg *ActionsAction) GetProviderConfigReference() *xpv1.Reference {
+// GetProviderConfigReference of this Action.
+func (mg *Action) GetProviderConfigReference() *xpv1.Reference {
 	return mg.Spec.ProviderConfigReference
 }
 
-// GetPublishConnectionDetailsTo of this ActionsAction.
-func (mg *ActionsAction) GetPublishConnectionDetailsTo() *xpv1.PublishConnectionDetailsTo {
+// GetPublishConnectionDetailsTo of this Action.
+func (mg *Action) GetPublishConnectionDetailsTo() *xpv1.PublishConnectionDetailsTo {
 	return mg.Spec.PublishConnectionDetailsTo
 }
 
-// GetWriteConnectionSecretToReference of this ActionsAction.
-func (mg *ActionsAction) GetWriteConnectionSecretToReference() *xpv1.SecretReference {
+// GetWriteConnectionSecretToReference of this Action.
+func (mg *Action) GetWriteConnectionSecretToReference() *xpv1.SecretReference {
 	return mg.Spec.WriteConnectionSecretToReference
 }
 
-// SetConditions of this ActionsAction.
-func (mg *ActionsAction) SetConditions(c ...xpv1.Condition) {
+// SetConditions of this Action.
+func (mg *Action) SetConditions(c ...xpv1.Condition) {
 	mg.Status.SetConditions(c...)
 }
 
-// SetDeletionPolicy of this ActionsAction.
-func (mg *ActionsAction) SetDeletionPolicy(r xpv1.DeletionPolicy) {
+// SetDeletionPolicy of this Action.
+func (mg *Action) SetDeletionPolicy(r xpv1.DeletionPolicy) {
 	mg.Spec.DeletionPolicy = r
 }
 
-// SetManagementPolicies of this ActionsAction.
-func (mg *ActionsAction) SetManagementPolicies(r xpv1.ManagementPolicies) {
+// SetManagementPolicies of this Action.
+func (mg *Action) SetManagementPolicies(r xpv1.ManagementPolicies) {
 	mg.Spec.ManagementPolicies = r
 }
 
-// SetProviderConfigReference of this ActionsAction.
-func (mg *ActionsAction) SetProviderConfigReference(r *xpv1.Reference) {
+// SetProviderConfigReference of this Action.
+func (mg *Action) SetProviderConfigReference(r *xpv1.Reference) {
 	mg.Spec.ProviderConfigReference = r
 }
 
-// SetPublishConnectionDetailsTo of this ActionsAction.
-func (mg *ActionsAction) SetPublishConnectionDetailsTo(r *xpv1.PublishConnectionDetailsTo) {
+// SetPublishConnectionDetailsTo of this Action.
+func (mg *Action) SetPublishConnectionDetailsTo(r *xpv1.PublishConnectionDetailsTo) {
 	mg.Spec.PublishConnectionDetailsTo = r
 }
 
-// SetWriteConnectionSecretToReference of this ActionsAction.
-func (mg *ActionsAction) SetWriteConnectionSecretToReference(r *xpv1.SecretReference) {
+// SetWriteConnectionSecretToReference of this Action.
+func (mg *Action) SetWriteConnectionSecretToReference(r *xpv1.SecretReference) {
 	mg.Spec.WriteConnectionSecretToReference = r
 }
 
-// GetCondition of this ActionsActionServiceAssociation.
-func (mg *ActionsActionServiceAssociation) GetCondition(ct xpv1.ConditionType) xpv1.Condition {
+// GetCondition of this Runner.
+func (mg *Runner) GetCondition(ct xpv1.ConditionType) xpv1.Condition {
 	return mg.Status.GetCondition(ct)
 }
 
-// GetDeletionPolicy of this ActionsActionServiceAssociation.
-func (mg *ActionsActionServiceAssociation) GetDeletionPolicy() xpv1.DeletionPolicy {
+// GetDeletionPolicy of this Runner.
+func (mg *Runner) GetDeletionPolicy() xpv1.DeletionPolicy {
 	return mg.Spec.DeletionPolicy
 }
 
-// GetManagementPolicies of this ActionsActionServiceAssociation.
-func (mg *ActionsActionServiceAssociation) GetManagementPolicies() xpv1.ManagementPolicies {
+// GetManagementPolicies of this Runner.
+func (mg *Runner) GetManagementPolicies() xpv1.ManagementPolicies {
 	return mg.Spec.ManagementPolicies
 }
 
-// GetProviderConfigReference of this ActionsActionServiceAssociation.
-func (mg *ActionsActionServiceAssociation) GetProviderConfigReference() *xpv1.Reference {
+// GetProviderConfigReference of this Runner.
+func (mg *Runner) GetProviderConfigReference() *xpv1.Reference {
 	return mg.Spec.ProviderConfigReference
 }
 
-// GetPublishConnectionDetailsTo of this ActionsActionServiceAssociation.
-func (mg *ActionsActionServiceAssociation) GetPublishConnectionDetailsTo() *xpv1.PublishConnectionDetailsTo {
+// GetPublishConnectionDetailsTo of this Runner.
+func (mg *Runner) GetPublishConnectionDetailsTo() *xpv1.PublishConnectionDetailsTo {
 	return mg.Spec.PublishConnectionDetailsTo
 }
 
-// GetWriteConnectionSecretToReference of this ActionsActionServiceAssociation.
-func (mg *ActionsActionServiceAssociation) GetWriteConnectionSecretToReference() *xpv1.SecretReference {
+// GetWriteConnectionSecretToReference of this Runner.
+func (mg *Runner) GetWriteConnectionSecretToReference() *xpv1.SecretReference {
 	return mg.Spec.WriteConnectionSecretToReference
 }
 
-// SetConditions of this ActionsActionServiceAssociation.
-func (mg *ActionsActionServiceAssociation) SetConditions(c ...xpv1.Condition) {
+// SetConditions of this Runner.
+func (mg *Runner) SetConditions(c ...xpv1.Condition) {
 	mg.Status.SetConditions(c...)
 }
 
-// SetDeletionPolicy of this ActionsActionServiceAssociation.
-func (mg *ActionsActionServiceAssociation) SetDeletionPolicy(r xpv1.DeletionPolicy) {
+// SetDeletionPolicy of this Runner.
+func (mg *Runner) SetDeletionPolicy(r xpv1.DeletionPolicy) {
 	mg.Spec.DeletionPolicy = r
 }
 
-// SetManagementPolicies of this ActionsActionServiceAssociation.
-func (mg *ActionsActionServiceAssociation) SetManagementPolicies(r xpv1.ManagementPolicies) {
+// SetManagementPolicies of this Runner.
+func (mg *Runner) SetManagementPolicies(r xpv1.ManagementPolicies) {
 	mg.Spec.ManagementPolicies = r
 }
 
-// SetProviderConfigReference of this ActionsActionServiceAssociation.
-func (mg *ActionsActionServiceAssociation) SetProviderConfigReference(r *xpv1.Reference) {
+// SetProviderConfigReference of this Runner.
+func (mg *Runner) SetProviderConfigReference(r *xpv1.Reference) {
 	mg.Spec.ProviderConfigReference = r
 }
 
-// SetPublishConnectionDetailsTo of this ActionsActionServiceAssociation.
-func (mg *ActionsActionServiceAssociation) SetPublishConnectionDetailsTo(r *xpv1.PublishConnectionDetailsTo) {
+// SetPublishConnectionDetailsTo of this Runner.
+func (mg *Runner) SetPublishConnectionDetailsTo(r *xpv1.PublishConnectionDetailsTo) {
 	mg.Spec.PublishConnectionDetailsTo = r
 }
 
-// SetWriteConnectionSecretToReference of this ActionsActionServiceAssociation.
-func (mg *ActionsActionServiceAssociation) SetWriteConnectionSecretToReference(r *xpv1.SecretReference) {
+// SetWriteConnectionSecretToReference of this Runner.
+func (mg *Runner) SetWriteConnectionSecretToReference(r *xpv1.SecretReference) {
 	mg.Spec.WriteConnectionSecretToReference = r
 }
 
-// GetCondition of this ActionsActionTeamAssociation.
-func (mg *ActionsActionTeamAssociation) GetCondition(ct xpv1.ConditionType) xpv1.Condition {
+// GetCondition of this RunnerTeamAssociation.
+func (mg *RunnerTeamAssociation) GetCondition(ct xpv1.ConditionType) xpv1.Condition {
 	return mg.Status.GetCondition(ct)
 }
 
-// GetDeletionPolicy of this ActionsActionTeamAssociation.
-func (mg *ActionsActionTeamAssociation) GetDeletionPolicy() xpv1.DeletionPolicy {
+// GetDeletionPolicy of this RunnerTeamAssociation.
+func (mg *RunnerTeamAssociation) GetDeletionPolicy() xpv1.DeletionPolicy {
 	return mg.Spec.DeletionPolicy
 }
 
-// GetManagementPolicies of this ActionsActionTeamAssociation.
-func (mg *ActionsActionTeamAssociation) GetManagementPolicies() xpv1.ManagementPolicies {
+// GetManagementPolicies of this RunnerTeamAssociation.
+func (mg *RunnerTeamAssociation) GetManagementPolicies() xpv1.ManagementPolicies {
 	return mg.Spec.ManagementPolicies
 }
 
-// GetProviderConfigReference of this ActionsActionTeamAssociation.
-func (mg *ActionsActionTeamAssociation) GetProviderConfigReference() *xpv1.Reference {
+// GetProviderConfigReference of this RunnerTeamAssociation.
+func (mg *RunnerTeamAssociation) GetProviderConfigReference() *xpv1.Reference {
 	return mg.Spec.ProviderConfigReference
 }
 
-// GetPublishConnectionDetailsTo of this ActionsActionTeamAssociation.
-func (mg *ActionsActionTeamAssociation) GetPublishConnectionDetailsTo() *xpv1.PublishConnectionDetailsTo {
+// GetPublishConnectionDetailsTo of this RunnerTeamAssociation.
+func (mg *RunnerTeamAssociation) GetPublishConnectionDetailsTo() *xpv1.PublishConnectionDetailsTo {
 	return mg.Spec.PublishConnectionDetailsTo
 }
 
-// GetWriteConnectionSecretToReference of this ActionsActionTeamAssociation.
-func (mg *ActionsActionTeamAssociation) GetWriteConnectionSecretToReference() *xpv1.SecretReference {
+// GetWriteConnectionSecretToReference of this RunnerTeamAssociation.
+func (mg *RunnerTeamAssociation) GetWriteConnectionSecretToReference() *xpv1.SecretReference {
 	return mg.Spec.WriteConnectionSecretToReference
 }
 
-// SetConditions of this ActionsActionTeamAssociation.
-func (mg *ActionsActionTeamAssociation) SetConditions(c ...xpv1.Condition) {
+// SetConditions of this RunnerTeamAssociation.
+func (mg *RunnerTeamAssociation) SetConditions(c ...xpv1.Condition) {
 	mg.Status.SetConditions(c...)
 }
 
-// SetDeletionPolicy of this ActionsActionTeamAssociation.
-func (mg *ActionsActionTeamAssociation) SetDeletionPolicy(r xpv1.DeletionPolicy) {
+// SetDeletionPolicy of this RunnerTeamAssociation.
+func (mg *RunnerTeamAssociation) SetDeletionPolicy(r xpv1.DeletionPolicy) {
 	mg.Spec.DeletionPolicy = r
 }
 
-// SetManagementPolicies of this ActionsActionTeamAssociation.
-func (mg *ActionsActionTeamAssociation) SetManagementPolicies(r xpv1.ManagementPolicies) {
+// SetManagementPolicies of this RunnerTeamAssociation.
+func (mg *RunnerTeamAssociation) SetManagementPolicies(r xpv1.ManagementPolicies) {
 	mg.Spec.ManagementPolicies = r
 }
 
-// SetProviderConfigReference of this ActionsActionTeamAssociation.
-func (mg *ActionsActionTeamAssociation) SetProviderConfigReference(r *xpv1.Reference) {
+// SetProviderConfigReference of this RunnerTeamAssociation.
+func (mg *RunnerTeamAssociation) SetProviderConfigReference(r *xpv1.Reference) {
 	mg.Spec.ProviderConfigReference = r
 }
 
-// SetPublishConnectionDetailsTo of this ActionsActionTeamAssociation.
-func (mg *ActionsActionTeamAssociation) SetPublishConnectionDetailsTo(r *xpv1.PublishConnectionDetailsTo) {
+// SetPublishConnectionDetailsTo of this RunnerTeamAssociation.
+func (mg *RunnerTeamAssociation) SetPublishConnectionDetailsTo(r *xpv1.PublishConnectionDetailsTo) {
 	mg.Spec.PublishConnectionDetailsTo = r
 }
 
-// SetWriteConnectionSecretToReference of this ActionsActionTeamAssociation.
-func (mg *ActionsActionTeamAssociation) SetWriteConnectionSecretToReference(r *xpv1.SecretReference) {
+// SetWriteConnectionSecretToReference of this RunnerTeamAssociation.
+func (mg *RunnerTeamAssociation) SetWriteConnectionSecretToReference(r *xpv1.SecretReference) {
 	mg.Spec.WriteConnectionSecretToReference = r
 }
 
-// GetCondition of this ActionsRunnerTeamAssociation.
-func (mg *ActionsRunnerTeamAssociation) GetCondition(ct xpv1.ConditionType) xpv1.Condition {
+// GetCondition of this ServiceAssociation.
+func (mg *ServiceAssociation) GetCondition(ct xpv1.ConditionType) xpv1.Condition {
 	return mg.Status.GetCondition(ct)
 }
 
-// GetDeletionPolicy of this ActionsRunnerTeamAssociation.
-func (mg *ActionsRunnerTeamAssociation) GetDeletionPolicy() xpv1.DeletionPolicy {
+// GetDeletionPolicy of this ServiceAssociation.
+func (mg *ServiceAssociation) GetDeletionPolicy() xpv1.DeletionPolicy {
 	return mg.Spec.DeletionPolicy
 }
 
-// GetManagementPolicies of this ActionsRunnerTeamAssociation.
-func (mg *ActionsRunnerTeamAssociation) GetManagementPolicies() xpv1.ManagementPolicies {
+// GetManagementPolicies of this ServiceAssociation.
+func (mg *ServiceAssociation) GetManagementPolicies() xpv1.ManagementPolicies {
 	return mg.Spec.ManagementPolicies
 }
 
-// GetProviderConfigReference of this ActionsRunnerTeamAssociation.
-func (mg *ActionsRunnerTeamAssociation) GetProviderConfigReference() *xpv1.Reference {
+// GetProviderConfigReference of this ServiceAssociation.
+func (mg *ServiceAssociation) GetProviderConfigReference() *xpv1.Reference {
 	return mg.Spec.ProviderConfigReference
 }
 
-// GetPublishConnectionDetailsTo of this ActionsRunnerTeamAssociation.
-func (mg *ActionsRunnerTeamAssociation) GetPublishConnectionDetailsTo() *xpv1.PublishConnectionDetailsTo {
+// GetPublishConnectionDetailsTo of this ServiceAssociation.
+func (mg *ServiceAssociation) GetPublishConnectionDetailsTo() *xpv1.PublishConnectionDetailsTo {
 	return mg.Spec.PublishConnectionDetailsTo
 }
 
-// GetWriteConnectionSecretToReference of this ActionsRunnerTeamAssociation.
-func (mg *ActionsRunnerTeamAssociation) GetWriteConnectionSecretToReference() *xpv1.SecretReference {
+// GetWriteConnectionSecretToReference of this ServiceAssociation.
+func (mg *ServiceAssociation) GetWriteConnectionSecretToReference() *xpv1.SecretReference {
 	return mg.Spec.WriteConnectionSecretToReference
 }
 
-// SetConditions of this ActionsRunnerTeamAssociation.
-func (mg *ActionsRunnerTeamAssociation) SetConditions(c ...xpv1.Condition) {
+// SetConditions of this ServiceAssociation.
+func (mg *ServiceAssociation) SetConditions(c ...xpv1.Condition) {
 	mg.Status.SetConditions(c...)
 }
 
-// SetDeletionPolicy of this ActionsRunnerTeamAssociation.
-func (mg *ActionsRunnerTeamAssociation) SetDeletionPolicy(r xpv1.DeletionPolicy) {
+// SetDeletionPolicy of this ServiceAssociation.
+func (mg *ServiceAssociation) SetDeletionPolicy(r xpv1.DeletionPolicy) {
 	mg.Spec.DeletionPolicy = r
 }
 
-// SetManagementPolicies of this ActionsRunnerTeamAssociation.
-func (mg *ActionsRunnerTeamAssociation) SetManagementPolicies(r xpv1.ManagementPolicies) {
+// SetManagementPolicies of this ServiceAssociation.
+func (mg *ServiceAssociation) SetManagementPolicies(r xpv1.ManagementPolicies) {
 	mg.Spec.ManagementPolicies = r
 }
 
-// SetProviderConfigReference of this ActionsRunnerTeamAssociation.
-func (mg *ActionsRunnerTeamAssociation) SetProviderConfigReference(r *xpv1.Reference) {
+// SetProviderConfigReference of this ServiceAssociation.
+func (mg *ServiceAssociation) SetProviderConfigReference(r *xpv1.Reference) {
 	mg.Spec.ProviderConfigReference = r
 }
 
-// SetPublishConnectionDetailsTo of this ActionsRunnerTeamAssociation.
-func (mg *ActionsRunnerTeamAssociation) SetPublishConnectionDetailsTo(r *xpv1.PublishConnectionDetailsTo) {
+// SetPublishConnectionDetailsTo of this ServiceAssociation.
+func (mg *ServiceAssociation) SetPublishConnectionDetailsTo(r *xpv1.PublishConnectionDetailsTo) {
 	mg.Spec.PublishConnectionDetailsTo = r
 }
 
-// SetWriteConnectionSecretToReference of this ActionsRunnerTeamAssociation.
-func (mg *ActionsRunnerTeamAssociation) SetWriteConnectionSecretToReference(r *xpv1.SecretReference) {
+// SetWriteConnectionSecretToReference of this ServiceAssociation.
+func (mg *ServiceAssociation) SetWriteConnectionSecretToReference(r *xpv1.SecretReference) {
+	mg.Spec.WriteConnectionSecretToReference = r
+}
+
+// GetCondition of this TeamAssociation.
+func (mg *TeamAssociation) GetCondition(ct xpv1.ConditionType) xpv1.Condition {
+	return mg.Status.GetCondition(ct)
+}
+
+// GetDeletionPolicy of this TeamAssociation.
+func (mg *TeamAssociation) GetDeletionPolicy() xpv1.DeletionPolicy {
+	return mg.Spec.DeletionPolicy
+}
+
+// GetManagementPolicies of this TeamAssociation.
+func (mg *TeamAssociation) GetManagementPolicies() xpv1.ManagementPolicies {
+	return mg.Spec.ManagementPolicies
+}
+
+// GetProviderConfigReference of this TeamAssociation.
+func (mg *TeamAssociation) GetProviderConfigReference() *xpv1.Reference {
+	return mg.Spec.ProviderConfigReference
+}
+
+// GetPublishConnectionDetailsTo of this TeamAssociation.
+func (mg *TeamAssociation) GetPublishConnectionDetailsTo() *xpv1.PublishConnectionDetailsTo {
+	return mg.Spec.PublishConnectionDetailsTo
+}
+
+// GetWriteConnectionSecretToReference of this TeamAssociation.
+func (mg *TeamAssociation) GetWriteConnectionSecretToReference() *xpv1.SecretReference {
+	return mg.Spec.WriteConnectionSecretToReference
+}
+
+// SetConditions of this TeamAssociation.
+func (mg *TeamAssociation) SetConditions(c ...xpv1.Condition) {
+	mg.Status.SetConditions(c...)
+}
+
+// SetDeletionPolicy of this TeamAssociation.
+func (mg *TeamAssociation) SetDeletionPolicy(r xpv1.DeletionPolicy) {
+	mg.Spec.DeletionPolicy = r
+}
+
+// SetManagementPolicies of this TeamAssociation.
+func (mg *TeamAssociation) SetManagementPolicies(r xpv1.ManagementPolicies) {
+	mg.Spec.ManagementPolicies = r
+}
+
+// SetProviderConfigReference of this TeamAssociation.
+func (mg *TeamAssociation) SetProviderConfigReference(r *xpv1.Reference) {
+	mg.Spec.ProviderConfigReference = r
+}
+
+// SetPublishConnectionDetailsTo of this TeamAssociation.
+func (mg *TeamAssociation) SetPublishConnectionDetailsTo(r *xpv1.PublishConnectionDetailsTo) {
+	mg.Spec.PublishConnectionDetailsTo = r
+}
+
+// SetWriteConnectionSecretToReference of this TeamAssociation.
+func (mg *TeamAssociation) SetWriteConnectionSecretToReference(r *xpv1.SecretReference) {
 	mg.Spec.WriteConnectionSecretToReference = r
 }

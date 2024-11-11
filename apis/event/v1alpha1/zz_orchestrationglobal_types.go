@@ -606,7 +606,16 @@ type OrchestrationGlobalInitParameters struct {
 	CatchAll []CatchAllInitParameters `json:"catchAll,omitempty" tf:"catch_all,omitempty"`
 
 	// ID of the Event Orchestration to which this Global Orchestration belongs to.
+	// +crossplane:generate:reference:type=Orchestration
 	EventOrchestration *string `json:"eventOrchestration,omitempty" tf:"event_orchestration,omitempty"`
+
+	// Reference to a Orchestration to populate eventOrchestration.
+	// +kubebuilder:validation:Optional
+	EventOrchestrationRef *v1.Reference `json:"eventOrchestrationRef,omitempty" tf:"-"`
+
+	// Selector for a Orchestration to populate eventOrchestration.
+	// +kubebuilder:validation:Optional
+	EventOrchestrationSelector *v1.Selector `json:"eventOrchestrationSelector,omitempty" tf:"-"`
 
 	// A Global Orchestration must contain at least a "start" set, but can contain any number of additional sets that are routed to by other rules to form a directional graph.
 	Set []SetInitParameters `json:"set,omitempty" tf:"set,omitempty"`
@@ -634,8 +643,17 @@ type OrchestrationGlobalParameters struct {
 	CatchAll []CatchAllParameters `json:"catchAll,omitempty" tf:"catch_all,omitempty"`
 
 	// ID of the Event Orchestration to which this Global Orchestration belongs to.
+	// +crossplane:generate:reference:type=Orchestration
 	// +kubebuilder:validation:Optional
 	EventOrchestration *string `json:"eventOrchestration,omitempty" tf:"event_orchestration,omitempty"`
+
+	// Reference to a Orchestration to populate eventOrchestration.
+	// +kubebuilder:validation:Optional
+	EventOrchestrationRef *v1.Reference `json:"eventOrchestrationRef,omitempty" tf:"-"`
+
+	// Selector for a Orchestration to populate eventOrchestration.
+	// +kubebuilder:validation:Optional
+	EventOrchestrationSelector *v1.Selector `json:"eventOrchestrationSelector,omitempty" tf:"-"`
 
 	// A Global Orchestration must contain at least a "start" set, but can contain any number of additional sets that are routed to by other rules to form a directional graph.
 	// +kubebuilder:validation:Optional
@@ -977,7 +995,6 @@ type OrchestrationGlobal struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.catchAll) || (has(self.initProvider) && has(self.initProvider.catchAll))",message="spec.forProvider.catchAll is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.eventOrchestration) || (has(self.initProvider) && has(self.initProvider.eventOrchestration))",message="spec.forProvider.eventOrchestration is a required parameter"
 	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.set) || (has(self.initProvider) && has(self.initProvider.set))",message="spec.forProvider.set is a required parameter"
 	Spec   OrchestrationGlobalSpec   `json:"spec"`
 	Status OrchestrationGlobalStatus `json:"status,omitempty"`

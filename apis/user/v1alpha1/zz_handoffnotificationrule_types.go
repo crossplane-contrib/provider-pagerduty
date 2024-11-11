@@ -60,7 +60,16 @@ type HandoffNotificationRuleInitParameters struct {
 	NotifyAdvanceInMinutes *float64 `json:"notifyAdvanceInMinutes,omitempty" tf:"notify_advance_in_minutes,omitempty"`
 
 	// The ID of the user.
+	// +crossplane:generate:reference:type=User
 	UserID *string `json:"userId,omitempty" tf:"user_id,omitempty"`
+
+	// Reference to a User to populate userId.
+	// +kubebuilder:validation:Optional
+	UserIDRef *v1.Reference `json:"userIdRef,omitempty" tf:"-"`
+
+	// Selector for a User to populate userId.
+	// +kubebuilder:validation:Optional
+	UserIDSelector *v1.Selector `json:"userIdSelector,omitempty" tf:"-"`
 }
 
 type HandoffNotificationRuleObservation struct {
@@ -102,8 +111,17 @@ type HandoffNotificationRuleParameters struct {
 	NotifyAdvanceInMinutes *float64 `json:"notifyAdvanceInMinutes,omitempty" tf:"notify_advance_in_minutes,omitempty"`
 
 	// The ID of the user.
+	// +crossplane:generate:reference:type=User
 	// +kubebuilder:validation:Optional
 	UserID *string `json:"userId,omitempty" tf:"user_id,omitempty"`
+
+	// Reference to a User to populate userId.
+	// +kubebuilder:validation:Optional
+	UserIDRef *v1.Reference `json:"userIdRef,omitempty" tf:"-"`
+
+	// Selector for a User to populate userId.
+	// +kubebuilder:validation:Optional
+	UserIDSelector *v1.Selector `json:"userIdSelector,omitempty" tf:"-"`
 }
 
 // HandoffNotificationRuleSpec defines the desired state of HandoffNotificationRule
@@ -143,7 +161,6 @@ type HandoffNotificationRule struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.notifyAdvanceInMinutes) || (has(self.initProvider) && has(self.initProvider.notifyAdvanceInMinutes))",message="spec.forProvider.notifyAdvanceInMinutes is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.userId) || (has(self.initProvider) && has(self.initProvider.userId))",message="spec.forProvider.userId is a required parameter"
 	Spec   HandoffNotificationRuleSpec   `json:"spec"`
 	Status HandoffNotificationRuleStatus `json:"status,omitempty"`
 }

@@ -96,7 +96,16 @@ type OrchestrationServiceCacheVariableInitParameters struct {
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
 	// ID of the Service Event Orchestration to which this Cache Variable belongs.
+	// +crossplane:generate:reference:type=OrchestrationService
 	Service *string `json:"service,omitempty" tf:"service,omitempty"`
+
+	// Reference to a OrchestrationService to populate service.
+	// +kubebuilder:validation:Optional
+	ServiceRef *v1.Reference `json:"serviceRef,omitempty" tf:"-"`
+
+	// Selector for a OrchestrationService to populate service.
+	// +kubebuilder:validation:Optional
+	ServiceSelector *v1.Selector `json:"serviceSelector,omitempty" tf:"-"`
 }
 
 type OrchestrationServiceCacheVariableObservation struct {
@@ -139,8 +148,17 @@ type OrchestrationServiceCacheVariableParameters struct {
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
 	// ID of the Service Event Orchestration to which this Cache Variable belongs.
+	// +crossplane:generate:reference:type=OrchestrationService
 	// +kubebuilder:validation:Optional
 	Service *string `json:"service,omitempty" tf:"service,omitempty"`
+
+	// Reference to a OrchestrationService to populate service.
+	// +kubebuilder:validation:Optional
+	ServiceRef *v1.Reference `json:"serviceRef,omitempty" tf:"-"`
+
+	// Selector for a OrchestrationService to populate service.
+	// +kubebuilder:validation:Optional
+	ServiceSelector *v1.Selector `json:"serviceSelector,omitempty" tf:"-"`
 }
 
 // OrchestrationServiceCacheVariableSpec defines the desired state of OrchestrationServiceCacheVariable
@@ -181,7 +199,6 @@ type OrchestrationServiceCacheVariable struct {
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.configuration) || (has(self.initProvider) && has(self.initProvider.configuration))",message="spec.forProvider.configuration is a required parameter"
 	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || (has(self.initProvider) && has(self.initProvider.name))",message="spec.forProvider.name is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.service) || (has(self.initProvider) && has(self.initProvider.service))",message="spec.forProvider.service is a required parameter"
 	Spec   OrchestrationServiceCacheVariableSpec   `json:"spec"`
 	Status OrchestrationServiceCacheVariableStatus `json:"status,omitempty"`
 }

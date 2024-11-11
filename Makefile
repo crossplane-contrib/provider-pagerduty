@@ -4,13 +4,13 @@
 PROJECT_NAME := provider-pagerduty
 PROJECT_REPO := github.com/crossplane-contrib/$(PROJECT_NAME)
 
-export TERRAFORM_VERSION := 1.5.5
+export TERRAFORM_VERSION := 1.5.7
 
 export TERRAFORM_PROVIDER_SOURCE := PagerDuty/pagerduty
-export TERRAFORM_PROVIDER_VERSION := 3.16.0
+export TERRAFORM_PROVIDER_VERSION := 3.17.1
 export TERRAFORM_PROVIDER_DOWNLOAD_NAME := terraform-provider-pagerduty
-export TERRAFORM_PROVIDER_DOWNLOAD_URL_PREFIX := https://github.com/PagerDuty/terraform-provider-pagerduty/releases/download/v3.16.0
 export TERRAFORM_PROVIDER_REPO ?= https://github.com/PagerDuty/terraform-provider-pagerduty
+export TERRAFORM_PROVIDER_DOWNLOAD_URL_PREFIX := $(TERRAFORM_PROVIDER_REPO)/releases/download/v$(TERRAFORM_PROVIDER_VERSION)
 export TERRAFORM_DOCS_PATH := website/docs/r
 
 PLATFORMS ?= linux_amd64 linux_arm64

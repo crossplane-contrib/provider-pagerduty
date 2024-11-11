@@ -19,7 +19,18 @@ type CustomFieldOptionInitParameters struct {
 	DataType *string `json:"dataType,omitempty" tf:"data_type,omitempty"`
 
 	// The ID of the field.
+	// +crossplane:generate:reference:type=CustomField
+	// +crossplane:generate:reference:refFieldName=FieldRefs
+	// +crossplane:generate:reference:selectorFieldName=FieldSelector
 	Field *string `json:"field,omitempty" tf:"field,omitempty"`
+
+	// Reference to a CustomField to populate field.
+	// +kubebuilder:validation:Optional
+	FieldRefs *v1.Reference `json:"fieldRefs,omitempty" tf:"-"`
+
+	// Selector for a CustomField to populate field.
+	// +kubebuilder:validation:Optional
+	FieldSelector *v1.Selector `json:"fieldSelector,omitempty" tf:"-"`
 
 	// The allowed value.
 	Value *string `json:"value,omitempty" tf:"value,omitempty"`
@@ -47,8 +58,19 @@ type CustomFieldOptionParameters struct {
 	DataType *string `json:"dataType,omitempty" tf:"data_type,omitempty"`
 
 	// The ID of the field.
+	// +crossplane:generate:reference:type=CustomField
+	// +crossplane:generate:reference:refFieldName=FieldRefs
+	// +crossplane:generate:reference:selectorFieldName=FieldSelector
 	// +kubebuilder:validation:Optional
 	Field *string `json:"field,omitempty" tf:"field,omitempty"`
+
+	// Reference to a CustomField to populate field.
+	// +kubebuilder:validation:Optional
+	FieldRefs *v1.Reference `json:"fieldRefs,omitempty" tf:"-"`
+
+	// Selector for a CustomField to populate field.
+	// +kubebuilder:validation:Optional
+	FieldSelector *v1.Selector `json:"fieldSelector,omitempty" tf:"-"`
 
 	// The allowed value.
 	// +kubebuilder:validation:Optional
@@ -92,7 +114,6 @@ type CustomFieldOption struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.dataType) || (has(self.initProvider) && has(self.initProvider.dataType))",message="spec.forProvider.dataType is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.field) || (has(self.initProvider) && has(self.initProvider.field))",message="spec.forProvider.field is a required parameter"
 	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.value) || (has(self.initProvider) && has(self.initProvider.value))",message="spec.forProvider.value is a required parameter"
 	Spec   CustomFieldOptionSpec   `json:"spec"`
 	Status CustomFieldOptionStatus `json:"status,omitempty"`

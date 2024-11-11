@@ -33,4 +33,15 @@ func Configure(p *config.Provider) {
 			},
 		}
 	})
+
+	p.AddResourceConfigurator("pagerduty_user_handoff_notification_rule", func(r *config.Resource) {
+
+		r.ShortGroup = "user"
+		r.References = config.References{
+			"user_id": {
+				Type: "User",
+			},
+		}
+	})
+
 }

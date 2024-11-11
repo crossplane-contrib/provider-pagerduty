@@ -7,13 +7,16 @@ Copyright 2022 Upbound Inc.
 package v1alpha1
 
 // Hub marks this type as a conversion hub.
-func (tr *ActionsAction) Hub() {}
+func (tr *Action) Hub() {}
 
 // Hub marks this type as a conversion hub.
-func (tr *ActionsActionServiceAssociation) Hub() {}
+func (tr *Runner) Hub() {}
 
 // Hub marks this type as a conversion hub.
-func (tr *ActionsActionTeamAssociation) Hub() {}
+func (tr *RunnerTeamAssociation) Hub() {}
 
 // Hub marks this type as a conversion hub.
-func (tr *ActionsRunnerTeamAssociation) Hub() {}
+func (tr *ServiceAssociation) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *TeamAssociation) Hub() {}

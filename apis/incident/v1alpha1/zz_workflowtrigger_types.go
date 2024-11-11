@@ -19,7 +19,16 @@ type PermissionsInitParameters struct {
 	Restricted *bool `json:"restricted,omitempty" tf:"restricted,omitempty"`
 
 	// The ID of the Team whose members can manually start this Trigger. Required and allowed only if restricted is true.
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-pagerduty/apis/team/v1alpha1.Team
 	TeamID *string `json:"teamId,omitempty" tf:"team_id,omitempty"`
+
+	// Reference to a Team in team to populate teamId.
+	// +kubebuilder:validation:Optional
+	TeamIDRef *v1.Reference `json:"teamIdRef,omitempty" tf:"-"`
+
+	// Selector for a Team in team to populate teamId.
+	// +kubebuilder:validation:Optional
+	TeamIDSelector *v1.Selector `json:"teamIdSelector,omitempty" tf:"-"`
 }
 
 type PermissionsObservation struct {
@@ -38,8 +47,17 @@ type PermissionsParameters struct {
 	Restricted *bool `json:"restricted,omitempty" tf:"restricted,omitempty"`
 
 	// The ID of the Team whose members can manually start this Trigger. Required and allowed only if restricted is true.
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-pagerduty/apis/team/v1alpha1.Team
 	// +kubebuilder:validation:Optional
 	TeamID *string `json:"teamId,omitempty" tf:"team_id,omitempty"`
+
+	// Reference to a Team in team to populate teamId.
+	// +kubebuilder:validation:Optional
+	TeamIDRef *v1.Reference `json:"teamIdRef,omitempty" tf:"-"`
+
+	// Selector for a Team in team to populate teamId.
+	// +kubebuilder:validation:Optional
+	TeamIDSelector *v1.Selector `json:"teamIdSelector,omitempty" tf:"-"`
 }
 
 type WorkflowTriggerInitParameters struct {
@@ -60,7 +78,18 @@ type WorkflowTriggerInitParameters struct {
 	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 
 	// The workflow ID for the workflow to trigger.
+	// +crossplane:generate:reference:type=Workflow
+	// +crossplane:generate:reference:refFieldName=WorkflowRefs
+	// +crossplane:generate:reference:selectorFieldName=WorkflowSelector
 	Workflow *string `json:"workflow,omitempty" tf:"workflow,omitempty"`
+
+	// Reference to a Workflow to populate workflow.
+	// +kubebuilder:validation:Optional
+	WorkflowRefs *v1.Reference `json:"workflowRefs,omitempty" tf:"-"`
+
+	// Selector for a Workflow to populate workflow.
+	// +kubebuilder:validation:Optional
+	WorkflowSelector *v1.Selector `json:"workflowSelector,omitempty" tf:"-"`
 }
 
 type WorkflowTriggerObservation struct {
@@ -110,8 +139,19 @@ type WorkflowTriggerParameters struct {
 	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 
 	// The workflow ID for the workflow to trigger.
+	// +crossplane:generate:reference:type=Workflow
+	// +crossplane:generate:reference:refFieldName=WorkflowRefs
+	// +crossplane:generate:reference:selectorFieldName=WorkflowSelector
 	// +kubebuilder:validation:Optional
 	Workflow *string `json:"workflow,omitempty" tf:"workflow,omitempty"`
+
+	// Reference to a Workflow to populate workflow.
+	// +kubebuilder:validation:Optional
+	WorkflowRefs *v1.Reference `json:"workflowRefs,omitempty" tf:"-"`
+
+	// Selector for a Workflow to populate workflow.
+	// +kubebuilder:validation:Optional
+	WorkflowSelector *v1.Selector `json:"workflowSelector,omitempty" tf:"-"`
 }
 
 // WorkflowTriggerSpec defines the desired state of WorkflowTrigger
@@ -152,7 +192,6 @@ type WorkflowTrigger struct {
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.subscribedToAllServices) || (has(self.initProvider) && has(self.initProvider.subscribedToAllServices))",message="spec.forProvider.subscribedToAllServices is a required parameter"
 	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.type) || (has(self.initProvider) && has(self.initProvider.type))",message="spec.forProvider.type is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.workflow) || (has(self.initProvider) && has(self.initProvider.workflow))",message="spec.forProvider.workflow is a required parameter"
 	Spec   WorkflowTriggerSpec   `json:"spec"`
 	Status WorkflowTriggerStatus `json:"status,omitempty"`
 }

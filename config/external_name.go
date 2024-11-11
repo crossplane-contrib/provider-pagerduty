@@ -14,6 +14,7 @@ var ExternalNameConfigs = map[string]config.ExternalName{
 	"pagerduty_automation_actions_action_service_association": config.IdentifierFromProvider,
 	"pagerduty_automation_actions_action_team_association":    config.IdentifierFromProvider,
 	"pagerduty_automation_actions_action":                     config.IdentifierFromProvider,
+	"pagerduty_automation_actions_runner":                     config.IdentifierFromProvider,
 	"pagerduty_automation_actions_runner_team_association":    config.IdentifierFromProvider,
 	"pagerduty_business_service_subscriber":                   config.IdentifierFromProvider,
 	"pagerduty_business_service":                              config.IdentifierFromProvider,

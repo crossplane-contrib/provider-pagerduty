@@ -1,6 +1,9 @@
 package business
 
-import "github.com/crossplane/upjet/pkg/config"
+import (
+	"github.com/crossplane-contrib/provider-pagerduty/config/fake"
+	"github.com/crossplane/upjet/pkg/config"
+)
 
 // Configure configures individual resources by adding custom ResourceConfigurators.
 func Configure(p *config.Provider) {
@@ -12,6 +15,8 @@ func Configure(p *config.Provider) {
 				Type: "github.com/crossplane-contrib/provider-pagerduty/apis/team/v1alpha1.Team",
 			},
 		}
+		r.ExternalName.GetExternalNameFn = fake.GetExternalName
+		r.ExternalName.GetIDFn = fake.GetID
 		// Deprecated
 		if s, ok := r.TerraformResource.Schema["type"]; ok {
 			s.Optional = false

@@ -1,43 +1,16 @@
 package team
 
 import (
-	"context"
-
+	"github.com/crossplane-contrib/provider-pagerduty/config/fake"
 	"github.com/crossplane/upjet/pkg/config"
-	"github.com/pkg/errors"
 )
-
-// Errors
-const (
-	ErrFmtNoAttribute    = `attribute not found: %s`
-	ErrFmtUnexpectedType = `unexpected type for attribute %s: Expecting a string`
-)
-
-func getExternalName(tfstate map[string]any) (string, error) {
-	id, ok := tfstate["id"]
-	if !ok {
-		return "", errors.Errorf(ErrFmtNoAttribute, "id")
-	}
-	idStr, ok := id.(string)
-	if !ok {
-		return "", errors.Errorf(ErrFmtUnexpectedType, "id")
-	}
-	return idStr, nil
-}
-
-func getID(ctx context.Context, externalName string, parameters map[string]any, providerConfig map[string]any) (string, error) {
-	if externalName == "" {
-		return "PENDING", nil
-	}
-	return externalName, nil
-}
 
 // Configure configures individual resources by adding custom ResourceConfigurators.
 func Configure(p *config.Provider) {
 	p.AddResourceConfigurator("pagerduty_team", func(r *config.Resource) {
 		r.ExternalName = config.IdentifierFromProvider
-		r.ExternalName.GetExternalNameFn = getExternalName
-		r.ExternalName.GetIDFn = getID
+		r.ExternalName.GetExternalNameFn = fake.GetExternalName
+		r.ExternalName.GetIDFn = fake.GetID
 		r.ShortGroup = "team"
 	})
 
