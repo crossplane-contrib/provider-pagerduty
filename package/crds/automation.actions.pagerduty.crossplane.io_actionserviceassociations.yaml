@@ -4,7 +4,7 @@ kind: CustomResourceDefinition
 metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.14.0
-  name: serviceassociations.automation.actions.pagerduty.crossplane.io
+  name: actionserviceassociations.automation.actions.pagerduty.crossplane.io
 spec:
   group: automation.actions.pagerduty.crossplane.io
   names:
@@ -12,10 +12,10 @@ spec:
     - crossplane
     - managed
     - pagerduty
-    kind: ServiceAssociation
-    listKind: ServiceAssociationList
-    plural: serviceassociations
-    singular: serviceassociation
+    kind: ActionServiceAssociation
+    listKind: ActionServiceAssociationList
+    plural: actionserviceassociations
+    singular: actionserviceassociation
   scope: Cluster
   versions:
   - additionalPrinterColumns:
@@ -34,7 +34,7 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: ServiceAssociation is the Schema for the ServiceAssociations
+        description: ActionServiceAssociation is the Schema for the ActionServiceAssociations
           API. Creates and manages an Automation Actions action association with a
           Service in PagerDuty.
         properties:
@@ -56,7 +56,8 @@ spec:
           metadata:
             type: object
           spec:
-            description: ServiceAssociationSpec defines the desired state of ServiceAssociation
+            description: ActionServiceAssociationSpec defines the desired state of
+              ActionServiceAssociation
             properties:
               deletionPolicy:
                 default: Delete
@@ -565,7 +566,8 @@ spec:
             - forProvider
             type: object
           status:
-            description: ServiceAssociationStatus defines the observed state of ServiceAssociation.
+            description: ActionServiceAssociationStatus defines the observed state
+              of ActionServiceAssociation.
             properties:
               atProvider:
                 properties:

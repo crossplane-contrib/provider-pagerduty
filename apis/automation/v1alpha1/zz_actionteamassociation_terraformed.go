@@ -14,18 +14,18 @@ import (
 	"github.com/crossplane/upjet/pkg/resource/json"
 )
 
-// GetTerraformResourceType returns Terraform resource type for this TeamAssociation
-func (mg *TeamAssociation) GetTerraformResourceType() string {
+// GetTerraformResourceType returns Terraform resource type for this ActionTeamAssociation
+func (mg *ActionTeamAssociation) GetTerraformResourceType() string {
 	return "pagerduty_automation_actions_action_team_association"
 }
 
-// GetConnectionDetailsMapping for this TeamAssociation
-func (tr *TeamAssociation) GetConnectionDetailsMapping() map[string]string {
+// GetConnectionDetailsMapping for this ActionTeamAssociation
+func (tr *ActionTeamAssociation) GetConnectionDetailsMapping() map[string]string {
 	return nil
 }
 
-// GetObservation of this TeamAssociation
-func (tr *TeamAssociation) GetObservation() (map[string]any, error) {
+// GetObservation of this ActionTeamAssociation
+func (tr *ActionTeamAssociation) GetObservation() (map[string]any, error) {
 	o, err := json.TFParser.Marshal(tr.Status.AtProvider)
 	if err != nil {
 		return nil, err
@@ -34,8 +34,8 @@ func (tr *TeamAssociation) GetObservation() (map[string]any, error) {
 	return base, json.TFParser.Unmarshal(o, &base)
 }
 
-// SetObservation for this TeamAssociation
-func (tr *TeamAssociation) SetObservation(obs map[string]any) error {
+// SetObservation for this ActionTeamAssociation
+func (tr *ActionTeamAssociation) SetObservation(obs map[string]any) error {
 	p, err := json.TFParser.Marshal(obs)
 	if err != nil {
 		return err
@@ -43,16 +43,16 @@ func (tr *TeamAssociation) SetObservation(obs map[string]any) error {
 	return json.TFParser.Unmarshal(p, &tr.Status.AtProvider)
 }
 
-// GetID returns ID of underlying Terraform resource of this TeamAssociation
-func (tr *TeamAssociation) GetID() string {
+// GetID returns ID of underlying Terraform resource of this ActionTeamAssociation
+func (tr *ActionTeamAssociation) GetID() string {
 	if tr.Status.AtProvider.ID == nil {
 		return ""
 	}
 	return *tr.Status.AtProvider.ID
 }
 
-// GetParameters of this TeamAssociation
-func (tr *TeamAssociation) GetParameters() (map[string]any, error) {
+// GetParameters of this ActionTeamAssociation
+func (tr *ActionTeamAssociation) GetParameters() (map[string]any, error) {
 	p, err := json.TFParser.Marshal(tr.Spec.ForProvider)
 	if err != nil {
 		return nil, err
@@ -61,8 +61,8 @@ func (tr *TeamAssociation) GetParameters() (map[string]any, error) {
 	return base, json.TFParser.Unmarshal(p, &base)
 }
 
-// SetParameters for this TeamAssociation
-func (tr *TeamAssociation) SetParameters(params map[string]any) error {
+// SetParameters for this ActionTeamAssociation
+func (tr *ActionTeamAssociation) SetParameters(params map[string]any) error {
 	p, err := json.TFParser.Marshal(params)
 	if err != nil {
 		return err
@@ -70,8 +70,8 @@ func (tr *TeamAssociation) SetParameters(params map[string]any) error {
 	return json.TFParser.Unmarshal(p, &tr.Spec.ForProvider)
 }
 
-// GetInitParameters of this TeamAssociation
-func (tr *TeamAssociation) GetInitParameters() (map[string]any, error) {
+// GetInitParameters of this ActionTeamAssociation
+func (tr *ActionTeamAssociation) GetInitParameters() (map[string]any, error) {
 	p, err := json.TFParser.Marshal(tr.Spec.InitProvider)
 	if err != nil {
 		return nil, err
@@ -80,8 +80,8 @@ func (tr *TeamAssociation) GetInitParameters() (map[string]any, error) {
 	return base, json.TFParser.Unmarshal(p, &base)
 }
 
-// GetInitParameters of this TeamAssociation
-func (tr *TeamAssociation) GetMergedParameters(shouldMergeInitProvider bool) (map[string]any, error) {
+// GetInitParameters of this ActionTeamAssociation
+func (tr *ActionTeamAssociation) GetMergedParameters(shouldMergeInitProvider bool) (map[string]any, error) {
 	params, err := tr.GetParameters()
 	if err != nil {
 		return nil, errors.Wrapf(err, "cannot get parameters for resource '%q'", tr.GetName())
@@ -110,10 +110,10 @@ func (tr *TeamAssociation) GetMergedParameters(shouldMergeInitProvider bool) (ma
 	return params, nil
 }
 
-// LateInitialize this TeamAssociation using its observed tfState.
+// LateInitialize this ActionTeamAssociation using its observed tfState.
 // returns True if there are any spec changes for the resource.
-func (tr *TeamAssociation) LateInitialize(attrs []byte) (bool, error) {
-	params := &TeamAssociationParameters{}
+func (tr *ActionTeamAssociation) LateInitialize(attrs []byte) (bool, error) {
+	params := &ActionTeamAssociationParameters{}
 	if err := json.TFParser.Unmarshal(attrs, params); err != nil {
 		return false, errors.Wrap(err, "failed to unmarshal Terraform state parameters for late-initialization")
 	}
@@ -124,6 +124,6 @@ func (tr *TeamAssociation) LateInitialize(attrs []byte) (bool, error) {
 }
 
 // GetTerraformSchemaVersion returns the associated Terraform schema version
-func (tr *TeamAssociation) GetTerraformSchemaVersion() int {
+func (tr *ActionTeamAssociation) GetTerraformSchemaVersion() int {
 	return 0
 }

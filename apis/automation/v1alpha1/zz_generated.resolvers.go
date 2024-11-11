@@ -7,89 +7,15 @@ package v1alpha1
 
 import (
 	"context"
-	v1alpha11 "github.com/crossplane-contrib/provider-pagerduty/apis/service/v1alpha1"
-	v1alpha1 "github.com/crossplane-contrib/provider-pagerduty/apis/team/v1alpha1"
+	v1alpha1 "github.com/crossplane-contrib/provider-pagerduty/apis/service/v1alpha1"
+	v1alpha11 "github.com/crossplane-contrib/provider-pagerduty/apis/team/v1alpha1"
 	reference "github.com/crossplane/crossplane-runtime/pkg/reference"
 	errors "github.com/pkg/errors"
 	client "sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// ResolveReferences of this RunnerTeamAssociation.
-func (mg *RunnerTeamAssociation) ResolveReferences(ctx context.Context, c client.Reader) error {
-	r := reference.NewAPIResolver(c, mg)
-
-	var rsp reference.ResolutionResponse
-	var err error
-
-	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
-		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.RunnerID),
-		Extract:      reference.ExternalName(),
-		Reference:    mg.Spec.ForProvider.RunnerRefs,
-		Selector:     mg.Spec.ForProvider.RunnerSelector,
-		To: reference.To{
-			List:    &RunnerList{},
-			Managed: &Runner{},
-		},
-	})
-	if err != nil {
-		return errors.Wrap(err, "mg.Spec.ForProvider.RunnerID")
-	}
-	mg.Spec.ForProvider.RunnerID = reference.ToPtrValue(rsp.ResolvedValue)
-	mg.Spec.ForProvider.RunnerRefs = rsp.ResolvedReference
-
-	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
-		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.TeamID),
-		Extract:      reference.ExternalName(),
-		Reference:    mg.Spec.ForProvider.TeamRefs,
-		Selector:     mg.Spec.ForProvider.TeamSelector,
-		To: reference.To{
-			List:    &v1alpha1.TeamList{},
-			Managed: &v1alpha1.Team{},
-		},
-	})
-	if err != nil {
-		return errors.Wrap(err, "mg.Spec.ForProvider.TeamID")
-	}
-	mg.Spec.ForProvider.TeamID = reference.ToPtrValue(rsp.ResolvedValue)
-	mg.Spec.ForProvider.TeamRefs = rsp.ResolvedReference
-
-	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
-		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.RunnerID),
-		Extract:      reference.ExternalName(),
-		Reference:    mg.Spec.InitProvider.RunnerRefs,
-		Selector:     mg.Spec.InitProvider.RunnerSelector,
-		To: reference.To{
-			List:    &RunnerList{},
-			Managed: &Runner{},
-		},
-	})
-	if err != nil {
-		return errors.Wrap(err, "mg.Spec.InitProvider.RunnerID")
-	}
-	mg.Spec.InitProvider.RunnerID = reference.ToPtrValue(rsp.ResolvedValue)
-	mg.Spec.InitProvider.RunnerRefs = rsp.ResolvedReference
-
-	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
-		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.TeamID),
-		Extract:      reference.ExternalName(),
-		Reference:    mg.Spec.InitProvider.TeamRefs,
-		Selector:     mg.Spec.InitProvider.TeamSelector,
-		To: reference.To{
-			List:    &v1alpha1.TeamList{},
-			Managed: &v1alpha1.Team{},
-		},
-	})
-	if err != nil {
-		return errors.Wrap(err, "mg.Spec.InitProvider.TeamID")
-	}
-	mg.Spec.InitProvider.TeamID = reference.ToPtrValue(rsp.ResolvedValue)
-	mg.Spec.InitProvider.TeamRefs = rsp.ResolvedReference
-
-	return nil
-}
-
-// ResolveReferences of this ServiceAssociation.
-func (mg *ServiceAssociation) ResolveReferences(ctx context.Context, c client.Reader) error {
+// ResolveReferences of this ActionServiceAssociation.
+func (mg *ActionServiceAssociation) ResolveReferences(ctx context.Context, c client.Reader) error {
 	r := reference.NewAPIResolver(c, mg)
 
 	var rsp reference.ResolutionResponse
@@ -117,8 +43,8 @@ func (mg *ServiceAssociation) ResolveReferences(ctx context.Context, c client.Re
 		Reference:    mg.Spec.ForProvider.ServiceRefs,
 		Selector:     mg.Spec.ForProvider.ServiceSelector,
 		To: reference.To{
-			List:    &v1alpha11.ServiceList{},
-			Managed: &v1alpha11.Service{},
+			List:    &v1alpha1.ServiceList{},
+			Managed: &v1alpha1.Service{},
 		},
 	})
 	if err != nil {
@@ -149,8 +75,8 @@ func (mg *ServiceAssociation) ResolveReferences(ctx context.Context, c client.Re
 		Reference:    mg.Spec.InitProvider.ServiceRefs,
 		Selector:     mg.Spec.InitProvider.ServiceSelector,
 		To: reference.To{
-			List:    &v1alpha11.ServiceList{},
-			Managed: &v1alpha11.Service{},
+			List:    &v1alpha1.ServiceList{},
+			Managed: &v1alpha1.Service{},
 		},
 	})
 	if err != nil {
@@ -162,8 +88,8 @@ func (mg *ServiceAssociation) ResolveReferences(ctx context.Context, c client.Re
 	return nil
 }
 
-// ResolveReferences of this TeamAssociation.
-func (mg *TeamAssociation) ResolveReferences(ctx context.Context, c client.Reader) error {
+// ResolveReferences of this ActionTeamAssociation.
+func (mg *ActionTeamAssociation) ResolveReferences(ctx context.Context, c client.Reader) error {
 	r := reference.NewAPIResolver(c, mg)
 
 	var rsp reference.ResolutionResponse
@@ -191,8 +117,8 @@ func (mg *TeamAssociation) ResolveReferences(ctx context.Context, c client.Reade
 		Reference:    mg.Spec.ForProvider.TeamRefs,
 		Selector:     mg.Spec.ForProvider.TeamSelector,
 		To: reference.To{
-			List:    &v1alpha1.TeamList{},
-			Managed: &v1alpha1.Team{},
+			List:    &v1alpha11.TeamList{},
+			Managed: &v1alpha11.Team{},
 		},
 	})
 	if err != nil {
@@ -223,8 +149,82 @@ func (mg *TeamAssociation) ResolveReferences(ctx context.Context, c client.Reade
 		Reference:    mg.Spec.InitProvider.TeamRefs,
 		Selector:     mg.Spec.InitProvider.TeamSelector,
 		To: reference.To{
-			List:    &v1alpha1.TeamList{},
-			Managed: &v1alpha1.Team{},
+			List:    &v1alpha11.TeamList{},
+			Managed: &v1alpha11.Team{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.InitProvider.TeamID")
+	}
+	mg.Spec.InitProvider.TeamID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.TeamRefs = rsp.ResolvedReference
+
+	return nil
+}
+
+// ResolveReferences of this RunnerTeamAssociation.
+func (mg *RunnerTeamAssociation) ResolveReferences(ctx context.Context, c client.Reader) error {
+	r := reference.NewAPIResolver(c, mg)
+
+	var rsp reference.ResolutionResponse
+	var err error
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.RunnerID),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.ForProvider.RunnerRefs,
+		Selector:     mg.Spec.ForProvider.RunnerSelector,
+		To: reference.To{
+			List:    &RunnerList{},
+			Managed: &Runner{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.RunnerID")
+	}
+	mg.Spec.ForProvider.RunnerID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.RunnerRefs = rsp.ResolvedReference
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.TeamID),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.ForProvider.TeamRefs,
+		Selector:     mg.Spec.ForProvider.TeamSelector,
+		To: reference.To{
+			List:    &v1alpha11.TeamList{},
+			Managed: &v1alpha11.Team{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.TeamID")
+	}
+	mg.Spec.ForProvider.TeamID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.TeamRefs = rsp.ResolvedReference
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.RunnerID),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.InitProvider.RunnerRefs,
+		Selector:     mg.Spec.InitProvider.RunnerSelector,
+		To: reference.To{
+			List:    &RunnerList{},
+			Managed: &Runner{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.InitProvider.RunnerID")
+	}
+	mg.Spec.InitProvider.RunnerID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.RunnerRefs = rsp.ResolvedReference
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.TeamID),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.InitProvider.TeamRefs,
+		Selector:     mg.Spec.InitProvider.TeamSelector,
+		To: reference.To{
+			List:    &v1alpha11.TeamList{},
+			Managed: &v1alpha11.Team{},
 		},
 	})
 	if err != nil {

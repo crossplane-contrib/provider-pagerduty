@@ -13,7 +13,7 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
-type TeamAssociationInitParameters struct {
+type ActionTeamAssociationInitParameters struct {
 
 	// Id of the action.
 	// +crossplane:generate:reference:type=Action
@@ -44,7 +44,7 @@ type TeamAssociationInitParameters struct {
 	TeamSelector *v1.Selector `json:"teamSelector,omitempty" tf:"-"`
 }
 
-type TeamAssociationObservation struct {
+type ActionTeamAssociationObservation struct {
 
 	// Id of the action.
 	ActionID *string `json:"actionId,omitempty" tf:"action_id,omitempty"`
@@ -55,7 +55,7 @@ type TeamAssociationObservation struct {
 	TeamID *string `json:"teamId,omitempty" tf:"team_id,omitempty"`
 }
 
-type TeamAssociationParameters struct {
+type ActionTeamAssociationParameters struct {
 
 	// Id of the action.
 	// +crossplane:generate:reference:type=Action
@@ -88,10 +88,10 @@ type TeamAssociationParameters struct {
 	TeamSelector *v1.Selector `json:"teamSelector,omitempty" tf:"-"`
 }
 
-// TeamAssociationSpec defines the desired state of TeamAssociation
-type TeamAssociationSpec struct {
+// ActionTeamAssociationSpec defines the desired state of ActionTeamAssociation
+type ActionTeamAssociationSpec struct {
 	v1.ResourceSpec `json:",inline"`
-	ForProvider     TeamAssociationParameters `json:"forProvider"`
+	ForProvider     ActionTeamAssociationParameters `json:"forProvider"`
 	// THIS IS A BETA FIELD. It will be honored
 	// unless the Management Policies feature flag is disabled.
 	// InitProvider holds the same fields as ForProvider, with the exception
@@ -102,49 +102,49 @@ type TeamAssociationSpec struct {
 	// required on creation, but we do not desire to update them after creation,
 	// for example because of an external controller is managing them, like an
 	// autoscaler.
-	InitProvider TeamAssociationInitParameters `json:"initProvider,omitempty"`
+	InitProvider ActionTeamAssociationInitParameters `json:"initProvider,omitempty"`
 }
 
-// TeamAssociationStatus defines the observed state of TeamAssociation.
-type TeamAssociationStatus struct {
+// ActionTeamAssociationStatus defines the observed state of ActionTeamAssociation.
+type ActionTeamAssociationStatus struct {
 	v1.ResourceStatus `json:",inline"`
-	AtProvider        TeamAssociationObservation `json:"atProvider,omitempty"`
+	AtProvider        ActionTeamAssociationObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true
 // +kubebuilder:subresource:status
 // +kubebuilder:storageversion
 
-// TeamAssociation is the Schema for the TeamAssociations API. Creates and manages an Automation Actions action association with a Team in PagerDuty.
+// ActionTeamAssociation is the Schema for the ActionTeamAssociations API. Creates and manages an Automation Actions action association with a Team in PagerDuty.
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,pagerduty}
-type TeamAssociation struct {
+type ActionTeamAssociation struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              TeamAssociationSpec   `json:"spec"`
-	Status            TeamAssociationStatus `json:"status,omitempty"`
+	Spec              ActionTeamAssociationSpec   `json:"spec"`
+	Status            ActionTeamAssociationStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true
 
-// TeamAssociationList contains a list of TeamAssociations
-type TeamAssociationList struct {
+// ActionTeamAssociationList contains a list of ActionTeamAssociations
+type ActionTeamAssociationList struct {
 	metav1.TypeMeta `json:",inline"`
 	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []TeamAssociation `json:"items"`
+	Items           []ActionTeamAssociation `json:"items"`
 }
 
 // Repository type metadata.
 var (
-	TeamAssociation_Kind             = "TeamAssociation"
-	TeamAssociation_GroupKind        = schema.GroupKind{Group: CRDGroup, Kind: TeamAssociation_Kind}.String()
-	TeamAssociation_KindAPIVersion   = TeamAssociation_Kind + "." + CRDGroupVersion.String()
-	TeamAssociation_GroupVersionKind = CRDGroupVersion.WithKind(TeamAssociation_Kind)
+	ActionTeamAssociation_Kind             = "ActionTeamAssociation"
+	ActionTeamAssociation_GroupKind        = schema.GroupKind{Group: CRDGroup, Kind: ActionTeamAssociation_Kind}.String()
+	ActionTeamAssociation_KindAPIVersion   = ActionTeamAssociation_Kind + "." + CRDGroupVersion.String()
+	ActionTeamAssociation_GroupVersionKind = CRDGroupVersion.WithKind(ActionTeamAssociation_Kind)
 )
 
 func init() {
-	SchemeBuilder.Register(&TeamAssociation{}, &TeamAssociationList{})
+	SchemeBuilder.Register(&ActionTeamAssociation{}, &ActionTeamAssociationList{})
 }

@@ -1,23 +1,27 @@
-apiVersion: automation.pagerduty.crossplane.io/v1alpha1
-kind: ActionsActionTeamAssociation
+apiVersion: automation.actions.pagerduty.crossplane.io/v1alpha1
+kind: ActionTeamAssociation
 metadata:
   annotations:
-    meta.upbound.io/example-id: automation/v1alpha1/actionsactionteamassociation
+    meta.upbound.io/example-id: automation/v1alpha1/actionteamassociation
   labels:
     testing.upbound.io/example-name: foo
   name: foo
 spec:
   forProvider:
-    actionId: ${pagerduty_automation_actions_action.pa_action_example.id}
-    teamId: ${pagerduty_team.example.id}
+    actionSelector:
+      matchLabels:
+        testing.upbound.io/example-name: pa_action_example
+    teamSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
 
 ---
 
-apiVersion: automation.pagerduty.crossplane.io/v1alpha1
-kind: ActionsAction
+apiVersion: automation.actions.pagerduty.crossplane.io/v1alpha1
+kind: Action
 metadata:
   annotations:
-    meta.upbound.io/example-id: automation/v1alpha1/actionsactionteamassociation
+    meta.upbound.io/example-id: automation.actions/v1alpha1/actionteamassociation
   labels:
     testing.upbound.io/example-name: pa_action_example
   name: pa-action-example
@@ -35,7 +39,7 @@ apiVersion: team.pagerduty.crossplane.io/v1alpha1
 kind: Team
 metadata:
   annotations:
-    meta.upbound.io/example-id: automation/v1alpha1/actionsactionteamassociation
+    meta.upbound.io/example-id: automation.actions/v1alpha1/actionteamassociation
   labels:
     testing.upbound.io/example-name: example
   name: example

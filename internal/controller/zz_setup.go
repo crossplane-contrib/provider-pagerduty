@@ -12,10 +12,10 @@ import (
 	addon "github.com/crossplane-contrib/provider-pagerduty/internal/controller/addon/addon"
 	groupingsetting "github.com/crossplane-contrib/provider-pagerduty/internal/controller/alert/groupingsetting"
 	action "github.com/crossplane-contrib/provider-pagerduty/internal/controller/automation/action"
+	actionserviceassociation "github.com/crossplane-contrib/provider-pagerduty/internal/controller/automation/actionserviceassociation"
+	actionteamassociation "github.com/crossplane-contrib/provider-pagerduty/internal/controller/automation/actionteamassociation"
 	runner "github.com/crossplane-contrib/provider-pagerduty/internal/controller/automation/runner"
 	runnerteamassociation "github.com/crossplane-contrib/provider-pagerduty/internal/controller/automation/runnerteamassociation"
-	serviceassociation "github.com/crossplane-contrib/provider-pagerduty/internal/controller/automation/serviceassociation"
-	teamassociation "github.com/crossplane-contrib/provider-pagerduty/internal/controller/automation/teamassociation"
 	service "github.com/crossplane-contrib/provider-pagerduty/internal/controller/business/service"
 	servicesubscriber "github.com/crossplane-contrib/provider-pagerduty/internal/controller/business/servicesubscriber"
 	policy "github.com/crossplane-contrib/provider-pagerduty/internal/controller/escalation/policy"
@@ -64,10 +64,10 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 		addon.Setup,
 		groupingsetting.Setup,
 		action.Setup,
+		actionserviceassociation.Setup,
+		actionteamassociation.Setup,
 		runner.Setup,
 		runnerteamassociation.Setup,
-		serviceassociation.Setup,
-		teamassociation.Setup,
 		service.Setup,
 		servicesubscriber.Setup,
 		policy.Setup,

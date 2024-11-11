@@ -10,13 +10,13 @@ package v1alpha1
 func (tr *Action) Hub() {}
 
 // Hub marks this type as a conversion hub.
+func (tr *ActionServiceAssociation) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *ActionTeamAssociation) Hub() {}
+
+// Hub marks this type as a conversion hub.
 func (tr *Runner) Hub() {}
 
 // Hub marks this type as a conversion hub.
 func (tr *RunnerTeamAssociation) Hub() {}
-
-// Hub marks this type as a conversion hub.
-func (tr *ServiceAssociation) Hub() {}
-
-// Hub marks this type as a conversion hub.
-func (tr *TeamAssociation) Hub() {}

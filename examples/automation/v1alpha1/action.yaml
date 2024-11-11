@@ -1,8 +1,8 @@
-apiVersion: automation.pagerduty.crossplane.io/v1alpha1
-kind: ActionsAction
+apiVersion: automation.actions.pagerduty.crossplane.io/v1alpha1
+kind: Action
 metadata:
   annotations:
-    meta.upbound.io/example-id: automation/v1alpha1/actionsaction
+    meta.upbound.io/example-id: automation/v1alpha1/action
   labels:
     testing.upbound.io/example-name: pa_action_example
   name: pa-action-example

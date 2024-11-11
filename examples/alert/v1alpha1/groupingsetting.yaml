@@ -14,8 +14,8 @@ spec:
       - fields
       timeWindow: 300
     name: Configuration for type-1 devices
-    services:
-    - ${pagerduty_service.basic.id}
+    serviceRefs:
+    - name: basic
     type: content_based
 
 ---

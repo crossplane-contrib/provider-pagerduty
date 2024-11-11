@@ -16,6 +16,24 @@ func (l *ActionList) GetItems() []resource.Managed {
 	return items
 }
 
+// GetItems of this ActionServiceAssociationList.
+func (l *ActionServiceAssociationList) GetItems() []resource.Managed {
+	items := make([]resource.Managed, len(l.Items))
+	for i := range l.Items {
+		items[i] = &l.Items[i]
+	}
+	return items
+}
+
+// GetItems of this ActionTeamAssociationList.
+func (l *ActionTeamAssociationList) GetItems() []resource.Managed {
+	items := make([]resource.Managed, len(l.Items))
+	for i := range l.Items {
+		items[i] = &l.Items[i]
+	}
+	return items
+}
+
 // GetItems of this RunnerList.
 func (l *RunnerList) GetItems() []resource.Managed {
 	items := make([]resource.Managed, len(l.Items))
@@ -27,24 +45,6 @@ func (l *RunnerList) GetItems() []resource.Managed {
 
 // GetItems of this RunnerTeamAssociationList.
 func (l *RunnerTeamAssociationList) GetItems() []resource.Managed {
-	items := make([]resource.Managed, len(l.Items))
-	for i := range l.Items {
-		items[i] = &l.Items[i]
-	}
-	return items
-}
-
-// GetItems of this ServiceAssociationList.
-func (l *ServiceAssociationList) GetItems() []resource.Managed {
-	items := make([]resource.Managed, len(l.Items))
-	for i := range l.Items {
-		items[i] = &l.Items[i]
-	}
-	return items
-}
-
-// GetItems of this TeamAssociationList.
-func (l *TeamAssociationList) GetItems() []resource.Managed {
 	items := make([]resource.Managed, len(l.Items))
 	for i := range l.Items {
 		items[i] = &l.Items[i]

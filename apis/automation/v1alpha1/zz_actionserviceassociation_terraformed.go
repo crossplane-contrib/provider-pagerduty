@@ -14,18 +14,18 @@ import (
 	"github.com/crossplane/upjet/pkg/resource/json"
 )
 
-// GetTerraformResourceType returns Terraform resource type for this ServiceAssociation
-func (mg *ServiceAssociation) GetTerraformResourceType() string {
+// GetTerraformResourceType returns Terraform resource type for this ActionServiceAssociation
+func (mg *ActionServiceAssociation) GetTerraformResourceType() string {
 	return "pagerduty_automation_actions_action_service_association"
 }
 
-// GetConnectionDetailsMapping for this ServiceAssociation
-func (tr *ServiceAssociation) GetConnectionDetailsMapping() map[string]string {
+// GetConnectionDetailsMapping for this ActionServiceAssociation
+func (tr *ActionServiceAssociation) GetConnectionDetailsMapping() map[string]string {
 	return nil
 }
 
-// GetObservation of this ServiceAssociation
-func (tr *ServiceAssociation) GetObservation() (map[string]any, error) {
+// GetObservation of this ActionServiceAssociation
+func (tr *ActionServiceAssociation) GetObservation() (map[string]any, error) {
 	o, err := json.TFParser.Marshal(tr.Status.AtProvider)
 	if err != nil {
 		return nil, err
@@ -34,8 +34,8 @@ func (tr *ServiceAssociation) GetObservation() (map[string]any, error) {
 	return base, json.TFParser.Unmarshal(o, &base)
 }
 
-// SetObservation for this ServiceAssociation
-func (tr *ServiceAssociation) SetObservation(obs map[string]any) error {
+// SetObservation for this ActionServiceAssociation
+func (tr *ActionServiceAssociation) SetObservation(obs map[string]any) error {
 	p, err := json.TFParser.Marshal(obs)
 	if err != nil {
 		return err
@@ -43,16 +43,16 @@ func (tr *ServiceAssociation) SetObservation(obs map[string]any) error {
 	return json.TFParser.Unmarshal(p, &tr.Status.AtProvider)
 }
 
-// GetID returns ID of underlying Terraform resource of this ServiceAssociation
-func (tr *ServiceAssociation) GetID() string {
+// GetID returns ID of underlying Terraform resource of this ActionServiceAssociation
+func (tr *ActionServiceAssociation) GetID() string {
 	if tr.Status.AtProvider.ID == nil {
 		return ""
 	}
 	return *tr.Status.AtProvider.ID
 }
 
-// GetParameters of this ServiceAssociation
-func (tr *ServiceAssociation) GetParameters() (map[string]any, error) {
+// GetParameters of this ActionServiceAssociation
+func (tr *ActionServiceAssociation) GetParameters() (map[string]any, error) {
 	p, err := json.TFParser.Marshal(tr.Spec.ForProvider)
 	if err != nil {
 		return nil, err
@@ -61,8 +61,8 @@ func (tr *ServiceAssociation) GetParameters() (map[string]any, error) {
 	return base, json.TFParser.Unmarshal(p, &base)
 }
 
-// SetParameters for this ServiceAssociation
-func (tr *ServiceAssociation) SetParameters(params map[string]any) error {
+// SetParameters for this ActionServiceAssociation
+func (tr *ActionServiceAssociation) SetParameters(params map[string]any) error {
 	p, err := json.TFParser.Marshal(params)
 	if err != nil {
 		return err
@@ -70,8 +70,8 @@ func (tr *ServiceAssociation) SetParameters(params map[string]any) error {
 	return json.TFParser.Unmarshal(p, &tr.Spec.ForProvider)
 }
 
-// GetInitParameters of this ServiceAssociation
-func (tr *ServiceAssociation) GetInitParameters() (map[string]any, error) {
+// GetInitParameters of this ActionServiceAssociation
+func (tr *ActionServiceAssociation) GetInitParameters() (map[string]any, error) {
 	p, err := json.TFParser.Marshal(tr.Spec.InitProvider)
 	if err != nil {
 		return nil, err
@@ -80,8 +80,8 @@ func (tr *ServiceAssociation) GetInitParameters() (map[string]any, error) {
 	return base, json.TFParser.Unmarshal(p, &base)
 }
 
-// GetInitParameters of this ServiceAssociation
-func (tr *ServiceAssociation) GetMergedParameters(shouldMergeInitProvider bool) (map[string]any, error) {
+// GetInitParameters of this ActionServiceAssociation
+func (tr *ActionServiceAssociation) GetMergedParameters(shouldMergeInitProvider bool) (map[string]any, error) {
 	params, err := tr.GetParameters()
 	if err != nil {
 		return nil, errors.Wrapf(err, "cannot get parameters for resource '%q'", tr.GetName())
@@ -110,10 +110,10 @@ func (tr *ServiceAssociation) GetMergedParameters(shouldMergeInitProvider bool) 
 	return params, nil
 }
 
-// LateInitialize this ServiceAssociation using its observed tfState.
+// LateInitialize this ActionServiceAssociation using its observed tfState.
 // returns True if there are any spec changes for the resource.
-func (tr *ServiceAssociation) LateInitialize(attrs []byte) (bool, error) {
-	params := &ServiceAssociationParameters{}
+func (tr *ActionServiceAssociation) LateInitialize(attrs []byte) (bool, error) {
+	params := &ActionServiceAssociationParameters{}
 	if err := json.TFParser.Unmarshal(attrs, params); err != nil {
 		return false, errors.Wrap(err, "failed to unmarshal Terraform state parameters for late-initialization")
 	}
@@ -124,6 +124,6 @@ func (tr *ServiceAssociation) LateInitialize(attrs []byte) (bool, error) {
 }
 
 // GetTerraformSchemaVersion returns the associated Terraform schema version
-func (tr *ServiceAssociation) GetTerraformSchemaVersion() int {
+func (tr *ActionServiceAssociation) GetTerraformSchemaVersion() int {
 	return 0
 }

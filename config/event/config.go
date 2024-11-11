@@ -7,6 +7,10 @@ import (
 	"github.com/crossplane/upjet/pkg/config"
 )
 
+const (
+	ShortGroup = "event"
+)
+
 // Configure configures individual resources by adding custom ResourceConfigurators.
 func Configure(p *config.Provider) {
 
@@ -16,7 +20,7 @@ func Configure(p *config.Provider) {
 
 	p.AddResourceConfigurator("pagerduty_event_orchestration_unrouted", func(r *config.Resource) {
 
-		r.ShortGroup = "event"
+		r.ShortGroup = ShortGroup
 		r.References = config.References{
 			"event_orchestration": {
 				Type: "Orchestration",
@@ -26,7 +30,7 @@ func Configure(p *config.Provider) {
 
 	p.AddResourceConfigurator("pagerduty_event_orchestration_service", func(r *config.Resource) {
 
-		r.ShortGroup = "event"
+		r.ShortGroup = ShortGroup
 		r.References = config.References{
 			"service": {
 				Type: "github.com/crossplane-contrib/provider-pagerduty/apis/service/v1alpha1.Service",
@@ -37,7 +41,7 @@ func Configure(p *config.Provider) {
 
 	p.AddResourceConfigurator("pagerduty_event_orchestration_router", func(r *config.Resource) {
 
-		r.ShortGroup = "event"
+		r.ShortGroup = ShortGroup
 		r.References = config.References{
 			"event_orchestration": {
 				Type: "Orchestration",
@@ -47,7 +51,7 @@ func Configure(p *config.Provider) {
 
 	p.AddResourceConfigurator("pagerduty_event_orchestration", func(r *config.Resource) {
 
-		r.ShortGroup = "event"
+		r.ShortGroup = ShortGroup
 		r.References = config.References{
 			"team": {
 				Type: "github.com/crossplane-contrib/provider-pagerduty/apis/team/v1alpha1.Team",
@@ -57,7 +61,7 @@ func Configure(p *config.Provider) {
 
 	p.AddResourceConfigurator("pagerduty_event_orchestration_global_cache_variable", func(r *config.Resource) {
 
-		r.ShortGroup = "event"
+		r.ShortGroup = ShortGroup
 		r.ExternalName.GetIDFn = func(_ context.Context, externalName string, parameters map[string]any, _ map[string]any) (string, error) {
 			return fmt.Sprintf("%s:%s", parameters["event_orchestration"].(string), externalName), nil
 		}
@@ -70,7 +74,7 @@ func Configure(p *config.Provider) {
 
 	p.AddResourceConfigurator("pagerduty_event_orchestration_global", func(r *config.Resource) {
 
-		r.ShortGroup = "event"
+		r.ShortGroup = ShortGroup
 		r.ExternalName.GetIDFn = func(_ context.Context, externalName string, parameters map[string]any, _ map[string]any) (string, error) {
 			return fmt.Sprintf("%s:%s", parameters["event_orchestration"].(string), externalName), nil
 		}
@@ -83,7 +87,7 @@ func Configure(p *config.Provider) {
 
 	p.AddResourceConfigurator("pagerduty_event_orchestration_integration", func(r *config.Resource) {
 
-		r.ShortGroup = "event"
+		r.ShortGroup = ShortGroup
 		r.ExternalName.GetIDFn = func(_ context.Context, externalName string, parameters map[string]any, _ map[string]any) (string, error) {
 			return fmt.Sprintf("%s:%s", parameters["event_orchestration"].(string), externalName), nil
 		}
@@ -96,7 +100,7 @@ func Configure(p *config.Provider) {
 
 	p.AddResourceConfigurator("pagerduty_event_orchestration_service_cache_variable", func(r *config.Resource) {
 
-		r.ShortGroup = "event"
+		r.ShortGroup = ShortGroup
 		r.ExternalName.GetIDFn = func(_ context.Context, externalName string, parameters map[string]any, _ map[string]any) (string, error) {
 			return fmt.Sprintf("%s:%s", parameters["service"].(string), externalName), nil
 		}

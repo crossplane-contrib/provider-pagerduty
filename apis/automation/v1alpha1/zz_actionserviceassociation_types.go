@@ -13,7 +13,7 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
-type ServiceAssociationInitParameters struct {
+type ActionServiceAssociationInitParameters struct {
 
 	// Id of the action.
 	// +crossplane:generate:reference:type=Action
@@ -44,7 +44,7 @@ type ServiceAssociationInitParameters struct {
 	ServiceSelector *v1.Selector `json:"serviceSelector,omitempty" tf:"-"`
 }
 
-type ServiceAssociationObservation struct {
+type ActionServiceAssociationObservation struct {
 
 	// Id of the action.
 	ActionID *string `json:"actionId,omitempty" tf:"action_id,omitempty"`
@@ -55,7 +55,7 @@ type ServiceAssociationObservation struct {
 	ServiceID *string `json:"serviceId,omitempty" tf:"service_id,omitempty"`
 }
 
-type ServiceAssociationParameters struct {
+type ActionServiceAssociationParameters struct {
 
 	// Id of the action.
 	// +crossplane:generate:reference:type=Action
@@ -88,10 +88,10 @@ type ServiceAssociationParameters struct {
 	ServiceSelector *v1.Selector `json:"serviceSelector,omitempty" tf:"-"`
 }
 
-// ServiceAssociationSpec defines the desired state of ServiceAssociation
-type ServiceAssociationSpec struct {
+// ActionServiceAssociationSpec defines the desired state of ActionServiceAssociation
+type ActionServiceAssociationSpec struct {
 	v1.ResourceSpec `json:",inline"`
-	ForProvider     ServiceAssociationParameters `json:"forProvider"`
+	ForProvider     ActionServiceAssociationParameters `json:"forProvider"`
 	// THIS IS A BETA FIELD. It will be honored
 	// unless the Management Policies feature flag is disabled.
 	// InitProvider holds the same fields as ForProvider, with the exception
@@ -102,49 +102,49 @@ type ServiceAssociationSpec struct {
 	// required on creation, but we do not desire to update them after creation,
 	// for example because of an external controller is managing them, like an
 	// autoscaler.
-	InitProvider ServiceAssociationInitParameters `json:"initProvider,omitempty"`
+	InitProvider ActionServiceAssociationInitParameters `json:"initProvider,omitempty"`
 }
 
-// ServiceAssociationStatus defines the observed state of ServiceAssociation.
-type ServiceAssociationStatus struct {
+// ActionServiceAssociationStatus defines the observed state of ActionServiceAssociation.
+type ActionServiceAssociationStatus struct {
 	v1.ResourceStatus `json:",inline"`
-	AtProvider        ServiceAssociationObservation `json:"atProvider,omitempty"`
+	AtProvider        ActionServiceAssociationObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true
 // +kubebuilder:subresource:status
 // +kubebuilder:storageversion
 
-// ServiceAssociation is the Schema for the ServiceAssociations API. Creates and manages an Automation Actions action association with a Service in PagerDuty.
+// ActionServiceAssociation is the Schema for the ActionServiceAssociations API. Creates and manages an Automation Actions action association with a Service in PagerDuty.
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,pagerduty}
-type ServiceAssociation struct {
+type ActionServiceAssociation struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              ServiceAssociationSpec   `json:"spec"`
-	Status            ServiceAssociationStatus `json:"status,omitempty"`
+	Spec              ActionServiceAssociationSpec   `json:"spec"`
+	Status            ActionServiceAssociationStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true
 
-// ServiceAssociationList contains a list of ServiceAssociations
-type ServiceAssociationList struct {
+// ActionServiceAssociationList contains a list of ActionServiceAssociations
+type ActionServiceAssociationList struct {
 	metav1.TypeMeta `json:",inline"`
 	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []ServiceAssociation `json:"items"`
+	Items           []ActionServiceAssociation `json:"items"`
 }
 
 // Repository type metadata.
 var (
-	ServiceAssociation_Kind             = "ServiceAssociation"
-	ServiceAssociation_GroupKind        = schema.GroupKind{Group: CRDGroup, Kind: ServiceAssociation_Kind}.String()
-	ServiceAssociation_KindAPIVersion   = ServiceAssociation_Kind + "." + CRDGroupVersion.String()
-	ServiceAssociation_GroupVersionKind = CRDGroupVersion.WithKind(ServiceAssociation_Kind)
+	ActionServiceAssociation_Kind             = "ActionServiceAssociation"
+	ActionServiceAssociation_GroupKind        = schema.GroupKind{Group: CRDGroup, Kind: ActionServiceAssociation_Kind}.String()
+	ActionServiceAssociation_KindAPIVersion   = ActionServiceAssociation_Kind + "." + CRDGroupVersion.String()
+	ActionServiceAssociation_GroupVersionKind = CRDGroupVersion.WithKind(ActionServiceAssociation_Kind)
 )
 
 func init() {
-	SchemeBuilder.Register(&ServiceAssociation{}, &ServiceAssociationList{})
+	SchemeBuilder.Register(&ActionServiceAssociation{}, &ActionServiceAssociationList{})
 }

@@ -1,8 +1,8 @@
 apiVersion: automation.actions.pagerduty.crossplane.io/v1alpha1
-kind: ServiceAssociation
+kind: ActionServiceAssociation
 metadata:
   annotations:
-    meta.upbound.io/example-id: automation/v1alpha1/serviceassociation
+    meta.upbound.io/example-id: automation/v1alpha1/actionserviceassociation
   labels:
     testing.upbound.io/example-name: foo
   name: foo
@@ -21,7 +21,7 @@ apiVersion: automation.actions.pagerduty.crossplane.io/v1alpha1
 kind: Action
 metadata:
   annotations:
-    meta.upbound.io/example-id: automation.actions/v1alpha1/serviceassociation
+    meta.upbound.io/example-id: automation.actions/v1alpha1/actionserviceassociation
   labels:
     testing.upbound.io/example-name: pa_action_example
   name: pa-action-example
@@ -39,7 +39,7 @@ apiVersion: escalation.pagerduty.crossplane.io/v1alpha1
 kind: Policy
 metadata:
   annotations:
-    meta.upbound.io/example-id: automation.actions/v1alpha1/serviceassociation
+    meta.upbound.io/example-id: automation.actions/v1alpha1/actionserviceassociation
   labels:
     testing.upbound.io/example-name: foo
   name: foo
@@ -59,7 +59,7 @@ apiVersion: service.pagerduty.crossplane.io/v1alpha1
 kind: Service
 metadata:
   annotations:
-    meta.upbound.io/example-id: automation.actions/v1alpha1/serviceassociation
+    meta.upbound.io/example-id: automation.actions/v1alpha1/actionserviceassociation
   labels:
     testing.upbound.io/example-name: example
   name: example
@@ -82,7 +82,7 @@ apiVersion: user.pagerduty.crossplane.io/v1alpha1
 kind: User
 metadata:
   annotations:
-    meta.upbound.io/example-id: automation.actions/v1alpha1/serviceassociation
+    meta.upbound.io/example-id: automation.actions/v1alpha1/actionserviceassociation
   labels:
     testing.upbound.io/example-name: example
   name: example

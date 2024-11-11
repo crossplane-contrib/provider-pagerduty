@@ -7,14 +7,18 @@ import (
 	"github.com/crossplane/upjet/pkg/config"
 )
 
+const (
+	ShortGroup = "automation.actions"
+)
+
 func Configure(p *config.Provider) {
 	p.AddResourceConfigurator("pagerduty_automation_actions_action", func(r *config.Resource) {
-		r.ShortGroup = "automation.actions"
+		r.ShortGroup = ShortGroup
 		r.Kind = "Action"
 	})
 	p.AddResourceConfigurator("pagerduty_automation_actions_action_service_association", func(r *config.Resource) {
-		r.ShortGroup = "automation.actions"
-		r.Kind = "ServiceAssociation"
+		r.ShortGroup = ShortGroup
+		r.Kind = "ActionServiceAssociation"
 		r.ExternalName.GetIDFn = func(_ context.Context, externalName string, parameters map[string]any, _ map[string]any) (string, error) {
 			return fmt.Sprintf("%s:%s", parameters["action_id"].(string), parameters["service_id"].(string)), nil
 		}
@@ -32,8 +36,8 @@ func Configure(p *config.Provider) {
 		}
 	})
 	p.AddResourceConfigurator("pagerduty_automation_actions_action_team_association", func(r *config.Resource) {
-		r.ShortGroup = "automation.actions"
-		r.Kind = "TeamAssociation"
+		r.ShortGroup = ShortGroup
+		r.Kind = "ActionTeamAssociation"
 		r.ExternalName.GetIDFn = func(_ context.Context, externalName string, parameters map[string]any, _ map[string]any) (string, error) {
 			return fmt.Sprintf("%s:%s", parameters["action_id"].(string), parameters["team_id"].(string)), nil
 		}
@@ -51,11 +55,11 @@ func Configure(p *config.Provider) {
 		}
 	})
 	p.AddResourceConfigurator("pagerduty_automation_actions_runner", func(r *config.Resource) {
-		r.ShortGroup = "automation.actions"
+		r.ShortGroup = ShortGroup
 		r.Kind = "Runner"
 	})
 	p.AddResourceConfigurator("pagerduty_automation_actions_runner_team_association", func(r *config.Resource) {
-		r.ShortGroup = "automation.actions"
+		r.ShortGroup = ShortGroup
 		r.Kind = "RunnerTeamAssociation"
 		r.ExternalName.GetIDFn = func(_ context.Context, externalName string, parameters map[string]any, _ map[string]any) (string, error) {
 			return fmt.Sprintf("%s:%s", parameters["runner_id"].(string), parameters["team_id"].(string)), nil
