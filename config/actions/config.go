@@ -1,9 +1,7 @@
 package actions
 
 import (
-	"context"
-	"fmt"
-
+	c "github.com/crossplane-contrib/provider-pagerduty/config/common"
 	"github.com/crossplane/upjet/pkg/config"
 )
 
@@ -19,9 +17,7 @@ func Configure(p *config.Provider) {
 	p.AddResourceConfigurator("pagerduty_automation_actions_action_service_association", func(r *config.Resource) {
 		r.ShortGroup = ShortGroup
 		r.Kind = "ActionServiceAssociation"
-		r.ExternalName.GetIDFn = func(_ context.Context, externalName string, parameters map[string]any, _ map[string]any) (string, error) {
-			return fmt.Sprintf("%s:%s", parameters["action_id"].(string), parameters["service_id"].(string)), nil
-		}
+		r.ExternalName = c.ExternalNameFromParams([]string{"action_id", "service_id"})
 		r.References = config.References{
 			"action_id": {
 				Type:              "Action",
@@ -38,9 +34,7 @@ func Configure(p *config.Provider) {
 	p.AddResourceConfigurator("pagerduty_automation_actions_action_team_association", func(r *config.Resource) {
 		r.ShortGroup = ShortGroup
 		r.Kind = "ActionTeamAssociation"
-		r.ExternalName.GetIDFn = func(_ context.Context, externalName string, parameters map[string]any, _ map[string]any) (string, error) {
-			return fmt.Sprintf("%s:%s", parameters["action_id"].(string), parameters["team_id"].(string)), nil
-		}
+		r.ExternalName = c.ExternalNameFromParams([]string{"action_id", "team_id"})
 		r.References = config.References{
 			"action_id": {
 				Type:              "Action",
@@ -61,9 +55,7 @@ func Configure(p *config.Provider) {
 	p.AddResourceConfigurator("pagerduty_automation_actions_runner_team_association", func(r *config.Resource) {
 		r.ShortGroup = ShortGroup
 		r.Kind = "RunnerTeamAssociation"
-		r.ExternalName.GetIDFn = func(_ context.Context, externalName string, parameters map[string]any, _ map[string]any) (string, error) {
-			return fmt.Sprintf("%s:%s", parameters["runner_id"].(string), parameters["team_id"].(string)), nil
-		}
+		r.ExternalName = c.ExternalNameFromParams([]string{"runner_id", "team_id"})
 		r.References = config.References{
 			"runner_id": {
 				Type:              "github.com/crossplane-contrib/provider-pagerduty/apis/automation/v1alpha1.Runner",

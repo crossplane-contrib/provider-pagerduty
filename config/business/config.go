@@ -1,7 +1,7 @@
 package business
 
 import (
-	"github.com/crossplane-contrib/provider-pagerduty/config/fake"
+	c "github.com/crossplane-contrib/provider-pagerduty/config/common"
 	"github.com/crossplane/upjet/pkg/config"
 )
 
@@ -15,8 +15,8 @@ func Configure(p *config.Provider) {
 				Type: "github.com/crossplane-contrib/provider-pagerduty/apis/team/v1alpha1.Team",
 			},
 		}
-		r.ExternalName.GetExternalNameFn = fake.GetExternalName
-		r.ExternalName.GetIDFn = fake.GetID
+		r.ExternalName.GetExternalNameFn = c.GetExternalName
+		r.ExternalName.GetIDFn = c.GetFakeID
 		// Deprecated
 		if s, ok := r.TerraformResource.Schema["type"]; ok {
 			s.Optional = false

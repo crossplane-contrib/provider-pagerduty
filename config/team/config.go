@@ -1,7 +1,7 @@
 package team
 
 import (
-	"github.com/crossplane-contrib/provider-pagerduty/config/fake"
+	c "github.com/crossplane-contrib/provider-pagerduty/config/common"
 	"github.com/crossplane/upjet/pkg/config"
 )
 
@@ -9,8 +9,8 @@ import (
 func Configure(p *config.Provider) {
 	p.AddResourceConfigurator("pagerduty_team", func(r *config.Resource) {
 		r.ExternalName = config.IdentifierFromProvider
-		r.ExternalName.GetExternalNameFn = fake.GetExternalName
-		r.ExternalName.GetIDFn = fake.GetID
+		r.ExternalName.GetExternalNameFn = c.GetExternalName
+		r.ExternalName.GetIDFn = c.GetFakeID
 		r.ShortGroup = "team"
 	})
 
