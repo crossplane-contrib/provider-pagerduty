@@ -50,7 +50,6 @@ func Configure(p *config.Provider) {
 	p.AddResourceConfigurator("pagerduty_event_orchestration", func(r *config.Resource) {
 
 		r.ShortGroup = ShortGroup
-		r.ExternalName = c.SplitExternalNameFromId()
 		r.References = config.References{
 			"team": {
 				Type: "github.com/crossplane-contrib/provider-pagerduty/apis/team/v1alpha1.Team",
@@ -72,7 +71,6 @@ func Configure(p *config.Provider) {
 	p.AddResourceConfigurator("pagerduty_event_orchestration_global", func(r *config.Resource) {
 
 		r.ShortGroup = ShortGroup
-		r.ExternalName = c.SplitExternalNameFromId()
 		r.References = config.References{
 			"event_orchestration": {
 				Type: "Orchestration",
