@@ -1,11 +1,16 @@
 package team
 
-import "github.com/crossplane/upjet/pkg/config"
+import (
+	c "github.com/crossplane-contrib/provider-pagerduty/config/common"
+	"github.com/crossplane/upjet/pkg/config"
+)
 
 // Configure configures individual resources by adding custom ResourceConfigurators.
 func Configure(p *config.Provider) {
 	p.AddResourceConfigurator("pagerduty_team", func(r *config.Resource) {
-
+		r.ExternalName = config.IdentifierFromProvider
+		r.ExternalName.GetExternalNameFn = c.GetExternalName
+		r.ExternalName.GetIDFn = c.GetFakeID
 		r.ShortGroup = "team"
 	})
 
