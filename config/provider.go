@@ -10,21 +10,25 @@ import (
 
 	ujconfig "github.com/crossplane/upjet/pkg/config"
 
-	addon "github.com/crossplane-contrib/provider-pagerduty/config/addon"
-	business "github.com/crossplane-contrib/provider-pagerduty/config/business"
-	escalation "github.com/crossplane-contrib/provider-pagerduty/config/escalation"
-	event "github.com/crossplane-contrib/provider-pagerduty/config/event"
-	extensions "github.com/crossplane-contrib/provider-pagerduty/config/extensions"
-	maintenance "github.com/crossplane-contrib/provider-pagerduty/config/maintenance"
-	response "github.com/crossplane-contrib/provider-pagerduty/config/response"
-	ruleset "github.com/crossplane-contrib/provider-pagerduty/config/ruleset"
-	schedule "github.com/crossplane-contrib/provider-pagerduty/config/schedule"
-	service "github.com/crossplane-contrib/provider-pagerduty/config/service"
-	slack "github.com/crossplane-contrib/provider-pagerduty/config/slack"
-	tag "github.com/crossplane-contrib/provider-pagerduty/config/tag"
-	team "github.com/crossplane-contrib/provider-pagerduty/config/team"
-	user "github.com/crossplane-contrib/provider-pagerduty/config/user"
-	webhook "github.com/crossplane-contrib/provider-pagerduty/config/webhook"
+	"github.com/crossplane-contrib/provider-pagerduty/config/actions"
+	"github.com/crossplane-contrib/provider-pagerduty/config/addon"
+	"github.com/crossplane-contrib/provider-pagerduty/config/alertgrouping"
+	"github.com/crossplane-contrib/provider-pagerduty/config/business"
+	"github.com/crossplane-contrib/provider-pagerduty/config/escalation"
+	"github.com/crossplane-contrib/provider-pagerduty/config/event"
+	"github.com/crossplane-contrib/provider-pagerduty/config/extensions"
+	"github.com/crossplane-contrib/provider-pagerduty/config/incident"
+	"github.com/crossplane-contrib/provider-pagerduty/config/jira"
+	"github.com/crossplane-contrib/provider-pagerduty/config/maintenance"
+	"github.com/crossplane-contrib/provider-pagerduty/config/response"
+	"github.com/crossplane-contrib/provider-pagerduty/config/ruleset"
+	"github.com/crossplane-contrib/provider-pagerduty/config/schedule"
+	"github.com/crossplane-contrib/provider-pagerduty/config/service"
+	"github.com/crossplane-contrib/provider-pagerduty/config/slack"
+	"github.com/crossplane-contrib/provider-pagerduty/config/tag"
+	"github.com/crossplane-contrib/provider-pagerduty/config/team"
+	"github.com/crossplane-contrib/provider-pagerduty/config/user"
+	"github.com/crossplane-contrib/provider-pagerduty/config/webhook"
 )
 
 const (
@@ -52,10 +56,14 @@ func GetProvider() *ujconfig.Provider {
 	for _, configure := range []func(provider *ujconfig.Provider){
 		// add custom config functions
 		addon.Configure,
+		actions.Configure,
+		alertgrouping.Configure,
 		business.Configure,
 		escalation.Configure,
 		event.Configure,
 		extensions.Configure,
+		incident.Configure,
+		jira.Configure,
 		maintenance.Configure,
 		response.Configure,
 		ruleset.Configure,

@@ -53,6 +53,7 @@ resources:
             config.fields: '- (Optional) Alerts will be grouped together if the content of these fields match. This setting is only required and applies when type is set to content_based or content_based_intelligent.'
             config.time_window: '- (Optional) The maximum amount of time allowed between Alerts. This setting applies only when type is set to intelligent, content_based, content_based_intelligent. Value must be between 300 and 3600 or exactly 86400 (86400 is supported only for content_based alert grouping). Any Alerts arriving greater than time_window seconds apart will not be grouped together. This is a rolling time window and is counted from the most recently grouped alert. The window is extended every time a new alert is added to the group, up to 24 hours. To use the recommended time window leave this value unset or set it to null.'
             config.timeout: '- (Optional) The duration in minutes within which to automatically group incoming alerts. This setting is only required and applies when type is set to time. To continue grouping alerts until the incident is resolved leave this value unset or set it to null.'
+            description: '- A human-friendly text to describe and identify this alert grouping setting.'
             id: '- The ID of the alert grouping setting.'
             name: '- (Required) The name for the alert groupig settings.'
             services: '- (Required)  [Updating can cause a resource replacement] The list IDs of services associated to this setting.'
@@ -99,6 +100,7 @@ resources:
             invocation_command: '- (Optional) The command to execute the script with.'
             modify_time: '- (Optional) The last time action has been modified. Represented as an ISO 8601 timestamp.'
             name: '- (Required) The name of the action. Max length is 255 characters.'
+            only_invocable_on_unresolved_incidents: '- (Optional) Whether or not the action can be invoked on unresolved incidents.'
             process_automation_job_arguments: '- (Optional) The arguments to pass to the Process Automation job execution.'
             process_automation_job_id: '- (Required for process_automation action_type) The ID of the Process Automation job to execute.'
             process_automation_node_filter: '- (Optional) The expression that filters on which nodes a Process Automation Job executes Learn more.'
@@ -1583,6 +1585,143 @@ resources:
             type: '- (Required) [Updating causes resource replacement] May be either manual or conditional.'
             workflow: '- (Required) The workflow ID for the workflow to trigger.'
         importStatements: []
+    pagerduty_jira_cloud_account_mapping_rule:
+        subCategory: ""
+        description: Creates and manages a Jira Cloud account mapping Rule to integrate with PagerDuty.
+        name: pagerduty_jira_cloud_account_mapping_rule
+        title: pagerduty_jira_cloud_account_mapping_rule
+        examples:
+            - name: foo
+              manifest: |-
+                {
+                  "account_mapping": "PLBP09X",
+                  "config": [
+                    {
+                      "jira": [
+                        {
+                          "autocreate_jql": "priority = Highest",
+                          "create_issue_on_incident_trigger": true,
+                          "custom_fields": [
+                            {
+                              "source_incident_field": "incident_description",
+                              "target_issue_field": "description",
+                              "target_issue_field_name": "Description",
+                              "type": "attribute"
+                            },
+                            {
+                              "target_issue_field": "security",
+                              "target_issue_field_name": "Security Level",
+                              "type": "jira_value",
+                              "value": "${jsonencode({\n          displayName = \"Sec Level 1\"\n          id = \"10000\"\n        })}"
+                            }
+                          ],
+                          "issue_type": [
+                            {
+                              "id": "10001",
+                              "name": "Incident"
+                            }
+                          ],
+                          "priorities": [
+                            {
+                              "jira_id": "1",
+                              "pagerduty_id": "${data.pagerduty_priority.p1.id}"
+                            },
+                            {
+                              "jira_id": "2",
+                              "pagerduty_id": "${data.pagerduty_priority.p2.id}"
+                            },
+                            {
+                              "jira_id": "3",
+                              "pagerduty_id": "${data.pagerduty_priority.p3.id}"
+                            }
+                          ],
+                          "project": [
+                            {
+                              "id": "10100",
+                              "key": "ITS",
+                              "name": "IT Support"
+                            }
+                          ],
+                          "status_mapping": [
+                            {
+                              "acknowledged": [
+                                {
+                                  "id": "2",
+                                  "name": "In Progress"
+                                }
+                              ],
+                              "resolved": [
+                                {
+                                  "id": "3",
+                                  "name": "Resolved"
+                                }
+                              ],
+                              "triggered": [
+                                {
+                                  "id": "1",
+                                  "name": "Open"
+                                }
+                              ]
+                            }
+                          ],
+                          "sync_notes_user": "${pagerduty_user.foo.id}"
+                        }
+                      ],
+                      "service": "${pagerduty_service.foo.id}"
+                    }
+                  ],
+                  "name": "Integration with My Web App"
+                }
+              references:
+                config.jira.priorities.pagerduty_id: data.pagerduty_priority.p3.id
+                config.jira.sync_notes_user: pagerduty_user.foo.id
+                config.service: pagerduty_service.foo.id
+              dependencies:
+                pagerduty_service.foo: |-
+                    {
+                      "escalation_policy": "${data.pagerduty_escalation_policy.default.id}",
+                      "name": "My Web App"
+                    }
+                pagerduty_user.foo: |-
+                    {
+                      "email": "125.greenholt.earline@graham.name",
+                      "name": "Earline Greenholt"
+                    }
+        argumentDocs:
+            account_mapping: '- (Required) [Updating can cause a resource replacement] The account mapping this rule belongs to.'
+            autocreate_jql_disabled_reason: '- If auto-creation using JQL is disabled, this field provides the reason for the disablement.'
+            autocreate_jql_disabled_until: '- The timestamp until which the auto-creation using JQL feature is disabled.'
+            config: '- (Required) Configuration for bidirectional synchronization between Jira issues and PagerDuty incidents.'
+            config.jira: '- (Required) Synchronization settings.'
+            config.jira.autocreate_jql: '- JQL query to automatically create PagerDuty incidents when matching Jira issues are created. Leave empty to disable this feature.'
+            config.jira.create_issue_on_incident_trigger: '- When enabled, automatically creates a Jira issue whenever a PagerDuty incident is triggered.'
+            config.jira.custom_fields: '- Defines how Jira fields are populated when a Jira Issue is created from a PagerDuty Incident.'
+            config.jira.custom_fields.source_incident_field: '- The PagerDuty incident field from which the value will be extracted (only applicable if type is attribute); one of incident_number, incident_title, incident_description, incident_status, incident_created_at, incident_service, incident_escalation_policy, incident_impacted_services, incident_html_url, incident_assignees, incident_acknowledgers, incident_last_status_change_at, incident_last_status_change_by, incident_urgency or incident_priority.'
+            config.jira.custom_fields.target_issue_field: '- (Required) The unique identifier key of the Jira field that will be set.'
+            config.jira.custom_fields.target_issue_field_name: '- (Required) The human-readable name of the Jira field.'
+            config.jira.custom_fields.type: '- (Required) The type of the value that will be set; one of attribute, const or jira_value.'
+            config.jira.custom_fields.value: '- The value to be set for the Jira field (only applicable if type is const or jira_value). It must be set as a JSON string.'
+            config.jira.issue_type: '- (Required) Specifies the Jira issue type to be created or synchronized with PagerDuty incidents.'
+            config.jira.priorities: '- Maps PagerDuty incident priorities to Jira issue priorities for synchronization.'
+            config.jira.project: '- (Required) [Updating can cause a resource replacement] Defines the Jira project where issues will be created or synchronized.'
+            config.jira.status_mapping: '- (Required) Maps PagerDuty incident statuses to corresponding Jira issue statuses for synchronization.'
+            config.jira.sync_notes_user: '- ID of the PagerDuty user for syncing notes and comments between Jira issues and PagerDuty incidents. If not provided, note synchronization is disabled.'
+            config.service: '- (Required) [Updating can cause a resource replacement] The ID of the linked PagerDuty service.'
+            id: '- The ID of the service.'
+            issue_type.id: '- (Required) Unique identifier for the Jira issue type.'
+            issue_type.name: '- (Required) The name of the Jira issue type.'
+            name: '- (Required) The name of the rule.'
+            priorities.jira_id: '- (Required) The ID of the Jira priority.'
+            priorities.pagerduty_id: '- (Required) The ID of the PagerDuty priority.'
+            project.id: '- (Required) Unique identifier for the Jira project.'
+            project.key: '- (Required) The short key name of the Jira project.'
+            project.name: '- (Required) The name of the Jira project.'
+            status_mapping.acknowledged: '- Jira status that maps to the PagerDuty acknowledged status.'
+            status_mapping.acknowledged.id: '- Unique identifier for the Jira status.'
+            status_mapping.acknowledged.name: '- Name of the Jira status.'
+            status_mapping.resolved: '- Jira status that maps to the PagerDuty resolved status.'
+            status_mapping.triggered: '- (Required) Jira status that maps to the PagerDuty triggered status.'
+        importStatements: []
     pagerduty_maintenance_window:
         subCategory: ""
         description: Creates and manages a maintenance window in PagerDuty.
@@ -2744,7 +2883,7 @@ resources:
                     }
         argumentDocs:
             '["*"]': its corresponding value for priorities in Slack Connection's configuration will be Any Priority.
-            '[]': ) in the configuration for a Slack Connection, its default behaviour is to set priorities to No Priority value.
+            '[]': ) in the configuration for a Slack Connection, its default behavior is to set priorities to No Priority value.
             channel_id: '- (Required) The ID of a Slack channel in the workspace.'
             channel_name: '- Name of the Slack channel in Slack connection.'
             config: '- (Required) Configuration options for the Slack connection that provide options to filter events.'
@@ -2755,7 +2894,7 @@ resources:
             source_id: '- (Required) The ID of the source in PagerDuty. Valid sources are services or teams.'
             source_name: '- Name of the source (team or service) in Slack connection.'
             source_type: '- (Required) The type of the source. Either team_reference or service_reference.'
-            urgency: '- (Optional) Allows you to filter events by urgency. Either high or low.'
+            urgency: '- (Optional) Allows you to filter events by urgency. Either high, low or null for Any urgency. Default is null.'
             user_token: on the provider tag or as the PAGERDUTY_USER_TOKEN environment variable.
             workspace_id: '- (Required) The slack team (workspace) ID of the connected Slack workspace. Can also be defined by the SLACK_CONNECTION_WORKSPACE_ID environment variable.'
         importStatements: []

@@ -7,8 +7,8 @@ package v1alpha1
 
 import resource "github.com/crossplane/crossplane-runtime/pkg/resource"
 
-// GetItems of this ActionsActionList.
-func (l *ActionsActionList) GetItems() []resource.Managed {
+// GetItems of this ActionList.
+func (l *ActionList) GetItems() []resource.Managed {
 	items := make([]resource.Managed, len(l.Items))
 	for i := range l.Items {
 		items[i] = &l.Items[i]
@@ -16,8 +16,8 @@ func (l *ActionsActionList) GetItems() []resource.Managed {
 	return items
 }
 
-// GetItems of this ActionsActionServiceAssociationList.
-func (l *ActionsActionServiceAssociationList) GetItems() []resource.Managed {
+// GetItems of this ActionServiceAssociationList.
+func (l *ActionServiceAssociationList) GetItems() []resource.Managed {
 	items := make([]resource.Managed, len(l.Items))
 	for i := range l.Items {
 		items[i] = &l.Items[i]
@@ -25,8 +25,8 @@ func (l *ActionsActionServiceAssociationList) GetItems() []resource.Managed {
 	return items
 }
 
-// GetItems of this ActionsActionTeamAssociationList.
-func (l *ActionsActionTeamAssociationList) GetItems() []resource.Managed {
+// GetItems of this ActionTeamAssociationList.
+func (l *ActionTeamAssociationList) GetItems() []resource.Managed {
 	items := make([]resource.Managed, len(l.Items))
 	for i := range l.Items {
 		items[i] = &l.Items[i]
@@ -34,8 +34,17 @@ func (l *ActionsActionTeamAssociationList) GetItems() []resource.Managed {
 	return items
 }
 
-// GetItems of this ActionsRunnerTeamAssociationList.
-func (l *ActionsRunnerTeamAssociationList) GetItems() []resource.Managed {
+// GetItems of this RunnerList.
+func (l *RunnerList) GetItems() []resource.Managed {
+	items := make([]resource.Managed, len(l.Items))
+	for i := range l.Items {
+		items[i] = &l.Items[i]
+	}
+	return items
+}
+
+// GetItems of this RunnerTeamAssociationList.
+func (l *RunnerTeamAssociationList) GetItems() []resource.Managed {
 	items := make([]resource.Managed, len(l.Items))
 	for i := range l.Items {
 		items[i] = &l.Items[i]
