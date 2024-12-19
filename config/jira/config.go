@@ -1,23 +1,25 @@
 package jira
 
 import (
-	"context"
-	"fmt"
-
+	c "github.com/crossplane-contrib/provider-pagerduty/config/common"
 	"github.com/crossplane/upjet/pkg/config"
 )
 
 // Configure configures individual resources by adding custom ResourceConfigurators.
 func Configure(p *config.Provider) {
 	p.AddResourceConfigurator("pagerduty_jira_cloud_account_mapping_rule", func(r *config.Resource) {
-		r.ExternalName.GetIDFn = func(_ context.Context, externalName string, parameters map[string]any, _ map[string]any) (string, error) {
-			return fmt.Sprintf("%s:%s", parameters["action_mapping"].(string), externalName), nil
-		}
+		r.ExternalName.GetExternalNameFn = c.GetExternalNameFromTfstate([]string{"account_mapping", "id"}, ':')
+		r.ExternalName.GetIDFn = c.SplitIdFromExternalName(':', 1)
 		r.References = config.References{
-			"account_mapping": {
-				Type:              "",
-				RefFieldName:      "FieldRefs",
-				SelectorFieldName: "FieldSelector",
+			"config.service": {
+				TerraformName:     "pagerduty_service",
+				RefFieldName:      "ServiceRefs",
+				SelectorFieldName: "ServiceSelector",
+			},
+			"config.jira.sync_notes_user": {
+				TerraformName:     "pagerduty_user",
+				RefFieldName:      "UserRefs",
+				SelectorFieldName: "UserSelector",
 			},
 		}
 	})

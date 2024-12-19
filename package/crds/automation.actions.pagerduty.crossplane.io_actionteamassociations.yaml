@@ -77,7 +77,7 @@ spec:
                   actionId:
                     description: Id of the action.
                     type: string
-                  actionRefs:
+                  actionIdRef:
                     description: Reference to a Action to populate actionId.
                     properties:
                       name:
@@ -111,7 +111,7 @@ spec:
                     required:
                     - name
                     type: object
-                  actionSelector:
+                  actionIdSelector:
                     description: Selector for a Action to populate actionId.
                     properties:
                       matchControllerRef:
@@ -154,7 +154,7 @@ spec:
                   teamId:
                     description: Id of the team associated to the action.
                     type: string
-                  teamRefs:
+                  teamIdRef:
                     description: Reference to a Team in team to populate teamId.
                     properties:
                       name:
@@ -188,7 +188,7 @@ spec:
                     required:
                     - name
                     type: object
-                  teamSelector:
+                  teamIdSelector:
                     description: Selector for a Team in team to populate teamId.
                     properties:
                       matchControllerRef:
@@ -245,7 +245,7 @@ spec:
                   actionId:
                     description: Id of the action.
                     type: string
-                  actionRefs:
+                  actionIdRef:
                     description: Reference to a Action to populate actionId.
                     properties:
                       name:
@@ -279,7 +279,7 @@ spec:
                     required:
                     - name
                     type: object
-                  actionSelector:
+                  actionIdSelector:
                     description: Selector for a Action to populate actionId.
                     properties:
                       matchControllerRef:
@@ -322,7 +322,7 @@ spec:
                   teamId:
                     description: Id of the team associated to the action.
                     type: string
-                  teamRefs:
+                  teamIdRef:
                     description: Reference to a Team in team to populate teamId.
                     properties:
                       name:
@@ -356,7 +356,7 @@ spec:
                     required:
                     - name
                     type: object
-                  teamSelector:
+                  teamIdSelector:
                     description: Selector for a Team in team to populate teamId.
                     properties:
                       matchControllerRef:

@@ -9,7 +9,7 @@ func Configure(p *config.Provider) {
 		r.ShortGroup = "escalation"
 		r.References = config.References{
 			"teams": {
-				Type:              "github.com/crossplane-contrib/provider-pagerduty/apis/team/v1alpha1.Team",
+				TerraformName:     "pagerduty_team",
 				RefFieldName:      "TeamRefs",
 				SelectorFieldName: "TeamSelector",
 			},

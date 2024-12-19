@@ -8,10 +8,10 @@ metadata:
   name: foo
 spec:
   forProvider:
-    actionSelector:
+    actionIdSelector:
       matchLabels:
         testing.upbound.io/example-name: pa_action_example
-    teamSelector:
+    teamIdSelector:
       matchLabels:
         testing.upbound.io/example-name: example
 

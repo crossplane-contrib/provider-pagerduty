@@ -78,7 +78,7 @@ spec:
                   actionId:
                     description: Id of the action.
                     type: string
-                  actionRefs:
+                  actionIdRef:
                     description: Reference to a Action to populate actionId.
                     properties:
                       name:
@@ -112,7 +112,7 @@ spec:
                     required:
                     - name
                     type: object
-                  actionSelector:
+                  actionIdSelector:
                     description: Selector for a Action to populate actionId.
                     properties:
                       matchControllerRef:
@@ -155,7 +155,7 @@ spec:
                   serviceId:
                     description: Id of the service associated to the action.
                     type: string
-                  serviceRefs:
+                  serviceIdRef:
                     description: Reference to a Service in service to populate serviceId.
                     properties:
                       name:
@@ -189,7 +189,7 @@ spec:
                     required:
                     - name
                     type: object
-                  serviceSelector:
+                  serviceIdSelector:
                     description: Selector for a Service in service to populate serviceId.
                     properties:
                       matchControllerRef:
@@ -246,7 +246,7 @@ spec:
                   actionId:
                     description: Id of the action.
                     type: string
-                  actionRefs:
+                  actionIdRef:
                     description: Reference to a Action to populate actionId.
                     properties:
                       name:
@@ -280,7 +280,7 @@ spec:
                     required:
                     - name
                     type: object
-                  actionSelector:
+                  actionIdSelector:
                     description: Selector for a Action to populate actionId.
                     properties:
                       matchControllerRef:
@@ -323,7 +323,7 @@ spec:
                   serviceId:
                     description: Id of the service associated to the action.
                     type: string
-                  serviceRefs:
+                  serviceIdRef:
                     description: Reference to a Service in service to populate serviceId.
                     properties:
                       name:
@@ -357,7 +357,7 @@ spec:
                     required:
                     - name
                     type: object
-                  serviceSelector:
+                  serviceIdSelector:
                     description: Selector for a Service in service to populate serviceId.
                     properties:
                       matchControllerRef:

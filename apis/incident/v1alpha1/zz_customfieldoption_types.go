@@ -19,16 +19,14 @@ type CustomFieldOptionInitParameters struct {
 	DataType *string `json:"dataType,omitempty" tf:"data_type,omitempty"`
 
 	// The ID of the field.
-	// +crossplane:generate:reference:type=CustomField
-	// +crossplane:generate:reference:refFieldName=FieldRefs
-	// +crossplane:generate:reference:selectorFieldName=FieldSelector
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-pagerduty/apis/incident/v1alpha1.CustomField
 	Field *string `json:"field,omitempty" tf:"field,omitempty"`
 
-	// Reference to a CustomField to populate field.
+	// Reference to a CustomField in incident to populate field.
 	// +kubebuilder:validation:Optional
-	FieldRefs *v1.Reference `json:"fieldRefs,omitempty" tf:"-"`
+	FieldRef *v1.Reference `json:"fieldRef,omitempty" tf:"-"`
 
-	// Selector for a CustomField to populate field.
+	// Selector for a CustomField in incident to populate field.
 	// +kubebuilder:validation:Optional
 	FieldSelector *v1.Selector `json:"fieldSelector,omitempty" tf:"-"`
 
@@ -58,17 +56,15 @@ type CustomFieldOptionParameters struct {
 	DataType *string `json:"dataType,omitempty" tf:"data_type,omitempty"`
 
 	// The ID of the field.
-	// +crossplane:generate:reference:type=CustomField
-	// +crossplane:generate:reference:refFieldName=FieldRefs
-	// +crossplane:generate:reference:selectorFieldName=FieldSelector
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-pagerduty/apis/incident/v1alpha1.CustomField
 	// +kubebuilder:validation:Optional
 	Field *string `json:"field,omitempty" tf:"field,omitempty"`
 
-	// Reference to a CustomField to populate field.
+	// Reference to a CustomField in incident to populate field.
 	// +kubebuilder:validation:Optional
-	FieldRefs *v1.Reference `json:"fieldRefs,omitempty" tf:"-"`
+	FieldRef *v1.Reference `json:"fieldRef,omitempty" tf:"-"`
 
-	// Selector for a CustomField to populate field.
+	// Selector for a CustomField in incident to populate field.
 	// +kubebuilder:validation:Optional
 	FieldSelector *v1.Selector `json:"fieldSelector,omitempty" tf:"-"`
 

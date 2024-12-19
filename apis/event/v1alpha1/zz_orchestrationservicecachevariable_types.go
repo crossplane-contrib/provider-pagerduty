@@ -96,14 +96,14 @@ type OrchestrationServiceCacheVariableInitParameters struct {
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
 	// ID of the Service Event Orchestration to which this Cache Variable belongs.
-	// +crossplane:generate:reference:type=OrchestrationService
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-pagerduty/apis/event/v1alpha1.OrchestrationService
 	Service *string `json:"service,omitempty" tf:"service,omitempty"`
 
-	// Reference to a OrchestrationService to populate service.
+	// Reference to a OrchestrationService in event to populate service.
 	// +kubebuilder:validation:Optional
 	ServiceRef *v1.Reference `json:"serviceRef,omitempty" tf:"-"`
 
-	// Selector for a OrchestrationService to populate service.
+	// Selector for a OrchestrationService in event to populate service.
 	// +kubebuilder:validation:Optional
 	ServiceSelector *v1.Selector `json:"serviceSelector,omitempty" tf:"-"`
 }
@@ -148,15 +148,15 @@ type OrchestrationServiceCacheVariableParameters struct {
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
 	// ID of the Service Event Orchestration to which this Cache Variable belongs.
-	// +crossplane:generate:reference:type=OrchestrationService
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-pagerduty/apis/event/v1alpha1.OrchestrationService
 	// +kubebuilder:validation:Optional
 	Service *string `json:"service,omitempty" tf:"service,omitempty"`
 
-	// Reference to a OrchestrationService to populate service.
+	// Reference to a OrchestrationService in event to populate service.
 	// +kubebuilder:validation:Optional
 	ServiceRef *v1.Reference `json:"serviceRef,omitempty" tf:"-"`
 
-	// Selector for a OrchestrationService to populate service.
+	// Selector for a OrchestrationService in event to populate service.
 	// +kubebuilder:validation:Optional
 	ServiceSelector *v1.Selector `json:"serviceSelector,omitempty" tf:"-"`
 }

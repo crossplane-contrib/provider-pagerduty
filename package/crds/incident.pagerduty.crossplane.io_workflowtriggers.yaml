@@ -187,8 +187,8 @@ spec:
                   workflow:
                     description: The workflow ID for the workflow to trigger.
                     type: string
-                  workflowRefs:
-                    description: Reference to a Workflow to populate workflow.
+                  workflowRef:
+                    description: Reference to a Workflow in incident to populate workflow.
                     properties:
                       name:
                         description: Name of the referenced object.
@@ -222,7 +222,7 @@ spec:
                     - name
                     type: object
                   workflowSelector:
-                    description: Selector for a Workflow to populate workflow.
+                    description: Selector for a Workflow in incident to populate workflow.
                     properties:
                       matchControllerRef:
                         description: |-
@@ -389,8 +389,8 @@ spec:
                   workflow:
                     description: The workflow ID for the workflow to trigger.
                     type: string
-                  workflowRefs:
-                    description: Reference to a Workflow to populate workflow.
+                  workflowRef:
+                    description: Reference to a Workflow in incident to populate workflow.
                     properties:
                       name:
                         description: Name of the referenced object.
@@ -424,7 +424,7 @@ spec:
                     - name
                     type: object
                   workflowSelector:
-                    description: Selector for a Workflow to populate workflow.
+                    description: Selector for a Workflow in incident to populate workflow.
                     properties:
                       matchControllerRef:
                         description: |-

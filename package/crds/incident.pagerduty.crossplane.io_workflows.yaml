@@ -148,7 +148,7 @@ spec:
                     description: A team ID. If specified then workflow edit permissions
                       will be scoped to members of this team.
                     type: string
-                  teamRefs:
+                  teamRef:
                     description: Reference to a Team in team to populate team.
                     properties:
                       name:
@@ -311,7 +311,7 @@ spec:
                     description: A team ID. If specified then workflow edit permissions
                       will be scoped to members of this team.
                     type: string
-                  teamRefs:
+                  teamRef:
                     description: Reference to a Team in team to populate team.
                     properties:
                       name:

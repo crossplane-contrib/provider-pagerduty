@@ -20,14 +20,14 @@ type MembershipInitParameters struct {
 	Role *string `json:"role,omitempty" tf:"role,omitempty"`
 
 	// The ID of the team in which the user will belong.
-	// +crossplane:generate:reference:type=Team
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-pagerduty/apis/team/v1alpha1.Team
 	TeamID *string `json:"teamId,omitempty" tf:"team_id,omitempty"`
 
-	// Reference to a Team to populate teamId.
+	// Reference to a Team in team to populate teamId.
 	// +kubebuilder:validation:Optional
 	TeamIDRef *v1.Reference `json:"teamIdRef,omitempty" tf:"-"`
 
-	// Selector for a Team to populate teamId.
+	// Selector for a Team in team to populate teamId.
 	// +kubebuilder:validation:Optional
 	TeamIDSelector *v1.Selector `json:"teamIdSelector,omitempty" tf:"-"`
 
@@ -66,15 +66,15 @@ type MembershipParameters struct {
 	Role *string `json:"role,omitempty" tf:"role,omitempty"`
 
 	// The ID of the team in which the user will belong.
-	// +crossplane:generate:reference:type=Team
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-pagerduty/apis/team/v1alpha1.Team
 	// +kubebuilder:validation:Optional
 	TeamID *string `json:"teamId,omitempty" tf:"team_id,omitempty"`
 
-	// Reference to a Team to populate teamId.
+	// Reference to a Team in team to populate teamId.
 	// +kubebuilder:validation:Optional
 	TeamIDRef *v1.Reference `json:"teamIdRef,omitempty" tf:"-"`
 
-	// Selector for a Team to populate teamId.
+	// Selector for a Team in team to populate teamId.
 	// +kubebuilder:validation:Optional
 	TeamIDSelector *v1.Selector `json:"teamIdSelector,omitempty" tf:"-"`
 

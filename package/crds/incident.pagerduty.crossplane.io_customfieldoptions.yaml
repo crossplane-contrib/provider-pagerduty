@@ -80,8 +80,9 @@ spec:
                   field:
                     description: The ID of the field.
                     type: string
-                  fieldRefs:
-                    description: Reference to a CustomField to populate field.
+                  fieldRef:
+                    description: Reference to a CustomField in incident to populate
+                      field.
                     properties:
                       name:
                         description: Name of the referenced object.
@@ -115,7 +116,8 @@ spec:
                     - name
                     type: object
                   fieldSelector:
-                    description: Selector for a CustomField to populate field.
+                    description: Selector for a CustomField in incident to populate
+                      field.
                     properties:
                       matchControllerRef:
                         description: |-
@@ -178,8 +180,9 @@ spec:
                   field:
                     description: The ID of the field.
                     type: string
-                  fieldRefs:
-                    description: Reference to a CustomField to populate field.
+                  fieldRef:
+                    description: Reference to a CustomField in incident to populate
+                      field.
                     properties:
                       name:
                         description: Name of the referenced object.
@@ -213,7 +216,8 @@ spec:
                     - name
                     type: object
                   fieldSelector:
-                    description: Selector for a CustomField to populate field.
+                    description: Selector for a CustomField in incident to populate
+                      field.
                     properties:
                       matchControllerRef:
                         description: |-

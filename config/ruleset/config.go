@@ -1,9 +1,7 @@
 package ruleset
 
 import (
-	"context"
-	"fmt"
-
+	c "github.com/crossplane-contrib/provider-pagerduty/config/common"
 	"github.com/crossplane/upjet/pkg/config"
 )
 
@@ -14,7 +12,7 @@ func Configure(p *config.Provider) {
 		r.ShortGroup = "ruleset"
 		r.References = config.References{
 			"team.id": {
-				Type: "github.com/crossplane-contrib/provider-pagerduty/apis/team/v1alpha1.Team",
+				TerraformName: "pagerduty_team",
 			},
 		}
 	})
@@ -24,11 +22,10 @@ func Configure(p *config.Provider) {
 		r.ShortGroup = "ruleset"
 		r.References = config.References{
 			"ruleset": {
-				Type: "github.com/crossplane-contrib/provider-pagerduty/apis/ruleset/v1alpha1.Ruleset",
+				TerraformName: "pagerduty_ruleset",
 			},
 		}
-		r.ExternalName.GetIDFn = func(_ context.Context, externalName string, parameters map[string]any, _ map[string]any) (string, error) {
-			return fmt.Sprintf("%s:%s", parameters["ruleset"].(string), externalName), nil
-		}
+		r.ExternalName.GetIDFn = c.SplitIdFromExternalName(':', 1)
+		r.ExternalName.GetExternalNameFn = c.GetExternalNameFromTfstate([]string{"ruleset", "id"}, '.')
 	})
 }

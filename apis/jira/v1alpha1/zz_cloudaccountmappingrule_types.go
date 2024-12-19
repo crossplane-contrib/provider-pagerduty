@@ -45,20 +45,10 @@ type AcknowledgedParameters struct {
 type CloudAccountMappingRuleInitParameters struct {
 
 	// [Updating can cause a resource replacement] The account mapping this rule belongs to.
-	// +crossplane:generate:reference:refFieldName=FieldRefs
-	// +crossplane:generate:reference:selectorFieldName=FieldSelector
 	AccountMapping *string `json:"accountMapping,omitempty" tf:"account_mapping,omitempty"`
 
 	// Configuration for bidirectional synchronization between Jira issues and PagerDuty incidents.
 	Config []ConfigInitParameters `json:"config,omitempty" tf:"config,omitempty"`
-
-	// Reference to a  to populate accountMapping.
-	// +kubebuilder:validation:Optional
-	FieldRefs *v1.Reference `json:"fieldRefs,omitempty" tf:"-"`
-
-	// Selector for a  to populate accountMapping.
-	// +kubebuilder:validation:Optional
-	FieldSelector *v1.Selector `json:"fieldSelector,omitempty" tf:"-"`
 
 	// The name of the rule.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
@@ -88,22 +78,12 @@ type CloudAccountMappingRuleObservation struct {
 type CloudAccountMappingRuleParameters struct {
 
 	// [Updating can cause a resource replacement] The account mapping this rule belongs to.
-	// +crossplane:generate:reference:refFieldName=FieldRefs
-	// +crossplane:generate:reference:selectorFieldName=FieldSelector
 	// +kubebuilder:validation:Optional
 	AccountMapping *string `json:"accountMapping,omitempty" tf:"account_mapping,omitempty"`
 
 	// Configuration for bidirectional synchronization between Jira issues and PagerDuty incidents.
 	// +kubebuilder:validation:Optional
 	Config []ConfigParameters `json:"config,omitempty" tf:"config,omitempty"`
-
-	// Reference to a  to populate accountMapping.
-	// +kubebuilder:validation:Optional
-	FieldRefs *v1.Reference `json:"fieldRefs,omitempty" tf:"-"`
-
-	// Selector for a  to populate accountMapping.
-	// +kubebuilder:validation:Optional
-	FieldSelector *v1.Selector `json:"fieldSelector,omitempty" tf:"-"`
 
 	// The name of the rule.
 	// +kubebuilder:validation:Optional
@@ -116,7 +96,18 @@ type ConfigInitParameters struct {
 	Jira []JiraInitParameters `json:"jira,omitempty" tf:"jira,omitempty"`
 
 	// [Updating can cause a resource replacement] The ID of the linked PagerDuty service.
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-pagerduty/apis/service/v1alpha1.Service
+	// +crossplane:generate:reference:refFieldName=ServiceRefs
+	// +crossplane:generate:reference:selectorFieldName=ServiceSelector
 	Service *string `json:"service,omitempty" tf:"service,omitempty"`
+
+	// Reference to a Service in service to populate service.
+	// +kubebuilder:validation:Optional
+	ServiceRefs *v1.Reference `json:"serviceRefs,omitempty" tf:"-"`
+
+	// Selector for a Service in service to populate service.
+	// +kubebuilder:validation:Optional
+	ServiceSelector *v1.Selector `json:"serviceSelector,omitempty" tf:"-"`
 }
 
 type ConfigObservation struct {
@@ -135,8 +126,19 @@ type ConfigParameters struct {
 	Jira []JiraParameters `json:"jira" tf:"jira,omitempty"`
 
 	// [Updating can cause a resource replacement] The ID of the linked PagerDuty service.
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-pagerduty/apis/service/v1alpha1.Service
+	// +crossplane:generate:reference:refFieldName=ServiceRefs
+	// +crossplane:generate:reference:selectorFieldName=ServiceSelector
 	// +kubebuilder:validation:Optional
-	Service *string `json:"service" tf:"service,omitempty"`
+	Service *string `json:"service,omitempty" tf:"service,omitempty"`
+
+	// Reference to a Service in service to populate service.
+	// +kubebuilder:validation:Optional
+	ServiceRefs *v1.Reference `json:"serviceRefs,omitempty" tf:"-"`
+
+	// Selector for a Service in service to populate service.
+	// +kubebuilder:validation:Optional
+	ServiceSelector *v1.Selector `json:"serviceSelector,omitempty" tf:"-"`
 }
 
 type CustomFieldsInitParameters struct {
@@ -251,7 +253,18 @@ type JiraInitParameters struct {
 	StatusMapping []StatusMappingInitParameters `json:"statusMapping,omitempty" tf:"status_mapping,omitempty"`
 
 	// ID of the PagerDuty user for syncing notes and comments between Jira issues and PagerDuty incidents. If not provided, note synchronization is disabled.
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-pagerduty/apis/user/v1alpha1.User
+	// +crossplane:generate:reference:refFieldName=UserRefs
+	// +crossplane:generate:reference:selectorFieldName=UserSelector
 	SyncNotesUser *string `json:"syncNotesUser,omitempty" tf:"sync_notes_user,omitempty"`
+
+	// Reference to a User in user to populate syncNotesUser.
+	// +kubebuilder:validation:Optional
+	UserRefs *v1.Reference `json:"userRefs,omitempty" tf:"-"`
+
+	// Selector for a User in user to populate syncNotesUser.
+	// +kubebuilder:validation:Optional
+	UserSelector *v1.Selector `json:"userSelector,omitempty" tf:"-"`
 }
 
 type JiraObservation struct {
@@ -312,8 +325,19 @@ type JiraParameters struct {
 	StatusMapping []StatusMappingParameters `json:"statusMapping" tf:"status_mapping,omitempty"`
 
 	// ID of the PagerDuty user for syncing notes and comments between Jira issues and PagerDuty incidents. If not provided, note synchronization is disabled.
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-pagerduty/apis/user/v1alpha1.User
+	// +crossplane:generate:reference:refFieldName=UserRefs
+	// +crossplane:generate:reference:selectorFieldName=UserSelector
 	// +kubebuilder:validation:Optional
 	SyncNotesUser *string `json:"syncNotesUser,omitempty" tf:"sync_notes_user,omitempty"`
+
+	// Reference to a User in user to populate syncNotesUser.
+	// +kubebuilder:validation:Optional
+	UserRefs *v1.Reference `json:"userRefs,omitempty" tf:"-"`
+
+	// Selector for a User in user to populate syncNotesUser.
+	// +kubebuilder:validation:Optional
+	UserSelector *v1.Selector `json:"userSelector,omitempty" tf:"-"`
 }
 
 type PrioritiesInitParameters struct {
@@ -517,6 +541,7 @@ type CloudAccountMappingRuleStatus struct {
 type CloudAccountMappingRule struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.accountMapping) || (has(self.initProvider) && has(self.initProvider.accountMapping))",message="spec.forProvider.accountMapping is a required parameter"
 	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.config) || (has(self.initProvider) && has(self.initProvider.config))",message="spec.forProvider.config is a required parameter"
 	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || (has(self.initProvider) && has(self.initProvider.name))",message="spec.forProvider.name is a required parameter"
 	Spec   CloudAccountMappingRuleSpec   `json:"spec"`

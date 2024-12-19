@@ -207,8 +207,8 @@ func (in *CustomFieldOptionInitParameters) DeepCopyInto(out *CustomFieldOptionIn
 		*out = new(string)
 		**out = **in
 	}
-	if in.FieldRefs != nil {
-		in, out := &in.FieldRefs, &out.FieldRefs
+	if in.FieldRef != nil {
+		in, out := &in.FieldRef, &out.FieldRef
 		*out = new(v1.Reference)
 		(*in).DeepCopyInto(*out)
 	}
@@ -314,8 +314,8 @@ func (in *CustomFieldOptionParameters) DeepCopyInto(out *CustomFieldOptionParame
 		*out = new(string)
 		**out = **in
 	}
-	if in.FieldRefs != nil {
-		in, out := &in.FieldRefs, &out.FieldRefs
+	if in.FieldRef != nil {
+		in, out := &in.FieldRef, &out.FieldRef
 		*out = new(v1.Reference)
 		(*in).DeepCopyInto(*out)
 	}
@@ -1062,8 +1062,8 @@ func (in *WorkflowInitParameters) DeepCopyInto(out *WorkflowInitParameters) {
 		*out = new(string)
 		**out = **in
 	}
-	if in.TeamRefs != nil {
-		in, out := &in.TeamRefs, &out.TeamRefs
+	if in.TeamRef != nil {
+		in, out := &in.TeamRef, &out.TeamRef
 		*out = new(v1.Reference)
 		(*in).DeepCopyInto(*out)
 	}
@@ -1183,8 +1183,8 @@ func (in *WorkflowParameters) DeepCopyInto(out *WorkflowParameters) {
 		*out = new(string)
 		**out = **in
 	}
-	if in.TeamRefs != nil {
-		in, out := &in.TeamRefs, &out.TeamRefs
+	if in.TeamRef != nil {
+		in, out := &in.TeamRef, &out.TeamRef
 		*out = new(v1.Reference)
 		(*in).DeepCopyInto(*out)
 	}
@@ -1308,8 +1308,8 @@ func (in *WorkflowTriggerInitParameters) DeepCopyInto(out *WorkflowTriggerInitPa
 		*out = new(string)
 		**out = **in
 	}
-	if in.WorkflowRefs != nil {
-		in, out := &in.WorkflowRefs, &out.WorkflowRefs
+	if in.WorkflowRef != nil {
+		in, out := &in.WorkflowRef, &out.WorkflowRef
 		*out = new(v1.Reference)
 		(*in).DeepCopyInto(*out)
 	}
@@ -1461,8 +1461,8 @@ func (in *WorkflowTriggerParameters) DeepCopyInto(out *WorkflowTriggerParameters
 		*out = new(string)
 		**out = **in
 	}
-	if in.WorkflowRefs != nil {
-		in, out := &in.WorkflowRefs, &out.WorkflowRefs
+	if in.WorkflowRef != nil {
+		in, out := &in.WorkflowRef, &out.WorkflowRef
 		*out = new(v1.Reference)
 		(*in).DeepCopyInto(*out)
 	}

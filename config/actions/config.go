@@ -6,66 +6,54 @@ import (
 )
 
 const (
-	ShortGroup = "automation.actions"
+	shortGroup = "automation.actions"
 )
 
 func Configure(p *config.Provider) {
 	p.AddResourceConfigurator("pagerduty_automation_actions_action", func(r *config.Resource) {
-		r.ShortGroup = ShortGroup
+		r.ShortGroup = shortGroup
 		r.Kind = "Action"
 	})
 	p.AddResourceConfigurator("pagerduty_automation_actions_action_service_association", func(r *config.Resource) {
-		r.ShortGroup = ShortGroup
+		r.ShortGroup = shortGroup
 		r.Kind = "ActionServiceAssociation"
-		r.ExternalName = c.ExternalNameFromParams([]string{"action_id", "service_id"})
+		r.ExternalName.GetIDFn = c.GetIDFromParams([]string{"action_id", "service_id"}, ':')
 		r.References = config.References{
 			"action_id": {
-				Type:              "Action",
-				RefFieldName:      "ActionRefs",
-				SelectorFieldName: "ActionSelector",
+				Type: "Action", // TerraformName fails to resolve with shortGroup including dots
 			},
 			"service_id": {
-				Type:              "github.com/crossplane-contrib/provider-pagerduty/apis/service/v1alpha1.Service",
-				RefFieldName:      "ServiceRefs",
-				SelectorFieldName: "ServiceSelector",
+				TerraformName: "pagerduty_service",
 			},
 		}
 	})
 	p.AddResourceConfigurator("pagerduty_automation_actions_action_team_association", func(r *config.Resource) {
-		r.ShortGroup = ShortGroup
+		r.ShortGroup = shortGroup
 		r.Kind = "ActionTeamAssociation"
-		r.ExternalName = c.ExternalNameFromParams([]string{"action_id", "team_id"})
+		r.ExternalName.GetIDFn = c.GetIDFromParams([]string{"action_id", "team_id"}, ':')
 		r.References = config.References{
 			"action_id": {
-				Type:              "Action",
-				RefFieldName:      "ActionRefs",
-				SelectorFieldName: "ActionSelector",
+				Type: "Action", // TerraformName fails to resolve with shortGroup including dots
 			},
 			"team_id": {
-				Type:              "github.com/crossplane-contrib/provider-pagerduty/apis/team/v1alpha1.Team",
-				RefFieldName:      "TeamRefs",
-				SelectorFieldName: "TeamSelector",
+				TerraformName: "pagerduty_team",
 			},
 		}
 	})
 	p.AddResourceConfigurator("pagerduty_automation_actions_runner", func(r *config.Resource) {
-		r.ShortGroup = ShortGroup
+		r.ShortGroup = shortGroup
 		r.Kind = "Runner"
 	})
 	p.AddResourceConfigurator("pagerduty_automation_actions_runner_team_association", func(r *config.Resource) {
-		r.ShortGroup = ShortGroup
+		r.ShortGroup = shortGroup
 		r.Kind = "RunnerTeamAssociation"
-		r.ExternalName = c.ExternalNameFromParams([]string{"runner_id", "team_id"})
+		r.ExternalName.GetIDFn = c.GetIDFromParams([]string{"runner_id", "team_id"}, ':')
 		r.References = config.References{
-			"runner_id": {
-				Type:              "github.com/crossplane-contrib/provider-pagerduty/apis/automation/v1alpha1.Runner",
-				RefFieldName:      "RunnerRefs",
-				SelectorFieldName: "RunnerSelector",
+			"action_id": {
+				Type: "Runner", // TerraformName fails to resolve with shortGroup including dots
 			},
 			"team_id": {
-				Type:              "github.com/crossplane-contrib/provider-pagerduty/apis/team/v1alpha1.Team",
-				RefFieldName:      "TeamRefs",
-				SelectorFieldName: "TeamSelector",
+				TerraformName: "pagerduty_team",
 			},
 		}
 	})

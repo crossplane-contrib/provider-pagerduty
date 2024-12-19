@@ -82,7 +82,7 @@ spec:
                     description: The ID of the team in which the user will belong.
                     type: string
                   teamIdRef:
-                    description: Reference to a Team to populate teamId.
+                    description: Reference to a Team in team to populate teamId.
                     properties:
                       name:
                         description: Name of the referenced object.
@@ -116,7 +116,7 @@ spec:
                     - name
                     type: object
                   teamIdSelector:
-                    description: Selector for a Team to populate teamId.
+                    description: Selector for a Team in team to populate teamId.
                     properties:
                       matchControllerRef:
                         description: |-
@@ -255,7 +255,7 @@ spec:
                     description: The ID of the team in which the user will belong.
                     type: string
                   teamIdRef:
-                    description: Reference to a Team to populate teamId.
+                    description: Reference to a Team in team to populate teamId.
                     properties:
                       name:
                         description: Name of the referenced object.
@@ -289,7 +289,7 @@ spec:
                     - name
                     type: object
                   teamIdSelector:
-                    description: Selector for a Team to populate teamId.
+                    description: Selector for a Team in team to populate teamId.
                     properties:
                       matchControllerRef:
                         description: |-

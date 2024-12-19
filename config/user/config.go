@@ -19,7 +19,7 @@ func Configure(p *config.Provider) {
 		r.ShortGroup = "user"
 		r.References = config.References{
 			"user_id": {
-				Type: "User",
+				TerraformName: "pagerduty_user",
 			},
 		}
 	})
@@ -29,7 +29,7 @@ func Configure(p *config.Provider) {
 		r.ShortGroup = "user"
 		r.References = config.References{
 			"user_id": {
-				Type: "User",
+				TerraformName: "pagerduty_user",
 			},
 		}
 	})
@@ -39,7 +39,7 @@ func Configure(p *config.Provider) {
 		r.ShortGroup = "user"
 		r.References = config.References{
 			"user_id": {
-				Type: "User",
+				TerraformName: "pagerduty_user",
 			},
 		}
 	})

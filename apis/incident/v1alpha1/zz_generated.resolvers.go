@@ -23,7 +23,7 @@ func (mg *CustomFieldOption) ResolveReferences(ctx context.Context, c client.Rea
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
 		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.Field),
 		Extract:      reference.ExternalName(),
-		Reference:    mg.Spec.ForProvider.FieldRefs,
+		Reference:    mg.Spec.ForProvider.FieldRef,
 		Selector:     mg.Spec.ForProvider.FieldSelector,
 		To: reference.To{
 			List:    &CustomFieldList{},
@@ -34,12 +34,12 @@ func (mg *CustomFieldOption) ResolveReferences(ctx context.Context, c client.Rea
 		return errors.Wrap(err, "mg.Spec.ForProvider.Field")
 	}
 	mg.Spec.ForProvider.Field = reference.ToPtrValue(rsp.ResolvedValue)
-	mg.Spec.ForProvider.FieldRefs = rsp.ResolvedReference
+	mg.Spec.ForProvider.FieldRef = rsp.ResolvedReference
 
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
 		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.Field),
 		Extract:      reference.ExternalName(),
-		Reference:    mg.Spec.InitProvider.FieldRefs,
+		Reference:    mg.Spec.InitProvider.FieldRef,
 		Selector:     mg.Spec.InitProvider.FieldSelector,
 		To: reference.To{
 			List:    &CustomFieldList{},
@@ -50,7 +50,7 @@ func (mg *CustomFieldOption) ResolveReferences(ctx context.Context, c client.Rea
 		return errors.Wrap(err, "mg.Spec.InitProvider.Field")
 	}
 	mg.Spec.InitProvider.Field = reference.ToPtrValue(rsp.ResolvedValue)
-	mg.Spec.InitProvider.FieldRefs = rsp.ResolvedReference
+	mg.Spec.InitProvider.FieldRef = rsp.ResolvedReference
 
 	return nil
 }
@@ -65,7 +65,7 @@ func (mg *Workflow) ResolveReferences(ctx context.Context, c client.Reader) erro
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
 		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.Team),
 		Extract:      reference.ExternalName(),
-		Reference:    mg.Spec.ForProvider.TeamRefs,
+		Reference:    mg.Spec.ForProvider.TeamRef,
 		Selector:     mg.Spec.ForProvider.TeamSelector,
 		To: reference.To{
 			List:    &v1alpha1.TeamList{},
@@ -76,12 +76,12 @@ func (mg *Workflow) ResolveReferences(ctx context.Context, c client.Reader) erro
 		return errors.Wrap(err, "mg.Spec.ForProvider.Team")
 	}
 	mg.Spec.ForProvider.Team = reference.ToPtrValue(rsp.ResolvedValue)
-	mg.Spec.ForProvider.TeamRefs = rsp.ResolvedReference
+	mg.Spec.ForProvider.TeamRef = rsp.ResolvedReference
 
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
 		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.Team),
 		Extract:      reference.ExternalName(),
-		Reference:    mg.Spec.InitProvider.TeamRefs,
+		Reference:    mg.Spec.InitProvider.TeamRef,
 		Selector:     mg.Spec.InitProvider.TeamSelector,
 		To: reference.To{
 			List:    &v1alpha1.TeamList{},
@@ -92,7 +92,7 @@ func (mg *Workflow) ResolveReferences(ctx context.Context, c client.Reader) erro
 		return errors.Wrap(err, "mg.Spec.InitProvider.Team")
 	}
 	mg.Spec.InitProvider.Team = reference.ToPtrValue(rsp.ResolvedValue)
-	mg.Spec.InitProvider.TeamRefs = rsp.ResolvedReference
+	mg.Spec.InitProvider.TeamRef = rsp.ResolvedReference
 
 	return nil
 }
@@ -125,7 +125,7 @@ func (mg *WorkflowTrigger) ResolveReferences(ctx context.Context, c client.Reade
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
 		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.Workflow),
 		Extract:      reference.ExternalName(),
-		Reference:    mg.Spec.ForProvider.WorkflowRefs,
+		Reference:    mg.Spec.ForProvider.WorkflowRef,
 		Selector:     mg.Spec.ForProvider.WorkflowSelector,
 		To: reference.To{
 			List:    &WorkflowList{},
@@ -136,7 +136,7 @@ func (mg *WorkflowTrigger) ResolveReferences(ctx context.Context, c client.Reade
 		return errors.Wrap(err, "mg.Spec.ForProvider.Workflow")
 	}
 	mg.Spec.ForProvider.Workflow = reference.ToPtrValue(rsp.ResolvedValue)
-	mg.Spec.ForProvider.WorkflowRefs = rsp.ResolvedReference
+	mg.Spec.ForProvider.WorkflowRef = rsp.ResolvedReference
 
 	for i3 := 0; i3 < len(mg.Spec.InitProvider.Permissions); i3++ {
 		rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
@@ -159,7 +159,7 @@ func (mg *WorkflowTrigger) ResolveReferences(ctx context.Context, c client.Reade
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
 		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.Workflow),
 		Extract:      reference.ExternalName(),
-		Reference:    mg.Spec.InitProvider.WorkflowRefs,
+		Reference:    mg.Spec.InitProvider.WorkflowRef,
 		Selector:     mg.Spec.InitProvider.WorkflowSelector,
 		To: reference.To{
 			List:    &WorkflowList{},
@@ -170,7 +170,7 @@ func (mg *WorkflowTrigger) ResolveReferences(ctx context.Context, c client.Reade
 		return errors.Wrap(err, "mg.Spec.InitProvider.Workflow")
 	}
 	mg.Spec.InitProvider.Workflow = reference.ToPtrValue(rsp.ResolvedValue)
-	mg.Spec.InitProvider.WorkflowRefs = rsp.ResolvedReference
+	mg.Spec.InitProvider.WorkflowRef = rsp.ResolvedReference
 
 	return nil
 }
