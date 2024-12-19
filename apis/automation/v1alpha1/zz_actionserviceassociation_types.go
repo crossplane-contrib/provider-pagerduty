@@ -17,31 +17,27 @@ type ActionServiceAssociationInitParameters struct {
 
 	// Id of the action.
 	// +crossplane:generate:reference:type=Action
-	// +crossplane:generate:reference:refFieldName=ActionRefs
-	// +crossplane:generate:reference:selectorFieldName=ActionSelector
 	ActionID *string `json:"actionId,omitempty" tf:"action_id,omitempty"`
 
 	// Reference to a Action to populate actionId.
 	// +kubebuilder:validation:Optional
-	ActionRefs *v1.Reference `json:"actionRefs,omitempty" tf:"-"`
+	ActionIDRef *v1.Reference `json:"actionIdRef,omitempty" tf:"-"`
 
 	// Selector for a Action to populate actionId.
 	// +kubebuilder:validation:Optional
-	ActionSelector *v1.Selector `json:"actionSelector,omitempty" tf:"-"`
+	ActionIDSelector *v1.Selector `json:"actionIdSelector,omitempty" tf:"-"`
 
 	// Id of the service associated to the action.
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-pagerduty/apis/service/v1alpha1.Service
-	// +crossplane:generate:reference:refFieldName=ServiceRefs
-	// +crossplane:generate:reference:selectorFieldName=ServiceSelector
 	ServiceID *string `json:"serviceId,omitempty" tf:"service_id,omitempty"`
 
 	// Reference to a Service in service to populate serviceId.
 	// +kubebuilder:validation:Optional
-	ServiceRefs *v1.Reference `json:"serviceRefs,omitempty" tf:"-"`
+	ServiceIDRef *v1.Reference `json:"serviceIdRef,omitempty" tf:"-"`
 
 	// Selector for a Service in service to populate serviceId.
 	// +kubebuilder:validation:Optional
-	ServiceSelector *v1.Selector `json:"serviceSelector,omitempty" tf:"-"`
+	ServiceIDSelector *v1.Selector `json:"serviceIdSelector,omitempty" tf:"-"`
 }
 
 type ActionServiceAssociationObservation struct {
@@ -59,33 +55,29 @@ type ActionServiceAssociationParameters struct {
 
 	// Id of the action.
 	// +crossplane:generate:reference:type=Action
-	// +crossplane:generate:reference:refFieldName=ActionRefs
-	// +crossplane:generate:reference:selectorFieldName=ActionSelector
 	// +kubebuilder:validation:Optional
 	ActionID *string `json:"actionId,omitempty" tf:"action_id,omitempty"`
 
 	// Reference to a Action to populate actionId.
 	// +kubebuilder:validation:Optional
-	ActionRefs *v1.Reference `json:"actionRefs,omitempty" tf:"-"`
+	ActionIDRef *v1.Reference `json:"actionIdRef,omitempty" tf:"-"`
 
 	// Selector for a Action to populate actionId.
 	// +kubebuilder:validation:Optional
-	ActionSelector *v1.Selector `json:"actionSelector,omitempty" tf:"-"`
+	ActionIDSelector *v1.Selector `json:"actionIdSelector,omitempty" tf:"-"`
 
 	// Id of the service associated to the action.
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-pagerduty/apis/service/v1alpha1.Service
-	// +crossplane:generate:reference:refFieldName=ServiceRefs
-	// +crossplane:generate:reference:selectorFieldName=ServiceSelector
 	// +kubebuilder:validation:Optional
 	ServiceID *string `json:"serviceId,omitempty" tf:"service_id,omitempty"`
 
 	// Reference to a Service in service to populate serviceId.
 	// +kubebuilder:validation:Optional
-	ServiceRefs *v1.Reference `json:"serviceRefs,omitempty" tf:"-"`
+	ServiceIDRef *v1.Reference `json:"serviceIdRef,omitempty" tf:"-"`
 
 	// Selector for a Service in service to populate serviceId.
 	// +kubebuilder:validation:Optional
-	ServiceSelector *v1.Selector `json:"serviceSelector,omitempty" tf:"-"`
+	ServiceIDSelector *v1.Selector `json:"serviceIdSelector,omitempty" tf:"-"`
 }
 
 // ActionServiceAssociationSpec defines the desired state of ActionServiceAssociation

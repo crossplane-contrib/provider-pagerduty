@@ -16,14 +16,14 @@ import (
 type OrchestrationIntegrationInitParameters struct {
 
 	// ID of the Event Orchestration to which this Integration belongs to. If value is changed, current Integration is associated with a newly provided ID.
-	// +crossplane:generate:reference:type=Orchestration
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-pagerduty/apis/event/v1alpha1.Orchestration
 	EventOrchestration *string `json:"eventOrchestration,omitempty" tf:"event_orchestration,omitempty"`
 
-	// Reference to a Orchestration to populate eventOrchestration.
+	// Reference to a Orchestration in event to populate eventOrchestration.
 	// +kubebuilder:validation:Optional
 	EventOrchestrationRef *v1.Reference `json:"eventOrchestrationRef,omitempty" tf:"-"`
 
-	// Selector for a Orchestration to populate eventOrchestration.
+	// Selector for a Orchestration in event to populate eventOrchestration.
 	// +kubebuilder:validation:Optional
 	EventOrchestrationSelector *v1.Selector `json:"eventOrchestrationSelector,omitempty" tf:"-"`
 
@@ -48,15 +48,15 @@ type OrchestrationIntegrationObservation struct {
 type OrchestrationIntegrationParameters struct {
 
 	// ID of the Event Orchestration to which this Integration belongs to. If value is changed, current Integration is associated with a newly provided ID.
-	// +crossplane:generate:reference:type=Orchestration
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-pagerduty/apis/event/v1alpha1.Orchestration
 	// +kubebuilder:validation:Optional
 	EventOrchestration *string `json:"eventOrchestration,omitempty" tf:"event_orchestration,omitempty"`
 
-	// Reference to a Orchestration to populate eventOrchestration.
+	// Reference to a Orchestration in event to populate eventOrchestration.
 	// +kubebuilder:validation:Optional
 	EventOrchestrationRef *v1.Reference `json:"eventOrchestrationRef,omitempty" tf:"-"`
 
-	// Selector for a Orchestration to populate eventOrchestration.
+	// Selector for a Orchestration in event to populate eventOrchestration.
 	// +kubebuilder:validation:Optional
 	EventOrchestrationSelector *v1.Selector `json:"eventOrchestrationSelector,omitempty" tf:"-"`
 

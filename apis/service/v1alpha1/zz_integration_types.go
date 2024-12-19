@@ -145,14 +145,14 @@ type IntegrationInitParameters struct {
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
 	// The ID of the service the integration should belong to.
-	// +crossplane:generate:reference:type=Service
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-pagerduty/apis/service/v1alpha1.Service
 	Service *string `json:"service,omitempty" tf:"service,omitempty"`
 
-	// Reference to a Service to populate service.
+	// Reference to a Service in service to populate service.
 	// +kubebuilder:validation:Optional
 	ServiceRef *v1.Reference `json:"serviceRef,omitempty" tf:"-"`
 
-	// Selector for a Service to populate service.
+	// Selector for a Service in service to populate service.
 	// +kubebuilder:validation:Optional
 	ServiceSelector *v1.Selector `json:"serviceSelector,omitempty" tf:"-"`
 
@@ -253,15 +253,15 @@ type IntegrationParameters struct {
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
 	// The ID of the service the integration should belong to.
-	// +crossplane:generate:reference:type=Service
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-pagerduty/apis/service/v1alpha1.Service
 	// +kubebuilder:validation:Optional
 	Service *string `json:"service,omitempty" tf:"service,omitempty"`
 
-	// Reference to a Service to populate service.
+	// Reference to a Service in service to populate service.
 	// +kubebuilder:validation:Optional
 	ServiceRef *v1.Reference `json:"serviceRef,omitempty" tf:"-"`
 
-	// Selector for a Service to populate service.
+	// Selector for a Service in service to populate service.
 	// +kubebuilder:validation:Optional
 	ServiceSelector *v1.Selector `json:"serviceSelector,omitempty" tf:"-"`
 

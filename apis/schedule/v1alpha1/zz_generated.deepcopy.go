@@ -103,18 +103,6 @@ func (in *LayerInitParameters) DeepCopyInto(out *LayerInitParameters) {
 		*out = new(string)
 		**out = **in
 	}
-	if in.UserRefs != nil {
-		in, out := &in.UserRefs, &out.UserRefs
-		*out = make([]v1.Reference, len(*in))
-		for i := range *in {
-			(*in)[i].DeepCopyInto(&(*out)[i])
-		}
-	}
-	if in.UserSelector != nil {
-		in, out := &in.UserSelector, &out.UserSelector
-		*out = new(v1.Selector)
-		(*in).DeepCopyInto(*out)
-	}
 	if in.Users != nil {
 		in, out := &in.Users, &out.Users
 		*out = make([]*string, len(*in))
@@ -125,6 +113,18 @@ func (in *LayerInitParameters) DeepCopyInto(out *LayerInitParameters) {
 				**out = **in
 			}
 		}
+	}
+	if in.UsersRefs != nil {
+		in, out := &in.UsersRefs, &out.UsersRefs
+		*out = make([]v1.Reference, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
+	}
+	if in.UsersSelector != nil {
+		in, out := &in.UsersSelector, &out.UsersSelector
+		*out = new(v1.Selector)
+		(*in).DeepCopyInto(*out)
 	}
 }
 
@@ -241,18 +241,6 @@ func (in *LayerParameters) DeepCopyInto(out *LayerParameters) {
 		*out = new(string)
 		**out = **in
 	}
-	if in.UserRefs != nil {
-		in, out := &in.UserRefs, &out.UserRefs
-		*out = make([]v1.Reference, len(*in))
-		for i := range *in {
-			(*in)[i].DeepCopyInto(&(*out)[i])
-		}
-	}
-	if in.UserSelector != nil {
-		in, out := &in.UserSelector, &out.UserSelector
-		*out = new(v1.Selector)
-		(*in).DeepCopyInto(*out)
-	}
 	if in.Users != nil {
 		in, out := &in.Users, &out.Users
 		*out = make([]*string, len(*in))
@@ -263,6 +251,18 @@ func (in *LayerParameters) DeepCopyInto(out *LayerParameters) {
 				**out = **in
 			}
 		}
+	}
+	if in.UsersRefs != nil {
+		in, out := &in.UsersRefs, &out.UsersRefs
+		*out = make([]v1.Reference, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
+	}
+	if in.UsersSelector != nil {
+		in, out := &in.UsersSelector, &out.UsersSelector
+		*out = new(v1.Selector)
+		(*in).DeepCopyInto(*out)
 	}
 }
 
@@ -433,18 +433,6 @@ func (in *ScheduleInitParameters) DeepCopyInto(out *ScheduleInitParameters) {
 		*out = new(bool)
 		**out = **in
 	}
-	if in.TeamRefs != nil {
-		in, out := &in.TeamRefs, &out.TeamRefs
-		*out = make([]v1.Reference, len(*in))
-		for i := range *in {
-			(*in)[i].DeepCopyInto(&(*out)[i])
-		}
-	}
-	if in.TeamSelector != nil {
-		in, out := &in.TeamSelector, &out.TeamSelector
-		*out = new(v1.Selector)
-		(*in).DeepCopyInto(*out)
-	}
 	if in.Teams != nil {
 		in, out := &in.Teams, &out.Teams
 		*out = make([]*string, len(*in))
@@ -455,6 +443,18 @@ func (in *ScheduleInitParameters) DeepCopyInto(out *ScheduleInitParameters) {
 				**out = **in
 			}
 		}
+	}
+	if in.TeamsRefs != nil {
+		in, out := &in.TeamsRefs, &out.TeamsRefs
+		*out = make([]v1.Reference, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
+	}
+	if in.TeamsSelector != nil {
+		in, out := &in.TeamsSelector, &out.TeamsSelector
+		*out = new(v1.Selector)
+		(*in).DeepCopyInto(*out)
 	}
 	if in.TimeZone != nil {
 		in, out := &in.TimeZone, &out.TimeZone
@@ -595,18 +595,6 @@ func (in *ScheduleParameters) DeepCopyInto(out *ScheduleParameters) {
 		*out = new(bool)
 		**out = **in
 	}
-	if in.TeamRefs != nil {
-		in, out := &in.TeamRefs, &out.TeamRefs
-		*out = make([]v1.Reference, len(*in))
-		for i := range *in {
-			(*in)[i].DeepCopyInto(&(*out)[i])
-		}
-	}
-	if in.TeamSelector != nil {
-		in, out := &in.TeamSelector, &out.TeamSelector
-		*out = new(v1.Selector)
-		(*in).DeepCopyInto(*out)
-	}
 	if in.Teams != nil {
 		in, out := &in.Teams, &out.Teams
 		*out = make([]*string, len(*in))
@@ -617,6 +605,18 @@ func (in *ScheduleParameters) DeepCopyInto(out *ScheduleParameters) {
 				**out = **in
 			}
 		}
+	}
+	if in.TeamsRefs != nil {
+		in, out := &in.TeamsRefs, &out.TeamsRefs
+		*out = make([]v1.Reference, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
+	}
+	if in.TeamsSelector != nil {
+		in, out := &in.TeamsSelector, &out.TeamsSelector
+		*out = new(v1.Selector)
+		(*in).DeepCopyInto(*out)
 	}
 	if in.TimeZone != nil {
 		in, out := &in.TimeZone, &out.TimeZone

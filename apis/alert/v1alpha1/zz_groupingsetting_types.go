@@ -76,20 +76,18 @@ type GroupingSettingInitParameters struct {
 	// The name for the alert groupig settings.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// [Updating can cause a resource replacement] The list IDs of services associated to this setting.
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-pagerduty/apis/service/v1alpha1.Service
+	// +listType=set
+	Services []*string `json:"services,omitempty" tf:"services,omitempty"`
+
 	// References to Service in service to populate services.
 	// +kubebuilder:validation:Optional
-	ServiceRefs []v1.Reference `json:"serviceRefs,omitempty" tf:"-"`
+	ServicesRefs []v1.Reference `json:"servicesRefs,omitempty" tf:"-"`
 
 	// Selector for a list of Service in service to populate services.
 	// +kubebuilder:validation:Optional
-	ServiceSelector *v1.Selector `json:"serviceSelector,omitempty" tf:"-"`
-
-	// [Updating can cause a resource replacement] The list IDs of services associated to this setting.
-	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-pagerduty/apis/service/v1alpha1.Service
-	// +crossplane:generate:reference:refFieldName=ServiceRefs
-	// +crossplane:generate:reference:selectorFieldName=ServiceSelector
-	// +listType=set
-	Services []*string `json:"services,omitempty" tf:"services,omitempty"`
+	ServicesSelector *v1.Selector `json:"servicesSelector,omitempty" tf:"-"`
 
 	// The type of alert grouping; one of intelligent, time, content_based or  content_based_intelligent.
 	Type *string `json:"type,omitempty" tf:"type,omitempty"`
@@ -131,21 +129,19 @@ type GroupingSettingParameters struct {
 	// +kubebuilder:validation:Optional
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
-	// References to Service in service to populate services.
-	// +kubebuilder:validation:Optional
-	ServiceRefs []v1.Reference `json:"serviceRefs,omitempty" tf:"-"`
-
-	// Selector for a list of Service in service to populate services.
-	// +kubebuilder:validation:Optional
-	ServiceSelector *v1.Selector `json:"serviceSelector,omitempty" tf:"-"`
-
 	// [Updating can cause a resource replacement] The list IDs of services associated to this setting.
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-pagerduty/apis/service/v1alpha1.Service
-	// +crossplane:generate:reference:refFieldName=ServiceRefs
-	// +crossplane:generate:reference:selectorFieldName=ServiceSelector
 	// +kubebuilder:validation:Optional
 	// +listType=set
 	Services []*string `json:"services,omitempty" tf:"services,omitempty"`
+
+	// References to Service in service to populate services.
+	// +kubebuilder:validation:Optional
+	ServicesRefs []v1.Reference `json:"servicesRefs,omitempty" tf:"-"`
+
+	// Selector for a list of Service in service to populate services.
+	// +kubebuilder:validation:Optional
+	ServicesSelector *v1.Selector `json:"servicesSelector,omitempty" tf:"-"`
 
 	// The type of alert grouping; one of intelligent, time, content_based or  content_based_intelligent.
 	// +kubebuilder:validation:Optional

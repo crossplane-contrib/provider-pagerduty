@@ -17,31 +17,27 @@ type ActionTeamAssociationInitParameters struct {
 
 	// Id of the action.
 	// +crossplane:generate:reference:type=Action
-	// +crossplane:generate:reference:refFieldName=ActionRefs
-	// +crossplane:generate:reference:selectorFieldName=ActionSelector
 	ActionID *string `json:"actionId,omitempty" tf:"action_id,omitempty"`
 
 	// Reference to a Action to populate actionId.
 	// +kubebuilder:validation:Optional
-	ActionRefs *v1.Reference `json:"actionRefs,omitempty" tf:"-"`
+	ActionIDRef *v1.Reference `json:"actionIdRef,omitempty" tf:"-"`
 
 	// Selector for a Action to populate actionId.
 	// +kubebuilder:validation:Optional
-	ActionSelector *v1.Selector `json:"actionSelector,omitempty" tf:"-"`
+	ActionIDSelector *v1.Selector `json:"actionIdSelector,omitempty" tf:"-"`
 
 	// Id of the team associated to the action.
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-pagerduty/apis/team/v1alpha1.Team
-	// +crossplane:generate:reference:refFieldName=TeamRefs
-	// +crossplane:generate:reference:selectorFieldName=TeamSelector
 	TeamID *string `json:"teamId,omitempty" tf:"team_id,omitempty"`
 
 	// Reference to a Team in team to populate teamId.
 	// +kubebuilder:validation:Optional
-	TeamRefs *v1.Reference `json:"teamRefs,omitempty" tf:"-"`
+	TeamIDRef *v1.Reference `json:"teamIdRef,omitempty" tf:"-"`
 
 	// Selector for a Team in team to populate teamId.
 	// +kubebuilder:validation:Optional
-	TeamSelector *v1.Selector `json:"teamSelector,omitempty" tf:"-"`
+	TeamIDSelector *v1.Selector `json:"teamIdSelector,omitempty" tf:"-"`
 }
 
 type ActionTeamAssociationObservation struct {
@@ -59,33 +55,29 @@ type ActionTeamAssociationParameters struct {
 
 	// Id of the action.
 	// +crossplane:generate:reference:type=Action
-	// +crossplane:generate:reference:refFieldName=ActionRefs
-	// +crossplane:generate:reference:selectorFieldName=ActionSelector
 	// +kubebuilder:validation:Optional
 	ActionID *string `json:"actionId,omitempty" tf:"action_id,omitempty"`
 
 	// Reference to a Action to populate actionId.
 	// +kubebuilder:validation:Optional
-	ActionRefs *v1.Reference `json:"actionRefs,omitempty" tf:"-"`
+	ActionIDRef *v1.Reference `json:"actionIdRef,omitempty" tf:"-"`
 
 	// Selector for a Action to populate actionId.
 	// +kubebuilder:validation:Optional
-	ActionSelector *v1.Selector `json:"actionSelector,omitempty" tf:"-"`
+	ActionIDSelector *v1.Selector `json:"actionIdSelector,omitempty" tf:"-"`
 
 	// Id of the team associated to the action.
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-pagerduty/apis/team/v1alpha1.Team
-	// +crossplane:generate:reference:refFieldName=TeamRefs
-	// +crossplane:generate:reference:selectorFieldName=TeamSelector
 	// +kubebuilder:validation:Optional
 	TeamID *string `json:"teamId,omitempty" tf:"team_id,omitempty"`
 
 	// Reference to a Team in team to populate teamId.
 	// +kubebuilder:validation:Optional
-	TeamRefs *v1.Reference `json:"teamRefs,omitempty" tf:"-"`
+	TeamIDRef *v1.Reference `json:"teamIdRef,omitempty" tf:"-"`
 
 	// Selector for a Team in team to populate teamId.
 	// +kubebuilder:validation:Optional
-	TeamSelector *v1.Selector `json:"teamSelector,omitempty" tf:"-"`
+	TeamIDSelector *v1.Selector `json:"teamIdSelector,omitempty" tf:"-"`
 }
 
 // ActionTeamAssociationSpec defines the desired state of ActionTeamAssociation

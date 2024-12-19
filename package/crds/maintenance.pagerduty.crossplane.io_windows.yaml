@@ -81,7 +81,14 @@ spec:
                       services will start creating incidents again. This date must
                       be in the future and after the start_time.
                     type: string
-                  serviceRefs:
+                  services:
+                    description: A list of service IDs to include in the maintenance
+                      window.
+                    items:
+                      type: string
+                    type: array
+                    x-kubernetes-list-type: set
+                  servicesRefs:
                     description: References to Service in service to populate services.
                     items:
                       description: A Reference to a named object.
@@ -118,7 +125,7 @@ spec:
                       - name
                       type: object
                     type: array
-                  serviceSelector:
+                  servicesSelector:
                     description: Selector for a list of Service in service to populate
                       services.
                     properties:
@@ -159,13 +166,6 @@ spec:
                             type: string
                         type: object
                     type: object
-                  services:
-                    description: A list of service IDs to include in the maintenance
-                      window.
-                    items:
-                      type: string
-                    type: array
-                    x-kubernetes-list-type: set
                   startTime:
                     description: The maintenance window's start time. This is when
                       the services will stop creating incidents. If this date is in
@@ -193,7 +193,14 @@ spec:
                       services will start creating incidents again. This date must
                       be in the future and after the start_time.
                     type: string
-                  serviceRefs:
+                  services:
+                    description: A list of service IDs to include in the maintenance
+                      window.
+                    items:
+                      type: string
+                    type: array
+                    x-kubernetes-list-type: set
+                  servicesRefs:
                     description: References to Service in service to populate services.
                     items:
                       description: A Reference to a named object.
@@ -230,7 +237,7 @@ spec:
                       - name
                       type: object
                     type: array
-                  serviceSelector:
+                  servicesSelector:
                     description: Selector for a list of Service in service to populate
                       services.
                     properties:
@@ -271,13 +278,6 @@ spec:
                             type: string
                         type: object
                     type: object
-                  services:
-                    description: A list of service IDs to include in the maintenance
-                      window.
-                    items:
-                      type: string
-                    type: array
-                    x-kubernetes-list-type: set
                   startTime:
                     description: The maintenance window's start time. This is when
                       the services will stop creating incidents. If this date is in

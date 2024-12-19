@@ -448,13 +448,13 @@ func (in *ActionServiceAssociationInitParameters) DeepCopyInto(out *ActionServic
 		*out = new(string)
 		**out = **in
 	}
-	if in.ActionRefs != nil {
-		in, out := &in.ActionRefs, &out.ActionRefs
+	if in.ActionIDRef != nil {
+		in, out := &in.ActionIDRef, &out.ActionIDRef
 		*out = new(v1.Reference)
 		(*in).DeepCopyInto(*out)
 	}
-	if in.ActionSelector != nil {
-		in, out := &in.ActionSelector, &out.ActionSelector
+	if in.ActionIDSelector != nil {
+		in, out := &in.ActionIDSelector, &out.ActionIDSelector
 		*out = new(v1.Selector)
 		(*in).DeepCopyInto(*out)
 	}
@@ -463,13 +463,13 @@ func (in *ActionServiceAssociationInitParameters) DeepCopyInto(out *ActionServic
 		*out = new(string)
 		**out = **in
 	}
-	if in.ServiceRefs != nil {
-		in, out := &in.ServiceRefs, &out.ServiceRefs
+	if in.ServiceIDRef != nil {
+		in, out := &in.ServiceIDRef, &out.ServiceIDRef
 		*out = new(v1.Reference)
 		(*in).DeepCopyInto(*out)
 	}
-	if in.ServiceSelector != nil {
-		in, out := &in.ServiceSelector, &out.ServiceSelector
+	if in.ServiceIDSelector != nil {
+		in, out := &in.ServiceIDSelector, &out.ServiceIDSelector
 		*out = new(v1.Selector)
 		(*in).DeepCopyInto(*out)
 	}
@@ -555,13 +555,13 @@ func (in *ActionServiceAssociationParameters) DeepCopyInto(out *ActionServiceAss
 		*out = new(string)
 		**out = **in
 	}
-	if in.ActionRefs != nil {
-		in, out := &in.ActionRefs, &out.ActionRefs
+	if in.ActionIDRef != nil {
+		in, out := &in.ActionIDRef, &out.ActionIDRef
 		*out = new(v1.Reference)
 		(*in).DeepCopyInto(*out)
 	}
-	if in.ActionSelector != nil {
-		in, out := &in.ActionSelector, &out.ActionSelector
+	if in.ActionIDSelector != nil {
+		in, out := &in.ActionIDSelector, &out.ActionIDSelector
 		*out = new(v1.Selector)
 		(*in).DeepCopyInto(*out)
 	}
@@ -570,13 +570,13 @@ func (in *ActionServiceAssociationParameters) DeepCopyInto(out *ActionServiceAss
 		*out = new(string)
 		**out = **in
 	}
-	if in.ServiceRefs != nil {
-		in, out := &in.ServiceRefs, &out.ServiceRefs
+	if in.ServiceIDRef != nil {
+		in, out := &in.ServiceIDRef, &out.ServiceIDRef
 		*out = new(v1.Reference)
 		(*in).DeepCopyInto(*out)
 	}
-	if in.ServiceSelector != nil {
-		in, out := &in.ServiceSelector, &out.ServiceSelector
+	if in.ServiceIDSelector != nil {
+		in, out := &in.ServiceIDSelector, &out.ServiceIDSelector
 		*out = new(v1.Selector)
 		(*in).DeepCopyInto(*out)
 	}
@@ -697,13 +697,13 @@ func (in *ActionTeamAssociationInitParameters) DeepCopyInto(out *ActionTeamAssoc
 		*out = new(string)
 		**out = **in
 	}
-	if in.ActionRefs != nil {
-		in, out := &in.ActionRefs, &out.ActionRefs
+	if in.ActionIDRef != nil {
+		in, out := &in.ActionIDRef, &out.ActionIDRef
 		*out = new(v1.Reference)
 		(*in).DeepCopyInto(*out)
 	}
-	if in.ActionSelector != nil {
-		in, out := &in.ActionSelector, &out.ActionSelector
+	if in.ActionIDSelector != nil {
+		in, out := &in.ActionIDSelector, &out.ActionIDSelector
 		*out = new(v1.Selector)
 		(*in).DeepCopyInto(*out)
 	}
@@ -712,13 +712,13 @@ func (in *ActionTeamAssociationInitParameters) DeepCopyInto(out *ActionTeamAssoc
 		*out = new(string)
 		**out = **in
 	}
-	if in.TeamRefs != nil {
-		in, out := &in.TeamRefs, &out.TeamRefs
+	if in.TeamIDRef != nil {
+		in, out := &in.TeamIDRef, &out.TeamIDRef
 		*out = new(v1.Reference)
 		(*in).DeepCopyInto(*out)
 	}
-	if in.TeamSelector != nil {
-		in, out := &in.TeamSelector, &out.TeamSelector
+	if in.TeamIDSelector != nil {
+		in, out := &in.TeamIDSelector, &out.TeamIDSelector
 		*out = new(v1.Selector)
 		(*in).DeepCopyInto(*out)
 	}
@@ -804,13 +804,13 @@ func (in *ActionTeamAssociationParameters) DeepCopyInto(out *ActionTeamAssociati
 		*out = new(string)
 		**out = **in
 	}
-	if in.ActionRefs != nil {
-		in, out := &in.ActionRefs, &out.ActionRefs
+	if in.ActionIDRef != nil {
+		in, out := &in.ActionIDRef, &out.ActionIDRef
 		*out = new(v1.Reference)
 		(*in).DeepCopyInto(*out)
 	}
-	if in.ActionSelector != nil {
-		in, out := &in.ActionSelector, &out.ActionSelector
+	if in.ActionIDSelector != nil {
+		in, out := &in.ActionIDSelector, &out.ActionIDSelector
 		*out = new(v1.Selector)
 		(*in).DeepCopyInto(*out)
 	}
@@ -819,13 +819,13 @@ func (in *ActionTeamAssociationParameters) DeepCopyInto(out *ActionTeamAssociati
 		*out = new(string)
 		**out = **in
 	}
-	if in.TeamRefs != nil {
-		in, out := &in.TeamRefs, &out.TeamRefs
+	if in.TeamIDRef != nil {
+		in, out := &in.TeamIDRef, &out.TeamIDRef
 		*out = new(v1.Reference)
 		(*in).DeepCopyInto(*out)
 	}
-	if in.TeamSelector != nil {
-		in, out := &in.TeamSelector, &out.TeamSelector
+	if in.TeamIDSelector != nil {
+		in, out := &in.TeamIDSelector, &out.TeamIDSelector
 		*out = new(v1.Selector)
 		(*in).DeepCopyInto(*out)
 	}
@@ -1150,28 +1150,18 @@ func (in *RunnerTeamAssociationInitParameters) DeepCopyInto(out *RunnerTeamAssoc
 		*out = new(string)
 		**out = **in
 	}
-	if in.RunnerRefs != nil {
-		in, out := &in.RunnerRefs, &out.RunnerRefs
-		*out = new(v1.Reference)
-		(*in).DeepCopyInto(*out)
-	}
-	if in.RunnerSelector != nil {
-		in, out := &in.RunnerSelector, &out.RunnerSelector
-		*out = new(v1.Selector)
-		(*in).DeepCopyInto(*out)
-	}
 	if in.TeamID != nil {
 		in, out := &in.TeamID, &out.TeamID
 		*out = new(string)
 		**out = **in
 	}
-	if in.TeamRefs != nil {
-		in, out := &in.TeamRefs, &out.TeamRefs
+	if in.TeamIDRef != nil {
+		in, out := &in.TeamIDRef, &out.TeamIDRef
 		*out = new(v1.Reference)
 		(*in).DeepCopyInto(*out)
 	}
-	if in.TeamSelector != nil {
-		in, out := &in.TeamSelector, &out.TeamSelector
+	if in.TeamIDSelector != nil {
+		in, out := &in.TeamIDSelector, &out.TeamIDSelector
 		*out = new(v1.Selector)
 		(*in).DeepCopyInto(*out)
 	}
@@ -1257,28 +1247,18 @@ func (in *RunnerTeamAssociationParameters) DeepCopyInto(out *RunnerTeamAssociati
 		*out = new(string)
 		**out = **in
 	}
-	if in.RunnerRefs != nil {
-		in, out := &in.RunnerRefs, &out.RunnerRefs
-		*out = new(v1.Reference)
-		(*in).DeepCopyInto(*out)
-	}
-	if in.RunnerSelector != nil {
-		in, out := &in.RunnerSelector, &out.RunnerSelector
-		*out = new(v1.Selector)
-		(*in).DeepCopyInto(*out)
-	}
 	if in.TeamID != nil {
 		in, out := &in.TeamID, &out.TeamID
 		*out = new(string)
 		**out = **in
 	}
-	if in.TeamRefs != nil {
-		in, out := &in.TeamRefs, &out.TeamRefs
+	if in.TeamIDRef != nil {
+		in, out := &in.TeamIDRef, &out.TeamIDRef
 		*out = new(v1.Reference)
 		(*in).DeepCopyInto(*out)
 	}
-	if in.TeamSelector != nil {
-		in, out := &in.TeamSelector, &out.TeamSelector
+	if in.TeamIDSelector != nil {
+		in, out := &in.TeamIDSelector, &out.TeamIDSelector
 		*out = new(v1.Selector)
 		(*in).DeepCopyInto(*out)
 	}

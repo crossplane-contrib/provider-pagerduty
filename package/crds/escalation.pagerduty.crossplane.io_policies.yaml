@@ -115,7 +115,14 @@ spec:
                           type: array
                       type: object
                     type: array
-                  teamRefs:
+                  teams:
+                    description: Team associated with the policy (Only 1 team can
+                      be assigned to an Escalation Policy). Account must have the
+                      teams ability to use this parameter.
+                    items:
+                      type: string
+                    type: array
+                  teamsRefs:
                     description: References to Team in team to populate teams.
                     items:
                       description: A Reference to a named object.
@@ -152,7 +159,7 @@ spec:
                       - name
                       type: object
                     type: array
-                  teamSelector:
+                  teamsSelector:
                     description: Selector for a list of Team in team to populate teams.
                     properties:
                       matchControllerRef:
@@ -192,13 +199,6 @@ spec:
                             type: string
                         type: object
                     type: object
-                  teams:
-                    description: Team associated with the policy (Only 1 team can
-                      be assigned to an Escalation Policy). Account must have the
-                      teams ability to use this parameter.
-                    items:
-                      type: string
-                    type: array
                 type: object
               initProvider:
                 description: |-
@@ -255,7 +255,14 @@ spec:
                           type: array
                       type: object
                     type: array
-                  teamRefs:
+                  teams:
+                    description: Team associated with the policy (Only 1 team can
+                      be assigned to an Escalation Policy). Account must have the
+                      teams ability to use this parameter.
+                    items:
+                      type: string
+                    type: array
+                  teamsRefs:
                     description: References to Team in team to populate teams.
                     items:
                       description: A Reference to a named object.
@@ -292,7 +299,7 @@ spec:
                       - name
                       type: object
                     type: array
-                  teamSelector:
+                  teamsSelector:
                     description: Selector for a list of Team in team to populate teams.
                     properties:
                       matchControllerRef:
@@ -332,13 +339,6 @@ spec:
                             type: string
                         type: object
                     type: object
-                  teams:
-                    description: Team associated with the policy (Only 1 team can
-                      be assigned to an Escalation Policy). Account must have the
-                      teams ability to use this parameter.
-                    items:
-                      type: string
-                    type: array
                 type: object
               managementPolicies:
                 default:

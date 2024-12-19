@@ -14,7 +14,7 @@ spec:
       - fields
       timeWindow: 300
     name: Configuration for type-1 devices
-    serviceRefs:
+    servicesRefs:
     - name: basic
     type: content_based
 

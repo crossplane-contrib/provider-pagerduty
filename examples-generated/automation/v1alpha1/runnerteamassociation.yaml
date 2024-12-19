@@ -8,10 +8,8 @@ metadata:
   name: pa-runner-ent-eng-assoc
 spec:
   forProvider:
-    runnerSelector:
-      matchLabels:
-        testing.upbound.io/example-name: pa_runbook_runner
-    teamSelector:
+    runnerId: ${pagerduty_automation_actions_runner.pa_runbook_runner.id}
+    teamIdSelector:
       matchLabels:
         testing.upbound.io/example-name: team_ent_eng
 

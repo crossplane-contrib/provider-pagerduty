@@ -119,7 +119,14 @@ spec:
                   name:
                     description: The name for the alert groupig settings.
                     type: string
-                  serviceRefs:
+                  services:
+                    description: '[Updating can cause a resource replacement] The
+                      list IDs of services associated to this setting.'
+                    items:
+                      type: string
+                    type: array
+                    x-kubernetes-list-type: set
+                  servicesRefs:
                     description: References to Service in service to populate services.
                     items:
                       description: A Reference to a named object.
@@ -156,7 +163,7 @@ spec:
                       - name
                       type: object
                     type: array
-                  serviceSelector:
+                  servicesSelector:
                     description: Selector for a list of Service in service to populate
                       services.
                     properties:
@@ -197,13 +204,6 @@ spec:
                             type: string
                         type: object
                     type: object
-                  services:
-                    description: '[Updating can cause a resource replacement] The
-                      list IDs of services associated to this setting.'
-                    items:
-                      type: string
-                    type: array
-                    x-kubernetes-list-type: set
                   type:
                     description: The type of alert grouping; one of intelligent, time,
                       content_based or  content_based_intelligent.
@@ -268,7 +268,14 @@ spec:
                   name:
                     description: The name for the alert groupig settings.
                     type: string
-                  serviceRefs:
+                  services:
+                    description: '[Updating can cause a resource replacement] The
+                      list IDs of services associated to this setting.'
+                    items:
+                      type: string
+                    type: array
+                    x-kubernetes-list-type: set
+                  servicesRefs:
                     description: References to Service in service to populate services.
                     items:
                       description: A Reference to a named object.
@@ -305,7 +312,7 @@ spec:
                       - name
                       type: object
                     type: array
-                  serviceSelector:
+                  servicesSelector:
                     description: Selector for a list of Service in service to populate
                       services.
                     properties:
@@ -346,13 +353,6 @@ spec:
                             type: string
                         type: object
                     type: object
-                  services:
-                    description: '[Updating can cause a resource replacement] The
-                      list IDs of services associated to this setting.'
-                    items:
-                      type: string
-                    type: array
-                    x-kubernetes-list-type: set
                   type:
                     description: The type of alert grouping; one of intelligent, time,
                       content_based or  content_based_intelligent.

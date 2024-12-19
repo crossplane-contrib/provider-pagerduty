@@ -203,14 +203,14 @@ type EventRuleInitParameters struct {
 	Position *float64 `json:"position,omitempty" tf:"position,omitempty"`
 
 	// The ID of the service that the rule belongs to.
-	// +crossplane:generate:reference:type=Service
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-pagerduty/apis/service/v1alpha1.Service
 	Service *string `json:"service,omitempty" tf:"service,omitempty"`
 
-	// Reference to a Service to populate service.
+	// Reference to a Service in service to populate service.
 	// +kubebuilder:validation:Optional
 	ServiceRef *v1.Reference `json:"serviceRef,omitempty" tf:"-"`
 
-	// Selector for a Service to populate service.
+	// Selector for a Service in service to populate service.
 	// +kubebuilder:validation:Optional
 	ServiceSelector *v1.Selector `json:"serviceSelector,omitempty" tf:"-"`
 
@@ -267,15 +267,15 @@ type EventRuleParameters struct {
 	Position *float64 `json:"position,omitempty" tf:"position,omitempty"`
 
 	// The ID of the service that the rule belongs to.
-	// +crossplane:generate:reference:type=Service
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-pagerduty/apis/service/v1alpha1.Service
 	// +kubebuilder:validation:Optional
 	Service *string `json:"service,omitempty" tf:"service,omitempty"`
 
-	// Reference to a Service to populate service.
+	// Reference to a Service in service to populate service.
 	// +kubebuilder:validation:Optional
 	ServiceRef *v1.Reference `json:"serviceRef,omitempty" tf:"-"`
 
-	// Selector for a Service to populate service.
+	// Selector for a Service in service to populate service.
 	// +kubebuilder:validation:Optional
 	ServiceSelector *v1.Selector `json:"serviceSelector,omitempty" tf:"-"`
 

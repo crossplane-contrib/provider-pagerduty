@@ -16,32 +16,19 @@ import (
 type RunnerTeamAssociationInitParameters struct {
 
 	// Id of the runner.
-	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-pagerduty/apis/automation/v1alpha1.Runner
-	// +crossplane:generate:reference:refFieldName=RunnerRefs
-	// +crossplane:generate:reference:selectorFieldName=RunnerSelector
 	RunnerID *string `json:"runnerId,omitempty" tf:"runner_id,omitempty"`
-
-	// Reference to a Runner in automation to populate runnerId.
-	// +kubebuilder:validation:Optional
-	RunnerRefs *v1.Reference `json:"runnerRefs,omitempty" tf:"-"`
-
-	// Selector for a Runner in automation to populate runnerId.
-	// +kubebuilder:validation:Optional
-	RunnerSelector *v1.Selector `json:"runnerSelector,omitempty" tf:"-"`
 
 	// Id of the team associated with the runner.
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-pagerduty/apis/team/v1alpha1.Team
-	// +crossplane:generate:reference:refFieldName=TeamRefs
-	// +crossplane:generate:reference:selectorFieldName=TeamSelector
 	TeamID *string `json:"teamId,omitempty" tf:"team_id,omitempty"`
 
 	// Reference to a Team in team to populate teamId.
 	// +kubebuilder:validation:Optional
-	TeamRefs *v1.Reference `json:"teamRefs,omitempty" tf:"-"`
+	TeamIDRef *v1.Reference `json:"teamIdRef,omitempty" tf:"-"`
 
 	// Selector for a Team in team to populate teamId.
 	// +kubebuilder:validation:Optional
-	TeamSelector *v1.Selector `json:"teamSelector,omitempty" tf:"-"`
+	TeamIDSelector *v1.Selector `json:"teamIdSelector,omitempty" tf:"-"`
 }
 
 type RunnerTeamAssociationObservation struct {
@@ -57,34 +44,21 @@ type RunnerTeamAssociationObservation struct {
 type RunnerTeamAssociationParameters struct {
 
 	// Id of the runner.
-	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-pagerduty/apis/automation/v1alpha1.Runner
-	// +crossplane:generate:reference:refFieldName=RunnerRefs
-	// +crossplane:generate:reference:selectorFieldName=RunnerSelector
 	// +kubebuilder:validation:Optional
 	RunnerID *string `json:"runnerId,omitempty" tf:"runner_id,omitempty"`
 
-	// Reference to a Runner in automation to populate runnerId.
-	// +kubebuilder:validation:Optional
-	RunnerRefs *v1.Reference `json:"runnerRefs,omitempty" tf:"-"`
-
-	// Selector for a Runner in automation to populate runnerId.
-	// +kubebuilder:validation:Optional
-	RunnerSelector *v1.Selector `json:"runnerSelector,omitempty" tf:"-"`
-
 	// Id of the team associated with the runner.
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-pagerduty/apis/team/v1alpha1.Team
-	// +crossplane:generate:reference:refFieldName=TeamRefs
-	// +crossplane:generate:reference:selectorFieldName=TeamSelector
 	// +kubebuilder:validation:Optional
 	TeamID *string `json:"teamId,omitempty" tf:"team_id,omitempty"`
 
 	// Reference to a Team in team to populate teamId.
 	// +kubebuilder:validation:Optional
-	TeamRefs *v1.Reference `json:"teamRefs,omitempty" tf:"-"`
+	TeamIDRef *v1.Reference `json:"teamIdRef,omitempty" tf:"-"`
 
 	// Selector for a Team in team to populate teamId.
 	// +kubebuilder:validation:Optional
-	TeamSelector *v1.Selector `json:"teamSelector,omitempty" tf:"-"`
+	TeamIDSelector *v1.Selector `json:"teamIdSelector,omitempty" tf:"-"`
 }
 
 // RunnerTeamAssociationSpec defines the desired state of RunnerTeamAssociation
@@ -123,8 +97,9 @@ type RunnerTeamAssociationStatus struct {
 type RunnerTeamAssociation struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              RunnerTeamAssociationSpec   `json:"spec"`
-	Status            RunnerTeamAssociationStatus `json:"status,omitempty"`
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.runnerId) || (has(self.initProvider) && has(self.initProvider.runnerId))",message="spec.forProvider.runnerId is a required parameter"
+	Spec   RunnerTeamAssociationSpec   `json:"spec"`
+	Status RunnerTeamAssociationStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true

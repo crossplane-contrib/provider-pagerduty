@@ -17,10 +17,10 @@ spec:
       rotationTurnLengthSeconds: 86400
       rotationVirtualStart: "2015-11-06T20:00:00-05:00"
       start: "2015-11-06T20:00:00-05:00"
-      userRefs:
+      usersRefs:
       - name: example
     name: Daily Engineering Rotation
-    teamRefs:
+    teamsRefs:
     - name: example
     timeZone: America/New_York
 

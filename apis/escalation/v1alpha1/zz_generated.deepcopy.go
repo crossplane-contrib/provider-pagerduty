@@ -125,18 +125,6 @@ func (in *PolicyInitParameters) DeepCopyInto(out *PolicyInitParameters) {
 			(*in)[i].DeepCopyInto(&(*out)[i])
 		}
 	}
-	if in.TeamRefs != nil {
-		in, out := &in.TeamRefs, &out.TeamRefs
-		*out = make([]v1.Reference, len(*in))
-		for i := range *in {
-			(*in)[i].DeepCopyInto(&(*out)[i])
-		}
-	}
-	if in.TeamSelector != nil {
-		in, out := &in.TeamSelector, &out.TeamSelector
-		*out = new(v1.Selector)
-		(*in).DeepCopyInto(*out)
-	}
 	if in.Teams != nil {
 		in, out := &in.Teams, &out.Teams
 		*out = make([]*string, len(*in))
@@ -147,6 +135,18 @@ func (in *PolicyInitParameters) DeepCopyInto(out *PolicyInitParameters) {
 				**out = **in
 			}
 		}
+	}
+	if in.TeamsRefs != nil {
+		in, out := &in.TeamsRefs, &out.TeamsRefs
+		*out = make([]v1.Reference, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
+	}
+	if in.TeamsSelector != nil {
+		in, out := &in.TeamsSelector, &out.TeamsSelector
+		*out = new(v1.Selector)
+		(*in).DeepCopyInto(*out)
 	}
 }
 
@@ -270,18 +270,6 @@ func (in *PolicyParameters) DeepCopyInto(out *PolicyParameters) {
 			(*in)[i].DeepCopyInto(&(*out)[i])
 		}
 	}
-	if in.TeamRefs != nil {
-		in, out := &in.TeamRefs, &out.TeamRefs
-		*out = make([]v1.Reference, len(*in))
-		for i := range *in {
-			(*in)[i].DeepCopyInto(&(*out)[i])
-		}
-	}
-	if in.TeamSelector != nil {
-		in, out := &in.TeamSelector, &out.TeamSelector
-		*out = new(v1.Selector)
-		(*in).DeepCopyInto(*out)
-	}
 	if in.Teams != nil {
 		in, out := &in.Teams, &out.Teams
 		*out = make([]*string, len(*in))
@@ -292,6 +280,18 @@ func (in *PolicyParameters) DeepCopyInto(out *PolicyParameters) {
 				**out = **in
 			}
 		}
+	}
+	if in.TeamsRefs != nil {
+		in, out := &in.TeamsRefs, &out.TeamsRefs
+		*out = make([]v1.Reference, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
+	}
+	if in.TeamsSelector != nil {
+		in, out := &in.TeamsSelector, &out.TeamsSelector
+		*out = new(v1.Selector)
+		(*in).DeepCopyInto(*out)
 	}
 }
 

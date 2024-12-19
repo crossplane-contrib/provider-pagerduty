@@ -21,20 +21,18 @@ type WindowInitParameters struct {
 	// The maintenance window's end time. This is when the services will start creating incidents again. This date must be in the future and after the start_time.
 	EndTime *string `json:"endTime,omitempty" tf:"end_time,omitempty"`
 
+	// A list of service IDs to include in the maintenance window.
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-pagerduty/apis/service/v1alpha1.Service
+	// +listType=set
+	Services []*string `json:"services,omitempty" tf:"services,omitempty"`
+
 	// References to Service in service to populate services.
 	// +kubebuilder:validation:Optional
-	ServiceRefs []v1.Reference `json:"serviceRefs,omitempty" tf:"-"`
+	ServicesRefs []v1.Reference `json:"servicesRefs,omitempty" tf:"-"`
 
 	// Selector for a list of Service in service to populate services.
 	// +kubebuilder:validation:Optional
-	ServiceSelector *v1.Selector `json:"serviceSelector,omitempty" tf:"-"`
-
-	// A list of service IDs to include in the maintenance window.
-	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-pagerduty/apis/service/v1alpha1.Service
-	// +crossplane:generate:reference:refFieldName=ServiceRefs
-	// +crossplane:generate:reference:selectorFieldName=ServiceSelector
-	// +listType=set
-	Services []*string `json:"services,omitempty" tf:"services,omitempty"`
+	ServicesSelector *v1.Selector `json:"servicesSelector,omitempty" tf:"-"`
 
 	// The maintenance window's start time. This is when the services will stop creating incidents. If this date is in the past, it will be updated to be the current time.
 	StartTime *string `json:"startTime,omitempty" tf:"start_time,omitempty"`
@@ -69,21 +67,19 @@ type WindowParameters struct {
 	// +kubebuilder:validation:Optional
 	EndTime *string `json:"endTime,omitempty" tf:"end_time,omitempty"`
 
-	// References to Service in service to populate services.
-	// +kubebuilder:validation:Optional
-	ServiceRefs []v1.Reference `json:"serviceRefs,omitempty" tf:"-"`
-
-	// Selector for a list of Service in service to populate services.
-	// +kubebuilder:validation:Optional
-	ServiceSelector *v1.Selector `json:"serviceSelector,omitempty" tf:"-"`
-
 	// A list of service IDs to include in the maintenance window.
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-pagerduty/apis/service/v1alpha1.Service
-	// +crossplane:generate:reference:refFieldName=ServiceRefs
-	// +crossplane:generate:reference:selectorFieldName=ServiceSelector
 	// +kubebuilder:validation:Optional
 	// +listType=set
 	Services []*string `json:"services,omitempty" tf:"services,omitempty"`
+
+	// References to Service in service to populate services.
+	// +kubebuilder:validation:Optional
+	ServicesRefs []v1.Reference `json:"servicesRefs,omitempty" tf:"-"`
+
+	// Selector for a list of Service in service to populate services.
+	// +kubebuilder:validation:Optional
+	ServicesSelector *v1.Selector `json:"servicesSelector,omitempty" tf:"-"`
 
 	// The maintenance window's start time. This is when the services will stop creating incidents. If this date is in the past, it will be updated to be the current time.
 	// +kubebuilder:validation:Optional

@@ -25,8 +25,8 @@ func (mg *Schedule) ResolveReferences(ctx context.Context, c client.Reader) erro
 		mrsp, err = r.ResolveMultiple(ctx, reference.MultiResolutionRequest{
 			CurrentValues: reference.FromPtrValues(mg.Spec.ForProvider.Layer[i3].Users),
 			Extract:       reference.ExternalName(),
-			References:    mg.Spec.ForProvider.Layer[i3].UserRefs,
-			Selector:      mg.Spec.ForProvider.Layer[i3].UserSelector,
+			References:    mg.Spec.ForProvider.Layer[i3].UsersRefs,
+			Selector:      mg.Spec.ForProvider.Layer[i3].UsersSelector,
 			To: reference.To{
 				List:    &v1alpha1.UserList{},
 				Managed: &v1alpha1.User{},
@@ -36,14 +36,14 @@ func (mg *Schedule) ResolveReferences(ctx context.Context, c client.Reader) erro
 			return errors.Wrap(err, "mg.Spec.ForProvider.Layer[i3].Users")
 		}
 		mg.Spec.ForProvider.Layer[i3].Users = reference.ToPtrValues(mrsp.ResolvedValues)
-		mg.Spec.ForProvider.Layer[i3].UserRefs = mrsp.ResolvedReferences
+		mg.Spec.ForProvider.Layer[i3].UsersRefs = mrsp.ResolvedReferences
 
 	}
 	mrsp, err = r.ResolveMultiple(ctx, reference.MultiResolutionRequest{
 		CurrentValues: reference.FromPtrValues(mg.Spec.ForProvider.Teams),
 		Extract:       reference.ExternalName(),
-		References:    mg.Spec.ForProvider.TeamRefs,
-		Selector:      mg.Spec.ForProvider.TeamSelector,
+		References:    mg.Spec.ForProvider.TeamsRefs,
+		Selector:      mg.Spec.ForProvider.TeamsSelector,
 		To: reference.To{
 			List:    &v1alpha11.TeamList{},
 			Managed: &v1alpha11.Team{},
@@ -53,14 +53,14 @@ func (mg *Schedule) ResolveReferences(ctx context.Context, c client.Reader) erro
 		return errors.Wrap(err, "mg.Spec.ForProvider.Teams")
 	}
 	mg.Spec.ForProvider.Teams = reference.ToPtrValues(mrsp.ResolvedValues)
-	mg.Spec.ForProvider.TeamRefs = mrsp.ResolvedReferences
+	mg.Spec.ForProvider.TeamsRefs = mrsp.ResolvedReferences
 
 	for i3 := 0; i3 < len(mg.Spec.InitProvider.Layer); i3++ {
 		mrsp, err = r.ResolveMultiple(ctx, reference.MultiResolutionRequest{
 			CurrentValues: reference.FromPtrValues(mg.Spec.InitProvider.Layer[i3].Users),
 			Extract:       reference.ExternalName(),
-			References:    mg.Spec.InitProvider.Layer[i3].UserRefs,
-			Selector:      mg.Spec.InitProvider.Layer[i3].UserSelector,
+			References:    mg.Spec.InitProvider.Layer[i3].UsersRefs,
+			Selector:      mg.Spec.InitProvider.Layer[i3].UsersSelector,
 			To: reference.To{
 				List:    &v1alpha1.UserList{},
 				Managed: &v1alpha1.User{},
@@ -70,14 +70,14 @@ func (mg *Schedule) ResolveReferences(ctx context.Context, c client.Reader) erro
 			return errors.Wrap(err, "mg.Spec.InitProvider.Layer[i3].Users")
 		}
 		mg.Spec.InitProvider.Layer[i3].Users = reference.ToPtrValues(mrsp.ResolvedValues)
-		mg.Spec.InitProvider.Layer[i3].UserRefs = mrsp.ResolvedReferences
+		mg.Spec.InitProvider.Layer[i3].UsersRefs = mrsp.ResolvedReferences
 
 	}
 	mrsp, err = r.ResolveMultiple(ctx, reference.MultiResolutionRequest{
 		CurrentValues: reference.FromPtrValues(mg.Spec.InitProvider.Teams),
 		Extract:       reference.ExternalName(),
-		References:    mg.Spec.InitProvider.TeamRefs,
-		Selector:      mg.Spec.InitProvider.TeamSelector,
+		References:    mg.Spec.InitProvider.TeamsRefs,
+		Selector:      mg.Spec.InitProvider.TeamsSelector,
 		To: reference.To{
 			List:    &v1alpha11.TeamList{},
 			Managed: &v1alpha11.Team{},
@@ -87,7 +87,7 @@ func (mg *Schedule) ResolveReferences(ctx context.Context, c client.Reader) erro
 		return errors.Wrap(err, "mg.Spec.InitProvider.Teams")
 	}
 	mg.Spec.InitProvider.Teams = reference.ToPtrValues(mrsp.ResolvedValues)
-	mg.Spec.InitProvider.TeamRefs = mrsp.ResolvedReferences
+	mg.Spec.InitProvider.TeamsRefs = mrsp.ResolvedReferences
 
 	return nil
 }

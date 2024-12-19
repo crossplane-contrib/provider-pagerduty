@@ -78,16 +78,14 @@ type WorkflowTriggerInitParameters struct {
 	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 
 	// The workflow ID for the workflow to trigger.
-	// +crossplane:generate:reference:type=Workflow
-	// +crossplane:generate:reference:refFieldName=WorkflowRefs
-	// +crossplane:generate:reference:selectorFieldName=WorkflowSelector
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-pagerduty/apis/incident/v1alpha1.Workflow
 	Workflow *string `json:"workflow,omitempty" tf:"workflow,omitempty"`
 
-	// Reference to a Workflow to populate workflow.
+	// Reference to a Workflow in incident to populate workflow.
 	// +kubebuilder:validation:Optional
-	WorkflowRefs *v1.Reference `json:"workflowRefs,omitempty" tf:"-"`
+	WorkflowRef *v1.Reference `json:"workflowRef,omitempty" tf:"-"`
 
-	// Selector for a Workflow to populate workflow.
+	// Selector for a Workflow in incident to populate workflow.
 	// +kubebuilder:validation:Optional
 	WorkflowSelector *v1.Selector `json:"workflowSelector,omitempty" tf:"-"`
 }
@@ -139,17 +137,15 @@ type WorkflowTriggerParameters struct {
 	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 
 	// The workflow ID for the workflow to trigger.
-	// +crossplane:generate:reference:type=Workflow
-	// +crossplane:generate:reference:refFieldName=WorkflowRefs
-	// +crossplane:generate:reference:selectorFieldName=WorkflowSelector
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-pagerduty/apis/incident/v1alpha1.Workflow
 	// +kubebuilder:validation:Optional
 	Workflow *string `json:"workflow,omitempty" tf:"workflow,omitempty"`
 
-	// Reference to a Workflow to populate workflow.
+	// Reference to a Workflow in incident to populate workflow.
 	// +kubebuilder:validation:Optional
-	WorkflowRefs *v1.Reference `json:"workflowRefs,omitempty" tf:"-"`
+	WorkflowRef *v1.Reference `json:"workflowRef,omitempty" tf:"-"`
 
-	// Selector for a Workflow to populate workflow.
+	// Selector for a Workflow in incident to populate workflow.
 	// +kubebuilder:validation:Optional
 	WorkflowSelector *v1.Selector `json:"workflowSelector,omitempty" tf:"-"`
 }

@@ -9,9 +9,7 @@ func Configure(p *config.Provider) {
 	p.AddResourceConfigurator("pagerduty_alert_grouping_setting", func(r *config.Resource) {
 		r.References = config.References{
 			"services": {
-				Type:              "github.com/crossplane-contrib/provider-pagerduty/apis/service/v1alpha1.Service",
-				RefFieldName:      "ServiceRefs",
-				SelectorFieldName: "ServiceSelector",
+				TerraformName: "pagerduty_service",
 			},
 		}
 	})

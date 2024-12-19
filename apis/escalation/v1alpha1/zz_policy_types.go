@@ -46,19 +46,17 @@ type PolicyInitParameters struct {
 	// An Escalation rule block. Escalation rules documented below.
 	Rule []RuleInitParameters `json:"rule,omitempty" tf:"rule,omitempty"`
 
+	// Team associated with the policy (Only 1 team can be assigned to an Escalation Policy). Account must have the teams ability to use this parameter.
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-pagerduty/apis/team/v1alpha1.Team
+	Teams []*string `json:"teams,omitempty" tf:"teams,omitempty"`
+
 	// References to Team in team to populate teams.
 	// +kubebuilder:validation:Optional
-	TeamRefs []v1.Reference `json:"teamRefs,omitempty" tf:"-"`
+	TeamsRefs []v1.Reference `json:"teamsRefs,omitempty" tf:"-"`
 
 	// Selector for a list of Team in team to populate teams.
 	// +kubebuilder:validation:Optional
-	TeamSelector *v1.Selector `json:"teamSelector,omitempty" tf:"-"`
-
-	// Team associated with the policy (Only 1 team can be assigned to an Escalation Policy). Account must have the teams ability to use this parameter.
-	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-pagerduty/apis/team/v1alpha1.Team
-	// +crossplane:generate:reference:refFieldName=TeamRefs
-	// +crossplane:generate:reference:selectorFieldName=TeamSelector
-	Teams []*string `json:"teams,omitempty" tf:"teams,omitempty"`
+	TeamsSelector *v1.Selector `json:"teamsSelector,omitempty" tf:"-"`
 }
 
 type PolicyObservation struct {
@@ -100,20 +98,18 @@ type PolicyParameters struct {
 	// +kubebuilder:validation:Optional
 	Rule []RuleParameters `json:"rule,omitempty" tf:"rule,omitempty"`
 
+	// Team associated with the policy (Only 1 team can be assigned to an Escalation Policy). Account must have the teams ability to use this parameter.
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-pagerduty/apis/team/v1alpha1.Team
+	// +kubebuilder:validation:Optional
+	Teams []*string `json:"teams,omitempty" tf:"teams,omitempty"`
+
 	// References to Team in team to populate teams.
 	// +kubebuilder:validation:Optional
-	TeamRefs []v1.Reference `json:"teamRefs,omitempty" tf:"-"`
+	TeamsRefs []v1.Reference `json:"teamsRefs,omitempty" tf:"-"`
 
 	// Selector for a list of Team in team to populate teams.
 	// +kubebuilder:validation:Optional
-	TeamSelector *v1.Selector `json:"teamSelector,omitempty" tf:"-"`
-
-	// Team associated with the policy (Only 1 team can be assigned to an Escalation Policy). Account must have the teams ability to use this parameter.
-	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-pagerduty/apis/team/v1alpha1.Team
-	// +crossplane:generate:reference:refFieldName=TeamRefs
-	// +crossplane:generate:reference:selectorFieldName=TeamSelector
-	// +kubebuilder:validation:Optional
-	Teams []*string `json:"teams,omitempty" tf:"teams,omitempty"`
+	TeamsSelector *v1.Selector `json:"teamsSelector,omitempty" tf:"-"`
 }
 
 type RuleInitParameters struct {

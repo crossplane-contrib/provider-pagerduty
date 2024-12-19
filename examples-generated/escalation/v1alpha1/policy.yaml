@@ -17,7 +17,7 @@ spec:
         type: user_reference
       - id: ${pagerduty_user.example2.id}
         type: user_reference
-    teamRefs:
+    teamsRefs:
     - name: example
 
 ---

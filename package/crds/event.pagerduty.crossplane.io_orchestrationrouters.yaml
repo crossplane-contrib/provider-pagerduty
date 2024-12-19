@@ -96,7 +96,8 @@ spec:
                       belongs.
                     type: string
                   eventOrchestrationRef:
-                    description: Reference to a Orchestration to populate eventOrchestration.
+                    description: Reference to a Orchestration in event to populate
+                      eventOrchestration.
                     properties:
                       name:
                         description: Name of the referenced object.
@@ -130,7 +131,8 @@ spec:
                     - name
                     type: object
                   eventOrchestrationSelector:
-                    description: Selector for a Orchestration to populate eventOrchestration.
+                    description: Selector for a Orchestration in event to populate
+                      eventOrchestration.
                     properties:
                       matchControllerRef:
                         description: |-
@@ -279,7 +281,8 @@ spec:
                       belongs.
                     type: string
                   eventOrchestrationRef:
-                    description: Reference to a Orchestration to populate eventOrchestration.
+                    description: Reference to a Orchestration in event to populate
+                      eventOrchestration.
                     properties:
                       name:
                         description: Name of the referenced object.
@@ -313,7 +316,8 @@ spec:
                     - name
                     type: object
                   eventOrchestrationSelector:
-                    description: Selector for a Orchestration to populate eventOrchestration.
+                    description: Selector for a Orchestration in event to populate
+                      eventOrchestration.
                     properties:
                       matchControllerRef:
                         description: |-

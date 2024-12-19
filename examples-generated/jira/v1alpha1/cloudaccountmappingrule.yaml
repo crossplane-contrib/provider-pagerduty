@@ -8,9 +8,7 @@ metadata:
   name: foo
 spec:
   forProvider:
-    fieldSelector:
-      matchLabels:
-        testing.upbound.io/example-name: example
+    accountMapping: PLBP09X
     name: Integration with My Web App
 
 ---
