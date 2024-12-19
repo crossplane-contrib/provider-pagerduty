@@ -97,7 +97,7 @@ spec:
                           type: array
                         urgency:
                           description: Allows you to filter events by urgency. Either
-                            high or low.
+                            high, low or null for Any urgency. Default is null.
                           type: string
                       type: object
                     type: array
@@ -155,7 +155,7 @@ spec:
                           type: array
                         urgency:
                           description: Allows you to filter events by urgency. Either
-                            high or low.
+                            high, low or null for Any urgency. Default is null.
                           type: string
                       type: object
                     type: array
@@ -400,7 +400,7 @@ spec:
                           type: array
                         urgency:
                           description: Allows you to filter events by urgency. Either
-                            high or low.
+                            high, low or null for Any urgency. Default is null.
                           type: string
                       type: object
                     type: array

@@ -1,6 +1,9 @@
 package ruleset
 
-import "github.com/crossplane/upjet/pkg/config"
+import (
+	c "github.com/crossplane-contrib/provider-pagerduty/config/common"
+	"github.com/crossplane/upjet/pkg/config"
+)
 
 // Configure configures individual resources by adding custom ResourceConfigurators.
 func Configure(p *config.Provider) {
@@ -9,7 +12,7 @@ func Configure(p *config.Provider) {
 		r.ShortGroup = "ruleset"
 		r.References = config.References{
 			"team.id": {
-				Type: "github.com/crossplane-contrib/provider-pagerduty/apis/team/v1alpha1.Team",
+				TerraformName: "pagerduty_team",
 			},
 		}
 	})
@@ -19,9 +22,9 @@ func Configure(p *config.Provider) {
 		r.ShortGroup = "ruleset"
 		r.References = config.References{
 			"ruleset": {
-				Type: "github.com/crossplane-contrib/provider-pagerduty/apis/ruleset/v1alpha1.Ruleset",
+				TerraformName: "pagerduty_ruleset",
 			},
 		}
-
+		r.ExternalName.GetExternalNameFn = c.GetExternalNameFromTfstate([]string{"ruleset_id", "id"}, '.')
 	})
 }

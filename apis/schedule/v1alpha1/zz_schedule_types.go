@@ -47,19 +47,17 @@ type LayerInitParameters struct {
 	// The start time of the schedule layer.
 	Start *string `json:"start,omitempty" tf:"start,omitempty"`
 
+	// The ordered list of users on this layer. The position of the user on the list determines their order in the layer.
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-pagerduty/apis/user/v1alpha1.User
+	Users []*string `json:"users,omitempty" tf:"users,omitempty"`
+
 	// References to User in user to populate users.
 	// +kubebuilder:validation:Optional
-	UserRefs []v1.Reference `json:"userRefs,omitempty" tf:"-"`
+	UsersRefs []v1.Reference `json:"usersRefs,omitempty" tf:"-"`
 
 	// Selector for a list of User in user to populate users.
 	// +kubebuilder:validation:Optional
-	UserSelector *v1.Selector `json:"userSelector,omitempty" tf:"-"`
-
-	// The ordered list of users on this layer. The position of the user on the list determines their order in the layer.
-	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-pagerduty/apis/user/v1alpha1.User
-	// +crossplane:generate:reference:refFieldName=UserRefs
-	// +crossplane:generate:reference:selectorFieldName=UserSelector
-	Users []*string `json:"users,omitempty" tf:"users,omitempty"`
+	UsersSelector *v1.Selector `json:"usersSelector,omitempty" tf:"-"`
 }
 
 type LayerObservation struct {
@@ -117,20 +115,18 @@ type LayerParameters struct {
 	// +kubebuilder:validation:Optional
 	Start *string `json:"start" tf:"start,omitempty"`
 
+	// The ordered list of users on this layer. The position of the user on the list determines their order in the layer.
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-pagerduty/apis/user/v1alpha1.User
+	// +kubebuilder:validation:Optional
+	Users []*string `json:"users,omitempty" tf:"users,omitempty"`
+
 	// References to User in user to populate users.
 	// +kubebuilder:validation:Optional
-	UserRefs []v1.Reference `json:"userRefs,omitempty" tf:"-"`
+	UsersRefs []v1.Reference `json:"usersRefs,omitempty" tf:"-"`
 
 	// Selector for a list of User in user to populate users.
 	// +kubebuilder:validation:Optional
-	UserSelector *v1.Selector `json:"userSelector,omitempty" tf:"-"`
-
-	// The ordered list of users on this layer. The position of the user on the list determines their order in the layer.
-	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-pagerduty/apis/user/v1alpha1.User
-	// +crossplane:generate:reference:refFieldName=UserRefs
-	// +crossplane:generate:reference:selectorFieldName=UserSelector
-	// +kubebuilder:validation:Optional
-	Users []*string `json:"users,omitempty" tf:"users,omitempty"`
+	UsersSelector *v1.Selector `json:"usersSelector,omitempty" tf:"-"`
 }
 
 type RestrictionInitParameters struct {
@@ -198,19 +194,17 @@ type ScheduleInitParameters struct {
 	// If you do pass the overflow parameter, you will get one schedule entry returned with a start of 2011-06-01T00:00:00Z and end of 2011-06-02T00:00:00Z.
 	Overflow *bool `json:"overflow,omitempty" tf:"overflow,omitempty"`
 
+	// Teams associated with the schedule.
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-pagerduty/apis/team/v1alpha1.Team
+	Teams []*string `json:"teams,omitempty" tf:"teams,omitempty"`
+
 	// References to Team in team to populate teams.
 	// +kubebuilder:validation:Optional
-	TeamRefs []v1.Reference `json:"teamRefs,omitempty" tf:"-"`
+	TeamsRefs []v1.Reference `json:"teamsRefs,omitempty" tf:"-"`
 
 	// Selector for a list of Team in team to populate teams.
 	// +kubebuilder:validation:Optional
-	TeamSelector *v1.Selector `json:"teamSelector,omitempty" tf:"-"`
-
-	// Teams associated with the schedule.
-	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-pagerduty/apis/team/v1alpha1.Team
-	// +crossplane:generate:reference:refFieldName=TeamRefs
-	// +crossplane:generate:reference:selectorFieldName=TeamSelector
-	Teams []*string `json:"teams,omitempty" tf:"teams,omitempty"`
+	TeamsSelector *v1.Selector `json:"teamsSelector,omitempty" tf:"-"`
 
 	// The time zone of the schedule (e.g. Europe/Berlin).
 	TimeZone *string `json:"timeZone,omitempty" tf:"time_zone,omitempty"`
@@ -264,20 +258,18 @@ type ScheduleParameters struct {
 	// +kubebuilder:validation:Optional
 	Overflow *bool `json:"overflow,omitempty" tf:"overflow,omitempty"`
 
+	// Teams associated with the schedule.
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-pagerduty/apis/team/v1alpha1.Team
+	// +kubebuilder:validation:Optional
+	Teams []*string `json:"teams,omitempty" tf:"teams,omitempty"`
+
 	// References to Team in team to populate teams.
 	// +kubebuilder:validation:Optional
-	TeamRefs []v1.Reference `json:"teamRefs,omitempty" tf:"-"`
+	TeamsRefs []v1.Reference `json:"teamsRefs,omitempty" tf:"-"`
 
 	// Selector for a list of Team in team to populate teams.
 	// +kubebuilder:validation:Optional
-	TeamSelector *v1.Selector `json:"teamSelector,omitempty" tf:"-"`
-
-	// Teams associated with the schedule.
-	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-pagerduty/apis/team/v1alpha1.Team
-	// +crossplane:generate:reference:refFieldName=TeamRefs
-	// +crossplane:generate:reference:selectorFieldName=TeamSelector
-	// +kubebuilder:validation:Optional
-	Teams []*string `json:"teams,omitempty" tf:"teams,omitempty"`
+	TeamsSelector *v1.Selector `json:"teamsSelector,omitempty" tf:"-"`
 
 	// The time zone of the schedule (e.g. Europe/Berlin).
 	// +kubebuilder:validation:Optional

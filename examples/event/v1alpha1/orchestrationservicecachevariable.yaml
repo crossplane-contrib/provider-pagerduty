@@ -14,7 +14,9 @@ spec:
     - ttlSeconds: 60
       type: trigger_event_count
     name: num_db_triggers
-    service: ${pagerduty_service.svc.id}
+    serviceSelector:
+      matchLabels:
+        testing.upbound.io/example-name: svc
 
 ---
 

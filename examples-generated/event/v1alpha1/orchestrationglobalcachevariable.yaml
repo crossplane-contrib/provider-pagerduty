@@ -14,7 +14,9 @@ spec:
     - regex: .*
       source: event.source
       type: recent_value
-    eventOrchestration: ${pagerduty_event_orchestration.event_orchestration.id}
+    eventOrchestrationSelector:
+      matchLabels:
+        testing.upbound.io/example-name: event_orchestration
     name: recent_host
 
 ---
@@ -49,7 +51,9 @@ spec:
     catchAll:
     - actions:
       - {}
-    eventOrchestration: ${pagerduty_event_orchestration.event_orchestration.id}
+    eventOrchestrationSelector:
+      matchLabels:
+        testing.upbound.io/example-name: event_orchestration
     set:
     - id: start
       rule:

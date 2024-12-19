@@ -53,18 +53,6 @@ func (in *WindowInitParameters) DeepCopyInto(out *WindowInitParameters) {
 		*out = new(string)
 		**out = **in
 	}
-	if in.ServiceRefs != nil {
-		in, out := &in.ServiceRefs, &out.ServiceRefs
-		*out = make([]v1.Reference, len(*in))
-		for i := range *in {
-			(*in)[i].DeepCopyInto(&(*out)[i])
-		}
-	}
-	if in.ServiceSelector != nil {
-		in, out := &in.ServiceSelector, &out.ServiceSelector
-		*out = new(v1.Selector)
-		(*in).DeepCopyInto(*out)
-	}
 	if in.Services != nil {
 		in, out := &in.Services, &out.Services
 		*out = make([]*string, len(*in))
@@ -75,6 +63,18 @@ func (in *WindowInitParameters) DeepCopyInto(out *WindowInitParameters) {
 				**out = **in
 			}
 		}
+	}
+	if in.ServicesRefs != nil {
+		in, out := &in.ServicesRefs, &out.ServicesRefs
+		*out = make([]v1.Reference, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
+	}
+	if in.ServicesSelector != nil {
+		in, out := &in.ServicesSelector, &out.ServicesSelector
+		*out = new(v1.Selector)
+		(*in).DeepCopyInto(*out)
 	}
 	if in.StartTime != nil {
 		in, out := &in.StartTime, &out.StartTime
@@ -184,18 +184,6 @@ func (in *WindowParameters) DeepCopyInto(out *WindowParameters) {
 		*out = new(string)
 		**out = **in
 	}
-	if in.ServiceRefs != nil {
-		in, out := &in.ServiceRefs, &out.ServiceRefs
-		*out = make([]v1.Reference, len(*in))
-		for i := range *in {
-			(*in)[i].DeepCopyInto(&(*out)[i])
-		}
-	}
-	if in.ServiceSelector != nil {
-		in, out := &in.ServiceSelector, &out.ServiceSelector
-		*out = new(v1.Selector)
-		(*in).DeepCopyInto(*out)
-	}
 	if in.Services != nil {
 		in, out := &in.Services, &out.Services
 		*out = make([]*string, len(*in))
@@ -206,6 +194,18 @@ func (in *WindowParameters) DeepCopyInto(out *WindowParameters) {
 				**out = **in
 			}
 		}
+	}
+	if in.ServicesRefs != nil {
+		in, out := &in.ServicesRefs, &out.ServicesRefs
+		*out = make([]v1.Reference, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
+	}
+	if in.ServicesSelector != nil {
+		in, out := &in.ServicesSelector, &out.ServicesSelector
+		*out = new(v1.Selector)
+		(*in).DeepCopyInto(*out)
 	}
 	if in.StartTime != nil {
 		in, out := &in.StartTime, &out.StartTime

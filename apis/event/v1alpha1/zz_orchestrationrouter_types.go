@@ -96,14 +96,14 @@ type OrchestrationRouterInitParameters struct {
 	CatchAll []OrchestrationRouterCatchAllInitParameters `json:"catchAll,omitempty" tf:"catch_all,omitempty"`
 
 	// ID of the Event Orchestration to which the Router belongs.
-	// +crossplane:generate:reference:type=Orchestration
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-pagerduty/apis/event/v1alpha1.Orchestration
 	EventOrchestration *string `json:"eventOrchestration,omitempty" tf:"event_orchestration,omitempty"`
 
-	// Reference to a Orchestration to populate eventOrchestration.
+	// Reference to a Orchestration in event to populate eventOrchestration.
 	// +kubebuilder:validation:Optional
 	EventOrchestrationRef *v1.Reference `json:"eventOrchestrationRef,omitempty" tf:"-"`
 
-	// Selector for a Orchestration to populate eventOrchestration.
+	// Selector for a Orchestration in event to populate eventOrchestration.
 	// +kubebuilder:validation:Optional
 	EventOrchestrationSelector *v1.Selector `json:"eventOrchestrationSelector,omitempty" tf:"-"`
 
@@ -133,15 +133,15 @@ type OrchestrationRouterParameters struct {
 	CatchAll []OrchestrationRouterCatchAllParameters `json:"catchAll,omitempty" tf:"catch_all,omitempty"`
 
 	// ID of the Event Orchestration to which the Router belongs.
-	// +crossplane:generate:reference:type=Orchestration
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-pagerduty/apis/event/v1alpha1.Orchestration
 	// +kubebuilder:validation:Optional
 	EventOrchestration *string `json:"eventOrchestration,omitempty" tf:"event_orchestration,omitempty"`
 
-	// Reference to a Orchestration to populate eventOrchestration.
+	// Reference to a Orchestration in event to populate eventOrchestration.
 	// +kubebuilder:validation:Optional
 	EventOrchestrationRef *v1.Reference `json:"eventOrchestrationRef,omitempty" tf:"-"`
 
-	// Selector for a Orchestration to populate eventOrchestration.
+	// Selector for a Orchestration in event to populate eventOrchestration.
 	// +kubebuilder:validation:Optional
 	EventOrchestrationSelector *v1.Selector `json:"eventOrchestrationSelector,omitempty" tf:"-"`
 

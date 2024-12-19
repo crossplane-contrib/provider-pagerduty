@@ -56,6 +56,132 @@ func (mg *Orchestration) ResolveReferences(ctx context.Context, c client.Reader)
 	return nil
 }
 
+// ResolveReferences of this OrchestrationGlobal.
+func (mg *OrchestrationGlobal) ResolveReferences(ctx context.Context, c client.Reader) error {
+	r := reference.NewAPIResolver(c, mg)
+
+	var rsp reference.ResolutionResponse
+	var err error
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.EventOrchestration),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.ForProvider.EventOrchestrationRef,
+		Selector:     mg.Spec.ForProvider.EventOrchestrationSelector,
+		To: reference.To{
+			List:    &OrchestrationList{},
+			Managed: &Orchestration{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.EventOrchestration")
+	}
+	mg.Spec.ForProvider.EventOrchestration = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.EventOrchestrationRef = rsp.ResolvedReference
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.EventOrchestration),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.InitProvider.EventOrchestrationRef,
+		Selector:     mg.Spec.InitProvider.EventOrchestrationSelector,
+		To: reference.To{
+			List:    &OrchestrationList{},
+			Managed: &Orchestration{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.InitProvider.EventOrchestration")
+	}
+	mg.Spec.InitProvider.EventOrchestration = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.EventOrchestrationRef = rsp.ResolvedReference
+
+	return nil
+}
+
+// ResolveReferences of this OrchestrationGlobalCacheVariable.
+func (mg *OrchestrationGlobalCacheVariable) ResolveReferences(ctx context.Context, c client.Reader) error {
+	r := reference.NewAPIResolver(c, mg)
+
+	var rsp reference.ResolutionResponse
+	var err error
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.EventOrchestration),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.ForProvider.EventOrchestrationRef,
+		Selector:     mg.Spec.ForProvider.EventOrchestrationSelector,
+		To: reference.To{
+			List:    &OrchestrationList{},
+			Managed: &Orchestration{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.EventOrchestration")
+	}
+	mg.Spec.ForProvider.EventOrchestration = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.EventOrchestrationRef = rsp.ResolvedReference
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.EventOrchestration),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.InitProvider.EventOrchestrationRef,
+		Selector:     mg.Spec.InitProvider.EventOrchestrationSelector,
+		To: reference.To{
+			List:    &OrchestrationList{},
+			Managed: &Orchestration{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.InitProvider.EventOrchestration")
+	}
+	mg.Spec.InitProvider.EventOrchestration = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.EventOrchestrationRef = rsp.ResolvedReference
+
+	return nil
+}
+
+// ResolveReferences of this OrchestrationIntegration.
+func (mg *OrchestrationIntegration) ResolveReferences(ctx context.Context, c client.Reader) error {
+	r := reference.NewAPIResolver(c, mg)
+
+	var rsp reference.ResolutionResponse
+	var err error
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.EventOrchestration),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.ForProvider.EventOrchestrationRef,
+		Selector:     mg.Spec.ForProvider.EventOrchestrationSelector,
+		To: reference.To{
+			List:    &OrchestrationList{},
+			Managed: &Orchestration{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.EventOrchestration")
+	}
+	mg.Spec.ForProvider.EventOrchestration = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.EventOrchestrationRef = rsp.ResolvedReference
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.EventOrchestration),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.InitProvider.EventOrchestrationRef,
+		Selector:     mg.Spec.InitProvider.EventOrchestrationSelector,
+		To: reference.To{
+			List:    &OrchestrationList{},
+			Managed: &Orchestration{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.InitProvider.EventOrchestration")
+	}
+	mg.Spec.InitProvider.EventOrchestration = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.EventOrchestrationRef = rsp.ResolvedReference
+
+	return nil
+}
+
 // ResolveReferences of this OrchestrationRouter.
 func (mg *OrchestrationRouter) ResolveReferences(ctx context.Context, c client.Reader) error {
 	r := reference.NewAPIResolver(c, mg)
@@ -129,6 +255,48 @@ func (mg *OrchestrationService) ResolveReferences(ctx context.Context, c client.
 		To: reference.To{
 			List:    &v1alpha11.ServiceList{},
 			Managed: &v1alpha11.Service{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.InitProvider.Service")
+	}
+	mg.Spec.InitProvider.Service = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.ServiceRef = rsp.ResolvedReference
+
+	return nil
+}
+
+// ResolveReferences of this OrchestrationServiceCacheVariable.
+func (mg *OrchestrationServiceCacheVariable) ResolveReferences(ctx context.Context, c client.Reader) error {
+	r := reference.NewAPIResolver(c, mg)
+
+	var rsp reference.ResolutionResponse
+	var err error
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.Service),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.ForProvider.ServiceRef,
+		Selector:     mg.Spec.ForProvider.ServiceSelector,
+		To: reference.To{
+			List:    &OrchestrationServiceList{},
+			Managed: &OrchestrationService{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.Service")
+	}
+	mg.Spec.ForProvider.Service = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.ServiceRef = rsp.ResolvedReference
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.Service),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.InitProvider.ServiceRef,
+		Selector:     mg.Spec.InitProvider.ServiceSelector,
+		To: reference.To{
+			List:    &OrchestrationServiceList{},
+			Managed: &OrchestrationService{},
 		},
 	})
 	if err != nil {

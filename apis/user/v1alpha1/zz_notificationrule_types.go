@@ -26,14 +26,14 @@ type NotificationRuleInitParameters struct {
 	Urgency *string `json:"urgency,omitempty" tf:"urgency,omitempty"`
 
 	// The ID of the user.
-	// +crossplane:generate:reference:type=User
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-pagerduty/apis/user/v1alpha1.User
 	UserID *string `json:"userId,omitempty" tf:"user_id,omitempty"`
 
-	// Reference to a User to populate userId.
+	// Reference to a User in user to populate userId.
 	// +kubebuilder:validation:Optional
 	UserIDRef *v1.Reference `json:"userIdRef,omitempty" tf:"-"`
 
-	// Selector for a User to populate userId.
+	// Selector for a User in user to populate userId.
 	// +kubebuilder:validation:Optional
 	UserIDSelector *v1.Selector `json:"userIdSelector,omitempty" tf:"-"`
 }
@@ -73,15 +73,15 @@ type NotificationRuleParameters struct {
 	Urgency *string `json:"urgency,omitempty" tf:"urgency,omitempty"`
 
 	// The ID of the user.
-	// +crossplane:generate:reference:type=User
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-pagerduty/apis/user/v1alpha1.User
 	// +kubebuilder:validation:Optional
 	UserID *string `json:"userId,omitempty" tf:"user_id,omitempty"`
 
-	// Reference to a User to populate userId.
+	// Reference to a User in user to populate userId.
 	// +kubebuilder:validation:Optional
 	UserIDRef *v1.Reference `json:"userIdRef,omitempty" tf:"-"`
 
-	// Selector for a User to populate userId.
+	// Selector for a User in user to populate userId.
 	// +kubebuilder:validation:Optional
 	UserIDSelector *v1.Selector `json:"userIdSelector,omitempty" tf:"-"`
 }

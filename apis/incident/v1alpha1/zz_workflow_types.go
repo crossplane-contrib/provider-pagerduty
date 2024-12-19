@@ -205,7 +205,16 @@ type WorkflowInitParameters struct {
 	Step []StepInitParameters `json:"step,omitempty" tf:"step,omitempty"`
 
 	// A team ID. If specified then workflow edit permissions will be scoped to members of this team.
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-pagerduty/apis/team/v1alpha1.Team
 	Team *string `json:"team,omitempty" tf:"team,omitempty"`
+
+	// Reference to a Team in team to populate team.
+	// +kubebuilder:validation:Optional
+	TeamRef *v1.Reference `json:"teamRef,omitempty" tf:"-"`
+
+	// Selector for a Team in team to populate team.
+	// +kubebuilder:validation:Optional
+	TeamSelector *v1.Selector `json:"teamSelector,omitempty" tf:"-"`
 }
 
 type WorkflowObservation struct {
@@ -241,8 +250,17 @@ type WorkflowParameters struct {
 	Step []StepParameters `json:"step,omitempty" tf:"step,omitempty"`
 
 	// A team ID. If specified then workflow edit permissions will be scoped to members of this team.
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-pagerduty/apis/team/v1alpha1.Team
 	// +kubebuilder:validation:Optional
 	Team *string `json:"team,omitempty" tf:"team,omitempty"`
+
+	// Reference to a Team in team to populate team.
+	// +kubebuilder:validation:Optional
+	TeamRef *v1.Reference `json:"teamRef,omitempty" tf:"-"`
+
+	// Selector for a Team in team to populate team.
+	// +kubebuilder:validation:Optional
+	TeamSelector *v1.Selector `json:"teamSelector,omitempty" tf:"-"`
 }
 
 // WorkflowSpec defines the desired state of Workflow

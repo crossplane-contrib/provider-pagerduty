@@ -18,6 +18,7 @@ import (
 	v1alpha1event "github.com/crossplane-contrib/provider-pagerduty/apis/event/v1alpha1"
 	v1alpha1extensions "github.com/crossplane-contrib/provider-pagerduty/apis/extensions/v1alpha1"
 	v1alpha1incident "github.com/crossplane-contrib/provider-pagerduty/apis/incident/v1alpha1"
+	v1alpha1jira "github.com/crossplane-contrib/provider-pagerduty/apis/jira/v1alpha1"
 	v1alpha1maintenance "github.com/crossplane-contrib/provider-pagerduty/apis/maintenance/v1alpha1"
 	v1alpha1response "github.com/crossplane-contrib/provider-pagerduty/apis/response/v1alpha1"
 	v1alpha1ruleset "github.com/crossplane-contrib/provider-pagerduty/apis/ruleset/v1alpha1"
@@ -43,6 +44,7 @@ func init() {
 		v1alpha1event.SchemeBuilder.AddToScheme,
 		v1alpha1extensions.SchemeBuilder.AddToScheme,
 		v1alpha1incident.SchemeBuilder.AddToScheme,
+		v1alpha1jira.SchemeBuilder.AddToScheme,
 		v1alpha1maintenance.SchemeBuilder.AddToScheme,
 		v1alpha1response.SchemeBuilder.AddToScheme,
 		v1alpha1ruleset.SchemeBuilder.AddToScheme,

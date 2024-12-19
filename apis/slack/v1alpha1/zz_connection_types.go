@@ -21,7 +21,7 @@ type ConfigInitParameters struct {
 	// Allows you to filter events by priority. Needs to be an array of PagerDuty priority IDs. Available through pagerduty_priority data source.
 	Priorities []*string `json:"priorities,omitempty" tf:"priorities,omitempty"`
 
-	// Allows you to filter events by urgency. Either high or low.
+	// Allows you to filter events by urgency. Either high, low or null for Any urgency. Default is null.
 	Urgency *string `json:"urgency,omitempty" tf:"urgency,omitempty"`
 }
 
@@ -33,7 +33,7 @@ type ConfigObservation struct {
 	// Allows you to filter events by priority. Needs to be an array of PagerDuty priority IDs. Available through pagerduty_priority data source.
 	Priorities []*string `json:"priorities,omitempty" tf:"priorities,omitempty"`
 
-	// Allows you to filter events by urgency. Either high or low.
+	// Allows you to filter events by urgency. Either high, low or null for Any urgency. Default is null.
 	Urgency *string `json:"urgency,omitempty" tf:"urgency,omitempty"`
 }
 
@@ -47,7 +47,7 @@ type ConfigParameters struct {
 	// +kubebuilder:validation:Optional
 	Priorities []*string `json:"priorities,omitempty" tf:"priorities,omitempty"`
 
-	// Allows you to filter events by urgency. Either high or low.
+	// Allows you to filter events by urgency. Either high, low or null for Any urgency. Default is null.
 	// +kubebuilder:validation:Optional
 	Urgency *string `json:"urgency,omitempty" tf:"urgency,omitempty"`
 }

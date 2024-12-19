@@ -11,7 +11,9 @@ spec:
     catchAll:
     - actions:
       - {}
-    eventOrchestration: ${pagerduty_event_orchestration.event_orchestration.id}
+    eventOrchestrationSelector:
+      matchLabels:
+        testing.upbound.io/example-name: event_orchestration
     set:
     - id: start
       rule:

@@ -118,7 +118,14 @@ spec:
                         start:
                           description: The start time of the schedule layer.
                           type: string
-                        userRefs:
+                        users:
+                          description: The ordered list of users on this layer. The
+                            position of the user on the list determines their order
+                            in the layer.
+                          items:
+                            type: string
+                          type: array
+                        usersRefs:
                           description: References to User in user to populate users.
                           items:
                             description: A Reference to a named object.
@@ -155,7 +162,7 @@ spec:
                             - name
                             type: object
                           type: array
-                        userSelector:
+                        usersSelector:
                           description: Selector for a list of User in user to populate
                             users.
                           properties:
@@ -196,13 +203,6 @@ spec:
                                   type: string
                               type: object
                           type: object
-                        users:
-                          description: The ordered list of users on this layer. The
-                            position of the user on the list determines their order
-                            in the layer.
-                          items:
-                            type: string
-                          type: array
                       type: object
                     type: array
                   name:
@@ -214,7 +214,12 @@ spec:
                       If you don't pass the overflow=true parameter, you will get one schedule entry returned with a start of 2011-06-01T10:00:00Z and end of 2011-06-01T14:00:00Z.
                       If you do pass the overflow parameter, you will get one schedule entry returned with a start of 2011-06-01T00:00:00Z and end of 2011-06-02T00:00:00Z.
                     type: boolean
-                  teamRefs:
+                  teams:
+                    description: Teams associated with the schedule.
+                    items:
+                      type: string
+                    type: array
+                  teamsRefs:
                     description: References to Team in team to populate teams.
                     items:
                       description: A Reference to a named object.
@@ -251,7 +256,7 @@ spec:
                       - name
                       type: object
                     type: array
-                  teamSelector:
+                  teamsSelector:
                     description: Selector for a list of Team in team to populate teams.
                     properties:
                       matchControllerRef:
@@ -291,11 +296,6 @@ spec:
                             type: string
                         type: object
                     type: object
-                  teams:
-                    description: Teams associated with the schedule.
-                    items:
-                      type: string
-                    type: array
                   timeZone:
                     description: The time zone of the schedule (e.g. Europe/Berlin).
                     type: string
@@ -358,7 +358,14 @@ spec:
                         start:
                           description: The start time of the schedule layer.
                           type: string
-                        userRefs:
+                        users:
+                          description: The ordered list of users on this layer. The
+                            position of the user on the list determines their order
+                            in the layer.
+                          items:
+                            type: string
+                          type: array
+                        usersRefs:
                           description: References to User in user to populate users.
                           items:
                             description: A Reference to a named object.
@@ -395,7 +402,7 @@ spec:
                             - name
                             type: object
                           type: array
-                        userSelector:
+                        usersSelector:
                           description: Selector for a list of User in user to populate
                             users.
                           properties:
@@ -436,13 +443,6 @@ spec:
                                   type: string
                               type: object
                           type: object
-                        users:
-                          description: The ordered list of users on this layer. The
-                            position of the user on the list determines their order
-                            in the layer.
-                          items:
-                            type: string
-                          type: array
                       type: object
                     type: array
                   name:
@@ -454,7 +454,12 @@ spec:
                       If you don't pass the overflow=true parameter, you will get one schedule entry returned with a start of 2011-06-01T10:00:00Z and end of 2011-06-01T14:00:00Z.
                       If you do pass the overflow parameter, you will get one schedule entry returned with a start of 2011-06-01T00:00:00Z and end of 2011-06-02T00:00:00Z.
                     type: boolean
-                  teamRefs:
+                  teams:
+                    description: Teams associated with the schedule.
+                    items:
+                      type: string
+                    type: array
+                  teamsRefs:
                     description: References to Team in team to populate teams.
                     items:
                       description: A Reference to a named object.
@@ -491,7 +496,7 @@ spec:
                       - name
                       type: object
                     type: array
-                  teamSelector:
+                  teamsSelector:
                     description: Selector for a list of Team in team to populate teams.
                     properties:
                       matchControllerRef:
@@ -531,11 +536,6 @@ spec:
                             type: string
                         type: object
                     type: object
-                  teams:
-                    description: Teams associated with the schedule.
-                    items:
-                      type: string
-                    type: array
                   timeZone:
                     description: The time zone of the schedule (e.g. Europe/Berlin).
                     type: string

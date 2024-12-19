@@ -16,7 +16,16 @@ import (
 type OrchestrationIntegrationInitParameters struct {
 
 	// ID of the Event Orchestration to which this Integration belongs to. If value is changed, current Integration is associated with a newly provided ID.
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-pagerduty/apis/event/v1alpha1.Orchestration
 	EventOrchestration *string `json:"eventOrchestration,omitempty" tf:"event_orchestration,omitempty"`
+
+	// Reference to a Orchestration in event to populate eventOrchestration.
+	// +kubebuilder:validation:Optional
+	EventOrchestrationRef *v1.Reference `json:"eventOrchestrationRef,omitempty" tf:"-"`
+
+	// Selector for a Orchestration in event to populate eventOrchestration.
+	// +kubebuilder:validation:Optional
+	EventOrchestrationSelector *v1.Selector `json:"eventOrchestrationSelector,omitempty" tf:"-"`
 
 	// Name/description of the Integration.
 	Label *string `json:"label,omitempty" tf:"label,omitempty"`
@@ -39,8 +48,17 @@ type OrchestrationIntegrationObservation struct {
 type OrchestrationIntegrationParameters struct {
 
 	// ID of the Event Orchestration to which this Integration belongs to. If value is changed, current Integration is associated with a newly provided ID.
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-pagerduty/apis/event/v1alpha1.Orchestration
 	// +kubebuilder:validation:Optional
 	EventOrchestration *string `json:"eventOrchestration,omitempty" tf:"event_orchestration,omitempty"`
+
+	// Reference to a Orchestration in event to populate eventOrchestration.
+	// +kubebuilder:validation:Optional
+	EventOrchestrationRef *v1.Reference `json:"eventOrchestrationRef,omitempty" tf:"-"`
+
+	// Selector for a Orchestration in event to populate eventOrchestration.
+	// +kubebuilder:validation:Optional
+	EventOrchestrationSelector *v1.Selector `json:"eventOrchestrationSelector,omitempty" tf:"-"`
 
 	// Name/description of the Integration.
 	// +kubebuilder:validation:Optional
@@ -98,7 +116,6 @@ type OrchestrationIntegrationStatus struct {
 type OrchestrationIntegration struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.eventOrchestration) || (has(self.initProvider) && has(self.initProvider.eventOrchestration))",message="spec.forProvider.eventOrchestration is a required parameter"
 	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.label) || (has(self.initProvider) && has(self.initProvider.label))",message="spec.forProvider.label is a required parameter"
 	Spec   OrchestrationIntegrationSpec   `json:"spec"`
 	Status OrchestrationIntegrationStatus `json:"status,omitempty"`

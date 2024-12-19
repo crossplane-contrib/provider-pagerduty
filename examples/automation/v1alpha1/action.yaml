@@ -1,0 +1,15 @@
+apiVersion: automation.actions.pagerduty.crossplane.io/v1alpha1
+kind: Action
+metadata:
+  annotations:
+    meta.upbound.io/example-id: automation/v1alpha1/action
+  labels:
+    testing.upbound.io/example-name: pa_action_example
+  name: pa-action-example
+spec:
+  forProvider:
+    actionDataReference:
+    - processAutomationJobId: P123456
+    actionType: process_automation
+    description: Description of the PA Action created via TF
+    name: PA Action created via TF

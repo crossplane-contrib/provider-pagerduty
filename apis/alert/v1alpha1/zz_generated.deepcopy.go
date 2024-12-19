@@ -9,6 +9,7 @@ Copyright 2022 Upbound Inc.
 package v1alpha1
 
 import (
+	"github.com/crossplane/crossplane-runtime/apis/common/v1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 )
 
@@ -193,6 +194,18 @@ func (in *GroupingSettingInitParameters) DeepCopyInto(out *GroupingSettingInitPa
 			}
 		}
 	}
+	if in.ServicesRefs != nil {
+		in, out := &in.ServicesRefs, &out.ServicesRefs
+		*out = make([]v1.Reference, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
+	}
+	if in.ServicesSelector != nil {
+		in, out := &in.ServicesSelector, &out.ServicesSelector
+		*out = new(v1.Selector)
+		(*in).DeepCopyInto(*out)
+	}
 	if in.Type != nil {
 		in, out := &in.Type, &out.Type
 		*out = new(string)
@@ -325,6 +338,18 @@ func (in *GroupingSettingParameters) DeepCopyInto(out *GroupingSettingParameters
 				**out = **in
 			}
 		}
+	}
+	if in.ServicesRefs != nil {
+		in, out := &in.ServicesRefs, &out.ServicesRefs
+		*out = make([]v1.Reference, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
+	}
+	if in.ServicesSelector != nil {
+		in, out := &in.ServicesSelector, &out.ServicesSelector
+		*out = new(v1.Selector)
+		(*in).DeepCopyInto(*out)
 	}
 	if in.Type != nil {
 		in, out := &in.Type, &out.Type

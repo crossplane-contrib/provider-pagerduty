@@ -9,14 +9,10 @@ func Configure(p *config.Provider) {
 		r.ShortGroup = "schedule"
 		r.References = config.References{
 			"teams": {
-				Type:              "github.com/crossplane-contrib/provider-pagerduty/apis/team/v1alpha1.Team",
-				RefFieldName:      "TeamRefs",
-				SelectorFieldName: "TeamSelector",
+				TerraformName: "pagerduty_team",
 			},
 			"layer.users": {
-				Type:              "github.com/crossplane-contrib/provider-pagerduty/apis/user/v1alpha1.User",
-				RefFieldName:      "UserRefs",
-				SelectorFieldName: "UserSelector",
+				TerraformName: "pagerduty_user",
 			},
 		}
 	})
