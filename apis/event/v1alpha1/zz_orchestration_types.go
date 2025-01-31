@@ -23,6 +23,7 @@ type IntegrationObservation struct {
 
 	Label *string `json:"label,omitempty" tf:"label,omitempty"`
 
+	// A single-item list containing a parameter object describing the integration
 	Parameters []ParametersObservation `json:"parameters,omitempty" tf:"parameters,omitempty"`
 }
 
@@ -34,7 +35,7 @@ type OrchestrationInitParameters struct {
 	// A human-friendly description of the Event Orchestration.
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
 
-	// An integration for the Event Orchestration.
+	// A list of integrations for the Event Orchestration.
 	Integration []IntegrationInitParameters `json:"integration,omitempty" tf:"integration,omitempty"`
 
 	// Name of the Event Orchestration.
@@ -61,7 +62,7 @@ type OrchestrationObservation struct {
 	// The ID of the Event Orchestration.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
-	// An integration for the Event Orchestration.
+	// A list of integrations for the Event Orchestration.
 	Integration []IntegrationObservation `json:"integration,omitempty" tf:"integration,omitempty"`
 
 	// Name of the Event Orchestration.
@@ -79,7 +80,7 @@ type OrchestrationParameters struct {
 	// +kubebuilder:validation:Optional
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
 
-	// An integration for the Event Orchestration.
+	// A list of integrations for the Event Orchestration.
 	// +kubebuilder:validation:Optional
 	Integration []IntegrationParameters `json:"integration,omitempty" tf:"integration,omitempty"`
 

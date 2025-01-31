@@ -448,9 +448,9 @@ resources:
         argumentDocs:
             description: '- (Optional) A human-friendly description of the Event Orchestration.'
             id: '- The ID of the Event Orchestration.'
-            integration: '- An integration for the Event Orchestration.'
+            integration: '- A list of integrations for the Event Orchestration.'
             name: '- (Required) Name of the Event Orchestration.'
-            parameters: ""
+            parameters: '- A single-item list containing a parameter object describing the integration'
             routing_key: '- Routing key that routes to this Orchestration.'
             team: '- (Optional) ID of the team that owns the Event Orchestration. If none is specified, only admins have access.'
             type: '- Type of the routing key. global is the default type.'
@@ -1472,6 +1472,91 @@ resources:
             field: '- (Required) The ID of the field.'
             id: '- The ID of the field option.'
             value: '- (Required) The allowed value.'
+        importStatements: []
+    pagerduty_incident_type:
+        subCategory: ""
+        description: Creates and manages a incident_type in PagerDuty.
+        name: pagerduty_incident_type
+        title: pagerduty_incident_type
+        examples:
+            - name: example
+              manifest: |-
+                {
+                  "description": "Internal incidents not facing customer",
+                  "display_name": "Backoffice Incident",
+                  "name": "backoffice",
+                  "parent_type": "${data.pagerduty_incident_type.base.id}"
+                }
+              references:
+                parent_type: data.pagerduty_incident_type.base.id
+        argumentDocs:
+            description: '- A succinct description of the Incident Type.'
+            display_name: '- (Required) The display name of the Incident Type. Usage of the prefixes PD, PagerDuty, or the suffixes Default, or (Default) is prohibited.'
+            enabled: '- State of this Incident Type object. Defaults to true if not provided.'
+            id: '- The unique identifier of the incident type.'
+            name: '- (Required) The name of the Incident Type. Usage of the suffix _default is prohibited. This cannot be changed once the incident type has been created.'
+            parent_type: '- (Required) The parent type of the Incident Type. Either name or id of the parent type can be used.'
+            type: '- A string that determines the schema of the object.'
+        importStatements: []
+    pagerduty_incident_type_custom_field:
+        subCategory: ""
+        description: Creates and manages a incident type custom field in PagerDuty.
+        name: pagerduty_incident_type_custom_field
+        title: pagerduty_incident_type_custom_field
+        examples:
+            - name: alarm_time
+              manifest: |-
+                {
+                  "data_type": "integer",
+                  "default_value": "${jsonencode(5)}",
+                  "display_name": "Alarm Time",
+                  "field_type": "single_value",
+                  "incident_type": "incident_default",
+                  "name": "alarm_time_minutes"
+                }
+            - name: level
+              manifest: |-
+                {
+                  "data_type": "string",
+                  "display_name": "Level",
+                  "field_options": [
+                    "Trace",
+                    "Debug",
+                    "Info",
+                    "Warn",
+                    "Error",
+                    "Fatal"
+                  ],
+                  "field_type": "single_value_fixed",
+                  "incident_type": "${data.pagerduty_incident_type.foo.id}",
+                  "name": "level"
+                }
+              references:
+                incident_type: data.pagerduty_incident_type.foo.id
+            - name: cs_impact
+              manifest: |-
+                {
+                  "data_type": "string",
+                  "display_name": "Customer Impact",
+                  "field_type": "multi_value",
+                  "incident_type": "${data.pagerduty_incident_type.foo.id}",
+                  "name": "impact"
+                }
+              references:
+                incident_type: data.pagerduty_incident_type.foo.id
+        argumentDocs:
+            data_type: '- (Required) [Updating causes resource replacement] The type of the data of this custom field. Can be one of string, integer, float, boolean, datetime, or url when data_type is single_value, otherwise must be string. Update'
+            default_value: '- The default value to set when new incidents are created. Always specified as a string.'
+            description: '- The description of the custom field.'
+            display_name: '- (Required) The display name of the custom Type.'
+            enabled: '- Whether the custom field is enabled. Defaults to true if not provided.'
+            field_options: '- The options for the custom field. Can only be applied to fields with a type of single_value_fixed or multi_value_fixed.'
+            field_type: '- (Required) [Updating causes resource replacement] The field type of the field. Must be one of single_value, single_value_fixed, multi_value, or multi_value_fixed.'
+            id: '- The ID of the field.'
+            incident_type: '- (Required) [Updating causes resource replacement] The id of the incident type the custom field is associated with.'
+            name: '- (Required) [Updating causes resource replacement] The name of the custom field.'
+            self: '- The API show URL at which the object is accessible.'
+            summary: '- A short-form, server-generated string that provides succinct, important information about an object suitable for primary labeling of an entity in a client. In many cases, this will be identical to name, though it is not intended to be an identifier.'
         importStatements: []
     pagerduty_incident_workflow:
         subCategory: ""

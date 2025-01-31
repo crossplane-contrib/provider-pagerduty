@@ -4,18 +4,18 @@ kind: CustomResourceDefinition
 metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.14.0
-  name: orchestrations.event.pagerduty.crossplane.io
+  name: incidenttypes.incident.pagerduty.crossplane.io
 spec:
-  group: event.pagerduty.crossplane.io
+  group: incident.pagerduty.crossplane.io
   names:
     categories:
     - crossplane
     - managed
     - pagerduty
-    kind: Orchestration
-    listKind: OrchestrationList
-    plural: orchestrations
-    singular: orchestration
+    kind: IncidentType
+    listKind: IncidentTypeList
+    plural: incidenttypes
+    singular: incidenttype
   scope: Cluster
   versions:
   - additionalPrinterColumns:
@@ -34,8 +34,8 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: Orchestration is the Schema for the Orchestrations API. Creates
-          and manages an Event Orchestration in PagerDuty.
+        description: IncidentType is the Schema for the IncidentTypes API. Creates
+          and manages a incident_type in PagerDuty.
         properties:
           apiVersion:
             description: |-
@@ -55,7 +55,7 @@ spec:
           metadata:
             type: object
           spec:
-            description: OrchestrationSpec defines the desired state of Orchestration
+            description: IncidentTypeSpec defines the desired state of IncidentType
             properties:
               deletionPolicy:
                 default: Delete
@@ -74,22 +74,29 @@ spec:
               forProvider:
                 properties:
                   description:
-                    description: A human-friendly description of the Event Orchestration.
+                    description: A succinct description of the Incident Type.
                     type: string
-                  integration:
-                    description: A list of integrations for the Event Orchestration.
-                    items:
-                      type: object
-                    type: array
+                  displayName:
+                    description: The display name of the Incident Type. Usage of the
+                      prefixes PD, PagerDuty, or the suffixes Default, or (Default)
+                      is prohibited.
+                    type: string
+                  enabled:
+                    description: State of this Incident Type object. Defaults to true
+                      if not provided.
+                    type: boolean
                   name:
-                    description: Name of the Event Orchestration.
+                    description: The name of the Incident Type. Usage of the suffix
+                      _default is prohibited. This cannot be changed once the incident
+                      type has been created.
                     type: string
-                  team:
-                    description: ID of the team that owns the Event Orchestration.
-                      If none is specified, only admins have access.
+                  parentType:
+                    description: The parent type of the Incident Type. Either name
+                      or id of the parent type can be used.
                     type: string
-                  teamRef:
-                    description: Reference to a Team in team to populate team.
+                  parentTypeRef:
+                    description: Reference to a IncidentType in incident to populate
+                      parentType.
                     properties:
                       name:
                         description: Name of the referenced object.
@@ -122,8 +129,9 @@ spec:
                     required:
                     - name
                     type: object
-                  teamSelector:
-                    description: Selector for a Team in team to populate team.
+                  parentTypeSelector:
+                    description: Selector for a IncidentType in incident to populate
+                      parentType.
                     properties:
                       matchControllerRef:
                         description: |-
@@ -177,22 +185,29 @@ spec:
                   autoscaler.
                 properties:
                   description:
-                    description: A human-friendly description of the Event Orchestration.
+                    description: A succinct description of the Incident Type.
                     type: string
-                  integration:
-                    description: A list of integrations for the Event Orchestration.
-                    items:
-                      type: object
-                    type: array
+                  displayName:
+                    description: The display name of the Incident Type. Usage of the
+                      prefixes PD, PagerDuty, or the suffixes Default, or (Default)
+                      is prohibited.
+                    type: string
+                  enabled:
+                    description: State of this Incident Type object. Defaults to true
+                      if not provided.
+                    type: boolean
                   name:
-                    description: Name of the Event Orchestration.
+                    description: The name of the Incident Type. Usage of the suffix
+                      _default is prohibited. This cannot be changed once the incident
+                      type has been created.
                     type: string
-                  team:
-                    description: ID of the team that owns the Event Orchestration.
-                      If none is specified, only admins have access.
+                  parentType:
+                    description: The parent type of the Incident Type. Either name
+                      or id of the parent type can be used.
                     type: string
-                  teamRef:
-                    description: Reference to a Team in team to populate team.
+                  parentTypeRef:
+                    description: Reference to a IncidentType in incident to populate
+                      parentType.
                     properties:
                       name:
                         description: Name of the referenced object.
@@ -225,8 +240,9 @@ spec:
                     required:
                     - name
                     type: object
-                  teamSelector:
-                    description: Selector for a Team in team to populate team.
+                  parentTypeSelector:
+                    description: Selector for a IncidentType in incident to populate
+                      parentType.
                     properties:
                       matchControllerRef:
                         description: |-
@@ -434,54 +450,45 @@ spec:
             - forProvider
             type: object
             x-kubernetes-validations:
+            - message: spec.forProvider.displayName is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.displayName)
+                || (has(self.initProvider) && has(self.initProvider.displayName))'
             - message: spec.forProvider.name is a required parameter
               rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
                 || ''Update'' in self.managementPolicies) || has(self.forProvider.name)
                 || (has(self.initProvider) && has(self.initProvider.name))'
           status:
-            description: OrchestrationStatus defines the observed state of Orchestration.
+            description: IncidentTypeStatus defines the observed state of IncidentType.
             properties:
               atProvider:
                 properties:
                   description:
-                    description: A human-friendly description of the Event Orchestration.
+                    description: A succinct description of the Incident Type.
                     type: string
+                  displayName:
+                    description: The display name of the Incident Type. Usage of the
+                      prefixes PD, PagerDuty, or the suffixes Default, or (Default)
+                      is prohibited.
+                    type: string
+                  enabled:
+                    description: State of this Incident Type object. Defaults to true
+                      if not provided.
+                    type: boolean
                   id:
-                    description: The ID of the Event Orchestration.
+                    description: The unique identifier of the incident type.
                     type: string
-                  integration:
-                    description: A list of integrations for the Event Orchestration.
-                    items:
-                      properties:
-                        id:
-                          description: The ID of the Event Orchestration.
-                          type: string
-                        label:
-                          type: string
-                        parameters:
-                          description: A single-item list containing a parameter object
-                            describing the integration
-                          items:
-                            properties:
-                              routingKey:
-                                description: Routing key that routes to this Orchestration.
-                                type: string
-                              type:
-                                description: Type of the routing key. global is the
-                                  default type.
-                                type: string
-                            type: object
-                          type: array
-                      type: object
-                    type: array
                   name:
-                    description: Name of the Event Orchestration.
+                    description: The name of the Incident Type. Usage of the suffix
+                      _default is prohibited. This cannot be changed once the incident
+                      type has been created.
                     type: string
-                  routes:
-                    type: number
-                  team:
-                    description: ID of the team that owns the Event Orchestration.
-                      If none is specified, only admins have access.
+                  parentType:
+                    description: The parent type of the Incident Type. Either name
+                      or id of the parent type can be used.
+                    type: string
+                  type:
+                    description: A string that determines the schema of the object.
                     type: string
                 type: object
               conditions:

@@ -55,6 +55,90 @@ func (mg *CustomFieldOption) ResolveReferences(ctx context.Context, c client.Rea
 	return nil
 }
 
+// ResolveReferences of this IncidentType.
+func (mg *IncidentType) ResolveReferences(ctx context.Context, c client.Reader) error {
+	r := reference.NewAPIResolver(c, mg)
+
+	var rsp reference.ResolutionResponse
+	var err error
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.ParentType),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.ForProvider.ParentTypeRef,
+		Selector:     mg.Spec.ForProvider.ParentTypeSelector,
+		To: reference.To{
+			List:    &IncidentTypeList{},
+			Managed: &IncidentType{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.ParentType")
+	}
+	mg.Spec.ForProvider.ParentType = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.ParentTypeRef = rsp.ResolvedReference
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.ParentType),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.InitProvider.ParentTypeRef,
+		Selector:     mg.Spec.InitProvider.ParentTypeSelector,
+		To: reference.To{
+			List:    &IncidentTypeList{},
+			Managed: &IncidentType{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.InitProvider.ParentType")
+	}
+	mg.Spec.InitProvider.ParentType = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.ParentTypeRef = rsp.ResolvedReference
+
+	return nil
+}
+
+// ResolveReferences of this TypeCustomField.
+func (mg *TypeCustomField) ResolveReferences(ctx context.Context, c client.Reader) error {
+	r := reference.NewAPIResolver(c, mg)
+
+	var rsp reference.ResolutionResponse
+	var err error
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.IncidentType),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.ForProvider.IncidentTypeRef,
+		Selector:     mg.Spec.ForProvider.IncidentTypeSelector,
+		To: reference.To{
+			List:    &IncidentTypeList{},
+			Managed: &IncidentType{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.IncidentType")
+	}
+	mg.Spec.ForProvider.IncidentType = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.IncidentTypeRef = rsp.ResolvedReference
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.IncidentType),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.InitProvider.IncidentTypeRef,
+		Selector:     mg.Spec.InitProvider.IncidentTypeSelector,
+		To: reference.To{
+			List:    &IncidentTypeList{},
+			Managed: &IncidentType{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.InitProvider.IncidentType")
+	}
+	mg.Spec.InitProvider.IncidentType = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.IncidentTypeRef = rsp.ResolvedReference
+
+	return nil
+}
+
 // ResolveReferences of this Workflow.
 func (mg *Workflow) ResolveReferences(ctx context.Context, c client.Reader) error {
 	r := reference.NewAPIResolver(c, mg)

@@ -32,6 +32,8 @@ import (
 	servicenow "github.com/crossplane-contrib/provider-pagerduty/internal/controller/extensions/servicenow"
 	customfield "github.com/crossplane-contrib/provider-pagerduty/internal/controller/incident/customfield"
 	customfieldoption "github.com/crossplane-contrib/provider-pagerduty/internal/controller/incident/customfieldoption"
+	incidenttype "github.com/crossplane-contrib/provider-pagerduty/internal/controller/incident/incidenttype"
+	typecustomfield "github.com/crossplane-contrib/provider-pagerduty/internal/controller/incident/typecustomfield"
 	workflow "github.com/crossplane-contrib/provider-pagerduty/internal/controller/incident/workflow"
 	workflowtrigger "github.com/crossplane-contrib/provider-pagerduty/internal/controller/incident/workflowtrigger"
 	cloudaccountmappingrule "github.com/crossplane-contrib/provider-pagerduty/internal/controller/jira/cloudaccountmappingrule"
@@ -84,6 +86,8 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 		servicenow.Setup,
 		customfield.Setup,
 		customfieldoption.Setup,
+		incidenttype.Setup,
+		typecustomfield.Setup,
 		workflow.Setup,
 		workflowtrigger.Setup,
 		cloudaccountmappingrule.Setup,

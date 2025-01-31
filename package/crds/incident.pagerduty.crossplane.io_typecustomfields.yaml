@@ -4,18 +4,18 @@ kind: CustomResourceDefinition
 metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.14.0
-  name: orchestrations.event.pagerduty.crossplane.io
+  name: typecustomfields.incident.pagerduty.crossplane.io
 spec:
-  group: event.pagerduty.crossplane.io
+  group: incident.pagerduty.crossplane.io
   names:
     categories:
     - crossplane
     - managed
     - pagerduty
-    kind: Orchestration
-    listKind: OrchestrationList
-    plural: orchestrations
-    singular: orchestration
+    kind: TypeCustomField
+    listKind: TypeCustomFieldList
+    plural: typecustomfields
+    singular: typecustomfield
   scope: Cluster
   versions:
   - additionalPrinterColumns:
@@ -34,8 +34,8 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: Orchestration is the Schema for the Orchestrations API. Creates
-          and manages an Event Orchestration in PagerDuty.
+        description: TypeCustomField is the Schema for the TypeCustomFields API. Creates
+          and manages a incident type custom field in PagerDuty.
         properties:
           apiVersion:
             description: |-
@@ -55,7 +55,7 @@ spec:
           metadata:
             type: object
           spec:
-            description: OrchestrationSpec defines the desired state of Orchestration
+            description: TypeCustomFieldSpec defines the desired state of TypeCustomField
             properties:
               deletionPolicy:
                 default: Delete
@@ -73,23 +73,45 @@ spec:
                 type: string
               forProvider:
                 properties:
+                  dataType:
+                    description: '[Updating causes resource replacement] The type
+                      of the data of this custom field. Can be one of string, integer,
+                      float, boolean, datetime, or url when data_type is single_value,
+                      otherwise must be string. Update'
+                    type: string
+                  defaultValue:
+                    description: The default value to set when new incidents are created.
+                      Always specified as a string.
+                    type: string
                   description:
-                    description: A human-friendly description of the Event Orchestration.
+                    description: The description of the custom field.
                     type: string
-                  integration:
-                    description: A list of integrations for the Event Orchestration.
+                  displayName:
+                    description: The display name of the custom Type.
+                    type: string
+                  enabled:
+                    description: Whether the custom field is enabled. Defaults to
+                      true if not provided.
+                    type: boolean
+                  fieldOptions:
+                    description: The options for the custom field. Can only be applied
+                      to fields with a type of single_value_fixed or multi_value_fixed.
                     items:
-                      type: object
+                      type: string
                     type: array
-                  name:
-                    description: Name of the Event Orchestration.
+                    x-kubernetes-list-type: set
+                  fieldType:
+                    description: '[Updating causes resource replacement] The field
+                      type of the field. Must be one of single_value, single_value_fixed,
+                      multi_value, or multi_value_fixed.'
                     type: string
-                  team:
-                    description: ID of the team that owns the Event Orchestration.
-                      If none is specified, only admins have access.
+                  incidentType:
+                    description: '[Updating causes resource replacement] The id of
+                      the incident type the custom field is associated with.'
                     type: string
-                  teamRef:
-                    description: Reference to a Team in team to populate team.
+                  incidentTypeRef:
+                    description: Reference to a IncidentType in incident to populate
+                      incidentType.
                     properties:
                       name:
                         description: Name of the referenced object.
@@ -122,8 +144,9 @@ spec:
                     required:
                     - name
                     type: object
-                  teamSelector:
-                    description: Selector for a Team in team to populate team.
+                  incidentTypeSelector:
+                    description: Selector for a IncidentType in incident to populate
+                      incidentType.
                     properties:
                       matchControllerRef:
                         description: |-
@@ -162,6 +185,10 @@ spec:
                             type: string
                         type: object
                     type: object
+                  name:
+                    description: '[Updating causes resource replacement] The name
+                      of the custom field.'
+                    type: string
                 type: object
               initProvider:
                 description: |-
@@ -176,23 +203,45 @@ spec:
                   for example because of an external controller is managing them, like an
                   autoscaler.
                 properties:
+                  dataType:
+                    description: '[Updating causes resource replacement] The type
+                      of the data of this custom field. Can be one of string, integer,
+                      float, boolean, datetime, or url when data_type is single_value,
+                      otherwise must be string. Update'
+                    type: string
+                  defaultValue:
+                    description: The default value to set when new incidents are created.
+                      Always specified as a string.
+                    type: string
                   description:
-                    description: A human-friendly description of the Event Orchestration.
+                    description: The description of the custom field.
                     type: string
-                  integration:
-                    description: A list of integrations for the Event Orchestration.
+                  displayName:
+                    description: The display name of the custom Type.
+                    type: string
+                  enabled:
+                    description: Whether the custom field is enabled. Defaults to
+                      true if not provided.
+                    type: boolean
+                  fieldOptions:
+                    description: The options for the custom field. Can only be applied
+                      to fields with a type of single_value_fixed or multi_value_fixed.
                     items:
-                      type: object
+                      type: string
                     type: array
-                  name:
-                    description: Name of the Event Orchestration.
+                    x-kubernetes-list-type: set
+                  fieldType:
+                    description: '[Updating causes resource replacement] The field
+                      type of the field. Must be one of single_value, single_value_fixed,
+                      multi_value, or multi_value_fixed.'
                     type: string
-                  team:
-                    description: ID of the team that owns the Event Orchestration.
-                      If none is specified, only admins have access.
+                  incidentType:
+                    description: '[Updating causes resource replacement] The id of
+                      the incident type the custom field is associated with.'
                     type: string
-                  teamRef:
-                    description: Reference to a Team in team to populate team.
+                  incidentTypeRef:
+                    description: Reference to a IncidentType in incident to populate
+                      incidentType.
                     properties:
                       name:
                         description: Name of the referenced object.
@@ -225,8 +274,9 @@ spec:
                     required:
                     - name
                     type: object
-                  teamSelector:
-                    description: Selector for a Team in team to populate team.
+                  incidentTypeSelector:
+                    description: Selector for a IncidentType in incident to populate
+                      incidentType.
                     properties:
                       matchControllerRef:
                         description: |-
@@ -265,6 +315,10 @@ spec:
                             type: string
                         type: object
                     type: object
+                  name:
+                    description: '[Updating causes resource replacement] The name
+                      of the custom field.'
+                    type: string
                 type: object
               managementPolicies:
                 default:
@@ -434,54 +488,77 @@ spec:
             - forProvider
             type: object
             x-kubernetes-validations:
+            - message: spec.forProvider.dataType is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.dataType)
+                || (has(self.initProvider) && has(self.initProvider.dataType))'
+            - message: spec.forProvider.displayName is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.displayName)
+                || (has(self.initProvider) && has(self.initProvider.displayName))'
             - message: spec.forProvider.name is a required parameter
               rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
                 || ''Update'' in self.managementPolicies) || has(self.forProvider.name)
                 || (has(self.initProvider) && has(self.initProvider.name))'
           status:
-            description: OrchestrationStatus defines the observed state of Orchestration.
+            description: TypeCustomFieldStatus defines the observed state of TypeCustomField.
             properties:
               atProvider:
                 properties:
+                  dataType:
+                    description: '[Updating causes resource replacement] The type
+                      of the data of this custom field. Can be one of string, integer,
+                      float, boolean, datetime, or url when data_type is single_value,
+                      otherwise must be string. Update'
+                    type: string
+                  defaultValue:
+                    description: The default value to set when new incidents are created.
+                      Always specified as a string.
+                    type: string
                   description:
-                    description: A human-friendly description of the Event Orchestration.
+                    description: The description of the custom field.
+                    type: string
+                  displayName:
+                    description: The display name of the custom Type.
+                    type: string
+                  enabled:
+                    description: Whether the custom field is enabled. Defaults to
+                      true if not provided.
+                    type: boolean
+                  fieldOptions:
+                    description: The options for the custom field. Can only be applied
+                      to fields with a type of single_value_fixed or multi_value_fixed.
+                    items:
+                      type: string
+                    type: array
+                    x-kubernetes-list-type: set
+                  fieldType:
+                    description: '[Updating causes resource replacement] The field
+                      type of the field. Must be one of single_value, single_value_fixed,
+                      multi_value, or multi_value_fixed.'
                     type: string
                   id:
-                    description: The ID of the Event Orchestration.
+                    description: The ID of the field.
                     type: string
-                  integration:
-                    description: A list of integrations for the Event Orchestration.
-                    items:
-                      properties:
-                        id:
-                          description: The ID of the Event Orchestration.
-                          type: string
-                        label:
-                          type: string
-                        parameters:
-                          description: A single-item list containing a parameter object
-                            describing the integration
-                          items:
-                            properties:
-                              routingKey:
-                                description: Routing key that routes to this Orchestration.
-                                type: string
-                              type:
-                                description: Type of the routing key. global is the
-                                  default type.
-                                type: string
-                            type: object
-                          type: array
-                      type: object
-                    type: array
+                  incidentType:
+                    description: '[Updating causes resource replacement] The id of
+                      the incident type the custom field is associated with.'
+                    type: string
                   name:
-                    description: Name of the Event Orchestration.
+                    description: '[Updating causes resource replacement] The name
+                      of the custom field.'
                     type: string
-                  routes:
-                    type: number
-                  team:
-                    description: ID of the team that owns the Event Orchestration.
-                      If none is specified, only admins have access.
+                  self:
+                    description: The API show URL at which the object is accessible.
+                    type: string
+                  summary:
+                    description: A short-form, server-generated string that provides
+                      succinct, important information about an object suitable for
+                      primary labeling of an entity in a client. In many cases, this
+                      will be identical to name, though it is not intended to be an
+                      identifier.
+                    type: string
+                  type:
                     type: string
                 type: object
               conditions:
