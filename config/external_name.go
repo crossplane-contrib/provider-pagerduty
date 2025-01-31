@@ -32,6 +32,8 @@ var ExternalNameConfigs = map[string]config.ExternalName{
 	"pagerduty_extension":                                     config.IdentifierFromProvider,
 	"pagerduty_incident_custom_field_option":                  config.IdentifierFromProvider,
 	"pagerduty_incident_custom_field":                         config.IdentifierFromProvider,
+	"pagerduty_incident_type":                                 config.IdentifierFromProvider,
+	"pagerduty_incident_type_custom_field":                    config.IdentifierFromProvider,
 	"pagerduty_incident_workflow_trigger":                     config.IdentifierFromProvider,
 	"pagerduty_incident_workflow":                             config.IdentifierFromProvider,
 	"pagerduty_jira_cloud_account_mapping_rule":               config.IdentifierFromProvider,

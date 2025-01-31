@@ -31,5 +31,19 @@ func Configure(p *config.Provider) {
 			},
 		}
 	})
+	p.AddResourceConfigurator("pagerduty_incident_type", func(r *config.Resource) {
+		r.References = config.References{
+			"parent_type": {
+				TerraformName: "pagerduty_incident_type",
+			},
+		}
+	})
+	p.AddResourceConfigurator("pagerduty_incident_type_custom_field", func(r *config.Resource) {
+		r.References = config.References{
+			"incident_type": {
+				TerraformName: "pagerduty_incident_type",
+			},
+		}
+	})
 
 }
