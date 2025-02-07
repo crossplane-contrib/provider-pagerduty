@@ -13,7 +13,9 @@ spec:
       type: email_contact_method
     handoffType: both
     notifyAdvanceInMinutes: 180
-    userId: ${pagerduty_user.example.id}
+    userIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
 
 ---
 

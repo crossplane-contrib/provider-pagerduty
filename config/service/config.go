@@ -2,6 +2,10 @@ package service
 
 import "github.com/crossplane/upjet/pkg/config"
 
+const (
+	shortGroup = "service"
+)
+
 // Configure configures individual resources by adding custom ResourceConfigurators.
 func Configure(p *config.Provider) {
 	p.AddResourceConfigurator("pagerduty_service", func(r *config.Resource) {
@@ -10,25 +14,25 @@ func Configure(p *config.Provider) {
 			// alert_grouping_parameters and alert_grouping_timeout are mutually exclusive
 			IgnoredFields: []string{"alert_grouping_parameters", "alert_grouping_timeout"},
 		}
-		r.ShortGroup = "service"
+		r.ShortGroup = shortGroup
 		r.References = config.References{
 			"escalation_policy": {
-				Type: "github.com/crossplane-contrib/provider-pagerduty/apis/escalation/v1alpha1.Policy",
+				TerraformName: "pagerduty_escalation_policy",
 			},
 		}
 	})
 
 	p.AddResourceConfigurator("pagerduty_service_dependency", func(r *config.Resource) {
 
-		r.ShortGroup = "service"
+		r.ShortGroup = shortGroup
 	})
 
 	p.AddResourceConfigurator("pagerduty_service_event_rule", func(r *config.Resource) {
 
-		r.ShortGroup = "service"
+		r.ShortGroup = shortGroup
 		r.References = config.References{
-			"service": {
-				Type: "Service",
+			shortGroup: {
+				TerraformName: "pagerduty_service",
 			},
 		}
 	})
@@ -39,10 +43,10 @@ func Configure(p *config.Provider) {
 			// type and vendor are mutually-exclusive, so these cannot be late-initialized
 			IgnoredFields: []string{"type", "vendor"},
 		}
-		r.ShortGroup = "service"
+		r.ShortGroup = shortGroup
 		r.References = config.References{
-			"service": {
-				Type: "Service",
+			shortGroup: {
+				TerraformName: "pagerduty_service",
 			},
 		}
 

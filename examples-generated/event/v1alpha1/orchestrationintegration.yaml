@@ -8,7 +8,9 @@ metadata:
   name: integration
 spec:
   forProvider:
-    eventOrchestration: ${pagerduty_event_orchestration.event_orchestration.id}
+    eventOrchestrationSelector:
+      matchLabels:
+        testing.upbound.io/example-name: event_orchestration
     label: Example integration
 
 ---

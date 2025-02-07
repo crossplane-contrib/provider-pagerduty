@@ -12,10 +12,10 @@ func Configure(p *config.Provider) {
 		r.ShortGroup = "business"
 		r.References = config.References{
 			"team": {
-				Type: "github.com/crossplane-contrib/provider-pagerduty/apis/team/v1alpha1.Team",
+				TerraformName: "pagerduty_team",
 			},
 		}
-		r.ExternalName.GetExternalNameFn = c.GetExternalName
+		r.ExternalName.GetExternalNameFn = c.GetExternalNameFromId
 		r.ExternalName.GetIDFn = c.GetFakeID
 		// Deprecated
 		if s, ok := r.TerraformResource.Schema["type"]; ok {
@@ -29,7 +29,7 @@ func Configure(p *config.Provider) {
 		r.ShortGroup = "business"
 		r.References = config.References{
 			"business_service_id": {
-				Type: "Service",
+				TerraformName: "pagerduty_business_service",
 			},
 		}
 

@@ -70,12 +70,24 @@ type GroupingSettingInitParameters struct {
 	// The set of values used for configuration.
 	Config []ConfigInitParameters `json:"config,omitempty" tf:"config,omitempty"`
 
+	// A human-friendly text to describe and identify this alert grouping setting.
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
 
 	// The name for the alert groupig settings.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// References to Service in service to populate services.
+	// +kubebuilder:validation:Optional
+	ServiceRefs []v1.Reference `json:"serviceRefs,omitempty" tf:"-"`
+
+	// Selector for a list of Service in service to populate services.
+	// +kubebuilder:validation:Optional
+	ServiceSelector *v1.Selector `json:"serviceSelector,omitempty" tf:"-"`
+
 	// [Updating can cause a resource replacement] The list IDs of services associated to this setting.
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-pagerduty/apis/service/v1alpha1.Service
+	// +crossplane:generate:reference:refFieldName=ServiceRefs
+	// +crossplane:generate:reference:selectorFieldName=ServiceSelector
 	// +listType=set
 	Services []*string `json:"services,omitempty" tf:"services,omitempty"`
 
@@ -88,6 +100,7 @@ type GroupingSettingObservation struct {
 	// The set of values used for configuration.
 	Config []ConfigObservation `json:"config,omitempty" tf:"config,omitempty"`
 
+	// A human-friendly text to describe and identify this alert grouping setting.
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
 
 	// The ID of the alert grouping setting.
@@ -110,6 +123,7 @@ type GroupingSettingParameters struct {
 	// +kubebuilder:validation:Optional
 	Config []ConfigParameters `json:"config,omitempty" tf:"config,omitempty"`
 
+	// A human-friendly text to describe and identify this alert grouping setting.
 	// +kubebuilder:validation:Optional
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
 
@@ -117,7 +131,18 @@ type GroupingSettingParameters struct {
 	// +kubebuilder:validation:Optional
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
+	// References to Service in service to populate services.
+	// +kubebuilder:validation:Optional
+	ServiceRefs []v1.Reference `json:"serviceRefs,omitempty" tf:"-"`
+
+	// Selector for a list of Service in service to populate services.
+	// +kubebuilder:validation:Optional
+	ServiceSelector *v1.Selector `json:"serviceSelector,omitempty" tf:"-"`
+
 	// [Updating can cause a resource replacement] The list IDs of services associated to this setting.
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-pagerduty/apis/service/v1alpha1.Service
+	// +crossplane:generate:reference:refFieldName=ServiceRefs
+	// +crossplane:generate:reference:selectorFieldName=ServiceSelector
 	// +kubebuilder:validation:Optional
 	// +listType=set
 	Services []*string `json:"services,omitempty" tf:"services,omitempty"`
@@ -164,7 +189,6 @@ type GroupingSetting struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || (has(self.initProvider) && has(self.initProvider.name))",message="spec.forProvider.name is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.services) || (has(self.initProvider) && has(self.initProvider.services))",message="spec.forProvider.services is a required parameter"
 	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.type) || (has(self.initProvider) && has(self.initProvider.type))",message="spec.forProvider.type is a required parameter"
 	Spec   GroupingSettingSpec   `json:"spec"`
 	Status GroupingSettingStatus `json:"status,omitempty"`

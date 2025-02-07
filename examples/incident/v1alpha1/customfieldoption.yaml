@@ -9,7 +9,9 @@ metadata:
 spec:
   forProvider:
     dataType: string
-    field: ${pagerduty_incident_custom_field.sre_environment.id}
+    fieldSelector:
+      matchLabels:
+        testing.upbound.io/example-name: sre_environment
     value: dev
 
 ---

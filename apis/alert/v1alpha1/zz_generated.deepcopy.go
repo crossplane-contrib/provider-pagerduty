@@ -9,6 +9,7 @@ Copyright 2022 Upbound Inc.
 package v1alpha1
 
 import (
+	"github.com/crossplane/crossplane-runtime/apis/common/v1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 )
 
@@ -182,6 +183,18 @@ func (in *GroupingSettingInitParameters) DeepCopyInto(out *GroupingSettingInitPa
 		*out = new(string)
 		**out = **in
 	}
+	if in.ServiceRefs != nil {
+		in, out := &in.ServiceRefs, &out.ServiceRefs
+		*out = make([]v1.Reference, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
+	}
+	if in.ServiceSelector != nil {
+		in, out := &in.ServiceSelector, &out.ServiceSelector
+		*out = new(v1.Selector)
+		(*in).DeepCopyInto(*out)
+	}
 	if in.Services != nil {
 		in, out := &in.Services, &out.Services
 		*out = make([]*string, len(*in))
@@ -314,6 +327,18 @@ func (in *GroupingSettingParameters) DeepCopyInto(out *GroupingSettingParameters
 		in, out := &in.Name, &out.Name
 		*out = new(string)
 		**out = **in
+	}
+	if in.ServiceRefs != nil {
+		in, out := &in.ServiceRefs, &out.ServiceRefs
+		*out = make([]v1.Reference, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
+	}
+	if in.ServiceSelector != nil {
+		in, out := &in.ServiceSelector, &out.ServiceSelector
+		*out = new(v1.Selector)
+		(*in).DeepCopyInto(*out)
 	}
 	if in.Services != nil {
 		in, out := &in.Services, &out.Services

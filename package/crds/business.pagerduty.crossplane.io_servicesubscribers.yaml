@@ -77,7 +77,7 @@ spec:
                     description: The ID of the business service to subscribe to.
                     type: string
                   businessServiceIdRef:
-                    description: Reference to a Service to populate businessServiceId.
+                    description: Reference to a Service in business to populate businessServiceId.
                     properties:
                       name:
                         description: Name of the referenced object.
@@ -111,7 +111,7 @@ spec:
                     - name
                     type: object
                   businessServiceIdSelector:
-                    description: Selector for a Service to populate businessServiceId.
+                    description: Selector for a Service in business to populate businessServiceId.
                     properties:
                       matchControllerRef:
                         description: |-
@@ -175,7 +175,7 @@ spec:
                     description: The ID of the business service to subscribe to.
                     type: string
                   businessServiceIdRef:
-                    description: Reference to a Service to populate businessServiceId.
+                    description: Reference to a Service in business to populate businessServiceId.
                     properties:
                       name:
                         description: Name of the referenced object.
@@ -209,7 +209,7 @@ spec:
                     - name
                     type: object
                   businessServiceIdSelector:
-                    description: Selector for a Service to populate businessServiceId.
+                    description: Selector for a Service in business to populate businessServiceId.
                     properties:
                       matchControllerRef:
                         description: |-

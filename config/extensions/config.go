@@ -8,7 +8,7 @@ func Configure(p *config.Provider) {
 		r.ShortGroup = "extensions"
 		r.References = config.References{
 			"extension_objects": {
-				Type: "github.com/crossplane-contrib/provider-pagerduty/apis/service/v1alpha1.Service",
+				TerraformName: "pagerduty_service",
 			},
 		}
 

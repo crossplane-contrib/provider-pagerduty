@@ -13,6 +13,12 @@ func (tr *CustomField) Hub() {}
 func (tr *CustomFieldOption) Hub() {}
 
 // Hub marks this type as a conversion hub.
+func (tr *IncidentType) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *TypeCustomField) Hub() {}
+
+// Hub marks this type as a conversion hub.
 func (tr *Workflow) Hub() {}
 
 // Hub marks this type as a conversion hub.

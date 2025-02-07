@@ -16,14 +16,14 @@ import (
 type ServiceSubscriberInitParameters struct {
 
 	// The ID of the business service to subscribe to.
-	// +crossplane:generate:reference:type=Service
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-pagerduty/apis/business/v1alpha1.Service
 	BusinessServiceID *string `json:"businessServiceId,omitempty" tf:"business_service_id,omitempty"`
 
-	// Reference to a Service to populate businessServiceId.
+	// Reference to a Service in business to populate businessServiceId.
 	// +kubebuilder:validation:Optional
 	BusinessServiceIDRef *v1.Reference `json:"businessServiceIdRef,omitempty" tf:"-"`
 
-	// Selector for a Service to populate businessServiceId.
+	// Selector for a Service in business to populate businessServiceId.
 	// +kubebuilder:validation:Optional
 	BusinessServiceIDSelector *v1.Selector `json:"businessServiceIdSelector,omitempty" tf:"-"`
 
@@ -52,15 +52,15 @@ type ServiceSubscriberObservation struct {
 type ServiceSubscriberParameters struct {
 
 	// The ID of the business service to subscribe to.
-	// +crossplane:generate:reference:type=Service
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-pagerduty/apis/business/v1alpha1.Service
 	// +kubebuilder:validation:Optional
 	BusinessServiceID *string `json:"businessServiceId,omitempty" tf:"business_service_id,omitempty"`
 
-	// Reference to a Service to populate businessServiceId.
+	// Reference to a Service in business to populate businessServiceId.
 	// +kubebuilder:validation:Optional
 	BusinessServiceIDRef *v1.Reference `json:"businessServiceIdRef,omitempty" tf:"-"`
 
-	// Selector for a Service to populate businessServiceId.
+	// Selector for a Service in business to populate businessServiceId.
 	// +kubebuilder:validation:Optional
 	BusinessServiceIDSelector *v1.Selector `json:"businessServiceIdSelector,omitempty" tf:"-"`
 

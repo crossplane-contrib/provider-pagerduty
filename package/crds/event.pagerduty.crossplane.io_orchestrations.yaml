@@ -77,7 +77,7 @@ spec:
                     description: A human-friendly description of the Event Orchestration.
                     type: string
                   integration:
-                    description: An integration for the Event Orchestration.
+                    description: A list of integrations for the Event Orchestration.
                     items:
                       type: object
                     type: array
@@ -180,7 +180,7 @@ spec:
                     description: A human-friendly description of the Event Orchestration.
                     type: string
                   integration:
-                    description: An integration for the Event Orchestration.
+                    description: A list of integrations for the Event Orchestration.
                     items:
                       type: object
                     type: array
@@ -450,7 +450,7 @@ spec:
                     description: The ID of the Event Orchestration.
                     type: string
                   integration:
-                    description: An integration for the Event Orchestration.
+                    description: A list of integrations for the Event Orchestration.
                     items:
                       properties:
                         id:
@@ -459,6 +459,8 @@ spec:
                         label:
                           type: string
                         parameters:
+                          description: A single-item list containing a parameter object
+                            describing the integration
                           items:
                             properties:
                               routingKey:

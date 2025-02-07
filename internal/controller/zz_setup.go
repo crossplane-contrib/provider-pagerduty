@@ -11,10 +11,11 @@ import (
 
 	addon "github.com/crossplane-contrib/provider-pagerduty/internal/controller/addon/addon"
 	groupingsetting "github.com/crossplane-contrib/provider-pagerduty/internal/controller/alert/groupingsetting"
-	actionsaction "github.com/crossplane-contrib/provider-pagerduty/internal/controller/automation/actionsaction"
-	actionsactionserviceassociation "github.com/crossplane-contrib/provider-pagerduty/internal/controller/automation/actionsactionserviceassociation"
-	actionsactionteamassociation "github.com/crossplane-contrib/provider-pagerduty/internal/controller/automation/actionsactionteamassociation"
-	actionsrunnerteamassociation "github.com/crossplane-contrib/provider-pagerduty/internal/controller/automation/actionsrunnerteamassociation"
+	action "github.com/crossplane-contrib/provider-pagerduty/internal/controller/automation/action"
+	actionserviceassociation "github.com/crossplane-contrib/provider-pagerduty/internal/controller/automation/actionserviceassociation"
+	actionteamassociation "github.com/crossplane-contrib/provider-pagerduty/internal/controller/automation/actionteamassociation"
+	runner "github.com/crossplane-contrib/provider-pagerduty/internal/controller/automation/runner"
+	runnerteamassociation "github.com/crossplane-contrib/provider-pagerduty/internal/controller/automation/runnerteamassociation"
 	service "github.com/crossplane-contrib/provider-pagerduty/internal/controller/business/service"
 	servicesubscriber "github.com/crossplane-contrib/provider-pagerduty/internal/controller/business/servicesubscriber"
 	policy "github.com/crossplane-contrib/provider-pagerduty/internal/controller/escalation/policy"
@@ -31,8 +32,11 @@ import (
 	servicenow "github.com/crossplane-contrib/provider-pagerduty/internal/controller/extensions/servicenow"
 	customfield "github.com/crossplane-contrib/provider-pagerduty/internal/controller/incident/customfield"
 	customfieldoption "github.com/crossplane-contrib/provider-pagerduty/internal/controller/incident/customfieldoption"
+	incidenttype "github.com/crossplane-contrib/provider-pagerduty/internal/controller/incident/incidenttype"
+	typecustomfield "github.com/crossplane-contrib/provider-pagerduty/internal/controller/incident/typecustomfield"
 	workflow "github.com/crossplane-contrib/provider-pagerduty/internal/controller/incident/workflow"
 	workflowtrigger "github.com/crossplane-contrib/provider-pagerduty/internal/controller/incident/workflowtrigger"
+	cloudaccountmappingrule "github.com/crossplane-contrib/provider-pagerduty/internal/controller/jira/cloudaccountmappingrule"
 	window "github.com/crossplane-contrib/provider-pagerduty/internal/controller/maintenance/window"
 	providerconfig "github.com/crossplane-contrib/provider-pagerduty/internal/controller/providerconfig"
 	play "github.com/crossplane-contrib/provider-pagerduty/internal/controller/response/play"
@@ -61,10 +65,11 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 	for _, setup := range []func(ctrl.Manager, controller.Options) error{
 		addon.Setup,
 		groupingsetting.Setup,
-		actionsaction.Setup,
-		actionsactionserviceassociation.Setup,
-		actionsactionteamassociation.Setup,
-		actionsrunnerteamassociation.Setup,
+		action.Setup,
+		actionserviceassociation.Setup,
+		actionteamassociation.Setup,
+		runner.Setup,
+		runnerteamassociation.Setup,
 		service.Setup,
 		servicesubscriber.Setup,
 		policy.Setup,
@@ -81,8 +86,11 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 		servicenow.Setup,
 		customfield.Setup,
 		customfieldoption.Setup,
+		incidenttype.Setup,
+		typecustomfield.Setup,
 		workflow.Setup,
 		workflowtrigger.Setup,
+		cloudaccountmappingrule.Setup,
 		window.Setup,
 		providerconfig.Setup,
 		play.Setup,
