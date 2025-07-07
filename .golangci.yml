@@ -1,6 +1,6 @@
 version: "2"
 run:
-  timeout: 2m
+  timeout: 10m
 
 formatters:
   # Enable specific formatter.
@@ -21,20 +21,53 @@ formatters:
       # put imports beginning with prefix after 3rd-party packages
       local-prefixes:
         - github.com/crossplane/provider-sql
+  exclusions:
+    generated: lax
+    paths:
+      - zz_\..+\.go$
+      - third_party$
+      - builtin$
+      - examples$
 
 linters:
   default: standard
   enable:
-    - govet
-    - gocyclo
-    - gocritic
-    - iface
+    - asasalint
+    - asciicheck
+    - bidichk
+    - bodyclose
+    - contextcheck
+    - durationcheck
+    - errchkjson
+    - errorlint
+    - exhaustive
+    - gocheckcompilerdirectives
+    - gochecksumtype
     - goconst
-    - prealloc
-    - revive
-    - unconvert
+    - gocritic
+    - gocyclo
+    - gosec
+    - gosmopolitan
+    - iface
+    - loggercheck
+    - makezero
     - misspell
+    - musttag
     - nakedret
+    - nilerr
+    - nilnesserr
+    - noctx
+    - prealloc
+    - protogetter
+    - reassign
+    - recvcheck
+    - rowserrcheck
+    - spancheck
+    - sqlclosecheck
+    - testifylint
+    - unconvert
+    - unparam
+    - zerologlint
   settings:
     errcheck:
       # report about not checking of errors in type assetions: `a := b.(MyStruct)`;
@@ -113,6 +146,7 @@ linters:
           sizeThreshold: 32
 
   exclusions:
+    generated: lax
     rules:
       # Exclude some linters from running on tests files.
       - path: _test(ing)?\.go
@@ -160,6 +194,11 @@ linters:
         linters:
           - gosec
           - gas
+    paths:
+      - zz_\..+\.go$
+      - third_party$
+      - builtin$
+      - examples$
 
 issues:
   # Show only new issues: if there are unstaged changes or untracked files,
