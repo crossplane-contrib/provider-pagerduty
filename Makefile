@@ -11,7 +11,7 @@ export TERRAFORM_VERSION ?= 1.5.7
 TERRAFORM_VERSION_VALID := $(shell [ "$(TERRAFORM_VERSION)" = "`printf "$(TERRAFORM_VERSION)\n1.6" | sort -V | head -n1`" ] && echo 1 || echo 0)
 
 export TERRAFORM_PROVIDER_SOURCE ?= PagerDuty/pagerduty
-export TERRAFORM_PROVIDER_VERSION ?= 3.19.4
+export TERRAFORM_PROVIDER_VERSION ?= 3.30.5
 export TERRAFORM_PROVIDER_DOWNLOAD_NAME ?= terraform-provider-pagerduty
 export TERRAFORM_PROVIDER_REPO ?= https://github.com/PagerDuty/$(TERRAFORM_PROVIDER_DOWNLOAD_NAME)
 export TERRAFORM_PROVIDER_DOWNLOAD_URL_PREFIX := $(TERRAFORM_PROVIDER_REPO)/releases/download/v$(TERRAFORM_PROVIDER_VERSION)
@@ -42,8 +42,8 @@ NPROCS ?= 1
 # to half the number of CPU cores.
 GO_TEST_PARALLEL := $(shell echo $$(( $(NPROCS) / 2 )))
 
-GO_REQUIRED_VERSION ?= 1.22
-GOLANGCILINT_VERSION ?= 2.1.6
+GO_REQUIRED_VERSION ?= 1.25
+GOLANGCILINT_VERSION ?= 2.6.1
 GO_STATIC_PACKAGES = $(GO_PROJECT)/cmd/provider $(GO_PROJECT)/cmd/generator
 GO_LDFLAGS += -X $(GO_PROJECT)/internal/version.Version=$(VERSION)
 GO_SUBDIRS += cmd internal apis
@@ -53,10 +53,10 @@ GO111MODULE = on
 # ====================================================================================
 # Setup Kubernetes tools
 
-KIND_VERSION = v0.24.0
-UP_VERSION = v0.35.0
+KIND_VERSION = v0.30.0
+UP_VERSION = v0.42.1
 UP_CHANNEL = stable
-UPTEST_VERSION = v1.2.0
+UPTEST_VERSION = v2.2.0
 -include build/makelib/k8s_tools.mk
 
 # ====================================================================================
@@ -173,7 +173,7 @@ run: go.build
 
 # ====================================================================================
 # End to End Testing
-CROSSPLANE_VERSION = 1.16.0
+CROSSPLANE_VERSION = 2.1.1
 CROSSPLANE_NAMESPACE = upbound-system
 -include build/makelib/local.xpkg.mk
 -include build/makelib/controlplane.mk
