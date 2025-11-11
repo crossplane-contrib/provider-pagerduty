@@ -8,7 +8,7 @@ import (
 	// Note(turkenh): we are importing this to embed provider schema document
 	_ "embed"
 
-	ujconfig "github.com/crossplane/upjet/pkg/config"
+	ujconfig "github.com/crossplane/upjet/v2/pkg/config"
 
 	"github.com/crossplane-contrib/provider-pagerduty/config/actions"
 	"github.com/crossplane-contrib/provider-pagerduty/config/addon"

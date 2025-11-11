@@ -2,7 +2,7 @@ package actions
 
 import (
 	c "github.com/crossplane-contrib/provider-pagerduty/config/common"
-	"github.com/crossplane/upjet/pkg/config"
+	"github.com/crossplane/upjet/v2/pkg/config"
 )
 
 const (
