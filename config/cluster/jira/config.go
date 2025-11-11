@@ -1,7 +1,7 @@
 package jira
 
 import (
-	c "github.com/crossplane-contrib/provider-pagerduty/config/common"
+	c "github.com/crossplane-contrib/provider-pagerduty/config/cluster/common"
 	"github.com/crossplane/upjet/v2/pkg/config"
 )
 
