@@ -54,7 +54,7 @@ GO111MODULE = on
 # Setup Kubernetes tools
 
 KIND_VERSION = v0.30.0
-UP_VERSION = v0.42.1
+UP_VERSION = v0.42.0
 UP_CHANNEL = stable
 UPTEST_VERSION = v2.2.0
 CRDDIFF_VERSION = v0.12.1
@@ -93,7 +93,7 @@ fallthrough: submodules
 
 # NOTE(hasheddan): we force image building to happen prior to xpkg build so that
 # we ensure image is present in daemon.
-xpkg.build.provider-mongodbatlas: do.build.images
+xpkg.build.provider-pagerduty: do.build.images
 
 # NOTE(hasheddan): we ensure up is installed prior to running platform-specific
 # build steps in parallel to avoid encountering an installation race condition.
