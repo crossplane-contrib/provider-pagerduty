@@ -6,7 +6,7 @@ metadata:
   labels:
     testing.upbound.io/example-name: www
   name: www
-  namespace: crossplane-system
+  namespace: upbound-system
 spec:
   forProvider:
     catchAll:
@@ -91,7 +91,7 @@ metadata:
   labels:
     testing.upbound.io/example-name: example
   name: example
-  namespace: crossplane-system
+  namespace: upbound-system
 spec:
   forProvider:
     name: Engineering Escalation Policy
@@ -112,7 +112,7 @@ metadata:
   labels:
     testing.upbound.io/example-name: cs_impact
   name: cs-impact
-  namespace: crossplane-system
+  namespace: upbound-system
 spec:
   forProvider:
     dataType: string
@@ -129,7 +129,7 @@ metadata:
   labels:
     testing.upbound.io/example-name: example
   name: example
-  namespace: crossplane-system
+  namespace: upbound-system
 spec:
   forProvider:
     acknowledgementTimeout: 600
@@ -150,7 +150,7 @@ metadata:
   labels:
     testing.upbound.io/example-name: engineering
   name: engineering
-  namespace: crossplane-system
+  namespace: upbound-system
 spec:
   forProvider:
     name: Engineering
@@ -165,7 +165,7 @@ metadata:
   labels:
     testing.upbound.io/example-name: foo
   name: foo
-  namespace: crossplane-system
+  namespace: upbound-system
 spec:
   forProvider:
     role: manager
@@ -186,7 +186,7 @@ metadata:
   labels:
     testing.upbound.io/example-name: example
   name: example
-  namespace: crossplane-system
+  namespace: upbound-system
 spec:
   forProvider:
     email: 125.greenholt.earline@graham.name

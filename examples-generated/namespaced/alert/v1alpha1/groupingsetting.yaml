@@ -6,7 +6,7 @@ metadata:
   labels:
     testing.upbound.io/example-name: basic_settings
   name: basic-settings
-  namespace: crossplane-system
+  namespace: upbound-system
 spec:
   forProvider:
     config:
@@ -29,7 +29,7 @@ metadata:
   labels:
     testing.upbound.io/example-name: basic
   name: basic
-  namespace: crossplane-system
+  namespace: upbound-system
 spec:
   forProvider:
     escalationPolicySelector:

@@ -6,7 +6,7 @@ metadata:
   labels:
     testing.upbound.io/example-name: pa_runner_ent_eng_assoc
   name: pa-runner-ent-eng-assoc
-  namespace: crossplane-system
+  namespace: upbound-system
 spec:
   forProvider:
     runnerId: ${pagerduty_automation_actions_runner.pa_runbook_runner.id}
@@ -24,7 +24,7 @@ metadata:
   labels:
     testing.upbound.io/example-name: pa_runbook_runner
   name: pa-runbook-runner
-  namespace: crossplane-system
+  namespace: upbound-system
 spec:
   forProvider:
     description: Description of the Runner created via TF
@@ -45,7 +45,7 @@ metadata:
   labels:
     testing.upbound.io/example-name: team_ent_eng
   name: team-ent-eng
-  namespace: crossplane-system
+  namespace: upbound-system
 spec:
   forProvider:
     description: Enterprise engineering

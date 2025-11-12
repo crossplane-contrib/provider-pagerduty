@@ -6,7 +6,7 @@ metadata:
   labels:
     testing.upbound.io/example-name: num_db_triggers
   name: num-db-triggers
-  namespace: crossplane-system
+  namespace: upbound-system
 spec:
   forProvider:
     condition:
@@ -29,7 +29,7 @@ metadata:
   labels:
     testing.upbound.io/example-name: db_ep
   name: db-ep
-  namespace: crossplane-system
+  namespace: upbound-system
 spec:
   forProvider:
     name: Database Escalation Policy
@@ -50,7 +50,7 @@ metadata:
   labels:
     testing.upbound.io/example-name: event_orchestration
   name: event-orchestration
-  namespace: crossplane-system
+  namespace: upbound-system
 spec:
   forProvider:
     catchAll:
@@ -85,7 +85,7 @@ metadata:
   labels:
     testing.upbound.io/example-name: svc
   name: svc
-  namespace: crossplane-system
+  namespace: upbound-system
 spec:
   forProvider:
     acknowledgementTimeout: 600
@@ -106,7 +106,7 @@ metadata:
   labels:
     testing.upbound.io/example-name: database_team
   name: database-team
-  namespace: crossplane-system
+  namespace: upbound-system
 spec:
   forProvider:
     name: Database Team
@@ -121,7 +121,7 @@ metadata:
   labels:
     testing.upbound.io/example-name: user_1
   name: user-1
-  namespace: crossplane-system
+  namespace: upbound-system
 spec:
   forProvider:
     email: 125.greenholt.earline@graham.name

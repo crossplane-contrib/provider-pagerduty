@@ -6,7 +6,7 @@ metadata:
   labels:
     testing.upbound.io/example-name: foo
   name: foo
-  namespace: crossplane-system
+  namespace: upbound-system
 spec:
   forProvider:
     actionIdSelector:
@@ -26,7 +26,7 @@ metadata:
   labels:
     testing.upbound.io/example-name: pa_action_example
   name: pa-action-example
-  namespace: crossplane-system
+  namespace: upbound-system
 spec:
   forProvider:
     actionDataReference:
@@ -45,7 +45,7 @@ metadata:
   labels:
     testing.upbound.io/example-name: foo
   name: foo
-  namespace: crossplane-system
+  namespace: upbound-system
 spec:
   forProvider:
     name: Engineering Escalation Policy
@@ -66,7 +66,7 @@ metadata:
   labels:
     testing.upbound.io/example-name: example
   name: example
-  namespace: crossplane-system
+  namespace: upbound-system
 spec:
   forProvider:
     acknowledgementTimeout: 600
@@ -90,7 +90,7 @@ metadata:
   labels:
     testing.upbound.io/example-name: example
   name: example
-  namespace: crossplane-system
+  namespace: upbound-system
 spec:
   forProvider:
     email: 125.greenholt.earline@graham.name

@@ -6,7 +6,7 @@ metadata:
   labels:
     testing.upbound.io/example-name: recent_host
   name: recent-host
-  namespace: crossplane-system
+  namespace: upbound-system
 spec:
   forProvider:
     condition:
@@ -30,7 +30,7 @@ metadata:
   labels:
     testing.upbound.io/example-name: event_orchestration
   name: event-orchestration
-  namespace: crossplane-system
+  namespace: upbound-system
 spec:
   forProvider:
     name: Example Orchestration
@@ -48,7 +48,7 @@ metadata:
   labels:
     testing.upbound.io/example-name: global
   name: global
-  namespace: crossplane-system
+  namespace: upbound-system
 spec:
   forProvider:
     catchAll:
@@ -79,7 +79,7 @@ metadata:
   labels:
     testing.upbound.io/example-name: host_ignore_list
   name: host-ignore-list
-  namespace: crossplane-system
+  namespace: upbound-system
 spec:
   forProvider:
     configuration:
@@ -99,7 +99,7 @@ metadata:
   labels:
     testing.upbound.io/example-name: database_team
   name: database-team
-  namespace: crossplane-system
+  namespace: upbound-system
 spec:
   forProvider:
     name: Database Team
