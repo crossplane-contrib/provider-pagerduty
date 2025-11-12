@@ -57,6 +57,7 @@ KIND_VERSION = v0.30.0
 UP_VERSION = v0.42.1
 UP_CHANNEL = stable
 UPTEST_VERSION = v2.2.0
+CRDDIFF_VERSION = v0.12.1
 -include build/makelib/k8s_tools.mk
 
 # ====================================================================================
@@ -96,7 +97,7 @@ xpkg.build.provider-mongodbatlas: do.build.images
 
 # NOTE(hasheddan): we ensure up is installed prior to running platform-specific
 # build steps in parallel to avoid encountering an installation race condition.
-build.init: $(UP) check-terraform-version
+build.init: $(UP) $(CROSSPLANE_CLI) check-terraform-version
 
 # ====================================================================================
 # Setup Terraform for fetching provider schema
@@ -174,13 +175,14 @@ run: go.build
 # ====================================================================================
 # End to End Testing
 CROSSPLANE_VERSION = 2.1.1
+CROSSPLANE_CLI_VERSION = v2.1.1
 CROSSPLANE_NAMESPACE = upbound-system
 -include build/makelib/local.xpkg.mk
 -include build/makelib/controlplane.mk
 
 # This target requires the following environment variables to be set:
 # - UPTEST_EXAMPLE_LIST, a comma-separated list of examples to test
-#   To ensure the proper functioning of the end-to-end test resource pre-deletion hook, it is crucial to arrange your resources appropriately. 
+#   To ensure the proper functioning of the end-to-end test resource pre-deletion hook, it is crucial to arrange your resources appropriately.
 #   You can check the basic implementation here: https://github.com/crossplane/uptest/blob/main/internal/templates/03-delete.yaml.tmpl.
 # - UPTEST_CLOUD_CREDENTIALS (optional), multiple sets of AWS IAM User credentials specified as key=value pairs.
 #   The support keys are currently `DEFAULT` and `PEER`. So, an example for the value of this env. variable is:
@@ -192,9 +194,9 @@ CROSSPLANE_NAMESPACE = upbound-system
 #   aws_secret_access_key = REDACTED'
 #   The associated `ProviderConfig`s will be named as `default` and `peer`.
 # - UPTEST_DATASOURCE_PATH (optional), please see https://github.com/crossplane/uptest#injecting-dynamic-values-and-datasource
-uptest: $(UPTEST) $(KUBECTL) $(KUTTL)
+uptest: $(UPTEST) $(KUBECTL) $(CHAINSAW) $(CROSSPLANE_CLI)
 	@$(INFO) running automated tests
-	@KUBECTL=$(KUBECTL) KUTTL=$(KUTTL) $(UPTEST) e2e "${UPTEST_EXAMPLE_LIST}" --data-source="${UPTEST_DATASOURCE_PATH}" --setup-script=cluster/test/setup.sh --default-conditions="Test" || $(FAIL)
+	@KUBECTL=$(KUBECTL) CHAINSAW=$(CHAINSAW) CROSSPLANE_CLI=$(CROSSPLANE_CLI) CROSSPLANE_NAMESPACE=$(CROSSPLANE_NAMESPACE) $(UPTEST) e2e "${UPTEST_EXAMPLE_LIST}" --data-source="${UPTEST_DATASOURCE_PATH}" --setup-script=cluster/test/setup.sh --default-conditions="Test" || $(FAIL)
 	@$(OK) running automated tests
 
 local-deploy: build controlplane.up local.xpkg.deploy.provider.$(PROJECT_NAME)
@@ -213,7 +215,7 @@ crddiff: $(UPTEST)
 			continue ; \
 		fi ; \
 		echo "Checking $${crd} for breaking API changes..." ; \
-		changes_detected=$$($(UPTEST) crddiff revision <(git cat-file -p "$${GITHUB_BASE_REF}:$${crd}") "$${crd}" 2>&1) ; \
+		changes_detected=$$(go run github.com/upbound/uptest/cmd/crddiff@$(CRDDIFF_VERSION) revision --enable-upjet-extensions <(git cat-file -p "$${GITHUB_BASE_REF}:$${crd}") "$${crd}" 2>&1) ; \
 		if [[ $$? != 0 ]] ; then \
 			printf "\033[31m"; echo "Breaking change detected!"; printf "\033[0m" ; \
 			echo "$${changes_detected}" ; \

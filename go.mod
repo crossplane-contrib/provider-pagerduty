@@ -5,12 +5,14 @@ go 1.25.0
 toolchain go1.25.1
 
 require (
-	dario.cat/mergo v1.0.2
 	github.com/alecthomas/kingpin/v2 v2.4.0
 	github.com/crossplane/crossplane-runtime/v2 v2.1.0
 	github.com/crossplane/crossplane-tools v0.0.0-20251017183449-dd4517244339
 	github.com/crossplane/upjet/v2 v2.2.0
 	github.com/pkg/errors v0.9.1
+	google.golang.org/grpc v1.76.0
+	k8s.io/api v0.34.1
+	k8s.io/apiextensions-apiserver v0.34.1
 	k8s.io/apimachinery v0.34.1
 	k8s.io/client-go v0.34.1
 	sigs.k8s.io/controller-runtime v0.22.4
@@ -18,6 +20,7 @@ require (
 )
 
 require (
+	dario.cat/mergo v1.0.2 // indirect
 	github.com/agext/levenshtein v1.2.3 // indirect
 	github.com/alecthomas/units v0.0.0-20240927000941-0f3dac36c52b // indirect
 	github.com/antchfx/htmlquery v1.3.5 // indirect
@@ -116,7 +119,7 @@ require (
 	go.yaml.in/yaml/v3 v3.0.4 // indirect
 	golang.org/x/exp v0.0.0-20251023183803-a4bb9ffd2546 // indirect
 	golang.org/x/mod v0.30.0 // indirect
-	golang.org/x/net v0.46.0 // indirect
+	golang.org/x/net v0.47.0 // indirect
 	golang.org/x/oauth2 v0.33.0 // indirect
 	golang.org/x/sync v0.18.0 // indirect
 	golang.org/x/sys v0.38.0 // indirect
@@ -128,14 +131,11 @@ require (
 	gomodules.xyz/jsonpatch/v2 v2.5.0 // indirect
 	google.golang.org/appengine v1.6.8 // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20251111163417-95abcf5c77ba // indirect
-	google.golang.org/grpc v1.76.0 // indirect
 	google.golang.org/protobuf v1.36.10 // indirect
 	gopkg.in/evanphx/json-patch.v4 v4.13.0 // indirect
 	gopkg.in/inf.v0 v0.9.1 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
-	k8s.io/api v0.34.1 // indirect
-	k8s.io/apiextensions-apiserver v0.34.1 // indirect
 	k8s.io/code-generator v0.34.1 // indirect
 	k8s.io/component-base v0.34.1 // indirect
 	k8s.io/gengo/v2 v2.0.0-20250922181213-ec3ebc5fd46b // indirect
