@@ -6,7 +6,7 @@ metadata:
   labels:
     testing.upbound.io/example-name: my_monitor
   name: my-monitor
-  namespace: upbound-system
+  namespace: crossplane-system
 spec:
   forProvider:
     description: Send events to a pair of services
@@ -25,7 +25,7 @@ metadata:
   labels:
     testing.upbound.io/example-name: engineering
   name: engineering
-  namespace: upbound-system
+  namespace: crossplane-system
 spec:
   forProvider:
     name: Engineering

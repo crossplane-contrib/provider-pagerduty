@@ -6,7 +6,7 @@ metadata:
   labels:
     testing.upbound.io/example-name: automatic_trigger
   name: automatic-trigger
-  namespace: upbound-system
+  namespace: crossplane-system
 spec:
   forProvider:
     condition: incident.priority matches 'P1'
@@ -28,7 +28,7 @@ metadata:
   labels:
     testing.upbound.io/example-name: my_first_workflow
   name: my-first-workflow
-  namespace: upbound-system
+  namespace: crossplane-system
 spec:
   forProvider:
     description: This Incident Workflow is an example

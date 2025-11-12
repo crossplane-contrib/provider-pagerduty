@@ -6,7 +6,7 @@ metadata:
   labels:
     testing.upbound.io/example-name: integration
   name: integration
-  namespace: upbound-system
+  namespace: crossplane-system
 spec:
   forProvider:
     eventOrchestrationSelector:
@@ -24,7 +24,7 @@ metadata:
   labels:
     testing.upbound.io/example-name: event_orchestration
   name: event-orchestration
-  namespace: upbound-system
+  namespace: crossplane-system
 spec:
   forProvider:
     name: Example Orchestration
@@ -42,7 +42,7 @@ metadata:
   labels:
     testing.upbound.io/example-name: database_team
   name: database-team
-  namespace: upbound-system
+  namespace: crossplane-system
 spec:
   forProvider:
     name: Database Team

@@ -6,7 +6,7 @@ metadata:
   labels:
     testing.upbound.io/example-name: example-oncall-offcall
   name: example-oncall-offcall
-  namespace: upbound-system
+  namespace: crossplane-system
 spec:
   forProvider:
     contactMethod:
@@ -28,7 +28,7 @@ metadata:
   labels:
     testing.upbound.io/example-name: example
   name: example
-  namespace: upbound-system
+  namespace: crossplane-system
 spec:
   forProvider:
     email: 125.greenholt.earline@foo.test
@@ -44,7 +44,7 @@ metadata:
   labels:
     testing.upbound.io/example-name: phone
   name: phone
-  namespace: upbound-system
+  namespace: crossplane-system
 spec:
   forProvider:
     address: "2025550199"

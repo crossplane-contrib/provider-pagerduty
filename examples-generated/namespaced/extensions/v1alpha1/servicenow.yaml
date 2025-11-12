@@ -6,7 +6,7 @@ metadata:
   labels:
     testing.upbound.io/example-name: snow
   name: snow
-  namespace: upbound-system
+  namespace: crossplane-system
 spec:
   forProvider:
     extensionObjects:
@@ -32,7 +32,7 @@ metadata:
   labels:
     testing.upbound.io/example-name: example
   name: example
-  namespace: upbound-system
+  namespace: crossplane-system
 spec:
   forProvider:
     name: Engineering Escalation Policy
@@ -53,7 +53,7 @@ metadata:
   labels:
     testing.upbound.io/example-name: example
   name: example
-  namespace: upbound-system
+  namespace: crossplane-system
 spec:
   forProvider:
     acknowledgementTimeout: 600
@@ -73,7 +73,7 @@ metadata:
   labels:
     testing.upbound.io/example-name: example
   name: example
-  namespace: upbound-system
+  namespace: crossplane-system
 spec:
   forProvider:
     email: howard.james@example.domain
