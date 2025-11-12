@@ -1,0 +1,186 @@
+apiVersion: event.pagerduty.crossplane.io/v1alpha1
+kind: OrchestrationService
+metadata:
+  annotations:
+    meta.upbound.io/example-id: event/v1alpha1/orchestrationservice
+  labels:
+    testing.upbound.io/example-name: www
+  name: www
+spec:
+  forProvider:
+    catchAll:
+    - actions:
+      - {}
+    enableEventOrchestrationForService: true
+    serviceSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    set:
+    - id: start
+      rule:
+      - actions:
+        - extraction:
+          - target: event.custom_details.hostname
+            template: '{{variables.hostname}}'
+          - regex: www (.*) service
+            source: event.source
+            target: event.source
+          routeTo: step-two
+          variable:
+          - name: hostname
+            path: event.component
+            type: regex
+            value: 'hostname: (.*)'
+        label: Always apply some consistent event transformations to all events
+    - id: step-two
+      rule:
+      - actions:
+        - annotate: 'Please use our P1 runbook: https://docs.test/p1-runbook'
+          incidentCustomFieldUpdate:
+          - id: ${pagerduty_incident_custom_field.cs_impact.id}
+            value: High Impact
+          priority: ${data.pagerduty_priority.p1.id}
+        condition:
+        - expression: event.severity matches 'critical'
+        label: All critical alerts should be treated as P1 incident
+      - actions:
+        - escalationPolicy: ${data.pagerduty_escalation_policy.sre_esc_policy.id}
+        condition:
+        - expression: event.custom_details.service_name matches part '-api' and event.custom_details.status_code
+            matches '502'
+        label: If any of the API apps are unavailable, page the SRE team
+      - actions:
+        - automationAction:
+          - autoSend: true
+            header:
+            - key: X-Notification-Source
+              value: PagerDuty Incident Webhook
+            name: Canary Slack Notification
+            parameter:
+            - key: channel
+              value: '#my-team-channel'
+            - key: message
+              value: something is wrong with the canary deployment
+            triggerTypes:
+            - alert_triggered
+            url: https://our-slack-listerner.test/canary-notification
+        condition:
+        - expression: event.custom_details.hostname matches part 'canary'
+        label: If there's something wrong on the canary let the team know about it
+          in our deployments Slack channel
+      - actions:
+        - pagerdutyAutomationAction:
+          - actionId: 01FJV5A8OA5MKHOYFHV35SM2Z0
+            triggerTypes:
+            - alert_suppressed
+          suppress: true
+        condition:
+        - expression: event.severity matches 'info' and not (now in Mon,Tue,Wed,Thu,Fri
+            09:00:00 to 17:00:00 America/Los_Angeles)
+        label: Never bother the on-call for info-level events outside of work hours,
+          and let an Automation Action fix it instead
+
+---
+
+apiVersion: escalation.pagerduty.crossplane.io/v1alpha1
+kind: Policy
+metadata:
+  annotations:
+    meta.upbound.io/example-id: event/v1alpha1/orchestrationservice
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    name: Engineering Escalation Policy
+    numLoops: 2
+    rule:
+    - escalationDelayInMinutes: 10
+      target:
+      - id: ${pagerduty_user.example.id}
+        type: user_reference
+
+---
+
+apiVersion: incident.pagerduty.crossplane.io/v1alpha1
+kind: CustomField
+metadata:
+  annotations:
+    meta.upbound.io/example-id: event/v1alpha1/orchestrationservice
+  labels:
+    testing.upbound.io/example-name: cs_impact
+  name: cs-impact
+spec:
+  forProvider:
+    dataType: string
+    fieldType: single_value
+    name: impact
+
+---
+
+apiVersion: service.pagerduty.crossplane.io/v1alpha1
+kind: Service
+metadata:
+  annotations:
+    meta.upbound.io/example-id: event/v1alpha1/orchestrationservice
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    acknowledgementTimeout: 600
+    alertCreation: create_alerts_and_incidents
+    autoResolveTimeout: 14400
+    escalationPolicySelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    name: My Web App
+
+---
+
+apiVersion: team.pagerduty.crossplane.io/v1alpha1
+kind: Team
+metadata:
+  annotations:
+    meta.upbound.io/example-id: event/v1alpha1/orchestrationservice
+  labels:
+    testing.upbound.io/example-name: engineering
+  name: engineering
+spec:
+  forProvider:
+    name: Engineering
+
+---
+
+apiVersion: team.pagerduty.crossplane.io/v1alpha1
+kind: Membership
+metadata:
+  annotations:
+    meta.upbound.io/example-id: event/v1alpha1/orchestrationservice
+  labels:
+    testing.upbound.io/example-name: foo
+  name: foo
+spec:
+  forProvider:
+    role: manager
+    teamIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: engineering
+    userIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+
+---
+
+apiVersion: user.pagerduty.crossplane.io/v1alpha1
+kind: User
+metadata:
+  annotations:
+    meta.upbound.io/example-id: event/v1alpha1/orchestrationservice
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    email: 125.greenholt.earline@graham.name
+    name: Earline Greenholt

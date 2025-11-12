@@ -1,0 +1,100 @@
+apiVersion: event.pagerduty.crossplane.io/v1alpha1
+kind: OrchestrationGlobalCacheVariable
+metadata:
+  annotations:
+    meta.upbound.io/example-id: event/v1alpha1/orchestrationglobalcachevariable
+  labels:
+    testing.upbound.io/example-name: recent_host
+  name: recent-host
+spec:
+  forProvider:
+    condition:
+    - expression: event.source exists
+    configuration:
+    - regex: .*
+      source: event.source
+      type: recent_value
+    eventOrchestrationSelector:
+      matchLabels:
+        testing.upbound.io/example-name: event_orchestration
+    name: recent_host
+
+---
+
+apiVersion: event.pagerduty.crossplane.io/v1alpha1
+kind: Orchestration
+metadata:
+  annotations:
+    meta.upbound.io/example-id: event/v1alpha1/orchestrationglobalcachevariable
+  labels:
+    testing.upbound.io/example-name: event_orchestration
+  name: event-orchestration
+spec:
+  forProvider:
+    name: Example Orchestration
+    teamSelector:
+      matchLabels:
+        testing.upbound.io/example-name: database_team
+
+---
+
+apiVersion: event.pagerduty.crossplane.io/v1alpha1
+kind: OrchestrationGlobal
+metadata:
+  annotations:
+    meta.upbound.io/example-id: event/v1alpha1/orchestrationglobalcachevariable
+  labels:
+    testing.upbound.io/example-name: global
+  name: global
+spec:
+  forProvider:
+    catchAll:
+    - actions:
+      - {}
+    eventOrchestrationSelector:
+      matchLabels:
+        testing.upbound.io/example-name: event_orchestration
+    set:
+    - id: start
+      rule:
+      - actions:
+        - drop: true
+        condition:
+        - expression: cache_var.host_ignore_list matches part event.custom_details.host
+        label: Drop events originating from hosts on the ignore list
+      - actions:
+        - annotate: 'Last time, we saw this incident occur on host: {{cache_var.recent_host}}'
+        label: Always annotate the incident with the event source for all events
+
+---
+
+apiVersion: event.pagerduty.crossplane.io/v1alpha1
+kind: OrchestrationServiceCacheVariable
+metadata:
+  annotations:
+    meta.upbound.io/example-id: event/v1alpha1/orchestrationglobalcachevariable
+  labels:
+    testing.upbound.io/example-name: host_ignore_list
+  name: host-ignore-list
+spec:
+  forProvider:
+    configuration:
+    - dataType: string
+      ttlSeconds: 3000
+      type: external_data
+    event_orchestration: ${pagerduty_event_orchestration.event_orchestration.id}
+    name: host_ignore_list
+
+---
+
+apiVersion: team.pagerduty.crossplane.io/v1alpha1
+kind: Team
+metadata:
+  annotations:
+    meta.upbound.io/example-id: event/v1alpha1/orchestrationglobalcachevariable
+  labels:
+    testing.upbound.io/example-name: database_team
+  name: database-team
+spec:
+  forProvider:
+    name: Database Team

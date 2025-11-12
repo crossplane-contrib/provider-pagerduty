@@ -1,0 +1,83 @@
+apiVersion: event.pagerduty.crossplane.io/v1alpha1
+kind: OrchestrationGlobal
+metadata:
+  annotations:
+    meta.upbound.io/example-id: event/v1alpha1/orchestrationglobal
+  labels:
+    testing.upbound.io/example-name: global
+  name: global
+spec:
+  forProvider:
+    catchAll:
+    - actions:
+      - {}
+    eventOrchestrationSelector:
+      matchLabels:
+        testing.upbound.io/example-name: event_orchestration
+    set:
+    - id: start
+      rule:
+      - actions:
+        - annotate: This incident was created by the Database Team via a Global Orchestration
+          routeTo: step-two
+        label: Always annotate a note to all events
+    - id: step-two
+      rule:
+      - actions:
+        - dropEvent: true
+        condition:
+        - expression: event.summary matches 'no-op'
+        label: Drop events that are marked as no-op
+      - actions:
+        - escalationPolicy: ${data.pagerduty_escalation_policy.sre_esc_policy.id}
+        condition:
+        - expression: event.summary matches part 'running out of space'
+        label: If the DB host is running out of space, then page the SRE team
+      - actions:
+        - severity: warning
+        condition:
+        - expression: event.custom_details.hostname matches part 'replica'
+        label: If there's something wrong on the replica, then mark the alert as a
+          warning
+      - actions:
+        - automationAction:
+          - autoSend: true
+            name: db-diagnostic
+            triggerTypes:
+            - alert_suspended
+            url: https://example.com/run-diagnostic
+          priority: ${data.pagerduty_priority.p1.id}
+          suspend: 600
+        label: Otherwise, set the incident to P1, pause for 10 mins and run a diagnostic
+          once the alert is suspended
+
+---
+
+apiVersion: event.pagerduty.crossplane.io/v1alpha1
+kind: Orchestration
+metadata:
+  annotations:
+    meta.upbound.io/example-id: event/v1alpha1/orchestrationglobal
+  labels:
+    testing.upbound.io/example-name: event_orchestration
+  name: event-orchestration
+spec:
+  forProvider:
+    name: Example Orchestration
+    teamSelector:
+      matchLabels:
+        testing.upbound.io/example-name: database_team
+
+---
+
+apiVersion: team.pagerduty.crossplane.io/v1alpha1
+kind: Team
+metadata:
+  annotations:
+    meta.upbound.io/example-id: event/v1alpha1/orchestrationglobal
+  labels:
+    testing.upbound.io/example-name: database_team
+  name: database-team
+spec:
+  forProvider:
+    name: Database Team

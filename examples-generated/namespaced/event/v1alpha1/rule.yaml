@@ -1,0 +1,52 @@
+apiVersion: event.pagerduty.m.crossplane.io/v1alpha1
+kind: Rule
+metadata:
+  annotations:
+    meta.upbound.io/example-id: event/v1alpha1/rule
+  labels:
+    testing.upbound.io/example-name: second
+  name: second
+  namespace: upbound-system
+spec:
+  forProvider:
+    actionJson: |-
+      ${jsonencode([
+              [
+                  "route",
+                  "P5DTL0K"
+              ],
+              [
+                  "severity",
+                  "warning"
+              ],
+              [
+                  "annotate",
+                  "2 Managed by terraform"
+              ],
+              [
+                  "priority",
+                  "PL451DT"
+              ]
+          ])}
+    advancedConditionJson: |-
+      ${jsonencode([
+              [
+                  "scheduled-weekly",
+                  1565392127032,
+                  3600000,
+                  "America/Los_Angeles",
+                  [
+                      1,
+                      2,
+                      3,
+                      5,
+                      7
+                  ]
+              ]
+          ])}
+    conditionJson: |-
+      ${jsonencode([
+              "and",
+              ["contains",["path","payload","source"],"website"],
+              ["contains",["path","headers","from","0","address"],"homer"]
+          ])}

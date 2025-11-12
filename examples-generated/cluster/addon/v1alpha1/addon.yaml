@@ -1,0 +1,12 @@
+apiVersion: addon.pagerduty.crossplane.io/v1alpha1
+kind: Addon
+metadata:
+  annotations:
+    meta.upbound.io/example-id: addon/v1alpha1/addon
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    name: Internal Status Page
+    src: https://intranet.example.com/status

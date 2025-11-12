@@ -1,0 +1,44 @@
+apiVersion: tag.pagerduty.m.crossplane.io/v1alpha1
+kind: Assignment
+metadata:
+  annotations:
+    meta.upbound.io/example-id: tag/v1alpha1/assignment
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+  namespace: upbound-system
+spec:
+  forProvider:
+    entityId: ${pagerduty_team.engteam.id}
+    entityType: teams
+    tagId: ${pagerduty_tag.example.id}
+
+---
+
+apiVersion: tag.pagerduty.m.crossplane.io/v1alpha1
+kind: Tag
+metadata:
+  annotations:
+    meta.upbound.io/example-id: tag/v1alpha1/assignment
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+  namespace: upbound-system
+spec:
+  forProvider:
+    label: API
+
+---
+
+apiVersion: team.pagerduty.m.crossplane.io/v1alpha1
+kind: Team
+metadata:
+  annotations:
+    meta.upbound.io/example-id: tag/v1alpha1/assignment
+  labels:
+    testing.upbound.io/example-name: engteam
+  name: engteam
+  namespace: upbound-system
+spec:
+  forProvider:
+    name: Engineering

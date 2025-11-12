@@ -1,0 +1,94 @@
+apiVersion: user.pagerduty.m.crossplane.io/v1alpha1
+kind: NotificationRule
+metadata:
+  annotations:
+    meta.upbound.io/example-id: user/v1alpha1/notificationrule
+  labels:
+    testing.upbound.io/example-name: high_urgency_phone
+  name: high-urgency-phone
+  namespace: upbound-system
+spec:
+  forProvider:
+    startDelayInMinutes: 1
+    urgency: high
+    userIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+
+---
+
+apiVersion: user.pagerduty.m.crossplane.io/v1alpha1
+kind: User
+metadata:
+  annotations:
+    meta.upbound.io/example-id: user/v1alpha1/notificationrule
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+  namespace: upbound-system
+spec:
+  forProvider:
+    email: 125.greenholt.earline@graham.name
+    name: Earline Greenholt
+
+---
+
+apiVersion: user.pagerduty.m.crossplane.io/v1alpha1
+kind: ContactMethod
+metadata:
+  annotations:
+    meta.upbound.io/example-id: user/v1alpha1/notificationrule
+  labels:
+    testing.upbound.io/example-name: email
+  name: email
+  namespace: upbound-system
+spec:
+  forProvider:
+    address: foo@bar.com
+    label: Work
+    type: email_contact_method
+    userIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+
+---
+
+apiVersion: user.pagerduty.m.crossplane.io/v1alpha1
+kind: ContactMethod
+metadata:
+  annotations:
+    meta.upbound.io/example-id: user/v1alpha1/notificationrule
+  labels:
+    testing.upbound.io/example-name: phone
+  name: phone
+  namespace: upbound-system
+spec:
+  forProvider:
+    address: "2025550199"
+    countryCode: "+1"
+    label: Work
+    type: phone_contact_method
+    userIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+
+---
+
+apiVersion: user.pagerduty.m.crossplane.io/v1alpha1
+kind: ContactMethod
+metadata:
+  annotations:
+    meta.upbound.io/example-id: user/v1alpha1/notificationrule
+  labels:
+    testing.upbound.io/example-name: sms
+  name: sms
+  namespace: upbound-system
+spec:
+  forProvider:
+    address: "2025550199"
+    countryCode: "+1"
+    label: Work
+    type: sms_contact_method
+    userIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example

@@ -1,0 +1,34 @@
+apiVersion: incident.pagerduty.m.crossplane.io/v1alpha1
+kind: CustomFieldOption
+metadata:
+  annotations:
+    meta.upbound.io/example-id: incident/v1alpha1/customfieldoption
+  labels:
+    testing.upbound.io/example-name: dev_environment
+  name: dev-environment
+  namespace: upbound-system
+spec:
+  forProvider:
+    dataType: string
+    fieldSelector:
+      matchLabels:
+        testing.upbound.io/example-name: sre_environment
+    value: dev
+
+---
+
+apiVersion: incident.pagerduty.m.crossplane.io/v1alpha1
+kind: CustomField
+metadata:
+  annotations:
+    meta.upbound.io/example-id: incident/v1alpha1/customfieldoption
+  labels:
+    testing.upbound.io/example-name: sre_environment
+  name: sre-environment
+  namespace: upbound-system
+spec:
+  forProvider:
+    dataType: string
+    displayName: Environment
+    fieldType: single_value_fixed
+    name: environment

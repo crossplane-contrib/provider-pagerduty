@@ -1,0 +1,17 @@
+apiVersion: incident.pagerduty.m.crossplane.io/v1alpha1
+kind: IncidentType
+metadata:
+  annotations:
+    meta.upbound.io/example-id: incident/v1alpha1/incidenttype
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+  namespace: upbound-system
+spec:
+  forProvider:
+    description: Internal incidents not facing customer
+    displayName: Backoffice Incident
+    name: backoffice
+    parentTypeSelector:
+      matchLabels:
+        testing.upbound.io/example-name: pagerduty_incident_type

@@ -3,7 +3,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.14.0
+    controller-gen.kubebuilder.io/version: v0.19.0
   name: orchestrationglobalcachevariables.event.pagerduty.crossplane.io
 spec:
   group: event.pagerduty.crossplane.io
@@ -77,6 +77,8 @@ spec:
                   condition:
                     description: Conditions to be evaluated in order to determine
                       whether or not to update the Cache Variable's stored value.
+                      This attribute can only be used when configuration.0.type is
+                      recent_value or trigger_event_count.
                     items:
                       properties:
                         expression:
@@ -89,6 +91,11 @@ spec:
                       will be stored in the Cache Variable.
                     items:
                       properties:
+                        dataType:
+                          description: The type of data that will eventually be set
+                            for the Cache Variable via an API request. This field
+                            is only used when type is external_data
+                          type: string
                         regex:
                           description: A RE2 regular expression that will be matched
                             against the field specified via the source argument. This
@@ -102,11 +109,12 @@ spec:
                         ttlSeconds:
                           description: The number of seconds indicating how long to
                             count incoming trigger events for. This field is only
-                            used when type is trigger_event_count
+                            used when type is trigger_event_count or external_data
                           type: number
                         type:
                           description: 'The type of value to store into the Cache
-                            Variable. Can be one of: recent_value or trigger_event_count.'
+                            Variable. Can be one of: recent_value, trigger_event_count
+                            or external_data.'
                           type: string
                       type: object
                     type: array
@@ -215,6 +223,8 @@ spec:
                   condition:
                     description: Conditions to be evaluated in order to determine
                       whether or not to update the Cache Variable's stored value.
+                      This attribute can only be used when configuration.0.type is
+                      recent_value or trigger_event_count.
                     items:
                       properties:
                         expression:
@@ -227,6 +237,11 @@ spec:
                       will be stored in the Cache Variable.
                     items:
                       properties:
+                        dataType:
+                          description: The type of data that will eventually be set
+                            for the Cache Variable via an API request. This field
+                            is only used when type is external_data
+                          type: string
                         regex:
                           description: A RE2 regular expression that will be matched
                             against the field specified via the source argument. This
@@ -240,11 +255,12 @@ spec:
                         ttlSeconds:
                           description: The number of seconds indicating how long to
                             count incoming trigger events for. This field is only
-                            used when type is trigger_event_count
+                            used when type is trigger_event_count or external_data
                           type: number
                         type:
                           description: 'The type of value to store into the Cache
-                            Variable. Can be one of: recent_value or trigger_event_count.'
+                            Variable. Can be one of: recent_value, trigger_event_count
+                            or external_data.'
                           type: string
                       type: object
                     type: array
@@ -403,93 +419,12 @@ spec:
                 required:
                 - name
                 type: object
-              publishConnectionDetailsTo:
-                description: |-
-                  PublishConnectionDetailsTo specifies the connection secret config which
-                  contains a name, metadata and a reference to secret store config to
-                  which any connection details for this managed resource should be written.
-                  Connection details frequently include the endpoint, username,
-                  and password required to connect to the managed resource.
-                properties:
-                  configRef:
-                    default:
-                      name: default
-                    description: |-
-                      SecretStoreConfigRef specifies which secret store config should be used
-                      for this ConnectionSecret.
-                    properties:
-                      name:
-                        description: Name of the referenced object.
-                        type: string
-                      policy:
-                        description: Policies for referencing.
-                        properties:
-                          resolution:
-                            default: Required
-                            description: |-
-                              Resolution specifies whether resolution of this reference is required.
-                              The default is 'Required', which means the reconcile will fail if the
-                              reference cannot be resolved. 'Optional' means this reference will be
-                              a no-op if it cannot be resolved.
-                            enum:
-                            - Required
-                            - Optional
-                            type: string
-                          resolve:
-                            description: |-
-                              Resolve specifies when this reference should be resolved. The default
-                              is 'IfNotPresent', which will attempt to resolve the reference only when
-                              the corresponding field is not present. Use 'Always' to resolve the
-                              reference on every reconcile.
-                            enum:
-                            - Always
-                            - IfNotPresent
-                            type: string
-                        type: object
-                    required:
-                    - name
-                    type: object
-                  metadata:
-                    description: Metadata is the metadata for connection secret.
-                    properties:
-                      annotations:
-                        additionalProperties:
-                          type: string
-                        description: |-
-                          Annotations are the annotations to be added to connection secret.
-                          - For Kubernetes secrets, this will be used as "metadata.annotations".
-                          - It is up to Secret Store implementation for others store types.
-                        type: object
-                      labels:
-                        additionalProperties:
-                          type: string
-                        description: |-
-                          Labels are the labels/tags to be added to connection secret.
-                          - For Kubernetes secrets, this will be used as "metadata.labels".
-                          - It is up to Secret Store implementation for others store types.
-                        type: object
-                      type:
-                        description: |-
-                          Type is the SecretType for the connection secret.
-                          - Only valid for Kubernetes Secret Stores.
-                        type: string
-                    type: object
-                  name:
-                    description: Name is the name of the connection secret.
-                    type: string
-                required:
-                - name
-                type: object
               writeConnectionSecretToRef:
                 description: |-
                   WriteConnectionSecretToReference specifies the namespace and name of a
                   Secret to which any connection details for this managed resource should
                   be written. Connection details frequently include the endpoint, username,
                   and password required to connect to the managed resource.
-                  This field is planned to be replaced in a future release in favor of
-                  PublishConnectionDetailsTo. Currently, both could be set independently
-                  and connection details would be published to both without affecting
-                  each other.
                 properties:
                   name:
                     description: Name of the secret.
@@ -522,6 +457,8 @@ spec:
                   condition:
                     description: Conditions to be evaluated in order to determine
                       whether or not to update the Cache Variable's stored value.
+                      This attribute can only be used when configuration.0.type is
+                      recent_value or trigger_event_count.
                     items:
                       properties:
                         expression:
@@ -534,6 +471,11 @@ spec:
                       will be stored in the Cache Variable.
                     items:
                       properties:
+                        dataType:
+                          description: The type of data that will eventually be set
+                            for the Cache Variable via an API request. This field
+                            is only used when type is external_data
+                          type: string
                         regex:
                           description: A RE2 regular expression that will be matched
                             against the field specified via the source argument. This
@@ -547,11 +489,12 @@ spec:
                         ttlSeconds:
                           description: The number of seconds indicating how long to
                             count incoming trigger events for. This field is only
-                            used when type is trigger_event_count
+                            used when type is trigger_event_count or external_data
                           type: number
                         type:
                           description: 'The type of value to store into the Cache
-                            Variable. Can be one of: recent_value or trigger_event_count.'
+                            Variable. Can be one of: recent_value, trigger_event_count
+                            or external_data.'
                           type: string
                       type: object
                     type: array

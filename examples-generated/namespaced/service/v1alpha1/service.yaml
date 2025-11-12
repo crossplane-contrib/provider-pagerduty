@@ -1,0 +1,58 @@
+apiVersion: service.pagerduty.m.crossplane.io/v1alpha1
+kind: Service
+metadata:
+  annotations:
+    meta.upbound.io/example-id: service/v1alpha1/service
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+  namespace: upbound-system
+spec:
+  forProvider:
+    acknowledgementTimeout: 600
+    alertCreation: create_alerts_and_incidents
+    autoPauseNotificationsParameters:
+    - enabled: true
+      timeout: 300
+    autoResolveTimeout: 14400
+    escalationPolicySelector:
+      matchLabels:
+        testing.upbound.io/example-name: foo
+    name: My Web App
+
+---
+
+apiVersion: escalation.pagerduty.m.crossplane.io/v1alpha1
+kind: Policy
+metadata:
+  annotations:
+    meta.upbound.io/example-id: service/v1alpha1/service
+  labels:
+    testing.upbound.io/example-name: foo
+  name: foo
+  namespace: upbound-system
+spec:
+  forProvider:
+    name: Engineering Escalation Policy
+    numLoops: 2
+    rule:
+    - escalationDelayInMinutes: 10
+      target:
+      - id: ${pagerduty_user.example.id}
+        type: user_reference
+
+---
+
+apiVersion: user.pagerduty.m.crossplane.io/v1alpha1
+kind: User
+metadata:
+  annotations:
+    meta.upbound.io/example-id: service/v1alpha1/service
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+  namespace: upbound-system
+spec:
+  forProvider:
+    email: 125.greenholt.earline@graham.name
+    name: Earline Greenholt

@@ -76,7 +76,6 @@ func TerraformSetupBuilder(version, providerSource, providerVersion string) terr
 	}
 }
 
-
 func toSharedPCSpec(pc *clusterv1beta1.ProviderConfig) (*namespacedv1beta1.ProviderConfigSpec, error) {
 	if pc == nil {
 		return nil, nil
