@@ -8,4 +8,5 @@ spec:
     source: Secret
     secretRef:
       name: pagerduty-creds
+      namespace: crossplane-system
       key: credentials

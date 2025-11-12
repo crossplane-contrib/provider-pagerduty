@@ -30,7 +30,7 @@ spec:
     runbookApiKeySecretRef:
       key: example-key
       name: example-secret
-      namespace: upbound-system
+      namespace: crossplane-system
     runbookBaseUri: cat-cat
     runnerType: runbook
 
