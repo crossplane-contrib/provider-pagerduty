@@ -1,0 +1,67 @@
+apiVersion: business.pagerduty.m.crossplane.io/v1alpha1
+kind: ServiceSubscriber
+metadata:
+  annotations:
+    meta.upbound.io/example-id: business/v1alpha1/servicesubscriber
+  labels:
+    testing.upbound.io/example-name: team_example
+  name: team-example
+  namespace: crossplane-system
+spec:
+  forProvider:
+    businessServiceIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    subscriberId: ${pagerduty_team.engteam.id}
+    subscriberType: team
+
+---
+
+apiVersion: business.pagerduty.m.crossplane.io/v1alpha1
+kind: Service
+metadata:
+  annotations:
+    meta.upbound.io/example-id: business/v1alpha1/servicesubscriber
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+  namespace: crossplane-system
+spec:
+  forProvider:
+    description: A very descriptive description of this business service
+    name: My Web App
+    pointOfContact: PagerDuty Admin
+    teamSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+
+---
+
+apiVersion: team.pagerduty.m.crossplane.io/v1alpha1
+kind: Team
+metadata:
+  annotations:
+    meta.upbound.io/example-id: business/v1alpha1/servicesubscriber
+  labels:
+    testing.upbound.io/example-name: engteam
+  name: engteam
+  namespace: crossplane-system
+spec:
+  forProvider:
+    name: Engineering
+
+---
+
+apiVersion: user.pagerduty.m.crossplane.io/v1alpha1
+kind: User
+metadata:
+  annotations:
+    meta.upbound.io/example-id: business/v1alpha1/servicesubscriber
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+  namespace: crossplane-system
+spec:
+  forProvider:
+    email: 125.greenholt.earline@graham.name
+    name: Earline Greenholt

@@ -1,0 +1,41 @@
+apiVersion: incident.pagerduty.m.crossplane.io/v1alpha1
+kind: WorkflowTrigger
+metadata:
+  annotations:
+    meta.upbound.io/example-id: incident/v1alpha1/workflowtrigger
+  labels:
+    testing.upbound.io/example-name: automatic_trigger
+  name: automatic-trigger
+  namespace: crossplane-system
+spec:
+  forProvider:
+    condition: incident.priority matches 'P1'
+    services:
+    - ${pagerduty_service.first_service.id}
+    subscribedToAllServices: false
+    type: conditional
+    workflowSelector:
+      matchLabels:
+        testing.upbound.io/example-name: my_first_workflow
+
+---
+
+apiVersion: incident.pagerduty.m.crossplane.io/v1alpha1
+kind: Workflow
+metadata:
+  annotations:
+    meta.upbound.io/example-id: incident/v1alpha1/workflowtrigger
+  labels:
+    testing.upbound.io/example-name: my_first_workflow
+  name: my-first-workflow
+  namespace: crossplane-system
+spec:
+  forProvider:
+    description: This Incident Workflow is an example
+    name: Example Incident Workflow
+    step:
+    - action: pagerduty.com:incident-workflows:send-status-update:1
+      input:
+      - name: Message
+        value: Example status message sent on {{current_date}}
+      name: Send Status Update
