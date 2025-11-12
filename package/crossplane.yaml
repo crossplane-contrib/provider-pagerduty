@@ -10,10 +10,13 @@ metadata:
       The PagerDuty Crossplane provider adds support for
       managing PagerDuty resources in Kubernetes.
     meta.crossplane.io/readme: |
-      `provider-pagerduty` is for an incident management platform that provides reliable notifications, 
+      `provider-pagerduty` is for an incident management platform that provides reliable notifications,
       automatic escalations, on-call scheduling, and other functionality to help teams
       detect and address unplanned work in real-time.
       If you encounter an issue please reach out on
       [slack.crossplane.io](https://slack.crossplane.io) and create an issue in
       the [crossplane-contrib/provider-pagerduty](https://github.com/crossplane-contrib/provider-pagerduty)
       repo.
+spec:
+  capabilities:
+    - SafeStart
