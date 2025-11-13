@@ -50,10 +50,6 @@ type CloudAccountMappingRuleInitParameters struct {
 	// Configuration for bidirectional synchronization between Jira issues and PagerDuty incidents.
 	Config []ConfigInitParameters `json:"config,omitempty" tf:"config,omitempty"`
 
-	// Indicates if the rule is enabled. Defaults to true.
-	// Indicates if the rule is enabled.
-	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
-
 	// The name of the rule.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 }
@@ -72,10 +68,6 @@ type CloudAccountMappingRuleObservation struct {
 	// Configuration for bidirectional synchronization between Jira issues and PagerDuty incidents.
 	Config []ConfigObservation `json:"config,omitempty" tf:"config,omitempty"`
 
-	// Indicates if the rule is enabled. Defaults to true.
-	// Indicates if the rule is enabled.
-	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
-
 	// The ID of the service.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
@@ -92,11 +84,6 @@ type CloudAccountMappingRuleParameters struct {
 	// Configuration for bidirectional synchronization between Jira issues and PagerDuty incidents.
 	// +kubebuilder:validation:Optional
 	Config []ConfigParameters `json:"config,omitempty" tf:"config,omitempty"`
-
-	// Indicates if the rule is enabled. Defaults to true.
-	// Indicates if the rule is enabled.
-	// +kubebuilder:validation:Optional
-	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
 
 	// The name of the rule.
 	// +kubebuilder:validation:Optional

@@ -76,13 +76,6 @@ spec:
                             type: string
                           type: array
                           x-kubernetes-list-type: set
-                        iagFields:
-                          description: |-
-                            An array of strings which represent the iag fields with which to intelligently group against.  This setting applies only when type is set to intelligent. Default: ["summary"].
-                            An array of strings which represent the iag fields with which to intelligently group against
-                          items:
-                            type: string
-                          type: array
                         timeWindow:
                           description: The maximum amount of time allowed between
                             Alerts. This setting applies only when type is set to
@@ -97,7 +90,7 @@ spec:
                             window leave this value unset or set it to null.
                           type: number
                         timeout:
-                          description: The duration in seconds within which to automatically
+                          description: The duration in minutes within which to automatically
                             group incoming alerts. This setting is only required and
                             applies when type is set to time. To continue grouping
                             alerts until the incident is resolved leave this value
@@ -110,7 +103,7 @@ spec:
                       alert grouping setting.
                     type: string
                   name:
-                    description: The name for the alert grouping settings.
+                    description: The name for the alert groupig settings.
                     type: string
                   serviceRefs:
                     description: References to Service in service to populate services.
@@ -238,13 +231,6 @@ spec:
                             type: string
                           type: array
                           x-kubernetes-list-type: set
-                        iagFields:
-                          description: |-
-                            An array of strings which represent the iag fields with which to intelligently group against.  This setting applies only when type is set to intelligent. Default: ["summary"].
-                            An array of strings which represent the iag fields with which to intelligently group against
-                          items:
-                            type: string
-                          type: array
                         timeWindow:
                           description: The maximum amount of time allowed between
                             Alerts. This setting applies only when type is set to
@@ -259,7 +245,7 @@ spec:
                             window leave this value unset or set it to null.
                           type: number
                         timeout:
-                          description: The duration in seconds within which to automatically
+                          description: The duration in minutes within which to automatically
                             group incoming alerts. This setting is only required and
                             applies when type is set to time. To continue grouping
                             alerts until the incident is resolved leave this value
@@ -272,7 +258,7 @@ spec:
                       alert grouping setting.
                     type: string
                   name:
-                    description: The name for the alert grouping settings.
+                    description: The name for the alert groupig settings.
                     type: string
                   serviceRefs:
                     description: References to Service in service to populate services.
@@ -459,13 +445,6 @@ spec:
                             type: string
                           type: array
                           x-kubernetes-list-type: set
-                        iagFields:
-                          description: |-
-                            An array of strings which represent the iag fields with which to intelligently group against.  This setting applies only when type is set to intelligent. Default: ["summary"].
-                            An array of strings which represent the iag fields with which to intelligently group against
-                          items:
-                            type: string
-                          type: array
                         timeWindow:
                           description: The maximum amount of time allowed between
                             Alerts. This setting applies only when type is set to
@@ -480,7 +459,7 @@ spec:
                             window leave this value unset or set it to null.
                           type: number
                         timeout:
-                          description: The duration in seconds within which to automatically
+                          description: The duration in minutes within which to automatically
                             group incoming alerts. This setting is only required and
                             applies when type is set to time. To continue grouping
                             alerts until the incident is resolved leave this value
@@ -496,7 +475,7 @@ spec:
                     description: The ID of the alert grouping setting.
                     type: string
                   name:
-                    description: The name for the alert grouping settings.
+                    description: The name for the alert groupig settings.
                     type: string
                   services:
                     description: '[Updating can cause a resource replacement] The

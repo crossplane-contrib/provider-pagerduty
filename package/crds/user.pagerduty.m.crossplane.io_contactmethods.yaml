@@ -67,10 +67,6 @@ spec:
                     description: The 1-to-3 digit country calling code. Required when
                       using phone_contact_method or sms_contact_method.
                     type: number
-                  deviceType:
-                    description: The contact method type. May be (email_contact_method,
-                      phone_contact_method, sms_contact_method, push_notification_contact_method).
-                    type: string
                   label:
                     description: The label (e.g., "Work", "Mobile", etc.).
                     type: string
@@ -187,10 +183,6 @@ spec:
                     description: The 1-to-3 digit country calling code. Required when
                       using phone_contact_method or sms_contact_method.
                     type: number
-                  deviceType:
-                    description: The contact method type. May be (email_contact_method,
-                      phone_contact_method, sms_contact_method, push_notification_contact_method).
-                    type: string
                   label:
                     description: The label (e.g., "Work", "Mobile", etc.).
                     type: string
@@ -374,10 +366,6 @@ spec:
                     description: The 1-to-3 digit country calling code. Required when
                       using phone_contact_method or sms_contact_method.
                     type: number
-                  deviceType:
-                    description: The contact method type. May be (email_contact_method,
-                      phone_contact_method, sms_contact_method, push_notification_contact_method).
-                    type: string
                   enabled:
                     description: If true, this phone is capable of receiving SMS messages.
                     type: boolean

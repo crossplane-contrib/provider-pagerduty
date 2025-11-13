@@ -198,9 +198,6 @@ type WorkflowInitParameters struct {
 	// The description of the workflow.
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
 
-	// Indicates whether the Incident Workflow is enabled or not. Disabled workflows will not be triggered, and will not count toward the account's enabled workflow limit.
-	IsEnabled *string `json:"isEnabled,omitempty" tf:"is_enabled,omitempty"`
-
 	// The name of the workflow.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
@@ -228,9 +225,6 @@ type WorkflowObservation struct {
 	// The ID of the incident workflow.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
-	// Indicates whether the Incident Workflow is enabled or not. Disabled workflows will not be triggered, and will not count toward the account's enabled workflow limit.
-	IsEnabled *string `json:"isEnabled,omitempty" tf:"is_enabled,omitempty"`
-
 	// The name of the workflow.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
@@ -246,10 +240,6 @@ type WorkflowParameters struct {
 	// The description of the workflow.
 	// +kubebuilder:validation:Optional
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
-
-	// Indicates whether the Incident Workflow is enabled or not. Disabled workflows will not be triggered, and will not count toward the account's enabled workflow limit.
-	// +kubebuilder:validation:Optional
-	IsEnabled *string `json:"isEnabled,omitempty" tf:"is_enabled,omitempty"`
 
 	// The name of the workflow.
 	// +kubebuilder:validation:Optional

@@ -77,19 +77,19 @@ spec:
                     items:
                       properties:
                         bodyMode:
-                          description: Can be always, match or no-match.
+                          description: Can be always or match.
                           type: string
                         bodyRegex:
                           description: Should be a valid regex or null
                           type: string
                         fromEmailMode:
-                          description: Can be always, match or no-match.
+                          description: Can be always or match.
                           type: string
                         fromEmailRegex:
                           description: Should be a valid regex or null
                           type: string
                         subjectMode:
-                          description: Can be always, match or no-match.
+                          description: Can be always or match.
                           type: string
                         subjectRegex:
                           description: Should be a valid regex or null
@@ -341,19 +341,19 @@ spec:
                     items:
                       properties:
                         bodyMode:
-                          description: Can be always, match or no-match.
+                          description: Can be always or match.
                           type: string
                         bodyRegex:
                           description: Should be a valid regex or null
                           type: string
                         fromEmailMode:
-                          description: Can be always, match or no-match.
+                          description: Can be always or match.
                           type: string
                         fromEmailRegex:
                           description: Should be a valid regex or null
                           type: string
                         subjectMode:
-                          description: Can be always, match or no-match.
+                          description: Can be always or match.
                           type: string
                         subjectRegex:
                           description: Should be a valid regex or null
@@ -683,13 +683,13 @@ spec:
                     items:
                       properties:
                         bodyMode:
-                          description: Can be always, match or no-match.
+                          description: Can be always or match.
                           type: string
                         bodyRegex:
                           description: Should be a valid regex or null
                           type: string
                         fromEmailMode:
-                          description: Can be always, match or no-match.
+                          description: Can be always or match.
                           type: string
                         fromEmailRegex:
                           description: Should be a valid regex or null
@@ -698,7 +698,7 @@ spec:
                           description: The ID of the service integration.
                           type: string
                         subjectMode:
-                          description: Can be always, match or no-match.
+                          description: Can be always or match.
                           type: string
                         subjectRegex:
                           description: Should be a valid regex or null

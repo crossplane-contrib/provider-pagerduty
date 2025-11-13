@@ -105,14 +105,6 @@ spec:
                     description: The type of the action. The only allowed values are
                       process_automation and script. Cannot be changed once set.
                     type: string
-                  allowInvocationFromEventOrchestration:
-                    description: Whether the action can be invoked automatically from
-                      a PagerDuty Event Orchestration.
-                    type: string
-                  allowInvocationManually:
-                    description: Whether the action can be invoked manually by a user
-                      on the PagerDuty website.
-                    type: string
                   creationTime:
                     description: The time action was created. Represented as an ISO
                       8601 timestamp.
@@ -121,10 +113,6 @@ spec:
                     description: The description of the action. Max length is 1024
                       characters.
                     type: string
-                  mapToAllServices:
-                    description: If true, the action will be associated with every
-                      service.
-                    type: boolean
                   modifyTime:
                     description: The last time action has been modified. Represented
                       as an ISO 8601 timestamp.
@@ -133,7 +121,8 @@ spec:
                     description: The name of the action. Max length is 255 characters.
                     type: string
                   onlyInvocableOnUnresolvedIncidents:
-                    description: Whether the action can be invoked on unresolved incidents.
+                    description: Whether or not the action can be invoked on unresolved
+                      incidents.
                     type: boolean
                   runnerId:
                     description: The Process Automation Actions runner to associate
@@ -192,14 +181,6 @@ spec:
                     description: The type of the action. The only allowed values are
                       process_automation and script. Cannot be changed once set.
                     type: string
-                  allowInvocationFromEventOrchestration:
-                    description: Whether the action can be invoked automatically from
-                      a PagerDuty Event Orchestration.
-                    type: string
-                  allowInvocationManually:
-                    description: Whether the action can be invoked manually by a user
-                      on the PagerDuty website.
-                    type: string
                   creationTime:
                     description: The time action was created. Represented as an ISO
                       8601 timestamp.
@@ -208,10 +189,6 @@ spec:
                     description: The description of the action. Max length is 1024
                       characters.
                     type: string
-                  mapToAllServices:
-                    description: If true, the action will be associated with every
-                      service.
-                    type: boolean
                   modifyTime:
                     description: The last time action has been modified. Represented
                       as an ISO 8601 timestamp.
@@ -220,7 +197,8 @@ spec:
                     description: The name of the action. Max length is 255 characters.
                     type: string
                   onlyInvocableOnUnresolvedIncidents:
-                    description: Whether the action can be invoked on unresolved incidents.
+                    description: Whether or not the action can be invoked on unresolved
+                      incidents.
                     type: boolean
                   runnerId:
                     description: The Process Automation Actions runner to associate
@@ -370,14 +348,6 @@ spec:
                     description: The type of the action. The only allowed values are
                       process_automation and script. Cannot be changed once set.
                     type: string
-                  allowInvocationFromEventOrchestration:
-                    description: Whether the action can be invoked automatically from
-                      a PagerDuty Event Orchestration.
-                    type: string
-                  allowInvocationManually:
-                    description: Whether the action can be invoked manually by a user
-                      on the PagerDuty website.
-                    type: string
                   creationTime:
                     description: The time action was created. Represented as an ISO
                       8601 timestamp.
@@ -389,10 +359,6 @@ spec:
                   id:
                     description: The ID of the action.
                     type: string
-                  mapToAllServices:
-                    description: If true, the action will be associated with every
-                      service.
-                    type: boolean
                   modifyTime:
                     description: The last time action has been modified. Represented
                       as an ISO 8601 timestamp.
@@ -401,7 +367,8 @@ spec:
                     description: The name of the action. Max length is 255 characters.
                     type: string
                   onlyInvocableOnUnresolvedIncidents:
-                    description: Whether the action can be invoked on unresolved incidents.
+                    description: Whether or not the action can be invoked on unresolved
+                      incidents.
                     type: boolean
                   runnerId:
                     description: The Process Automation Actions runner to associate

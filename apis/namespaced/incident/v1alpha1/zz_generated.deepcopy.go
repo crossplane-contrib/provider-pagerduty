@@ -1621,11 +1621,6 @@ func (in *WorkflowInitParameters) DeepCopyInto(out *WorkflowInitParameters) {
 		*out = new(string)
 		**out = **in
 	}
-	if in.IsEnabled != nil {
-		in, out := &in.IsEnabled, &out.IsEnabled
-		*out = new(string)
-		**out = **in
-	}
 	if in.Name != nil {
 		in, out := &in.Name, &out.Name
 		*out = new(string)
@@ -1710,11 +1705,6 @@ func (in *WorkflowObservation) DeepCopyInto(out *WorkflowObservation) {
 		*out = new(string)
 		**out = **in
 	}
-	if in.IsEnabled != nil {
-		in, out := &in.IsEnabled, &out.IsEnabled
-		*out = new(string)
-		**out = **in
-	}
 	if in.Name != nil {
 		in, out := &in.Name, &out.Name
 		*out = new(string)
@@ -1749,11 +1739,6 @@ func (in *WorkflowParameters) DeepCopyInto(out *WorkflowParameters) {
 	*out = *in
 	if in.Description != nil {
 		in, out := &in.Description, &out.Description
-		*out = new(string)
-		**out = **in
-	}
-	if in.IsEnabled != nil {
-		in, out := &in.IsEnabled, &out.IsEnabled
 		*out = new(string)
 		**out = **in
 	}

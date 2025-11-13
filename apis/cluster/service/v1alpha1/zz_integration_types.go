@@ -15,19 +15,19 @@ import (
 
 type EmailFilterInitParameters struct {
 
-	// Can be always, match or no-match.
+	// Can be always or match.
 	BodyMode *string `json:"bodyMode,omitempty" tf:"body_mode,omitempty"`
 
 	// Should be a valid regex or null
 	BodyRegex *string `json:"bodyRegex,omitempty" tf:"body_regex,omitempty"`
 
-	// Can be always, match or no-match.
+	// Can be always or match.
 	FromEmailMode *string `json:"fromEmailMode,omitempty" tf:"from_email_mode,omitempty"`
 
 	// Should be a valid regex or null
 	FromEmailRegex *string `json:"fromEmailRegex,omitempty" tf:"from_email_regex,omitempty"`
 
-	// Can be always, match or no-match.
+	// Can be always or match.
 	SubjectMode *string `json:"subjectMode,omitempty" tf:"subject_mode,omitempty"`
 
 	// Should be a valid regex or null
@@ -36,13 +36,13 @@ type EmailFilterInitParameters struct {
 
 type EmailFilterObservation struct {
 
-	// Can be always, match or no-match.
+	// Can be always or match.
 	BodyMode *string `json:"bodyMode,omitempty" tf:"body_mode,omitempty"`
 
 	// Should be a valid regex or null
 	BodyRegex *string `json:"bodyRegex,omitempty" tf:"body_regex,omitempty"`
 
-	// Can be always, match or no-match.
+	// Can be always or match.
 	FromEmailMode *string `json:"fromEmailMode,omitempty" tf:"from_email_mode,omitempty"`
 
 	// Should be a valid regex or null
@@ -51,7 +51,7 @@ type EmailFilterObservation struct {
 	// The ID of the service integration.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
-	// Can be always, match or no-match.
+	// Can be always or match.
 	SubjectMode *string `json:"subjectMode,omitempty" tf:"subject_mode,omitempty"`
 
 	// Should be a valid regex or null
@@ -60,7 +60,7 @@ type EmailFilterObservation struct {
 
 type EmailFilterParameters struct {
 
-	// Can be always, match or no-match.
+	// Can be always or match.
 	// +kubebuilder:validation:Optional
 	BodyMode *string `json:"bodyMode,omitempty" tf:"body_mode,omitempty"`
 
@@ -68,7 +68,7 @@ type EmailFilterParameters struct {
 	// +kubebuilder:validation:Optional
 	BodyRegex *string `json:"bodyRegex,omitempty" tf:"body_regex,omitempty"`
 
-	// Can be always, match or no-match.
+	// Can be always or match.
 	// +kubebuilder:validation:Optional
 	FromEmailMode *string `json:"fromEmailMode,omitempty" tf:"from_email_mode,omitempty"`
 
@@ -76,7 +76,7 @@ type EmailFilterParameters struct {
 	// +kubebuilder:validation:Optional
 	FromEmailRegex *string `json:"fromEmailRegex,omitempty" tf:"from_email_regex,omitempty"`
 
-	// Can be always, match or no-match.
+	// Can be always or match.
 	// +kubebuilder:validation:Optional
 	SubjectMode *string `json:"subjectMode,omitempty" tf:"subject_mode,omitempty"`
 

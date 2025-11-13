@@ -64,11 +64,6 @@ spec:
     - id: start
       rule:
       - actions:
-        - suppress: true
-        condition:
-        - expression: cache_var.is_maintenance == true
-        label: Suppress alerts if the service is in maintenance
-      - actions:
         - severity: critical
         condition:
         - expression: cache_var.num_db_triggers >= 5

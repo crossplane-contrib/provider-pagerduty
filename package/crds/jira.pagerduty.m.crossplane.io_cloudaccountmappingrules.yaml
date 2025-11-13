@@ -391,11 +391,6 @@ spec:
                           type: object
                       type: object
                     type: array
-                  enabled:
-                    description: |-
-                      Indicates if the rule is enabled. Defaults to true.
-                      Indicates if the rule is enabled.
-                    type: boolean
                   name:
                     description: The name of the rule.
                     type: string
@@ -743,11 +738,6 @@ spec:
                           type: object
                       type: object
                     type: array
-                  enabled:
-                    description: |-
-                      Indicates if the rule is enabled. Defaults to true.
-                      Indicates if the rule is enabled.
-                    type: boolean
                   name:
                     description: The name of the rule.
                     type: string
@@ -1003,11 +993,6 @@ spec:
                           type: string
                       type: object
                     type: array
-                  enabled:
-                    description: |-
-                      Indicates if the rule is enabled. Defaults to true.
-                      Indicates if the rule is enabled.
-                    type: boolean
                   id:
                     description: The ID of the service.
                     type: string

@@ -4,8 +4,8 @@ metadata:
   annotations:
     meta.upbound.io/example-id: event/v1alpha1/orchestrationglobalcachevariable
   labels:
-    testing.upbound.io/example-name: recent_host
-  name: recent-host
+    testing.upbound.io/example-name: cache_var
+  name: cache-var
   namespace: upbound-system
 spec:
   forProvider:
@@ -61,33 +61,8 @@ spec:
     - id: start
       rule:
       - actions:
-        - drop: true
-        condition:
-        - expression: cache_var.host_ignore_list matches part event.custom_details.host
-        label: Drop events originating from hosts on the ignore list
-      - actions:
         - annotate: 'Last time, we saw this incident occur on host: {{cache_var.recent_host}}'
         label: Always annotate the incident with the event source for all events
-
----
-
-apiVersion: event.pagerduty.m.crossplane.io/v1alpha1
-kind: OrchestrationServiceCacheVariable
-metadata:
-  annotations:
-    meta.upbound.io/example-id: event/v1alpha1/orchestrationglobalcachevariable
-  labels:
-    testing.upbound.io/example-name: host_ignore_list
-  name: host-ignore-list
-  namespace: upbound-system
-spec:
-  forProvider:
-    configuration:
-    - dataType: string
-      ttlSeconds: 3000
-      type: external_data
-    event_orchestration: ${pagerduty_event_orchestration.event_orchestration.id}
-    name: host_ignore_list
 
 ---
 

@@ -75,18 +75,12 @@ type ActionsPagerdutyAutomationActionInitParameters struct {
 
 	// Id of the Process Automation action to be triggered.
 	ActionID *string `json:"actionId,omitempty" tf:"action_id,omitempty"`
-
-	// The Automation Action will be triggered whenever an alert reaches the specified state. Allowed values are: ["alert_triggered"], ["alert_suspended"], ["alert_suppressed"]
-	TriggerTypes []*string `json:"triggerTypes,omitempty" tf:"trigger_types,omitempty"`
 }
 
 type ActionsPagerdutyAutomationActionObservation struct {
 
 	// Id of the Process Automation action to be triggered.
 	ActionID *string `json:"actionId,omitempty" tf:"action_id,omitempty"`
-
-	// The Automation Action will be triggered whenever an alert reaches the specified state. Allowed values are: ["alert_triggered"], ["alert_suspended"], ["alert_suppressed"]
-	TriggerTypes []*string `json:"triggerTypes,omitempty" tf:"trigger_types,omitempty"`
 }
 
 type ActionsPagerdutyAutomationActionParameters struct {
@@ -94,15 +88,11 @@ type ActionsPagerdutyAutomationActionParameters struct {
 	// Id of the Process Automation action to be triggered.
 	// +kubebuilder:validation:Optional
 	ActionID *string `json:"actionId" tf:"action_id,omitempty"`
-
-	// The Automation Action will be triggered whenever an alert reaches the specified state. Allowed values are: ["alert_triggered"], ["alert_suspended"], ["alert_suppressed"]
-	// +kubebuilder:validation:Optional
-	TriggerTypes []*string `json:"triggerTypes,omitempty" tf:"trigger_types,omitempty"`
 }
 
 type CatchAllActionsAutomationActionInitParameters struct {
 
-	// When true, PagerDuty's servers will automatically send this webhook request as soon as the resulting incident or alert is created. When false, your incident responder will be able to manually trigger the Webhook via the PagerDuty website and mobile app.
+	// When true, PagerDuty's servers will automatically send this webhook request as soon as the resulting incident is created. When false, your incident responder will be able to manually trigger the Webhook via the PagerDuty website and mobile app.
 	AutoSend *bool `json:"autoSend,omitempty" tf:"auto_send,omitempty"`
 
 	// Specify custom key/value pairs that'll be sent with the webhook request as request headers.
@@ -114,16 +104,13 @@ type CatchAllActionsAutomationActionInitParameters struct {
 	// Specify custom key/value pairs that'll be included in the webhook request's JSON payload.
 	Parameter []ActionsAutomationActionParameterInitParameters `json:"parameter,omitempty" tf:"parameter,omitempty"`
 
-	// The Automation Action will be triggered whenever an alert reaches the specified state. Allowed values are: ["alert_triggered"], ["alert_suspended"], ["alert_suppressed"]
-	TriggerTypes []*string `json:"triggerTypes,omitempty" tf:"trigger_types,omitempty"`
-
 	// The API endpoint where PagerDuty's servers will send the webhook request.
 	URL *string `json:"url,omitempty" tf:"url,omitempty"`
 }
 
 type CatchAllActionsAutomationActionObservation struct {
 
-	// When true, PagerDuty's servers will automatically send this webhook request as soon as the resulting incident or alert is created. When false, your incident responder will be able to manually trigger the Webhook via the PagerDuty website and mobile app.
+	// When true, PagerDuty's servers will automatically send this webhook request as soon as the resulting incident is created. When false, your incident responder will be able to manually trigger the Webhook via the PagerDuty website and mobile app.
 	AutoSend *bool `json:"autoSend,omitempty" tf:"auto_send,omitempty"`
 
 	// Specify custom key/value pairs that'll be sent with the webhook request as request headers.
@@ -135,16 +122,13 @@ type CatchAllActionsAutomationActionObservation struct {
 	// Specify custom key/value pairs that'll be included in the webhook request's JSON payload.
 	Parameter []ActionsAutomationActionParameterObservation `json:"parameter,omitempty" tf:"parameter,omitempty"`
 
-	// The Automation Action will be triggered whenever an alert reaches the specified state. Allowed values are: ["alert_triggered"], ["alert_suspended"], ["alert_suppressed"]
-	TriggerTypes []*string `json:"triggerTypes,omitempty" tf:"trigger_types,omitempty"`
-
 	// The API endpoint where PagerDuty's servers will send the webhook request.
 	URL *string `json:"url,omitempty" tf:"url,omitempty"`
 }
 
 type CatchAllActionsAutomationActionParameters struct {
 
-	// When true, PagerDuty's servers will automatically send this webhook request as soon as the resulting incident or alert is created. When false, your incident responder will be able to manually trigger the Webhook via the PagerDuty website and mobile app.
+	// When true, PagerDuty's servers will automatically send this webhook request as soon as the resulting incident is created. When false, your incident responder will be able to manually trigger the Webhook via the PagerDuty website and mobile app.
 	// +kubebuilder:validation:Optional
 	AutoSend *bool `json:"autoSend,omitempty" tf:"auto_send,omitempty"`
 
@@ -159,10 +143,6 @@ type CatchAllActionsAutomationActionParameters struct {
 	// Specify custom key/value pairs that'll be included in the webhook request's JSON payload.
 	// +kubebuilder:validation:Optional
 	Parameter []ActionsAutomationActionParameterParameters `json:"parameter,omitempty" tf:"parameter,omitempty"`
-
-	// The Automation Action will be triggered whenever an alert reaches the specified state. Allowed values are: ["alert_triggered"], ["alert_suspended"], ["alert_suppressed"]
-	// +kubebuilder:validation:Optional
-	TriggerTypes []*string `json:"triggerTypes,omitempty" tf:"trigger_types,omitempty"`
 
 	// The API endpoint where PagerDuty's servers will send the webhook request.
 	// +kubebuilder:validation:Optional
@@ -301,7 +281,7 @@ type OrchestrationServiceCatchAllActionsInitParameters struct {
 	// Add this text as a note on the resulting incident.
 	Annotate *string `json:"annotate,omitempty" tf:"annotate,omitempty"`
 
-	// Create a Webhook to be run for certain alert states.
+	// Create a Webhook associated with the resulting incident.
 	AutomationAction []CatchAllActionsAutomationActionInitParameters `json:"automationAction,omitempty" tf:"automation_action,omitempty"`
 
 	// The ID of the Escalation Policy you want to assign incidents to. Event rules with this action will override the Escalation Policy already set on a Service's settings, with what is configured by this action.
@@ -316,7 +296,7 @@ type OrchestrationServiceCatchAllActionsInitParameters struct {
 	// Assign a custom field to the resulting incident.
 	IncidentCustomFieldUpdate []CatchAllActionsIncidentCustomFieldUpdateInitParameters `json:"incidentCustomFieldUpdate,omitempty" tf:"incident_custom_field_update,omitempty"`
 
-	// Configure a Process Automation to be run for certain alert states.
+	// Configure a Process Automation associated with the resulting incident.
 	PagerdutyAutomationAction []PagerdutyAutomationActionInitParameters `json:"pagerdutyAutomationAction,omitempty" tf:"pagerduty_automation_action,omitempty"`
 
 	// The ID of the priority you want to set on resulting incident. Consider using the pagerduty_priority data source.
@@ -343,7 +323,7 @@ type OrchestrationServiceCatchAllActionsObservation struct {
 	// Add this text as a note on the resulting incident.
 	Annotate *string `json:"annotate,omitempty" tf:"annotate,omitempty"`
 
-	// Create a Webhook to be run for certain alert states.
+	// Create a Webhook associated with the resulting incident.
 	AutomationAction []CatchAllActionsAutomationActionObservation `json:"automationAction,omitempty" tf:"automation_action,omitempty"`
 
 	// The ID of the Escalation Policy you want to assign incidents to. Event rules with this action will override the Escalation Policy already set on a Service's settings, with what is configured by this action.
@@ -358,7 +338,7 @@ type OrchestrationServiceCatchAllActionsObservation struct {
 	// Assign a custom field to the resulting incident.
 	IncidentCustomFieldUpdate []CatchAllActionsIncidentCustomFieldUpdateObservation `json:"incidentCustomFieldUpdate,omitempty" tf:"incident_custom_field_update,omitempty"`
 
-	// Configure a Process Automation to be run for certain alert states.
+	// Configure a Process Automation associated with the resulting incident.
 	PagerdutyAutomationAction []PagerdutyAutomationActionObservation `json:"pagerdutyAutomationAction,omitempty" tf:"pagerduty_automation_action,omitempty"`
 
 	// The ID of the priority you want to set on resulting incident. Consider using the pagerduty_priority data source.
@@ -386,7 +366,7 @@ type OrchestrationServiceCatchAllActionsParameters struct {
 	// +kubebuilder:validation:Optional
 	Annotate *string `json:"annotate,omitempty" tf:"annotate,omitempty"`
 
-	// Create a Webhook to be run for certain alert states.
+	// Create a Webhook associated with the resulting incident.
 	// +kubebuilder:validation:Optional
 	AutomationAction []CatchAllActionsAutomationActionParameters `json:"automationAction,omitempty" tf:"automation_action,omitempty"`
 
@@ -406,7 +386,7 @@ type OrchestrationServiceCatchAllActionsParameters struct {
 	// +kubebuilder:validation:Optional
 	IncidentCustomFieldUpdate []CatchAllActionsIncidentCustomFieldUpdateParameters `json:"incidentCustomFieldUpdate,omitempty" tf:"incident_custom_field_update,omitempty"`
 
-	// Configure a Process Automation to be run for certain alert states.
+	// Configure a Process Automation associated with the resulting incident.
 	// +kubebuilder:validation:Optional
 	PagerdutyAutomationAction []PagerdutyAutomationActionParameters `json:"pagerdutyAutomationAction,omitempty" tf:"pagerduty_automation_action,omitempty"`
 
@@ -558,7 +538,7 @@ type OrchestrationServiceSetRuleActionsInitParameters struct {
 	// Add this text as a note on the resulting incident.
 	Annotate *string `json:"annotate,omitempty" tf:"annotate,omitempty"`
 
-	// Create a Webhook to be run for certain alert states.
+	// Create a Webhook associated with the resulting incident.
 	AutomationAction []RuleActionsAutomationActionInitParameters `json:"automationAction,omitempty" tf:"automation_action,omitempty"`
 
 	// The ID of the Escalation Policy you want to assign incidents to. Event rules with this action will override the Escalation Policy already set on a Service's settings, with what is configured by this action.
@@ -573,7 +553,7 @@ type OrchestrationServiceSetRuleActionsInitParameters struct {
 	// Assign a custom field to the resulting incident.
 	IncidentCustomFieldUpdate []RuleActionsIncidentCustomFieldUpdateInitParameters `json:"incidentCustomFieldUpdate,omitempty" tf:"incident_custom_field_update,omitempty"`
 
-	// Configure a Process Automation to be run for certain alert states.
+	// Configure a Process Automation associated with the resulting incident.
 	PagerdutyAutomationAction []ActionsPagerdutyAutomationActionInitParameters `json:"pagerdutyAutomationAction,omitempty" tf:"pagerduty_automation_action,omitempty"`
 
 	// The ID of the priority you want to set on resulting incident. Consider using the pagerduty_priority data source.
@@ -600,7 +580,7 @@ type OrchestrationServiceSetRuleActionsObservation struct {
 	// Add this text as a note on the resulting incident.
 	Annotate *string `json:"annotate,omitempty" tf:"annotate,omitempty"`
 
-	// Create a Webhook to be run for certain alert states.
+	// Create a Webhook associated with the resulting incident.
 	AutomationAction []RuleActionsAutomationActionObservation `json:"automationAction,omitempty" tf:"automation_action,omitempty"`
 
 	// The ID of the Escalation Policy you want to assign incidents to. Event rules with this action will override the Escalation Policy already set on a Service's settings, with what is configured by this action.
@@ -615,7 +595,7 @@ type OrchestrationServiceSetRuleActionsObservation struct {
 	// Assign a custom field to the resulting incident.
 	IncidentCustomFieldUpdate []RuleActionsIncidentCustomFieldUpdateObservation `json:"incidentCustomFieldUpdate,omitempty" tf:"incident_custom_field_update,omitempty"`
 
-	// Configure a Process Automation to be run for certain alert states.
+	// Configure a Process Automation associated with the resulting incident.
 	PagerdutyAutomationAction []ActionsPagerdutyAutomationActionObservation `json:"pagerdutyAutomationAction,omitempty" tf:"pagerduty_automation_action,omitempty"`
 
 	// The ID of the priority you want to set on resulting incident. Consider using the pagerduty_priority data source.
@@ -643,7 +623,7 @@ type OrchestrationServiceSetRuleActionsParameters struct {
 	// +kubebuilder:validation:Optional
 	Annotate *string `json:"annotate,omitempty" tf:"annotate,omitempty"`
 
-	// Create a Webhook to be run for certain alert states.
+	// Create a Webhook associated with the resulting incident.
 	// +kubebuilder:validation:Optional
 	AutomationAction []RuleActionsAutomationActionParameters `json:"automationAction,omitempty" tf:"automation_action,omitempty"`
 
@@ -663,7 +643,7 @@ type OrchestrationServiceSetRuleActionsParameters struct {
 	// +kubebuilder:validation:Optional
 	IncidentCustomFieldUpdate []RuleActionsIncidentCustomFieldUpdateParameters `json:"incidentCustomFieldUpdate,omitempty" tf:"incident_custom_field_update,omitempty"`
 
-	// Configure a Process Automation to be run for certain alert states.
+	// Configure a Process Automation associated with the resulting incident.
 	// +kubebuilder:validation:Optional
 	PagerdutyAutomationAction []ActionsPagerdutyAutomationActionParameters `json:"pagerdutyAutomationAction,omitempty" tf:"pagerduty_automation_action,omitempty"`
 
@@ -748,18 +728,12 @@ type PagerdutyAutomationActionInitParameters struct {
 
 	// Id of the Process Automation action to be triggered.
 	ActionID *string `json:"actionId,omitempty" tf:"action_id,omitempty"`
-
-	// The Automation Action will be triggered whenever an alert reaches the specified state. Allowed values are: ["alert_triggered"], ["alert_suspended"], ["alert_suppressed"]
-	TriggerTypes []*string `json:"triggerTypes,omitempty" tf:"trigger_types,omitempty"`
 }
 
 type PagerdutyAutomationActionObservation struct {
 
 	// Id of the Process Automation action to be triggered.
 	ActionID *string `json:"actionId,omitempty" tf:"action_id,omitempty"`
-
-	// The Automation Action will be triggered whenever an alert reaches the specified state. Allowed values are: ["alert_triggered"], ["alert_suspended"], ["alert_suppressed"]
-	TriggerTypes []*string `json:"triggerTypes,omitempty" tf:"trigger_types,omitempty"`
 }
 
 type PagerdutyAutomationActionParameters struct {
@@ -767,10 +741,6 @@ type PagerdutyAutomationActionParameters struct {
 	// Id of the Process Automation action to be triggered.
 	// +kubebuilder:validation:Optional
 	ActionID *string `json:"actionId" tf:"action_id,omitempty"`
-
-	// The Automation Action will be triggered whenever an alert reaches the specified state. Allowed values are: ["alert_triggered"], ["alert_suspended"], ["alert_suppressed"]
-	// +kubebuilder:validation:Optional
-	TriggerTypes []*string `json:"triggerTypes,omitempty" tf:"trigger_types,omitempty"`
 }
 
 type RuleActionsAutomationActionHeaderInitParameters struct {
@@ -804,7 +774,7 @@ type RuleActionsAutomationActionHeaderParameters struct {
 
 type RuleActionsAutomationActionInitParameters struct {
 
-	// When true, PagerDuty's servers will automatically send this webhook request as soon as the resulting incident or alert is created. When false, your incident responder will be able to manually trigger the Webhook via the PagerDuty website and mobile app.
+	// When true, PagerDuty's servers will automatically send this webhook request as soon as the resulting incident is created. When false, your incident responder will be able to manually trigger the Webhook via the PagerDuty website and mobile app.
 	AutoSend *bool `json:"autoSend,omitempty" tf:"auto_send,omitempty"`
 
 	// Specify custom key/value pairs that'll be sent with the webhook request as request headers.
@@ -816,16 +786,13 @@ type RuleActionsAutomationActionInitParameters struct {
 	// Specify custom key/value pairs that'll be included in the webhook request's JSON payload.
 	Parameter []RuleActionsAutomationActionParameterInitParameters `json:"parameter,omitempty" tf:"parameter,omitempty"`
 
-	// The Automation Action will be triggered whenever an alert reaches the specified state. Allowed values are: ["alert_triggered"], ["alert_suspended"], ["alert_suppressed"]
-	TriggerTypes []*string `json:"triggerTypes,omitempty" tf:"trigger_types,omitempty"`
-
 	// The API endpoint where PagerDuty's servers will send the webhook request.
 	URL *string `json:"url,omitempty" tf:"url,omitempty"`
 }
 
 type RuleActionsAutomationActionObservation struct {
 
-	// When true, PagerDuty's servers will automatically send this webhook request as soon as the resulting incident or alert is created. When false, your incident responder will be able to manually trigger the Webhook via the PagerDuty website and mobile app.
+	// When true, PagerDuty's servers will automatically send this webhook request as soon as the resulting incident is created. When false, your incident responder will be able to manually trigger the Webhook via the PagerDuty website and mobile app.
 	AutoSend *bool `json:"autoSend,omitempty" tf:"auto_send,omitempty"`
 
 	// Specify custom key/value pairs that'll be sent with the webhook request as request headers.
@@ -836,9 +803,6 @@ type RuleActionsAutomationActionObservation struct {
 
 	// Specify custom key/value pairs that'll be included in the webhook request's JSON payload.
 	Parameter []RuleActionsAutomationActionParameterObservation `json:"parameter,omitempty" tf:"parameter,omitempty"`
-
-	// The Automation Action will be triggered whenever an alert reaches the specified state. Allowed values are: ["alert_triggered"], ["alert_suspended"], ["alert_suppressed"]
-	TriggerTypes []*string `json:"triggerTypes,omitempty" tf:"trigger_types,omitempty"`
 
 	// The API endpoint where PagerDuty's servers will send the webhook request.
 	URL *string `json:"url,omitempty" tf:"url,omitempty"`
@@ -875,7 +839,7 @@ type RuleActionsAutomationActionParameterParameters struct {
 
 type RuleActionsAutomationActionParameters struct {
 
-	// When true, PagerDuty's servers will automatically send this webhook request as soon as the resulting incident or alert is created. When false, your incident responder will be able to manually trigger the Webhook via the PagerDuty website and mobile app.
+	// When true, PagerDuty's servers will automatically send this webhook request as soon as the resulting incident is created. When false, your incident responder will be able to manually trigger the Webhook via the PagerDuty website and mobile app.
 	// +kubebuilder:validation:Optional
 	AutoSend *bool `json:"autoSend,omitempty" tf:"auto_send,omitempty"`
 
@@ -890,10 +854,6 @@ type RuleActionsAutomationActionParameters struct {
 	// Specify custom key/value pairs that'll be included in the webhook request's JSON payload.
 	// +kubebuilder:validation:Optional
 	Parameter []RuleActionsAutomationActionParameterParameters `json:"parameter,omitempty" tf:"parameter,omitempty"`
-
-	// The Automation Action will be triggered whenever an alert reaches the specified state. Allowed values are: ["alert_triggered"], ["alert_suspended"], ["alert_suppressed"]
-	// +kubebuilder:validation:Optional
-	TriggerTypes []*string `json:"triggerTypes,omitempty" tf:"trigger_types,omitempty"`
 
 	// The API endpoint where PagerDuty's servers will send the webhook request.
 	// +kubebuilder:validation:Optional

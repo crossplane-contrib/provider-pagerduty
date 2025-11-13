@@ -68,8 +68,6 @@ spec:
                         dependentService:
                           description: The service that dependents on the supporting
                             service. Dependency dependent service documented below.
-                            One and only one dependent_service dependency block must
-                            be defined.
                           items:
                             properties:
                               id:
@@ -83,8 +81,7 @@ spec:
                           type: array
                         supportingService:
                           description: The service that supports the dependent service.
-                            Dependency supporting service documented below. One and
-                            only one supporting_service dependency block must be defined.
+                            Dependency supporting service documented below.
                           items:
                             properties:
                               id:
@@ -125,8 +122,6 @@ spec:
                         dependentService:
                           description: The service that dependents on the supporting
                             service. Dependency dependent service documented below.
-                            One and only one dependent_service dependency block must
-                            be defined.
                           items:
                             properties:
                               id:
@@ -140,8 +135,7 @@ spec:
                           type: array
                         supportingService:
                           description: The service that supports the dependent service.
-                            Dependency supporting service documented below. One and
-                            only one supporting_service dependency block must be defined.
+                            Dependency supporting service documented below.
                           items:
                             properties:
                               id:
@@ -232,8 +226,6 @@ spec:
                         dependentService:
                           description: The service that dependents on the supporting
                             service. Dependency dependent service documented below.
-                            One and only one dependent_service dependency block must
-                            be defined.
                           items:
                             properties:
                               id:
@@ -247,8 +239,7 @@ spec:
                           type: array
                         supportingService:
                           description: The service that supports the dependent service.
-                            Dependency supporting service documented below. One and
-                            only one supporting_service dependency block must be defined.
+                            Dependency supporting service documented below.
                           items:
                             properties:
                               id:

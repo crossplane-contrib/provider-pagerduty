@@ -13,39 +13,11 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
 )
 
-type NotificationRuleContactMethodInitParameters struct {
-
-	// The id of the referenced contact method.
-	ID *string `json:"id,omitempty" tf:"id,omitempty"`
-
-	// The type of contact method. Can be email_contact_method, phone_contact_method, push_notification_contact_method or sms_contact_method.
-	Type *string `json:"type,omitempty" tf:"type,omitempty"`
-}
-
-type NotificationRuleContactMethodObservation struct {
-
-	// The id of the referenced contact method.
-	ID *string `json:"id,omitempty" tf:"id,omitempty"`
-
-	// The type of contact method. Can be email_contact_method, phone_contact_method, push_notification_contact_method or sms_contact_method.
-	Type *string `json:"type,omitempty" tf:"type,omitempty"`
-}
-
-type NotificationRuleContactMethodParameters struct {
-
-	// The id of the referenced contact method.
-	// +kubebuilder:validation:Optional
-	ID *string `json:"id" tf:"id,omitempty"`
-
-	// The type of contact method. Can be email_contact_method, phone_contact_method, push_notification_contact_method or sms_contact_method.
-	// +kubebuilder:validation:Optional
-	Type *string `json:"type" tf:"type,omitempty"`
-}
-
 type NotificationRuleInitParameters struct {
 
 	// A contact method block, configured as a block described below.
-	ContactMethod []NotificationRuleContactMethodInitParameters `json:"contactMethod,omitempty" tf:"contact_method,omitempty"`
+	// +mapType=granular
+	ContactMethod map[string]*string `json:"contactMethod,omitempty" tf:"contact_method,omitempty"`
 
 	// The delay before firing the rule, in minutes.
 	StartDelayInMinutes *float64 `json:"startDelayInMinutes,omitempty" tf:"start_delay_in_minutes,omitempty"`
@@ -69,7 +41,8 @@ type NotificationRuleInitParameters struct {
 type NotificationRuleObservation struct {
 
 	// A contact method block, configured as a block described below.
-	ContactMethod []NotificationRuleContactMethodObservation `json:"contactMethod,omitempty" tf:"contact_method,omitempty"`
+	// +mapType=granular
+	ContactMethod map[string]*string `json:"contactMethod,omitempty" tf:"contact_method,omitempty"`
 
 	// The id of the referenced contact method.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
@@ -88,7 +61,8 @@ type NotificationRuleParameters struct {
 
 	// A contact method block, configured as a block described below.
 	// +kubebuilder:validation:Optional
-	ContactMethod []NotificationRuleContactMethodParameters `json:"contactMethod,omitempty" tf:"contact_method,omitempty"`
+	// +mapType=granular
+	ContactMethod map[string]*string `json:"contactMethod,omitempty" tf:"contact_method,omitempty"`
 
 	// The delay before firing the rule, in minutes.
 	// +kubebuilder:validation:Optional

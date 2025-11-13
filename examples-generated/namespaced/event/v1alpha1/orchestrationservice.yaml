@@ -62,24 +62,17 @@ spec:
               value: '#my-team-channel'
             - key: message
               value: something is wrong with the canary deployment
-            triggerTypes:
-            - alert_triggered
             url: https://our-slack-listerner.test/canary-notification
         condition:
         - expression: event.custom_details.hostname matches part 'canary'
         label: If there's something wrong on the canary let the team know about it
           in our deployments Slack channel
       - actions:
-        - pagerdutyAutomationAction:
-          - actionId: 01FJV5A8OA5MKHOYFHV35SM2Z0
-            triggerTypes:
-            - alert_suppressed
-          suppress: true
+        - suppress: true
         condition:
         - expression: event.severity matches 'info' and not (now in Mon,Tue,Wed,Thu,Fri
             09:00:00 to 17:00:00 America/Los_Angeles)
-        label: Never bother the on-call for info-level events outside of work hours,
-          and let an Automation Action fix it instead
+        label: Never bother the on-call for info-level events outside of work hours
 
 ---
 
