@@ -1,0 +1,97 @@
+apiVersion: automation.actions.pagerduty.m.crossplane.io/v1alpha1
+kind: ActionServiceAssociation
+metadata:
+  annotations:
+    meta.upbound.io/example-id: automation/v1alpha1/actionserviceassociation
+  labels:
+    testing.upbound.io/example-name: foo
+  name: foo
+  namespace: upbound-system
+spec:
+  forProvider:
+    actionIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: pa_action_example
+    serviceIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+
+---
+
+apiVersion: automation.actions.pagerduty.m.crossplane.io/v1alpha1
+kind: Action
+metadata:
+  annotations:
+    meta.upbound.io/example-id: automation.actions/v1alpha1/actionserviceassociation
+  labels:
+    testing.upbound.io/example-name: pa_action_example
+  name: pa-action-example
+  namespace: upbound-system
+spec:
+  forProvider:
+    actionDataReference:
+    - processAutomationJobId: P123456
+    actionType: process_automation
+    description: Description of the PA Action created via TF
+    name: PA Action created via TF
+
+---
+
+apiVersion: escalation.pagerduty.m.crossplane.io/v1alpha1
+kind: Policy
+metadata:
+  annotations:
+    meta.upbound.io/example-id: automation.actions/v1alpha1/actionserviceassociation
+  labels:
+    testing.upbound.io/example-name: foo
+  name: foo
+  namespace: upbound-system
+spec:
+  forProvider:
+    name: Engineering Escalation Policy
+    numLoops: 2
+    rule:
+    - escalationDelayInMinutes: 10
+      target:
+      - id: ${pagerduty_user.example.id}
+        type: user_reference
+
+---
+
+apiVersion: service.pagerduty.m.crossplane.io/v1alpha1
+kind: Service
+metadata:
+  annotations:
+    meta.upbound.io/example-id: automation.actions/v1alpha1/actionserviceassociation
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+  namespace: upbound-system
+spec:
+  forProvider:
+    acknowledgementTimeout: 600
+    alertCreation: create_alerts_and_incidents
+    autoPauseNotificationsParameters:
+    - enabled: true
+      timeout: 300
+    autoResolveTimeout: 14400
+    escalationPolicySelector:
+      matchLabels:
+        testing.upbound.io/example-name: foo
+    name: My Web App
+
+---
+
+apiVersion: user.pagerduty.m.crossplane.io/v1alpha1
+kind: User
+metadata:
+  annotations:
+    meta.upbound.io/example-id: automation.actions/v1alpha1/actionserviceassociation
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+  namespace: upbound-system
+spec:
+  forProvider:
+    email: 125.greenholt.earline@graham.name
+    name: Earline Greenholt

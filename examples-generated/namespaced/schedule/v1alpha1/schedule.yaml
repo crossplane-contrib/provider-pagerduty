@@ -1,0 +1,57 @@
+apiVersion: schedule.pagerduty.m.crossplane.io/v1alpha1
+kind: Schedule
+metadata:
+  annotations:
+    meta.upbound.io/example-id: schedule/v1alpha1/schedule
+  labels:
+    testing.upbound.io/example-name: foo
+  name: foo
+  namespace: upbound-system
+spec:
+  forProvider:
+    layer:
+    - name: Night Shift
+      restriction:
+      - durationSeconds: 32400
+        startTimeOfDay: "08:00:00"
+        type: daily_restriction
+      rotationTurnLengthSeconds: 86400
+      rotationVirtualStart: "2015-11-06T20:00:00-05:00"
+      start: "2015-11-06T20:00:00-05:00"
+      userRefs:
+      - name: example
+    name: Daily Engineering Rotation
+    teamRefs:
+    - name: example
+    timeZone: America/New_York
+
+---
+
+apiVersion: team.pagerduty.m.crossplane.io/v1alpha1
+kind: Team
+metadata:
+  annotations:
+    meta.upbound.io/example-id: schedule/v1alpha1/schedule
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+  namespace: upbound-system
+spec:
+  forProvider:
+    name: A Team
+
+---
+
+apiVersion: user.pagerduty.m.crossplane.io/v1alpha1
+kind: User
+metadata:
+  annotations:
+    meta.upbound.io/example-id: schedule/v1alpha1/schedule
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+  namespace: upbound-system
+spec:
+  forProvider:
+    email: 125.greenholt.earline@graham.name
+    name: Earline Greenholt

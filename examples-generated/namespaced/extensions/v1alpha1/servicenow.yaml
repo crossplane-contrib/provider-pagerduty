@@ -1,0 +1,80 @@
+apiVersion: extensions.pagerduty.m.crossplane.io/v1alpha1
+kind: Servicenow
+metadata:
+  annotations:
+    meta.upbound.io/example-id: extensions/v1alpha1/servicenow
+  labels:
+    testing.upbound.io/example-name: snow
+  name: snow
+  namespace: upbound-system
+spec:
+  forProvider:
+    extensionObjects:
+    - ${pagerduty_service.example.id}
+    extensionSchema: ${data.pagerduty_extension_schema.servicenow.id}
+    name: My Web App Extension
+    referer: None
+    snowPasswordSecretRef:
+      key: example-key
+      name: example-secret
+    snowUser: meeps
+    syncOptions: manual_sync
+    target: https://foo.servicenow.com/webhook_foo
+    taskType: incident
+
+---
+
+apiVersion: escalation.pagerduty.m.crossplane.io/v1alpha1
+kind: Policy
+metadata:
+  annotations:
+    meta.upbound.io/example-id: extensions/v1alpha1/servicenow
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+  namespace: upbound-system
+spec:
+  forProvider:
+    name: Engineering Escalation Policy
+    numLoops: 2
+    rule:
+    - escalationDelayInMinutes: 10
+      target:
+      - id: ${pagerduty_user.example.id}
+        type: user
+
+---
+
+apiVersion: service.pagerduty.m.crossplane.io/v1alpha1
+kind: Service
+metadata:
+  annotations:
+    meta.upbound.io/example-id: extensions/v1alpha1/servicenow
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+  namespace: upbound-system
+spec:
+  forProvider:
+    acknowledgementTimeout: 600
+    autoResolveTimeout: 14400
+    escalationPolicySelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    name: My Web App
+
+---
+
+apiVersion: user.pagerduty.m.crossplane.io/v1alpha1
+kind: User
+metadata:
+  annotations:
+    meta.upbound.io/example-id: extensions/v1alpha1/servicenow
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+  namespace: upbound-system
+spec:
+  forProvider:
+    email: howard.james@example.domain
+    name: Howard James

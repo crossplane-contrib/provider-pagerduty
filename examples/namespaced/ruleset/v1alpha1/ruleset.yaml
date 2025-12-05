@@ -1,0 +1,31 @@
+apiVersion: ruleset.pagerduty.m.crossplane.io/v1alpha1
+kind: Ruleset
+metadata:
+  annotations:
+    meta.upbound.io/example-id: ruleset/v1alpha1/ruleset
+  labels:
+    testing.upbound.io/example-name: foo
+  name: foo
+  namespace: crossplane-system
+spec:
+  forProvider:
+    name: Primary Ruleset
+    team:
+    - idSelector:
+        matchLabels:
+          testing.upbound.io/example-name: foo
+
+---
+
+apiVersion: team.pagerduty.m.crossplane.io/v1alpha1
+kind: Team
+metadata:
+  annotations:
+    meta.upbound.io/example-id: ruleset/v1alpha1/ruleset
+  labels:
+    testing.upbound.io/example-name: foo
+  name: foo
+  namespace: crossplane-system
+spec:
+  forProvider:
+    name: Engineering (Seattle)

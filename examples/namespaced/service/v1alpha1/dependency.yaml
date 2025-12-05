@@ -1,0 +1,18 @@
+apiVersion: service.pagerduty.m.crossplane.io/v1alpha1
+kind: Dependency
+metadata:
+  annotations:
+    meta.upbound.io/example-id: service/v1alpha1/dependency
+  labels:
+    testing.upbound.io/example-name: foo
+  name: foo
+  namespace: crossplane-system
+spec:
+  forProvider:
+    dependency:
+    - dependentService:
+      - id: ${pagerduty_business_service.foo.id}
+        type: ${pagerduty_business_service.foo.type}
+      supportingService:
+      - id: ${pagerduty_service.foo.id}
+        type: ${pagerduty_service.foo.type}

@@ -1,0 +1,31 @@
+apiVersion: event.pagerduty.m.crossplane.io/v1alpha1
+kind: Orchestration
+metadata:
+  annotations:
+    meta.upbound.io/example-id: event/v1alpha1/orchestration
+  labels:
+    testing.upbound.io/example-name: my_monitor
+  name: my-monitor
+  namespace: crossplane-system
+spec:
+  forProvider:
+    description: Send events to a pair of services
+    name: My Monitoring Orchestration
+    teamSelector:
+      matchLabels:
+        testing.upbound.io/example-name: engineering
+
+---
+
+apiVersion: team.pagerduty.m.crossplane.io/v1alpha1
+kind: Team
+metadata:
+  annotations:
+    meta.upbound.io/example-id: event/v1alpha1/orchestration
+  labels:
+    testing.upbound.io/example-name: engineering
+  name: engineering
+  namespace: crossplane-system
+spec:
+  forProvider:
+    name: Engineering

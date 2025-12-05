@@ -1,0 +1,56 @@
+apiVersion: user.pagerduty.m.crossplane.io/v1alpha1
+kind: HandoffNotificationRule
+metadata:
+  annotations:
+    meta.upbound.io/example-id: user/v1alpha1/handoffnotificationrule
+  labels:
+    testing.upbound.io/example-name: example-oncall-offcall
+  name: example-oncall-offcall
+  namespace: upbound-system
+spec:
+  forProvider:
+    contactMethod:
+    - id: ${pagerduty_user_contact_method.phone.id}
+      type: email_contact_method
+    handoffType: both
+    notifyAdvanceInMinutes: 180
+    userIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+
+---
+
+apiVersion: user.pagerduty.m.crossplane.io/v1alpha1
+kind: User
+metadata:
+  annotations:
+    meta.upbound.io/example-id: user/v1alpha1/handoffnotificationrule
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+  namespace: upbound-system
+spec:
+  forProvider:
+    email: 125.greenholt.earline@foo.test
+    name: Earline Greenholt
+
+---
+
+apiVersion: user.pagerduty.m.crossplane.io/v1alpha1
+kind: ContactMethod
+metadata:
+  annotations:
+    meta.upbound.io/example-id: user/v1alpha1/handoffnotificationrule
+  labels:
+    testing.upbound.io/example-name: phone
+  name: phone
+  namespace: upbound-system
+spec:
+  forProvider:
+    address: "2025550199"
+    countryCode: "+1"
+    label: Work
+    type: phone_contact_method
+    userIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example

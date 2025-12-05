@@ -1,0 +1,29 @@
+apiVersion: event.pagerduty.m.crossplane.io/v1alpha1
+kind: OrchestrationUnrouted
+metadata:
+  annotations:
+    meta.upbound.io/example-id: event/v1alpha1/orchestrationunrouted
+  labels:
+    testing.upbound.io/example-name: unrouted
+  name: unrouted
+  namespace: crossplane-system
+spec:
+  forProvider:
+    catchAll:
+    - actions:
+      - severity: info
+    eventOrchestrationSelector:
+      matchLabels:
+        testing.upbound.io/example-name: my_monitor
+    set:
+    - id: start
+      rule:
+      - actions:
+        - extraction:
+          - target: event.summary
+            template: '[Critical Unrouted] {{event.summary}}'
+          severity: critical
+        condition:
+        - expression: event.severity matches 'critical'
+        label: Update the summary of un-matched Critical alerts so they're easier
+          to spot

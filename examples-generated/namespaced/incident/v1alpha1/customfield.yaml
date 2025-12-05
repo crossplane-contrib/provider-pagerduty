@@ -1,0 +1,15 @@
+apiVersion: incident.pagerduty.m.crossplane.io/v1alpha1
+kind: CustomField
+metadata:
+  annotations:
+    meta.upbound.io/example-id: incident/v1alpha1/customfield
+  labels:
+    testing.upbound.io/example-name: cs_impact
+  name: cs-impact
+  namespace: upbound-system
+spec:
+  forProvider:
+    dataType: string
+    displayName: Customer Impact
+    fieldType: single_value
+    name: impact

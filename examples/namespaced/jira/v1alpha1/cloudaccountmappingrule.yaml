@@ -1,0 +1,47 @@
+apiVersion: jira.pagerduty.m.crossplane.io/v1alpha1
+kind: CloudAccountMappingRule
+metadata:
+  annotations:
+    meta.upbound.io/example-id: jira/v1alpha1/cloudaccountmappingrule
+  labels:
+    testing.upbound.io/example-name: foo
+  name: foo
+  namespace: crossplane-system
+spec:
+  forProvider:
+    accountMapping: PLBP09X
+    name: Integration with My Web App
+
+---
+
+apiVersion: service.pagerduty.m.crossplane.io/v1alpha1
+kind: Service
+metadata:
+  annotations:
+    meta.upbound.io/example-id: jira/v1alpha1/cloudaccountmappingrule
+  labels:
+    testing.upbound.io/example-name: foo
+  name: foo
+  namespace: crossplane-system
+spec:
+  forProvider:
+    escalationPolicySelector:
+      matchLabels:
+        testing.upbound.io/example-name: pagerduty_escalation_policy
+    name: My Web App
+
+---
+
+apiVersion: user.pagerduty.m.crossplane.io/v1alpha1
+kind: User
+metadata:
+  annotations:
+    meta.upbound.io/example-id: jira/v1alpha1/cloudaccountmappingrule
+  labels:
+    testing.upbound.io/example-name: foo
+  name: foo
+  namespace: crossplane-system
+spec:
+  forProvider:
+    email: 125.greenholt.earline@graham.name
+    name: Earline Greenholt

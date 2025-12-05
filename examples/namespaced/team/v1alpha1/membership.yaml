@@ -1,0 +1,50 @@
+apiVersion: team.pagerduty.m.crossplane.io/v1alpha1
+kind: Membership
+metadata:
+  annotations:
+    meta.upbound.io/example-id: team/v1alpha1/membership
+  labels:
+    testing.upbound.io/example-name: foo
+  name: foo
+  namespace: crossplane-system
+spec:
+  forProvider:
+    role: manager
+    teamIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: foo
+    userIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: foo
+
+---
+
+apiVersion: team.pagerduty.m.crossplane.io/v1alpha1
+kind: Team
+metadata:
+  annotations:
+    meta.upbound.io/example-id: team/v1alpha1/membership
+  labels:
+    testing.upbound.io/example-name: foo
+  name: foo
+  namespace: crossplane-system
+spec:
+  forProvider:
+    description: foo
+    name: foo
+
+---
+
+apiVersion: user.pagerduty.m.crossplane.io/v1alpha1
+kind: User
+metadata:
+  annotations:
+    meta.upbound.io/example-id: team/v1alpha1/membership
+  labels:
+    testing.upbound.io/example-name: foo
+  name: foo
+  namespace: crossplane-system
+spec:
+  forProvider:
+    email: foo@bar.com
+    name: foo

@@ -1,0 +1,38 @@
+apiVersion: alert.pagerduty.m.crossplane.io/v1alpha1
+kind: GroupingSetting
+metadata:
+  annotations:
+    meta.upbound.io/example-id: alert/v1alpha1/groupingsetting
+  labels:
+    testing.upbound.io/example-name: '%[1]s'
+  name: '%[1]s'
+  namespace: crossplane-system
+spec:
+  forProvider:
+    config:
+    - aggregate: all
+      fields:
+      - fields
+      timeWindow: 300
+    name: Configuration for type-1 devices
+    serviceRefs:
+    - name: basic-ns
+    type: content_based
+
+---
+
+apiVersion: service.pagerduty.m.crossplane.io/v1alpha1
+kind: Service
+metadata:
+  annotations:
+    meta.upbound.io/example-id: alert/v1alpha1/groupingsetting
+  labels:
+    testing.upbound.io/example-name: basic_ns
+  name: basic-ns
+  namespace: crossplane-system
+spec:
+  forProvider:
+    escalationPolicySelector:
+      matchLabels:
+        testing.upbound.io/example-name: pagerduty_escalation_policy
+    name: Example

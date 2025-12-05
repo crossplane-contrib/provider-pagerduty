@@ -1,0 +1,29 @@
+apiVersion: automation.pagerduty.m.crossplane.io/v1alpha1
+kind: ActionsRunnerTeamAssociation
+metadata:
+  annotations:
+    meta.upbound.io/example-id: automation/v1alpha1/actionsrunnerteamassociation
+  labels:
+    testing.upbound.io/example-name: pa_runner_ent_eng_assoc
+  name: pa-runner-ent-eng-assoc
+  namespace: crossplane-system
+spec:
+  forProvider:
+    runnerId: ${pagerduty_automation_actions_runner.pa_runbook_runner.id}
+    teamId: ${pagerduty_team.team_ent_eng.id}
+
+---
+
+apiVersion: team.pagerduty.m.crossplane.io/v1alpha1
+kind: Team
+metadata:
+  annotations:
+    meta.upbound.io/example-id: automation/v1alpha1/actionsrunnerteamassociation
+  labels:
+    testing.upbound.io/example-name: team_ent_eng
+  name: team-ent-eng
+  namespace: crossplane-system
+spec:
+  forProvider:
+    description: Enterprise engineering
+    name: Enterprise Engineering

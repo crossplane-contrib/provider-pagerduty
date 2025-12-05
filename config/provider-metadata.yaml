@@ -41,6 +41,8 @@ resources:
                   ],
                   "type": "content_based"
                 }
+              references:
+                services: pagerduty_service.basic.id
               dependencies:
                 pagerduty_service.basic: |-
                     {
@@ -397,6 +399,7 @@ resources:
                 }
               references:
                 rule.target.id: pagerduty_user.example2.id
+                teams: pagerduty_team.example.id
               dependencies:
                 pagerduty_team.example: |-
                     {
@@ -1261,6 +1264,7 @@ resources:
                   "name": "My Web App Extension"
                 }
               references:
+                extension_objects: pagerduty_service.example.id
                 extension_schema: data.pagerduty_extension_schema.webhook.id
               dependencies:
                 pagerduty_escalation_policy.example: |-
@@ -1326,6 +1330,7 @@ resources:
                   "task_type": "incident"
                 }
               references:
+                extension_objects: pagerduty_service.example.id
                 extension_schema: data.pagerduty_extension_schema.servicenow.id
               dependencies:
                 pagerduty_escalation_policy.example: |-
@@ -1611,6 +1616,7 @@ resources:
                   "workflow": "${pagerduty_incident_workflow.my_first_workflow.id}"
                 }
               references:
+                services: pagerduty_service.first_service.id
                 workflow: pagerduty_incident_workflow.my_first_workflow.id
               dependencies:
                 pagerduty_incident_workflow.my_first_workflow: |-
@@ -1640,6 +1646,7 @@ resources:
                   "workflow": "${pagerduty_incident_workflow.my_first_workflow.id}"
                 }
               references:
+                services: pagerduty_service.first_service.id
                 workflow: pagerduty_incident_workflow.my_first_workflow.id
               dependencies:
                 pagerduty_incident_workflow.my_first_workflow: |-
@@ -1822,6 +1829,8 @@ resources:
                   ],
                   "start_time": "2015-11-09T20:00:00-05:00"
                 }
+              references:
+                services: pagerduty_service.example.id
         argumentDocs:
             description: '- (Optional) A description for the maintenance window.'
             end_time: '- (Required) The maintenance window''s end time. This is when the services will start creating incidents again. This date must be in the future and after the start_time.'
@@ -2168,6 +2177,9 @@ resources:
                   ],
                   "time_zone": "America/New_York"
                 }
+              references:
+                layer.users: pagerduty_user.example.id
+                teams: pagerduty_team.example.id
               dependencies:
                 pagerduty_team.example: |-
                     {
@@ -2960,6 +2972,7 @@ resources:
                   "workspace_id": "T02A123LV1A"
                 }
               references:
+                config.priorities: data.pagerduty_priority.p1.id
                 source_id: pagerduty_team.foo.id
               dependencies:
                 pagerduty_team.foo: |-
