@@ -1,10 +1,8 @@
 module github.com/crossplane-contrib/provider-pagerduty
 
-go 1.25.0
+go 1.25.5
 
 tool golang.org/x/tools/cmd/goimports
-
-toolchain go1.25.1
 
 require (
 	dario.cat/mergo v1.0.2
