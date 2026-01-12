@@ -3,7 +3,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.19.0
+    controller-gen.kubebuilder.io/version: v0.20.0
   name: orchestrationglobals.event.pagerduty.crossplane.io
 spec:
   group: event.pagerduty.crossplane.io
@@ -89,17 +89,17 @@ spec:
                                   incident.
                                 type: string
                               automationAction:
-                                description: Create a Webhook associated with the
-                                  resulting incident.
+                                description: Create a Webhook to be run for certain
+                                  alert states.
                                 items:
                                   properties:
                                     autoSend:
                                       description: When true, PagerDuty's servers
                                         will automatically send this webhook request
-                                        as soon as the resulting incident is created.
-                                        When false, your incident responder will be
-                                        able to manually trigger the Webhook via the
-                                        PagerDuty website and mobile app.
+                                        as soon as the resulting incident or alert
+                                        is created. When false, your incident responder
+                                        will be able to manually trigger the Webhook
+                                        via the PagerDuty website and mobile app.
                                       type: boolean
                                     header:
                                       description: Specify custom key/value pairs
@@ -133,6 +133,18 @@ spec:
                                               custom field
                                             type: string
                                         type: object
+                                      type: array
+                                    triggerTypes:
+                                      description: 'The Webhook will be associated
+                                        (or automatically triggered, if auto_send
+                                        is true) with the incident or alert, whenever
+                                        an alert reaches the specified state. Allowed
+                                        values are: ["alert_triggered"], ["alert_suspended"],
+                                        ["alert_suppressed"]. NOTE: auto_send must
+                                        be true for trigger types of ["alert_suspended"]
+                                        and ["alert_suppressed"]'
+                                      items:
+                                        type: string
                                       type: array
                                     url:
                                       description: The API endpoint where PagerDuty's
@@ -375,18 +387,18 @@ spec:
                                         resulting incident.
                                       type: string
                                     automationAction:
-                                      description: Create a Webhook associated with
-                                        the resulting incident.
+                                      description: Create a Webhook to be run for
+                                        certain alert states.
                                       items:
                                         properties:
                                           autoSend:
                                             description: When true, PagerDuty's servers
                                               will automatically send this webhook
                                               request as soon as the resulting incident
-                                              is created. When false, your incident
-                                              responder will be able to manually trigger
-                                              the Webhook via the PagerDuty website
-                                              and mobile app.
+                                              or alert is created. When false, your
+                                              incident responder will be able to manually
+                                              trigger the Webhook via the PagerDuty
+                                              website and mobile app.
                                             type: boolean
                                           header:
                                             description: Specify custom key/value
@@ -422,6 +434,18 @@ spec:
                                                     to this custom field
                                                   type: string
                                               type: object
+                                            type: array
+                                          triggerTypes:
+                                            description: 'The Webhook will be associated
+                                              (or automatically triggered, if auto_send
+                                              is true) with the incident or alert,
+                                              whenever an alert reaches the specified
+                                              state. Allowed values are: ["alert_triggered"],
+                                              ["alert_suspended"], ["alert_suppressed"].
+                                              NOTE: auto_send must be true for trigger
+                                              types of ["alert_suspended"] and ["alert_suppressed"]'
+                                            items:
+                                              type: string
                                             type: array
                                           url:
                                             description: The API endpoint where PagerDuty's
@@ -614,17 +638,17 @@ spec:
                                   incident.
                                 type: string
                               automationAction:
-                                description: Create a Webhook associated with the
-                                  resulting incident.
+                                description: Create a Webhook to be run for certain
+                                  alert states.
                                 items:
                                   properties:
                                     autoSend:
                                       description: When true, PagerDuty's servers
                                         will automatically send this webhook request
-                                        as soon as the resulting incident is created.
-                                        When false, your incident responder will be
-                                        able to manually trigger the Webhook via the
-                                        PagerDuty website and mobile app.
+                                        as soon as the resulting incident or alert
+                                        is created. When false, your incident responder
+                                        will be able to manually trigger the Webhook
+                                        via the PagerDuty website and mobile app.
                                       type: boolean
                                     header:
                                       description: Specify custom key/value pairs
@@ -658,6 +682,18 @@ spec:
                                               custom field
                                             type: string
                                         type: object
+                                      type: array
+                                    triggerTypes:
+                                      description: 'The Webhook will be associated
+                                        (or automatically triggered, if auto_send
+                                        is true) with the incident or alert, whenever
+                                        an alert reaches the specified state. Allowed
+                                        values are: ["alert_triggered"], ["alert_suspended"],
+                                        ["alert_suppressed"]. NOTE: auto_send must
+                                        be true for trigger types of ["alert_suspended"]
+                                        and ["alert_suppressed"]'
+                                      items:
+                                        type: string
                                       type: array
                                     url:
                                       description: The API endpoint where PagerDuty's
@@ -900,18 +936,18 @@ spec:
                                         resulting incident.
                                       type: string
                                     automationAction:
-                                      description: Create a Webhook associated with
-                                        the resulting incident.
+                                      description: Create a Webhook to be run for
+                                        certain alert states.
                                       items:
                                         properties:
                                           autoSend:
                                             description: When true, PagerDuty's servers
                                               will automatically send this webhook
                                               request as soon as the resulting incident
-                                              is created. When false, your incident
-                                              responder will be able to manually trigger
-                                              the Webhook via the PagerDuty website
-                                              and mobile app.
+                                              or alert is created. When false, your
+                                              incident responder will be able to manually
+                                              trigger the Webhook via the PagerDuty
+                                              website and mobile app.
                                             type: boolean
                                           header:
                                             description: Specify custom key/value
@@ -947,6 +983,18 @@ spec:
                                                     to this custom field
                                                   type: string
                                               type: object
+                                            type: array
+                                          triggerTypes:
+                                            description: 'The Webhook will be associated
+                                              (or automatically triggered, if auto_send
+                                              is true) with the incident or alert,
+                                              whenever an alert reaches the specified
+                                              state. Allowed values are: ["alert_triggered"],
+                                              ["alert_suspended"], ["alert_suppressed"].
+                                              NOTE: auto_send must be true for trigger
+                                              types of ["alert_suspended"] and ["alert_suppressed"]'
+                                            items:
+                                              type: string
                                             type: array
                                           url:
                                             description: The API endpoint where PagerDuty's
@@ -1226,17 +1274,17 @@ spec:
                                   incident.
                                 type: string
                               automationAction:
-                                description: Create a Webhook associated with the
-                                  resulting incident.
+                                description: Create a Webhook to be run for certain
+                                  alert states.
                                 items:
                                   properties:
                                     autoSend:
                                       description: When true, PagerDuty's servers
                                         will automatically send this webhook request
-                                        as soon as the resulting incident is created.
-                                        When false, your incident responder will be
-                                        able to manually trigger the Webhook via the
-                                        PagerDuty website and mobile app.
+                                        as soon as the resulting incident or alert
+                                        is created. When false, your incident responder
+                                        will be able to manually trigger the Webhook
+                                        via the PagerDuty website and mobile app.
                                       type: boolean
                                     header:
                                       description: Specify custom key/value pairs
@@ -1270,6 +1318,18 @@ spec:
                                               custom field
                                             type: string
                                         type: object
+                                      type: array
+                                    triggerTypes:
+                                      description: 'The Webhook will be associated
+                                        (or automatically triggered, if auto_send
+                                        is true) with the incident or alert, whenever
+                                        an alert reaches the specified state. Allowed
+                                        values are: ["alert_triggered"], ["alert_suspended"],
+                                        ["alert_suppressed"]. NOTE: auto_send must
+                                        be true for trigger types of ["alert_suspended"]
+                                        and ["alert_suppressed"]'
+                                      items:
+                                        type: string
                                       type: array
                                     url:
                                       description: The API endpoint where PagerDuty's
@@ -1440,18 +1500,18 @@ spec:
                                         resulting incident.
                                       type: string
                                     automationAction:
-                                      description: Create a Webhook associated with
-                                        the resulting incident.
+                                      description: Create a Webhook to be run for
+                                        certain alert states.
                                       items:
                                         properties:
                                           autoSend:
                                             description: When true, PagerDuty's servers
                                               will automatically send this webhook
                                               request as soon as the resulting incident
-                                              is created. When false, your incident
-                                              responder will be able to manually trigger
-                                              the Webhook via the PagerDuty website
-                                              and mobile app.
+                                              or alert is created. When false, your
+                                              incident responder will be able to manually
+                                              trigger the Webhook via the PagerDuty
+                                              website and mobile app.
                                             type: boolean
                                           header:
                                             description: Specify custom key/value
@@ -1487,6 +1547,18 @@ spec:
                                                     to this custom field
                                                   type: string
                                               type: object
+                                            type: array
+                                          triggerTypes:
+                                            description: 'The Webhook will be associated
+                                              (or automatically triggered, if auto_send
+                                              is true) with the incident or alert,
+                                              whenever an alert reaches the specified
+                                              state. Allowed values are: ["alert_triggered"],
+                                              ["alert_suspended"], ["alert_suppressed"].
+                                              NOTE: auto_send must be true for trigger
+                                              types of ["alert_suspended"] and ["alert_suppressed"]'
+                                            items:
+                                              type: string
                                             type: array
                                           url:
                                             description: The API endpoint where PagerDuty's

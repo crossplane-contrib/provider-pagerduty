@@ -3,7 +3,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.19.0
+    controller-gen.kubebuilder.io/version: v0.20.0
   name: notificationrules.user.pagerduty.crossplane.io
 spec:
   group: user.pagerduty.crossplane.io
@@ -73,13 +73,6 @@ spec:
                 type: string
               forProvider:
                 properties:
-                  contactMethod:
-                    additionalProperties:
-                      type: string
-                    description: A contact method block, configured as a block described
-                      below.
-                    type: object
-                    x-kubernetes-map-type: granular
                   startDelayInMinutes:
                     description: The delay before firing the rule, in minutes.
                     type: number
@@ -179,13 +172,6 @@ spec:
                   for example because of an external controller is managing them, like an
                   autoscaler.
                 properties:
-                  contactMethod:
-                    additionalProperties:
-                      type: string
-                    description: A contact method block, configured as a block described
-                      below.
-                    type: object
-                    x-kubernetes-map-type: granular
                   startDelayInMinutes:
                     description: The delay before firing the rule, in minutes.
                     type: number
@@ -359,10 +345,6 @@ spec:
             - forProvider
             type: object
             x-kubernetes-validations:
-            - message: spec.forProvider.contactMethod is a required parameter
-              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
-                || ''Update'' in self.managementPolicies) || has(self.forProvider.contactMethod)
-                || (has(self.initProvider) && has(self.initProvider.contactMethod))'
             - message: spec.forProvider.startDelayInMinutes is a required parameter
               rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
                 || ''Update'' in self.managementPolicies) || has(self.forProvider.startDelayInMinutes)
@@ -377,12 +359,20 @@ spec:
               atProvider:
                 properties:
                   contactMethod:
-                    additionalProperties:
-                      type: string
                     description: A contact method block, configured as a block described
                       below.
-                    type: object
-                    x-kubernetes-map-type: granular
+                    items:
+                      properties:
+                        id:
+                          description: The id of the referenced contact method.
+                          type: string
+                        type:
+                          description: The type of contact method. Can be email_contact_method,
+                            phone_contact_method, push_notification_contact_method
+                            or sms_contact_method.
+                          type: string
+                      type: object
+                    type: array
                   id:
                     description: The id of the referenced contact method.
                     type: string

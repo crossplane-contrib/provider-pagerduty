@@ -6,7 +6,7 @@ metadata:
   labels:
     testing.upbound.io/example-name: dev_environment
   name: dev-environment
-  namespace: crossplane-system
+  namespace: upbound-system
 spec:
   forProvider:
     dataType: string
@@ -25,7 +25,7 @@ metadata:
   labels:
     testing.upbound.io/example-name: sre_environment
   name: sre-environment
-  namespace: crossplane-system
+  namespace: upbound-system
 spec:
   forProvider:
     dataType: string

@@ -6,7 +6,7 @@ metadata:
   labels:
     testing.upbound.io/example-name: slack
   name: slack
-  namespace: crossplane-system
+  namespace: upbound-system
 spec:
   forProvider:
     config: "{\n\t\"restrict\": \"any\",\n\t\"notify_types\": {\n\t\t\t\"resolve\":
@@ -30,7 +30,7 @@ metadata:
   labels:
     testing.upbound.io/example-name: example
   name: example
-  namespace: crossplane-system
+  namespace: upbound-system
 spec:
   forProvider:
     name: Engineering Escalation Policy
@@ -51,7 +51,7 @@ metadata:
   labels:
     testing.upbound.io/example-name: example
   name: example
-  namespace: crossplane-system
+  namespace: upbound-system
 spec:
   forProvider:
     acknowledgementTimeout: 600
@@ -71,7 +71,7 @@ metadata:
   labels:
     testing.upbound.io/example-name: example
   name: example
-  namespace: crossplane-system
+  namespace: upbound-system
 spec:
   forProvider:
     email: howard.james@example.domain

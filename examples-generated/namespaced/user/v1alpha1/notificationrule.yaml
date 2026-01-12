@@ -9,9 +9,6 @@ metadata:
   namespace: upbound-system
 spec:
   forProvider:
-    contactMethod:
-      id: ${pagerduty_user_contact_method.phone.id}
-      type: phone_contact_method
     startDelayInMinutes: 1
     urgency: high
     userIdSelector:

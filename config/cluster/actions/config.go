@@ -49,8 +49,11 @@ func Configure(p *config.Provider) {
 		r.Kind = "RunnerTeamAssociation"
 		r.ExternalName.GetIDFn = c.GetIDFromParams([]string{"runner_id", "team_id"}, ':')
 		r.References = config.References{
-			"action_id": {
-				Type: "Runner", // TerraformName fails to resolve with shortGroup including dots
+			"runner_id": {
+				Type:              "Runner", // TerraformName fails to resolve with shortGroup including dots
+				TerraformName:     "pagerduty_automation_actions_runner",
+				RefFieldName:      "RunnerRefs",
+				SelectorFieldName: "RunnerSelector",
 			},
 			"team_id": {
 				TerraformName: "pagerduty_team",

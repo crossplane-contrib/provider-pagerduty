@@ -11,7 +11,7 @@ export TERRAFORM_VERSION ?= 1.5.7
 TERRAFORM_VERSION_VALID := $(shell [ "$(TERRAFORM_VERSION)" = "`printf "$(TERRAFORM_VERSION)\n1.6" | sort -V | head -n1`" ] && echo 1 || echo 0)
 
 export TERRAFORM_PROVIDER_SOURCE ?= PagerDuty/pagerduty
-export TERRAFORM_PROVIDER_VERSION ?= 3.19.4
+export TERRAFORM_PROVIDER_VERSION ?= 3.30.8
 export TERRAFORM_PROVIDER_DOWNLOAD_NAME ?= terraform-provider-pagerduty
 export TERRAFORM_PROVIDER_REPO ?= https://github.com/PagerDuty/$(TERRAFORM_PROVIDER_DOWNLOAD_NAME)
 export TERRAFORM_PROVIDER_DOWNLOAD_URL_PREFIX := $(TERRAFORM_PROVIDER_REPO)/releases/download/v$(TERRAFORM_PROVIDER_VERSION)
@@ -55,9 +55,9 @@ GO_SUBDIRS += cmd internal apis
 KIND_VERSION = v0.30.0
 UPTEST_VERSION = v2.2.0
 CRDDIFF_VERSION = v0.12.1
-CROSSPLANE_CLI_VERSION = v2.1.1
+CROSSPLANE_CLI_VERSION = v2.1.3
 # for e2e testing
-CROSSPLANE_VERSION = 2.1.1
+CROSSPLANE_VERSION = 2.1.3
 -include build/makelib/k8s_tools.mk
 
 # ====================================================================================

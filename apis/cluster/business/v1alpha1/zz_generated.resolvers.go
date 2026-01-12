@@ -8,6 +8,7 @@ package v1alpha1
 import (
 	"context"
 	v1alpha1 "github.com/crossplane-contrib/provider-pagerduty/apis/cluster/team/v1alpha1"
+	v1alpha11 "github.com/crossplane-contrib/provider-pagerduty/apis/cluster/user/v1alpha1"
 	reference "github.com/crossplane/crossplane-runtime/v2/pkg/reference"
 	errors "github.com/pkg/errors"
 	client "sigs.k8s.io/controller-runtime/pkg/client"
@@ -82,6 +83,23 @@ func (mg *ServiceSubscriber) ResolveReferences(ctx context.Context, c client.Rea
 	mg.Spec.ForProvider.BusinessServiceIDRef = rsp.ResolvedReference
 
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.SubscriberID),
+		Extract:      reference.ExternalName(),
+		Namespace:    mg.GetNamespace(),
+		Reference:    mg.Spec.ForProvider.UserRefs,
+		Selector:     mg.Spec.ForProvider.UserSelector,
+		To: reference.To{
+			List:    &v1alpha11.UserList{},
+			Managed: &v1alpha11.User{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.SubscriberID")
+	}
+	mg.Spec.ForProvider.SubscriberID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.UserRefs = rsp.ResolvedReference
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
 		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.BusinessServiceID),
 		Extract:      reference.ExternalName(),
 		Namespace:    mg.GetNamespace(),
@@ -97,6 +115,23 @@ func (mg *ServiceSubscriber) ResolveReferences(ctx context.Context, c client.Rea
 	}
 	mg.Spec.InitProvider.BusinessServiceID = reference.ToPtrValue(rsp.ResolvedValue)
 	mg.Spec.InitProvider.BusinessServiceIDRef = rsp.ResolvedReference
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.SubscriberID),
+		Extract:      reference.ExternalName(),
+		Namespace:    mg.GetNamespace(),
+		Reference:    mg.Spec.InitProvider.UserRefs,
+		Selector:     mg.Spec.InitProvider.UserSelector,
+		To: reference.To{
+			List:    &v1alpha11.UserList{},
+			Managed: &v1alpha11.User{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.InitProvider.SubscriberID")
+	}
+	mg.Spec.InitProvider.SubscriberID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.UserRefs = rsp.ResolvedReference
 
 	return nil
 }

@@ -4,8 +4,8 @@ metadata:
   annotations:
     meta.upbound.io/example-id: alert/v1alpha1/groupingsetting
   labels:
-    testing.upbound.io/example-name: '%[1]s'
-  name: '%[1]s'
+    testing.upbound.io/example-name: basic_settings
+  name: basic-settings
 spec:
   forProvider:
     config:

@@ -22,6 +22,9 @@ type ContactMethodInitParameters struct {
 	// The 1-to-3 digit country calling code. Required when using phone_contact_method or sms_contact_method.
 	CountryCode *float64 `json:"countryCode,omitempty" tf:"country_code,omitempty"`
 
+	// The contact method type. May be (email_contact_method, phone_contact_method, sms_contact_method, push_notification_contact_method).
+	DeviceType *string `json:"deviceType,omitempty" tf:"device_type,omitempty"`
+
 	// The label (e.g., "Work", "Mobile", etc.).
 	Label *string `json:"label,omitempty" tf:"label,omitempty"`
 
@@ -55,6 +58,9 @@ type ContactMethodObservation struct {
 	// The 1-to-3 digit country calling code. Required when using phone_contact_method or sms_contact_method.
 	CountryCode *float64 `json:"countryCode,omitempty" tf:"country_code,omitempty"`
 
+	// The contact method type. May be (email_contact_method, phone_contact_method, sms_contact_method, push_notification_contact_method).
+	DeviceType *string `json:"deviceType,omitempty" tf:"device_type,omitempty"`
+
 	// If true, this phone is capable of receiving SMS messages.
 	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
 
@@ -83,6 +89,10 @@ type ContactMethodParameters struct {
 	// The 1-to-3 digit country calling code. Required when using phone_contact_method or sms_contact_method.
 	// +kubebuilder:validation:Optional
 	CountryCode *float64 `json:"countryCode,omitempty" tf:"country_code,omitempty"`
+
+	// The contact method type. May be (email_contact_method, phone_contact_method, sms_contact_method, push_notification_contact_method).
+	// +kubebuilder:validation:Optional
+	DeviceType *string `json:"deviceType,omitempty" tf:"device_type,omitempty"`
 
 	// The label (e.g., "Work", "Mobile", etc.).
 	// +kubebuilder:validation:Optional

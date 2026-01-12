@@ -16,10 +16,10 @@ import (
 
 type DependencyDependencyInitParameters struct {
 
-	// The service that dependents on the supporting service. Dependency dependent service documented below.
+	// The service that dependents on the supporting service. Dependency dependent service documented below. One and only one dependent_service dependency block must be defined.
 	DependentService []DependentServiceInitParameters `json:"dependentService,omitempty" tf:"dependent_service,omitempty"`
 
-	// The service that supports the dependent service. Dependency supporting service documented below.
+	// The service that supports the dependent service. Dependency supporting service documented below. One and only one supporting_service dependency block must be defined.
 	SupportingService []SupportingServiceInitParameters `json:"supportingService,omitempty" tf:"supporting_service,omitempty"`
 
 	// Can be business_service,  service, business_service_reference or technical_service_reference.
@@ -28,10 +28,10 @@ type DependencyDependencyInitParameters struct {
 
 type DependencyDependencyObservation struct {
 
-	// The service that dependents on the supporting service. Dependency dependent service documented below.
+	// The service that dependents on the supporting service. Dependency dependent service documented below. One and only one dependent_service dependency block must be defined.
 	DependentService []DependentServiceObservation `json:"dependentService,omitempty" tf:"dependent_service,omitempty"`
 
-	// The service that supports the dependent service. Dependency supporting service documented below.
+	// The service that supports the dependent service. Dependency supporting service documented below. One and only one supporting_service dependency block must be defined.
 	SupportingService []SupportingServiceObservation `json:"supportingService,omitempty" tf:"supporting_service,omitempty"`
 
 	// Can be business_service,  service, business_service_reference or technical_service_reference.
@@ -40,11 +40,11 @@ type DependencyDependencyObservation struct {
 
 type DependencyDependencyParameters struct {
 
-	// The service that dependents on the supporting service. Dependency dependent service documented below.
+	// The service that dependents on the supporting service. Dependency dependent service documented below. One and only one dependent_service dependency block must be defined.
 	// +kubebuilder:validation:Optional
 	DependentService []DependentServiceParameters `json:"dependentService,omitempty" tf:"dependent_service,omitempty"`
 
-	// The service that supports the dependent service. Dependency supporting service documented below.
+	// The service that supports the dependent service. Dependency supporting service documented below. One and only one supporting_service dependency block must be defined.
 	// +kubebuilder:validation:Optional
 	SupportingService []SupportingServiceParameters `json:"supportingService,omitempty" tf:"supporting_service,omitempty"`
 

@@ -43,9 +43,13 @@ spec:
         - automationAction:
           - autoSend: true
             name: db-diagnostic
+            triggerTypes:
+            - alert_suspended
             url: https://example.com/run-diagnostic
           priority: ${data.pagerduty_priority.p1.id}
-        label: Otherwise, set the incident to P1 and run a diagnostic
+          suspend: 600
+        label: Otherwise, set the incident to P1, pause for 10 mins and run a diagnostic
+          once the alert is suspended
 
 ---
 

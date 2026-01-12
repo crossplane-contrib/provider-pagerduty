@@ -180,6 +180,16 @@ func (in *ActionInitParameters) DeepCopyInto(out *ActionInitParameters) {
 		*out = new(string)
 		**out = **in
 	}
+	if in.AllowInvocationFromEventOrchestration != nil {
+		in, out := &in.AllowInvocationFromEventOrchestration, &out.AllowInvocationFromEventOrchestration
+		*out = new(string)
+		**out = **in
+	}
+	if in.AllowInvocationManually != nil {
+		in, out := &in.AllowInvocationManually, &out.AllowInvocationManually
+		*out = new(string)
+		**out = **in
+	}
 	if in.CreationTime != nil {
 		in, out := &in.CreationTime, &out.CreationTime
 		*out = new(string)
@@ -188,6 +198,11 @@ func (in *ActionInitParameters) DeepCopyInto(out *ActionInitParameters) {
 	if in.Description != nil {
 		in, out := &in.Description, &out.Description
 		*out = new(string)
+		**out = **in
+	}
+	if in.MapToAllServices != nil {
+		in, out := &in.MapToAllServices, &out.MapToAllServices
+		*out = new(bool)
 		**out = **in
 	}
 	if in.ModifyTime != nil {
@@ -284,6 +299,16 @@ func (in *ActionObservation) DeepCopyInto(out *ActionObservation) {
 		*out = new(string)
 		**out = **in
 	}
+	if in.AllowInvocationFromEventOrchestration != nil {
+		in, out := &in.AllowInvocationFromEventOrchestration, &out.AllowInvocationFromEventOrchestration
+		*out = new(string)
+		**out = **in
+	}
+	if in.AllowInvocationManually != nil {
+		in, out := &in.AllowInvocationManually, &out.AllowInvocationManually
+		*out = new(string)
+		**out = **in
+	}
 	if in.CreationTime != nil {
 		in, out := &in.CreationTime, &out.CreationTime
 		*out = new(string)
@@ -297,6 +322,11 @@ func (in *ActionObservation) DeepCopyInto(out *ActionObservation) {
 	if in.ID != nil {
 		in, out := &in.ID, &out.ID
 		*out = new(string)
+		**out = **in
+	}
+	if in.MapToAllServices != nil {
+		in, out := &in.MapToAllServices, &out.MapToAllServices
+		*out = new(bool)
 		**out = **in
 	}
 	if in.ModifyTime != nil {
@@ -361,6 +391,16 @@ func (in *ActionParameters) DeepCopyInto(out *ActionParameters) {
 		*out = new(string)
 		**out = **in
 	}
+	if in.AllowInvocationFromEventOrchestration != nil {
+		in, out := &in.AllowInvocationFromEventOrchestration, &out.AllowInvocationFromEventOrchestration
+		*out = new(string)
+		**out = **in
+	}
+	if in.AllowInvocationManually != nil {
+		in, out := &in.AllowInvocationManually, &out.AllowInvocationManually
+		*out = new(string)
+		**out = **in
+	}
 	if in.CreationTime != nil {
 		in, out := &in.CreationTime, &out.CreationTime
 		*out = new(string)
@@ -369,6 +409,11 @@ func (in *ActionParameters) DeepCopyInto(out *ActionParameters) {
 	if in.Description != nil {
 		in, out := &in.Description, &out.Description
 		*out = new(string)
+		**out = **in
+	}
+	if in.MapToAllServices != nil {
+		in, out := &in.MapToAllServices, &out.MapToAllServices
+		*out = new(bool)
 		**out = **in
 	}
 	if in.ModifyTime != nil {
@@ -1150,6 +1195,16 @@ func (in *RunnerTeamAssociationInitParameters) DeepCopyInto(out *RunnerTeamAssoc
 		*out = new(string)
 		**out = **in
 	}
+	if in.RunnerRefs != nil {
+		in, out := &in.RunnerRefs, &out.RunnerRefs
+		*out = new(v1.NamespacedReference)
+		(*in).DeepCopyInto(*out)
+	}
+	if in.RunnerSelector != nil {
+		in, out := &in.RunnerSelector, &out.RunnerSelector
+		*out = new(v1.NamespacedSelector)
+		(*in).DeepCopyInto(*out)
+	}
 	if in.TeamID != nil {
 		in, out := &in.TeamID, &out.TeamID
 		*out = new(string)
@@ -1246,6 +1301,16 @@ func (in *RunnerTeamAssociationParameters) DeepCopyInto(out *RunnerTeamAssociati
 		in, out := &in.RunnerID, &out.RunnerID
 		*out = new(string)
 		**out = **in
+	}
+	if in.RunnerRefs != nil {
+		in, out := &in.RunnerRefs, &out.RunnerRefs
+		*out = new(v1.NamespacedReference)
+		(*in).DeepCopyInto(*out)
+	}
+	if in.RunnerSelector != nil {
+		in, out := &in.RunnerSelector, &out.RunnerSelector
+		*out = new(v1.NamespacedSelector)
+		(*in).DeepCopyInto(*out)
 	}
 	if in.TeamID != nil {
 		in, out := &in.TeamID, &out.TeamID

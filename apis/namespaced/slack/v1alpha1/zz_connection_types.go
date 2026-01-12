@@ -17,6 +17,7 @@ import (
 type ConfigInitParameters struct {
 
 	// A list of strings to filter events by PagerDuty event type. "incident.triggered" is required. The follow event types are also possible:
+	// +listType=set
 	Events []*string `json:"events,omitempty" tf:"events,omitempty"`
 
 	// Allows you to filter events by priority. Needs to be an array of PagerDuty priority IDs. Available through pagerduty_priority data source.
@@ -29,6 +30,7 @@ type ConfigInitParameters struct {
 type ConfigObservation struct {
 
 	// A list of strings to filter events by PagerDuty event type. "incident.triggered" is required. The follow event types are also possible:
+	// +listType=set
 	Events []*string `json:"events,omitempty" tf:"events,omitempty"`
 
 	// Allows you to filter events by priority. Needs to be an array of PagerDuty priority IDs. Available through pagerduty_priority data source.
@@ -42,6 +44,7 @@ type ConfigParameters struct {
 
 	// A list of strings to filter events by PagerDuty event type. "incident.triggered" is required. The follow event types are also possible:
 	// +kubebuilder:validation:Optional
+	// +listType=set
 	Events []*string `json:"events" tf:"events,omitempty"`
 
 	// Allows you to filter events by priority. Needs to be an array of PagerDuty priority IDs. Available through pagerduty_priority data source.

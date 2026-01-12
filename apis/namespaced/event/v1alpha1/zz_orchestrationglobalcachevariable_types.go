@@ -16,36 +16,46 @@ import (
 
 type ConfigurationInitParameters struct {
 
+	// The type of data that will eventually be set for the Cache Variable via an API request. This field is only used when type is external_data
+	DataType *string `json:"dataType,omitempty" tf:"data_type,omitempty"`
+
 	// A RE2 regular expression that will be matched against the field specified via the source argument. This field is only used when type is recent_value
 	Regex *string `json:"regex,omitempty" tf:"regex,omitempty"`
 
 	// The path to the event field where the regex will be applied to extract a value. You can use any valid PCL path. This field is only used when type is recent_value
 	Source *string `json:"source,omitempty" tf:"source,omitempty"`
 
-	// The number of seconds indicating how long to count incoming trigger events for. This field is only used when type is trigger_event_count
+	// The number of seconds indicating how long to count incoming trigger events for. This field is only used when type is trigger_event_count or external_data
 	TTLSeconds *float64 `json:"ttlSeconds,omitempty" tf:"ttl_seconds,omitempty"`
 
-	// The type of value to store into the Cache Variable. Can be one of: recent_value or trigger_event_count.
+	// The type of value to store into the Cache Variable. Can be one of: recent_value, trigger_event_count or external_data.
 	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 }
 
 type ConfigurationObservation struct {
 
+	// The type of data that will eventually be set for the Cache Variable via an API request. This field is only used when type is external_data
+	DataType *string `json:"dataType,omitempty" tf:"data_type,omitempty"`
+
 	// A RE2 regular expression that will be matched against the field specified via the source argument. This field is only used when type is recent_value
 	Regex *string `json:"regex,omitempty" tf:"regex,omitempty"`
 
 	// The path to the event field where the regex will be applied to extract a value. You can use any valid PCL path. This field is only used when type is recent_value
 	Source *string `json:"source,omitempty" tf:"source,omitempty"`
 
-	// The number of seconds indicating how long to count incoming trigger events for. This field is only used when type is trigger_event_count
+	// The number of seconds indicating how long to count incoming trigger events for. This field is only used when type is trigger_event_count or external_data
 	TTLSeconds *float64 `json:"ttlSeconds,omitempty" tf:"ttl_seconds,omitempty"`
 
-	// The type of value to store into the Cache Variable. Can be one of: recent_value or trigger_event_count.
+	// The type of value to store into the Cache Variable. Can be one of: recent_value, trigger_event_count or external_data.
 	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 }
 
 type ConfigurationParameters struct {
 
+	// The type of data that will eventually be set for the Cache Variable via an API request. This field is only used when type is external_data
+	// +kubebuilder:validation:Optional
+	DataType *string `json:"dataType,omitempty" tf:"data_type,omitempty"`
+
 	// A RE2 regular expression that will be matched against the field specified via the source argument. This field is only used when type is recent_value
 	// +kubebuilder:validation:Optional
 	Regex *string `json:"regex,omitempty" tf:"regex,omitempty"`
@@ -54,11 +64,11 @@ type ConfigurationParameters struct {
 	// +kubebuilder:validation:Optional
 	Source *string `json:"source,omitempty" tf:"source,omitempty"`
 
-	// The number of seconds indicating how long to count incoming trigger events for. This field is only used when type is trigger_event_count
+	// The number of seconds indicating how long to count incoming trigger events for. This field is only used when type is trigger_event_count or external_data
 	// +kubebuilder:validation:Optional
 	TTLSeconds *float64 `json:"ttlSeconds,omitempty" tf:"ttl_seconds,omitempty"`
 
-	// The type of value to store into the Cache Variable. Can be one of: recent_value or trigger_event_count.
+	// The type of value to store into the Cache Variable. Can be one of: recent_value, trigger_event_count or external_data.
 	// +kubebuilder:validation:Optional
 	Type *string `json:"type" tf:"type,omitempty"`
 }
@@ -84,7 +94,7 @@ type OrchestrationGlobalCacheVariableConditionParameters struct {
 
 type OrchestrationGlobalCacheVariableInitParameters struct {
 
-	// Conditions to be evaluated in order to determine whether or not to update the Cache Variable's stored value.
+	// Conditions to be evaluated in order to determine whether or not to update the Cache Variable's stored value. This attribute can only be used when configuration.0.type is recent_value or trigger_event_count.
 	Condition []OrchestrationGlobalCacheVariableConditionInitParameters `json:"condition,omitempty" tf:"condition,omitempty"`
 
 	// A configuration object to define what and how values will be stored in the Cache Variable.
@@ -111,7 +121,7 @@ type OrchestrationGlobalCacheVariableInitParameters struct {
 
 type OrchestrationGlobalCacheVariableObservation struct {
 
-	// Conditions to be evaluated in order to determine whether or not to update the Cache Variable's stored value.
+	// Conditions to be evaluated in order to determine whether or not to update the Cache Variable's stored value. This attribute can only be used when configuration.0.type is recent_value or trigger_event_count.
 	Condition []OrchestrationGlobalCacheVariableConditionObservation `json:"condition,omitempty" tf:"condition,omitempty"`
 
 	// A configuration object to define what and how values will be stored in the Cache Variable.
@@ -132,7 +142,7 @@ type OrchestrationGlobalCacheVariableObservation struct {
 
 type OrchestrationGlobalCacheVariableParameters struct {
 
-	// Conditions to be evaluated in order to determine whether or not to update the Cache Variable's stored value.
+	// Conditions to be evaluated in order to determine whether or not to update the Cache Variable's stored value. This attribute can only be used when configuration.0.type is recent_value or trigger_event_count.
 	// +kubebuilder:validation:Optional
 	Condition []OrchestrationGlobalCacheVariableConditionParameters `json:"condition,omitempty" tf:"condition,omitempty"`
 

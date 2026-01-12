@@ -20,6 +20,7 @@ import (
 	v1alpha1incident "github.com/crossplane-contrib/provider-pagerduty/apis/namespaced/incident/v1alpha1"
 	v1alpha1jira "github.com/crossplane-contrib/provider-pagerduty/apis/namespaced/jira/v1alpha1"
 	v1alpha1maintenance "github.com/crossplane-contrib/provider-pagerduty/apis/namespaced/maintenance/v1alpha1"
+	v1alpha1pagerduty "github.com/crossplane-contrib/provider-pagerduty/apis/namespaced/pagerduty/v1alpha1"
 	v1alpha1response "github.com/crossplane-contrib/provider-pagerduty/apis/namespaced/response/v1alpha1"
 	v1alpha1ruleset "github.com/crossplane-contrib/provider-pagerduty/apis/namespaced/ruleset/v1alpha1"
 	v1alpha1schedule "github.com/crossplane-contrib/provider-pagerduty/apis/namespaced/schedule/v1alpha1"
@@ -46,6 +47,7 @@ func init() {
 		v1alpha1incident.SchemeBuilder.AddToScheme,
 		v1alpha1jira.SchemeBuilder.AddToScheme,
 		v1alpha1maintenance.SchemeBuilder.AddToScheme,
+		v1alpha1pagerduty.SchemeBuilder.AddToScheme,
 		v1alpha1response.SchemeBuilder.AddToScheme,
 		v1alpha1ruleset.SchemeBuilder.AddToScheme,
 		v1alpha1schedule.SchemeBuilder.AddToScheme,

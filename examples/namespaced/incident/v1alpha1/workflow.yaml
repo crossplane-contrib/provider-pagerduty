@@ -6,7 +6,7 @@ metadata:
   labels:
     testing.upbound.io/example-name: my_first_workflow
   name: my-first-workflow
-  namespace: crossplane-system
+  namespace: upbound-system
 spec:
   forProvider:
     description: This Incident Workflow is an example

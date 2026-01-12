@@ -4,9 +4,9 @@ metadata:
   annotations:
     meta.upbound.io/example-id: alert/v1alpha1/groupingsetting
   labels:
-    testing.upbound.io/example-name: '%[1]s'
-  name: '%[1]s'
-  namespace: crossplane-system
+    testing.upbound.io/example-name: basic_settings
+  name: basic-settings
+  namespace: upbound-system
 spec:
   forProvider:
     config:
@@ -16,7 +16,7 @@ spec:
       timeWindow: 300
     name: Configuration for type-1 devices
     serviceRefs:
-    - name: basic-ns
+    - name: basic
     type: content_based
 
 ---
@@ -27,9 +27,9 @@ metadata:
   annotations:
     meta.upbound.io/example-id: alert/v1alpha1/groupingsetting
   labels:
-    testing.upbound.io/example-name: basic_ns
-  name: basic-ns
-  namespace: crossplane-system
+    testing.upbound.io/example-name: basic
+  name: basic
+  namespace: upbound-system
 spec:
   forProvider:
     escalationPolicySelector:

@@ -13,11 +13,36 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
 )
 
-type NotificationRuleInitParameters struct {
+type NotificationRuleContactMethodInitParameters struct {
 
-	// A contact method block, configured as a block described below.
-	// +mapType=granular
-	ContactMethod map[string]*string `json:"contactMethod,omitempty" tf:"contact_method,omitempty"`
+	// The id of the referenced contact method.
+	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// The type of contact method. Can be email_contact_method, phone_contact_method, push_notification_contact_method or sms_contact_method.
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+}
+
+type NotificationRuleContactMethodObservation struct {
+
+	// The id of the referenced contact method.
+	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// The type of contact method. Can be email_contact_method, phone_contact_method, push_notification_contact_method or sms_contact_method.
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
+}
+
+type NotificationRuleContactMethodParameters struct {
+
+	// The id of the referenced contact method.
+	// +kubebuilder:validation:Optional
+	ID *string `json:"id" tf:"id,omitempty"`
+
+	// The type of contact method. Can be email_contact_method, phone_contact_method, push_notification_contact_method or sms_contact_method.
+	// +kubebuilder:validation:Optional
+	Type *string `json:"type" tf:"type,omitempty"`
+}
+
+type NotificationRuleInitParameters struct {
 
 	// The delay before firing the rule, in minutes.
 	StartDelayInMinutes *float64 `json:"startDelayInMinutes,omitempty" tf:"start_delay_in_minutes,omitempty"`
@@ -41,8 +66,7 @@ type NotificationRuleInitParameters struct {
 type NotificationRuleObservation struct {
 
 	// A contact method block, configured as a block described below.
-	// +mapType=granular
-	ContactMethod map[string]*string `json:"contactMethod,omitempty" tf:"contact_method,omitempty"`
+	ContactMethod []NotificationRuleContactMethodObservation `json:"contactMethod,omitempty" tf:"contact_method,omitempty"`
 
 	// The id of the referenced contact method.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
@@ -58,11 +82,6 @@ type NotificationRuleObservation struct {
 }
 
 type NotificationRuleParameters struct {
-
-	// A contact method block, configured as a block described below.
-	// +kubebuilder:validation:Optional
-	// +mapType=granular
-	ContactMethod map[string]*string `json:"contactMethod,omitempty" tf:"contact_method,omitempty"`
 
 	// The delay before firing the rule, in minutes.
 	// +kubebuilder:validation:Optional
@@ -122,7 +141,6 @@ type NotificationRuleStatus struct {
 type NotificationRule struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.contactMethod) || (has(self.initProvider) && has(self.initProvider.contactMethod))",message="spec.forProvider.contactMethod is a required parameter"
 	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.startDelayInMinutes) || (has(self.initProvider) && has(self.initProvider.startDelayInMinutes))",message="spec.forProvider.startDelayInMinutes is a required parameter"
 	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.urgency) || (has(self.initProvider) && has(self.initProvider.urgency))",message="spec.forProvider.urgency is a required parameter"
 	Spec   NotificationRuleSpec   `json:"spec"`

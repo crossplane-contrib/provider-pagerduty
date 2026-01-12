@@ -32,6 +32,17 @@ func (in *ConfigInitParameters) DeepCopyInto(out *ConfigInitParameters) {
 			}
 		}
 	}
+	if in.IagFields != nil {
+		in, out := &in.IagFields, &out.IagFields
+		*out = make([]*string, len(*in))
+		for i := range *in {
+			if (*in)[i] != nil {
+				in, out := &(*in)[i], &(*out)[i]
+				*out = new(string)
+				**out = **in
+			}
+		}
+	}
 	if in.TimeWindow != nil {
 		in, out := &in.TimeWindow, &out.TimeWindow
 		*out = new(float64)
@@ -73,6 +84,17 @@ func (in *ConfigObservation) DeepCopyInto(out *ConfigObservation) {
 			}
 		}
 	}
+	if in.IagFields != nil {
+		in, out := &in.IagFields, &out.IagFields
+		*out = make([]*string, len(*in))
+		for i := range *in {
+			if (*in)[i] != nil {
+				in, out := &(*in)[i], &(*out)[i]
+				*out = new(string)
+				**out = **in
+			}
+		}
+	}
 	if in.TimeWindow != nil {
 		in, out := &in.TimeWindow, &out.TimeWindow
 		*out = new(float64)
@@ -105,6 +127,17 @@ func (in *ConfigParameters) DeepCopyInto(out *ConfigParameters) {
 	}
 	if in.Fields != nil {
 		in, out := &in.Fields, &out.Fields
+		*out = make([]*string, len(*in))
+		for i := range *in {
+			if (*in)[i] != nil {
+				in, out := &(*in)[i], &(*out)[i]
+				*out = new(string)
+				**out = **in
+			}
+		}
+	}
+	if in.IagFields != nil {
+		in, out := &in.IagFields, &out.IagFields
 		*out = make([]*string, len(*in))
 		for i := range *in {
 			if (*in)[i] != nil {

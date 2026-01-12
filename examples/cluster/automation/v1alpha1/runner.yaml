@@ -13,6 +13,6 @@ spec:
     runbookApiKeySecretRef:
       key: example-key
       name: example-secret
-      namespace: crossplane-system
+      namespace: upbound-system
     runbookBaseUri: rdcat.stg
     runnerType: runbook

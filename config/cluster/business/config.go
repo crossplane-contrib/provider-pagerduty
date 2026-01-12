@@ -31,6 +31,11 @@ func Configure(p *config.Provider) {
 			"business_service_id": {
 				TerraformName: "pagerduty_business_service",
 			},
+			"subscriber_id": {
+				TerraformName:     "pagerduty_user",
+				RefFieldName:      "UserRefs",
+				SelectorFieldName: "UserSelector",
+			},
 		}
 
 	})

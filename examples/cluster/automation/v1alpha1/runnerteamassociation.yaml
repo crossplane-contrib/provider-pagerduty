@@ -8,7 +8,9 @@ metadata:
   name: pa-runner-ent-eng-assoc
 spec:
   forProvider:
-    runnerId: ${pagerduty_automation_actions_runner.pa_runbook_runner.id}
+    runnerSelector:
+      matchLabels:
+        testing.upbound.io/example-name: pa_runbook_runner
     teamIdSelector:
       matchLabels:
         testing.upbound.io/example-name: team_ent_eng
@@ -30,7 +32,7 @@ spec:
     runbookApiKeySecretRef:
       key: example-key
       name: example-secret
-      namespace: crossplane-system
+      namespace: upbound-system
     runbookBaseUri: cat-cat
     runnerType: runbook
 
