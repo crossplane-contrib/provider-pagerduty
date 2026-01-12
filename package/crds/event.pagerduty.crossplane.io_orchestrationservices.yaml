@@ -3,7 +3,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.19.0
+    controller-gen.kubebuilder.io/version: v0.20.0
   name: orchestrationservices.event.pagerduty.crossplane.io
 spec:
   group: event.pagerduty.crossplane.io
@@ -89,17 +89,17 @@ spec:
                                   incident.
                                 type: string
                               automationAction:
-                                description: Create a Webhook associated with the
-                                  resulting incident.
+                                description: Create a Webhook to be run for certain
+                                  alert states.
                                 items:
                                   properties:
                                     autoSend:
                                       description: When true, PagerDuty's servers
                                         will automatically send this webhook request
-                                        as soon as the resulting incident is created.
-                                        When false, your incident responder will be
-                                        able to manually trigger the Webhook via the
-                                        PagerDuty website and mobile app.
+                                        as soon as the resulting incident or alert
+                                        is created. When false, your incident responder
+                                        will be able to manually trigger the Webhook
+                                        via the PagerDuty website and mobile app.
                                       type: boolean
                                     header:
                                       description: Specify custom key/value pairs
@@ -133,6 +133,14 @@ spec:
                                               custom field
                                             type: string
                                         type: object
+                                      type: array
+                                    triggerTypes:
+                                      description: 'The Automation Action will be
+                                        triggered whenever an alert reaches the specified
+                                        state. Allowed values are: ["alert_triggered"],
+                                        ["alert_suspended"], ["alert_suppressed"]'
+                                      items:
+                                        type: string
                                       type: array
                                     url:
                                       description: The API endpoint where PagerDuty's
@@ -206,14 +214,22 @@ spec:
                                   type: object
                                 type: array
                               pagerdutyAutomationAction:
-                                description: Configure a Process Automation associated
-                                  with the resulting incident.
+                                description: Configure a Process Automation to be
+                                  run for certain alert states.
                                 items:
                                   properties:
                                     actionId:
                                       description: Id of the Process Automation action
                                         to be triggered.
                                       type: string
+                                    triggerTypes:
+                                      description: 'The Automation Action will be
+                                        triggered whenever an alert reaches the specified
+                                        state. Allowed values are: ["alert_triggered"],
+                                        ["alert_suspended"], ["alert_suppressed"]'
+                                      items:
+                                        type: string
+                                      type: array
                                   type: object
                                 type: array
                               priority:
@@ -381,18 +397,18 @@ spec:
                                         resulting incident.
                                       type: string
                                     automationAction:
-                                      description: Create a Webhook associated with
-                                        the resulting incident.
+                                      description: Create a Webhook to be run for
+                                        certain alert states.
                                       items:
                                         properties:
                                           autoSend:
                                             description: When true, PagerDuty's servers
                                               will automatically send this webhook
                                               request as soon as the resulting incident
-                                              is created. When false, your incident
-                                              responder will be able to manually trigger
-                                              the Webhook via the PagerDuty website
-                                              and mobile app.
+                                              or alert is created. When false, your
+                                              incident responder will be able to manually
+                                              trigger the Webhook via the PagerDuty
+                                              website and mobile app.
                                             type: boolean
                                           header:
                                             description: Specify custom key/value
@@ -428,6 +444,15 @@ spec:
                                                     to this custom field
                                                   type: string
                                               type: object
+                                            type: array
+                                          triggerTypes:
+                                            description: 'The Automation Action will
+                                              be triggered whenever an alert reaches
+                                              the specified state. Allowed values
+                                              are: ["alert_triggered"], ["alert_suspended"],
+                                              ["alert_suppressed"]'
+                                            items:
+                                              type: string
                                             type: array
                                           url:
                                             description: The API endpoint where PagerDuty's
@@ -506,13 +531,22 @@ spec:
                                       type: array
                                     pagerdutyAutomationAction:
                                       description: Configure a Process Automation
-                                        associated with the resulting incident.
+                                        to be run for certain alert states.
                                       items:
                                         properties:
                                           actionId:
                                             description: Id of the Process Automation
                                               action to be triggered.
                                             type: string
+                                          triggerTypes:
+                                            description: 'The Automation Action will
+                                              be triggered whenever an alert reaches
+                                              the specified state. Allowed values
+                                              are: ["alert_triggered"], ["alert_suspended"],
+                                              ["alert_suppressed"]'
+                                            items:
+                                              type: string
+                                            type: array
                                         type: object
                                       type: array
                                     priority:
@@ -625,17 +659,17 @@ spec:
                                   incident.
                                 type: string
                               automationAction:
-                                description: Create a Webhook associated with the
-                                  resulting incident.
+                                description: Create a Webhook to be run for certain
+                                  alert states.
                                 items:
                                   properties:
                                     autoSend:
                                       description: When true, PagerDuty's servers
                                         will automatically send this webhook request
-                                        as soon as the resulting incident is created.
-                                        When false, your incident responder will be
-                                        able to manually trigger the Webhook via the
-                                        PagerDuty website and mobile app.
+                                        as soon as the resulting incident or alert
+                                        is created. When false, your incident responder
+                                        will be able to manually trigger the Webhook
+                                        via the PagerDuty website and mobile app.
                                       type: boolean
                                     header:
                                       description: Specify custom key/value pairs
@@ -669,6 +703,14 @@ spec:
                                               custom field
                                             type: string
                                         type: object
+                                      type: array
+                                    triggerTypes:
+                                      description: 'The Automation Action will be
+                                        triggered whenever an alert reaches the specified
+                                        state. Allowed values are: ["alert_triggered"],
+                                        ["alert_suspended"], ["alert_suppressed"]'
+                                      items:
+                                        type: string
                                       type: array
                                     url:
                                       description: The API endpoint where PagerDuty's
@@ -742,14 +784,22 @@ spec:
                                   type: object
                                 type: array
                               pagerdutyAutomationAction:
-                                description: Configure a Process Automation associated
-                                  with the resulting incident.
+                                description: Configure a Process Automation to be
+                                  run for certain alert states.
                                 items:
                                   properties:
                                     actionId:
                                       description: Id of the Process Automation action
                                         to be triggered.
                                       type: string
+                                    triggerTypes:
+                                      description: 'The Automation Action will be
+                                        triggered whenever an alert reaches the specified
+                                        state. Allowed values are: ["alert_triggered"],
+                                        ["alert_suspended"], ["alert_suppressed"]'
+                                      items:
+                                        type: string
+                                      type: array
                                   type: object
                                 type: array
                               priority:
@@ -917,18 +967,18 @@ spec:
                                         resulting incident.
                                       type: string
                                     automationAction:
-                                      description: Create a Webhook associated with
-                                        the resulting incident.
+                                      description: Create a Webhook to be run for
+                                        certain alert states.
                                       items:
                                         properties:
                                           autoSend:
                                             description: When true, PagerDuty's servers
                                               will automatically send this webhook
                                               request as soon as the resulting incident
-                                              is created. When false, your incident
-                                              responder will be able to manually trigger
-                                              the Webhook via the PagerDuty website
-                                              and mobile app.
+                                              or alert is created. When false, your
+                                              incident responder will be able to manually
+                                              trigger the Webhook via the PagerDuty
+                                              website and mobile app.
                                             type: boolean
                                           header:
                                             description: Specify custom key/value
@@ -964,6 +1014,15 @@ spec:
                                                     to this custom field
                                                   type: string
                                               type: object
+                                            type: array
+                                          triggerTypes:
+                                            description: 'The Automation Action will
+                                              be triggered whenever an alert reaches
+                                              the specified state. Allowed values
+                                              are: ["alert_triggered"], ["alert_suspended"],
+                                              ["alert_suppressed"]'
+                                            items:
+                                              type: string
                                             type: array
                                           url:
                                             description: The API endpoint where PagerDuty's
@@ -1042,13 +1101,22 @@ spec:
                                       type: array
                                     pagerdutyAutomationAction:
                                       description: Configure a Process Automation
-                                        associated with the resulting incident.
+                                        to be run for certain alert states.
                                       items:
                                         properties:
                                           actionId:
                                             description: Id of the Process Automation
                                               action to be triggered.
                                             type: string
+                                          triggerTypes:
+                                            description: 'The Automation Action will
+                                              be triggered whenever an alert reaches
+                                              the specified state. Allowed values
+                                              are: ["alert_triggered"], ["alert_suspended"],
+                                              ["alert_suppressed"]'
+                                            items:
+                                              type: string
+                                            type: array
                                         type: object
                                       type: array
                                     priority:
@@ -1249,17 +1317,17 @@ spec:
                                   incident.
                                 type: string
                               automationAction:
-                                description: Create a Webhook associated with the
-                                  resulting incident.
+                                description: Create a Webhook to be run for certain
+                                  alert states.
                                 items:
                                   properties:
                                     autoSend:
                                       description: When true, PagerDuty's servers
                                         will automatically send this webhook request
-                                        as soon as the resulting incident is created.
-                                        When false, your incident responder will be
-                                        able to manually trigger the Webhook via the
-                                        PagerDuty website and mobile app.
+                                        as soon as the resulting incident or alert
+                                        is created. When false, your incident responder
+                                        will be able to manually trigger the Webhook
+                                        via the PagerDuty website and mobile app.
                                       type: boolean
                                     header:
                                       description: Specify custom key/value pairs
@@ -1293,6 +1361,14 @@ spec:
                                               custom field
                                             type: string
                                         type: object
+                                      type: array
+                                    triggerTypes:
+                                      description: 'The Automation Action will be
+                                        triggered whenever an alert reaches the specified
+                                        state. Allowed values are: ["alert_triggered"],
+                                        ["alert_suspended"], ["alert_suppressed"]'
+                                      items:
+                                        type: string
                                       type: array
                                     url:
                                       description: The API endpoint where PagerDuty's
@@ -1366,14 +1442,22 @@ spec:
                                   type: object
                                 type: array
                               pagerdutyAutomationAction:
-                                description: Configure a Process Automation associated
-                                  with the resulting incident.
+                                description: Configure a Process Automation to be
+                                  run for certain alert states.
                                 items:
                                   properties:
                                     actionId:
                                       description: Id of the Process Automation action
                                         to be triggered.
                                       type: string
+                                    triggerTypes:
+                                      description: 'The Automation Action will be
+                                        triggered whenever an alert reaches the specified
+                                        state. Allowed values are: ["alert_triggered"],
+                                        ["alert_suspended"], ["alert_suppressed"]'
+                                      items:
+                                        type: string
+                                      type: array
                                   type: object
                                 type: array
                               priority:
@@ -1471,18 +1555,18 @@ spec:
                                         resulting incident.
                                       type: string
                                     automationAction:
-                                      description: Create a Webhook associated with
-                                        the resulting incident.
+                                      description: Create a Webhook to be run for
+                                        certain alert states.
                                       items:
                                         properties:
                                           autoSend:
                                             description: When true, PagerDuty's servers
                                               will automatically send this webhook
                                               request as soon as the resulting incident
-                                              is created. When false, your incident
-                                              responder will be able to manually trigger
-                                              the Webhook via the PagerDuty website
-                                              and mobile app.
+                                              or alert is created. When false, your
+                                              incident responder will be able to manually
+                                              trigger the Webhook via the PagerDuty
+                                              website and mobile app.
                                             type: boolean
                                           header:
                                             description: Specify custom key/value
@@ -1518,6 +1602,15 @@ spec:
                                                     to this custom field
                                                   type: string
                                               type: object
+                                            type: array
+                                          triggerTypes:
+                                            description: 'The Automation Action will
+                                              be triggered whenever an alert reaches
+                                              the specified state. Allowed values
+                                              are: ["alert_triggered"], ["alert_suspended"],
+                                              ["alert_suppressed"]'
+                                            items:
+                                              type: string
                                             type: array
                                           url:
                                             description: The API endpoint where PagerDuty's
@@ -1596,13 +1689,22 @@ spec:
                                       type: array
                                     pagerdutyAutomationAction:
                                       description: Configure a Process Automation
-                                        associated with the resulting incident.
+                                        to be run for certain alert states.
                                       items:
                                         properties:
                                           actionId:
                                             description: Id of the Process Automation
                                               action to be triggered.
                                             type: string
+                                          triggerTypes:
+                                            description: 'The Automation Action will
+                                              be triggered whenever an alert reaches
+                                              the specified state. Allowed values
+                                              are: ["alert_triggered"], ["alert_suspended"],
+                                              ["alert_suppressed"]'
+                                            items:
+                                              type: string
+                                            type: array
                                         type: object
                                       type: array
                                     priority:

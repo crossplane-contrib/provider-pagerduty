@@ -3,7 +3,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.19.0
+    controller-gen.kubebuilder.io/version: v0.20.0
   name: orchestrationglobalcachevariables.event.pagerduty.m.crossplane.io
 spec:
   group: event.pagerduty.m.crossplane.io
@@ -63,6 +63,8 @@ spec:
                   condition:
                     description: Conditions to be evaluated in order to determine
                       whether or not to update the Cache Variable's stored value.
+                      This attribute can only be used when configuration.0.type is
+                      recent_value or trigger_event_count.
                     items:
                       properties:
                         expression:
@@ -75,6 +77,11 @@ spec:
                       will be stored in the Cache Variable.
                     items:
                       properties:
+                        dataType:
+                          description: The type of data that will eventually be set
+                            for the Cache Variable via an API request. This field
+                            is only used when type is external_data
+                          type: string
                         regex:
                           description: A RE2 regular expression that will be matched
                             against the field specified via the source argument. This
@@ -88,11 +95,12 @@ spec:
                         ttlSeconds:
                           description: The number of seconds indicating how long to
                             count incoming trigger events for. This field is only
-                            used when type is trigger_event_count
+                            used when type is trigger_event_count or external_data
                           type: number
                         type:
                           description: 'The type of value to store into the Cache
-                            Variable. Can be one of: recent_value or trigger_event_count.'
+                            Variable. Can be one of: recent_value, trigger_event_count
+                            or external_data.'
                           type: string
                       type: object
                     type: array
@@ -207,6 +215,8 @@ spec:
                   condition:
                     description: Conditions to be evaluated in order to determine
                       whether or not to update the Cache Variable's stored value.
+                      This attribute can only be used when configuration.0.type is
+                      recent_value or trigger_event_count.
                     items:
                       properties:
                         expression:
@@ -219,6 +229,11 @@ spec:
                       will be stored in the Cache Variable.
                     items:
                       properties:
+                        dataType:
+                          description: The type of data that will eventually be set
+                            for the Cache Variable via an API request. This field
+                            is only used when type is external_data
+                          type: string
                         regex:
                           description: A RE2 regular expression that will be matched
                             against the field specified via the source argument. This
@@ -232,11 +247,12 @@ spec:
                         ttlSeconds:
                           description: The number of seconds indicating how long to
                             count incoming trigger events for. This field is only
-                            used when type is trigger_event_count
+                            used when type is trigger_event_count or external_data
                           type: number
                         type:
                           description: 'The type of value to store into the Cache
-                            Variable. Can be one of: recent_value or trigger_event_count.'
+                            Variable. Can be one of: recent_value, trigger_event_count
+                            or external_data.'
                           type: string
                       type: object
                     type: array
@@ -411,6 +427,8 @@ spec:
                   condition:
                     description: Conditions to be evaluated in order to determine
                       whether or not to update the Cache Variable's stored value.
+                      This attribute can only be used when configuration.0.type is
+                      recent_value or trigger_event_count.
                     items:
                       properties:
                         expression:
@@ -423,6 +441,11 @@ spec:
                       will be stored in the Cache Variable.
                     items:
                       properties:
+                        dataType:
+                          description: The type of data that will eventually be set
+                            for the Cache Variable via an API request. This field
+                            is only used when type is external_data
+                          type: string
                         regex:
                           description: A RE2 regular expression that will be matched
                             against the field specified via the source argument. This
@@ -436,11 +459,12 @@ spec:
                         ttlSeconds:
                           description: The number of seconds indicating how long to
                             count incoming trigger events for. This field is only
-                            used when type is trigger_event_count
+                            used when type is trigger_event_count or external_data
                           type: number
                         type:
                           description: 'The type of value to store into the Cache
-                            Variable. Can be one of: recent_value or trigger_event_count.'
+                            Variable. Can be one of: recent_value, trigger_event_count
+                            or external_data.'
                           type: string
                       type: object
                     type: array

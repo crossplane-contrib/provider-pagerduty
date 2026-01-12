@@ -1,0 +1,16 @@
+apiVersion: service.pagerduty.m.crossplane.io/v1alpha1
+kind: CustomField
+metadata:
+  annotations:
+    meta.upbound.io/example-id: service/v1alpha1/customfield
+  labels:
+    testing.upbound.io/example-name: environment
+  name: environment
+  namespace: upbound-system
+spec:
+  forProvider:
+    dataType: string
+    description: The environment this service runs in
+    displayName: Environment
+    fieldType: single_value
+    name: environment

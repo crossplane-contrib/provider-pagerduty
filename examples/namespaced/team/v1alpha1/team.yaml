@@ -6,6 +6,7 @@ metadata:
   labels:
     testing.upbound.io/example-name: parent
   name: parent
+  namespace: upbound-system
 spec:
   forProvider:
     description: Product and Engineering

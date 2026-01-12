@@ -38,11 +38,14 @@ import (
 	workflowtrigger "github.com/crossplane-contrib/provider-pagerduty/internal/controller/cluster/incident/workflowtrigger"
 	cloudaccountmappingrule "github.com/crossplane-contrib/provider-pagerduty/internal/controller/cluster/jira/cloudaccountmappingrule"
 	window "github.com/crossplane-contrib/provider-pagerduty/internal/controller/cluster/maintenance/window"
+	enablement "github.com/crossplane-contrib/provider-pagerduty/internal/controller/cluster/pagerduty/enablement"
 	providerconfig "github.com/crossplane-contrib/provider-pagerduty/internal/controller/cluster/providerconfig"
 	play "github.com/crossplane-contrib/provider-pagerduty/internal/controller/cluster/response/play"
 	ruleruleset "github.com/crossplane-contrib/provider-pagerduty/internal/controller/cluster/ruleset/rule"
 	ruleset "github.com/crossplane-contrib/provider-pagerduty/internal/controller/cluster/ruleset/ruleset"
 	schedule "github.com/crossplane-contrib/provider-pagerduty/internal/controller/cluster/schedule/schedule"
+	customfieldservice "github.com/crossplane-contrib/provider-pagerduty/internal/controller/cluster/service/customfield"
+	customfieldvalue "github.com/crossplane-contrib/provider-pagerduty/internal/controller/cluster/service/customfieldvalue"
 	dependency "github.com/crossplane-contrib/provider-pagerduty/internal/controller/cluster/service/dependency"
 	eventrule "github.com/crossplane-contrib/provider-pagerduty/internal/controller/cluster/service/eventrule"
 	integration "github.com/crossplane-contrib/provider-pagerduty/internal/controller/cluster/service/integration"
@@ -92,11 +95,14 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 		workflowtrigger.Setup,
 		cloudaccountmappingrule.Setup,
 		window.Setup,
+		enablement.Setup,
 		providerconfig.Setup,
 		play.Setup,
 		ruleruleset.Setup,
 		ruleset.Setup,
 		schedule.Setup,
+		customfieldservice.Setup,
+		customfieldvalue.Setup,
 		dependency.Setup,
 		eventrule.Setup,
 		integration.Setup,
@@ -152,11 +158,14 @@ func SetupGated(mgr ctrl.Manager, o controller.Options) error {
 		workflowtrigger.SetupGated,
 		cloudaccountmappingrule.SetupGated,
 		window.SetupGated,
+		enablement.SetupGated,
 		providerconfig.SetupGated,
 		play.SetupGated,
 		ruleruleset.SetupGated,
 		ruleset.SetupGated,
 		schedule.SetupGated,
+		customfieldservice.SetupGated,
+		customfieldvalue.SetupGated,
 		dependency.SetupGated,
 		eventrule.SetupGated,
 		integration.SetupGated,

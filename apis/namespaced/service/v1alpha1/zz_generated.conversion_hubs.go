@@ -7,6 +7,12 @@
 package v1alpha1
 
 // Hub marks this type as a conversion hub.
+func (tr *CustomField) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *CustomFieldValue) Hub() {}
+
+// Hub marks this type as a conversion hub.
 func (tr *Dependency) Hub() {}
 
 // Hub marks this type as a conversion hub.

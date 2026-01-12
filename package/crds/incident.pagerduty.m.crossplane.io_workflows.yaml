@@ -3,7 +3,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.19.0
+    controller-gen.kubebuilder.io/version: v0.20.0
   name: workflows.incident.pagerduty.m.crossplane.io
 spec:
   group: incident.pagerduty.m.crossplane.io
@@ -61,6 +61,11 @@ spec:
                 properties:
                   description:
                     description: The description of the workflow.
+                    type: string
+                  isEnabled:
+                    description: Indicates whether the Incident Workflow is enabled
+                      or not. Disabled workflows will not be triggered, and will not
+                      count toward the account's enabled workflow limit.
                     type: string
                   name:
                     description: The name of the workflow.
@@ -230,6 +235,11 @@ spec:
                 properties:
                   description:
                     description: The description of the workflow.
+                    type: string
+                  isEnabled:
+                    description: Indicates whether the Incident Workflow is enabled
+                      or not. Disabled workflows will not be triggered, and will not
+                      count toward the account's enabled workflow limit.
                     type: string
                   name:
                     description: The name of the workflow.
@@ -457,6 +467,11 @@ spec:
                     type: string
                   id:
                     description: The ID of the incident workflow.
+                    type: string
+                  isEnabled:
+                    description: Indicates whether the Incident Workflow is enabled
+                      or not. Disabled workflows will not be triggered, and will not
+                      count toward the account's enabled workflow limit.
                     type: string
                   name:
                     description: The name of the workflow.

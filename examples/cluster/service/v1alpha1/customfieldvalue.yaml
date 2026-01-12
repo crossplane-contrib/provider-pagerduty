@@ -1,0 +1,116 @@
+apiVersion: service.pagerduty.crossplane.io/v1alpha1
+kind: CustomFieldValue
+metadata:
+  annotations:
+    meta.upbound.io/example-id: service/v1alpha1/customfieldvalue
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    customFields:
+    - name: environment
+      value: ${jsonencode("production")}
+    - name: environment
+      value: ${jsonencode("us-east-1")}
+    - name: environment
+      value: ${jsonencode(true)}
+    - name: environment
+      value: ${jsonencode(["us-east-1", "us-west-1"])}
+    serviceId: ${pagerduty_service.example.id}
+
+---
+
+apiVersion: service.pagerduty.crossplane.io/v1alpha1
+kind: Service
+metadata:
+  annotations:
+    meta.upbound.io/example-id: service/v1alpha1/customfieldvalue
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    acknowledgementTimeout: 600
+    autoResolveTimeout: 14400
+    escalationPolicySelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    name: Example Service
+
+---
+
+apiVersion: service.pagerduty.crossplane.io/v1alpha1
+kind: CustomField
+metadata:
+  annotations:
+    meta.upbound.io/example-id: service/v1alpha1/customfieldvalue
+  labels:
+    testing.upbound.io/example-name: environment
+  name: environment
+spec:
+  forProvider:
+    dataType: string
+    description: The environment this service runs in
+    displayName: Environment
+    fieldType: single_value
+    name: environment
+
+---
+
+apiVersion: service.pagerduty.crossplane.io/v1alpha1
+kind: CustomField
+metadata:
+  annotations:
+    meta.upbound.io/example-id: service/v1alpha1/customfieldvalue
+  labels:
+    testing.upbound.io/example-name: is_critical
+  name: is-critical
+spec:
+  forProvider:
+    dataType: boolean
+    description: Whether this service is critical
+    displayName: Is Critical
+    fieldType: single_value
+    name: is_critical
+
+---
+
+apiVersion: service.pagerduty.crossplane.io/v1alpha1
+kind: CustomField
+metadata:
+  annotations:
+    meta.upbound.io/example-id: service/v1alpha1/customfieldvalue
+  labels:
+    testing.upbound.io/example-name: region
+  name: region
+spec:
+  forProvider:
+    dataType: string
+    description: The region this service is deployed in
+    displayName: Region
+    fieldType: single_value
+    name: region
+
+---
+
+apiVersion: service.pagerduty.crossplane.io/v1alpha1
+kind: CustomField
+metadata:
+  annotations:
+    meta.upbound.io/example-id: service/v1alpha1/customfieldvalue
+  labels:
+    testing.upbound.io/example-name: regions
+  name: regions
+spec:
+  forProvider:
+    dataType: string
+    description: AWS regions where this service is deployed
+    displayName: AWS Regions
+    fieldOption:
+    - dataType: string
+      value: us-east-1
+    - dataType: string
+      value: us-west-1
+    fieldType: multi_value_fixed
+    name: regions

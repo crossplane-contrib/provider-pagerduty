@@ -23,10 +23,14 @@ type ConfigInitParameters struct {
 	// +listType=set
 	Fields []*string `json:"fields,omitempty" tf:"fields,omitempty"`
 
+	// An array of strings which represent the iag fields with which to intelligently group against.  This setting applies only when type is set to intelligent. Default: ["summary"].
+	// An array of strings which represent the iag fields with which to intelligently group against
+	IagFields []*string `json:"iagFields,omitempty" tf:"iag_fields,omitempty"`
+
 	// The maximum amount of time allowed between Alerts. This setting applies only when type is set to intelligent, content_based, content_based_intelligent. Value must be between 300 and 3600 or exactly 86400 (86400 is supported only for content_based alert grouping). Any Alerts arriving greater than time_window seconds apart will not be grouped together. This is a rolling time window and is counted from the most recently grouped alert. The window is extended every time a new alert is added to the group, up to 24 hours. To use the recommended time window leave this value unset or set it to null.
 	TimeWindow *float64 `json:"timeWindow,omitempty" tf:"time_window,omitempty"`
 
-	// The duration in minutes within which to automatically group incoming alerts. This setting is only required and applies when type is set to time. To continue grouping alerts until the incident is resolved leave this value unset or set it to null.
+	// The duration in seconds within which to automatically group incoming alerts. This setting is only required and applies when type is set to time. To continue grouping alerts until the incident is resolved leave this value unset or set it to null.
 	Timeout *float64 `json:"timeout,omitempty" tf:"timeout,omitempty"`
 }
 
@@ -39,10 +43,14 @@ type ConfigObservation struct {
 	// +listType=set
 	Fields []*string `json:"fields,omitempty" tf:"fields,omitempty"`
 
+	// An array of strings which represent the iag fields with which to intelligently group against.  This setting applies only when type is set to intelligent. Default: ["summary"].
+	// An array of strings which represent the iag fields with which to intelligently group against
+	IagFields []*string `json:"iagFields,omitempty" tf:"iag_fields,omitempty"`
+
 	// The maximum amount of time allowed between Alerts. This setting applies only when type is set to intelligent, content_based, content_based_intelligent. Value must be between 300 and 3600 or exactly 86400 (86400 is supported only for content_based alert grouping). Any Alerts arriving greater than time_window seconds apart will not be grouped together. This is a rolling time window and is counted from the most recently grouped alert. The window is extended every time a new alert is added to the group, up to 24 hours. To use the recommended time window leave this value unset or set it to null.
 	TimeWindow *float64 `json:"timeWindow,omitempty" tf:"time_window,omitempty"`
 
-	// The duration in minutes within which to automatically group incoming alerts. This setting is only required and applies when type is set to time. To continue grouping alerts until the incident is resolved leave this value unset or set it to null.
+	// The duration in seconds within which to automatically group incoming alerts. This setting is only required and applies when type is set to time. To continue grouping alerts until the incident is resolved leave this value unset or set it to null.
 	Timeout *float64 `json:"timeout,omitempty" tf:"timeout,omitempty"`
 }
 
@@ -57,11 +65,16 @@ type ConfigParameters struct {
 	// +listType=set
 	Fields []*string `json:"fields,omitempty" tf:"fields,omitempty"`
 
+	// An array of strings which represent the iag fields with which to intelligently group against.  This setting applies only when type is set to intelligent. Default: ["summary"].
+	// An array of strings which represent the iag fields with which to intelligently group against
+	// +kubebuilder:validation:Optional
+	IagFields []*string `json:"iagFields,omitempty" tf:"iag_fields,omitempty"`
+
 	// The maximum amount of time allowed between Alerts. This setting applies only when type is set to intelligent, content_based, content_based_intelligent. Value must be between 300 and 3600 or exactly 86400 (86400 is supported only for content_based alert grouping). Any Alerts arriving greater than time_window seconds apart will not be grouped together. This is a rolling time window and is counted from the most recently grouped alert. The window is extended every time a new alert is added to the group, up to 24 hours. To use the recommended time window leave this value unset or set it to null.
 	// +kubebuilder:validation:Optional
 	TimeWindow *float64 `json:"timeWindow,omitempty" tf:"time_window,omitempty"`
 
-	// The duration in minutes within which to automatically group incoming alerts. This setting is only required and applies when type is set to time. To continue grouping alerts until the incident is resolved leave this value unset or set it to null.
+	// The duration in seconds within which to automatically group incoming alerts. This setting is only required and applies when type is set to time. To continue grouping alerts until the incident is resolved leave this value unset or set it to null.
 	// +kubebuilder:validation:Optional
 	Timeout *float64 `json:"timeout,omitempty" tf:"timeout,omitempty"`
 }
@@ -74,7 +87,7 @@ type GroupingSettingInitParameters struct {
 	// A human-friendly text to describe and identify this alert grouping setting.
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
 
-	// The name for the alert groupig settings.
+	// The name for the alert grouping settings.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
 	// References to Service in service to populate services.
@@ -107,7 +120,7 @@ type GroupingSettingObservation struct {
 	// The ID of the alert grouping setting.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
-	// The name for the alert groupig settings.
+	// The name for the alert grouping settings.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
 	// [Updating can cause a resource replacement] The list IDs of services associated to this setting.
@@ -128,7 +141,7 @@ type GroupingSettingParameters struct {
 	// +kubebuilder:validation:Optional
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
 
-	// The name for the alert groupig settings.
+	// The name for the alert grouping settings.
 	// +kubebuilder:validation:Optional
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 

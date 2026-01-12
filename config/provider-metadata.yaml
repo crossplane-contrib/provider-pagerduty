@@ -23,7 +23,7 @@ resources:
         name: pagerduty_alert_grouping_setting
         title: pagerduty_alert_grouping_setting
         examples:
-            - name: '%[1]s'
+            - name: basic_settings
               manifest: |-
                 {
                   "config": [
@@ -53,11 +53,12 @@ resources:
             config: '- (Required) The set of values used for configuration.'
             config.aggregate: '- (Optional) One of any or all. This setting is only required and applies when type is set to content_based or content_based_intelligent. Group alerts based on one or all of fields value(s).'
             config.fields: '- (Optional) Alerts will be grouped together if the content of these fields match. This setting is only required and applies when type is set to content_based or content_based_intelligent.'
+            config.iag_fields: '- (Optional) An array of strings which represent the iag fields with which to intelligently group against.  This setting applies only when type is set to intelligent. Default: ["summary"].'
             config.time_window: '- (Optional) The maximum amount of time allowed between Alerts. This setting applies only when type is set to intelligent, content_based, content_based_intelligent. Value must be between 300 and 3600 or exactly 86400 (86400 is supported only for content_based alert grouping). Any Alerts arriving greater than time_window seconds apart will not be grouped together. This is a rolling time window and is counted from the most recently grouped alert. The window is extended every time a new alert is added to the group, up to 24 hours. To use the recommended time window leave this value unset or set it to null.'
-            config.timeout: '- (Optional) The duration in minutes within which to automatically group incoming alerts. This setting is only required and applies when type is set to time. To continue grouping alerts until the incident is resolved leave this value unset or set it to null.'
+            config.timeout: '- (Optional) The duration in seconds within which to automatically group incoming alerts. This setting is only required and applies when type is set to time. To continue grouping alerts until the incident is resolved leave this value unset or set it to null.'
             description: '- A human-friendly text to describe and identify this alert grouping setting.'
             id: '- The ID of the alert grouping setting.'
-            name: '- (Required) The name for the alert groupig settings.'
+            name: '- (Required) The name for the alert grouping settings.'
             services: '- (Required)  [Updating can cause a resource replacement] The list IDs of services associated to this setting.'
             type: '- (Required) The type of alert grouping; one of intelligent, time, content_based or  content_based_intelligent.'
         importStatements: []
@@ -96,13 +97,16 @@ resources:
             action_classification: '- (Optional) The category of the action. The only allowed values are diagnostic and remediation.'
             action_data_reference: '- (Required) Action Data block. Action Data is documented below.'
             action_type: '- (Required) The type of the action. The only allowed values are process_automation and script. Cannot be changed once set.'
+            allow_invocation_from_event_orchestration: '- (Optional) Whether the action can be invoked automatically from a PagerDuty Event Orchestration.'
+            allow_invocation_manually: '- (Optional) Whether the action can be invoked manually by a user on the PagerDuty website.'
             creation_time: '- The time action was created. Represented as an ISO 8601 timestamp.'
             description: '- (Required) The description of the action. Max length is 1024 characters.'
             id: '- The ID of the action.'
             invocation_command: '- (Optional) The command to execute the script with.'
+            map_to_all_services: '- (Optional) If true, the action will be associated with every service.'
             modify_time: '- (Optional) The last time action has been modified. Represented as an ISO 8601 timestamp.'
             name: '- (Required) The name of the action. Max length is 255 characters.'
-            only_invocable_on_unresolved_incidents: '- (Optional) Whether or not the action can be invoked on unresolved incidents.'
+            only_invocable_on_unresolved_incidents: '- (Optional) Whether the action can be invoked on unresolved incidents.'
             process_automation_job_arguments: '- (Optional) The arguments to pass to the Process Automation job execution.'
             process_automation_job_id: '- (Required for process_automation action_type) The ID of the Process Automation job to execute.'
             process_automation_node_filter: '- (Optional) The expression that filters on which nodes a Process Automation Job executes Learn more.'
@@ -367,6 +371,29 @@ resources:
             subscriber_id: '- (Required) The ID of the subscriber entity.'
             subscriber_type: '- (Required) Type of subscriber entity in the subscriber assignment. Possible values can be user and team.'
         importStatements: []
+    pagerduty_enablement:
+        subCategory: ""
+        description: Creates and manages feature enablements for PagerDuty entities.
+        name: pagerduty_enablement
+        title: pagerduty_enablement
+        examples:
+            - name: example
+              manifest: |-
+                {
+                  "enabled": true,
+                  "entity_id": "${data.pagerduty_service.example.id}",
+                  "entity_type": "service",
+                  "feature": "aiops"
+                }
+              references:
+                entity_id: data.pagerduty_service.example.id
+        argumentDocs:
+            enabled: '- (Required) Whether the feature should be enabled (true) or disabled (false) for the specified entity.'
+            entity_id: '- (Required) The ID of the entity for which to manage the enablement.'
+            entity_type: '- (Required) The type of entity for which to manage the enablement. Possible values can be service and event_orchestration.'
+            feature: '- (Required) The name of the feature to enable or disable. Possible values can be aiops.'
+            id: '- The ID of the enablement, constructed as entity_type.entity_id.feature.'
+        importStatements: []
     pagerduty_escalation_policy:
         subCategory: ""
         description: Creates and manages an escalation policy in PagerDuty.
@@ -539,13 +566,17 @@ resources:
                                 {
                                   "auto_send": true,
                                   "name": "db-diagnostic",
+                                  "trigger_types": [
+                                    "alert_suspended"
+                                  ],
                                   "url": "https://example.com/run-diagnostic"
                                 }
                               ],
-                              "priority": "${data.pagerduty_priority.p1.id}"
+                              "priority": "${data.pagerduty_priority.p1.id}",
+                              "suspend": 600
                             }
                           ],
-                          "label": "Otherwise, set the incident to P1 and run a diagnostic"
+                          "label": "Otherwise, set the incident to P1, pause for 10 mins and run a diagnostic once the alert is suspended"
                         }
                       ]
                     }
@@ -568,8 +599,8 @@ resources:
         argumentDocs:
             actions: '- (Required) Actions that will be taken to change the resulting alert and incident, when an event matches this rule.'
             annotate: '- (Optional) Add this text as a note on the resulting incident.'
-            auto_send: '- (Optional) When true, PagerDuty''s servers will automatically send this webhook request as soon as the resulting incident is created. When false, your incident responder will be able to manually trigger the Webhook via the PagerDuty website and mobile app.'
-            automation_action: '- (Optional) Create a Webhook associated with the resulting incident.'
+            auto_send: '- (Optional) When true, PagerDuty''s servers will automatically send this webhook request as soon as the resulting incident or alert is created. When false, your incident responder will be able to manually trigger the Webhook via the PagerDuty website and mobile app.'
+            automation_action: '- (Optional) Create a Webhook to be run for certain alert states.'
             catch_all: '- (Required) the catch_all actions will be applied if an Event reaches the end of any set without matching any rules in that set.'
             condition: '- (Optional) Each of these conditions is evaluated to check if an event matches this rule. The rule is considered a match if any of these conditions match. If none are provided, the event will always match against the rule.'
             disabled: '- (Optional) Indicates whether the rule is disabled and would therefore not be evaluated.'
@@ -600,6 +631,7 @@ resources:
             suspend: '- (Optional) The number of seconds to suspend the resulting alert before triggering. This effectively pauses incident notifications. If a resolve event arrives before the alert triggers then PagerDuty won''t create an incident for this alert.'
             target: '- (Required) The PagerDuty Common Event Format PD-CEF field that will be set with the value from the template or based on regex and source fields.'
             template: '- (Optional) A string that will be used to populate the target field. You can reference variables or event data within your template using double curly braces. For example:'
+            trigger_types: '- (Optional) The Webhook will be associated (or automatically triggered, if auto_send is true) with the incident or alert, whenever an alert reaches the specified state. Allowed values are: ["alert_triggered"], ["alert_suspended"], ["alert_suppressed"]. NOTE: auto_send must be true for trigger types of ["alert_suspended"] and ["alert_suppressed"]'
             type: '- (Required) Only regex is supported'
             url: '- (Required) The API endpoint where PagerDuty''s servers will send the webhook request.'
             value: '- (Required) The value to assign to this custom field'
@@ -611,7 +643,7 @@ resources:
         name: pagerduty_event_orchestration_global_cache_variable
         title: pagerduty_event_orchestration_global_cache_variable'
         examples:
-            - name: cache_var
+            - name: recent_host
               manifest: |-
                 {
                   "condition": [
@@ -654,6 +686,19 @@ resources:
                             {
                               "actions": [
                                 {
+                                  "drop": true
+                                }
+                              ],
+                              "condition": [
+                                {
+                                  "expression": "cache_var.host_ignore_list matches part event.custom_details.host"
+                                }
+                              ],
+                              "label": "Drop events originating from hosts on the ignore list"
+                            },
+                            {
+                              "actions": [
+                                {
                                   "annotate": "Last time, we saw this incident occur on host: {{cache_var.recent_host}}"
                                 }
                               ],
@@ -663,13 +708,26 @@ resources:
                         }
                       ]
                     }
+                pagerduty_event_orchestration_service_cache_variable.host_ignore_list: |-
+                    {
+                      "configuration": [
+                        {
+                          "data_type": "string",
+                          "ttl_seconds": 3000,
+                          "type": "external_data"
+                        }
+                      ],
+                      "event_orchestration": "${pagerduty_event_orchestration.event_orchestration.id}",
+                      "name": "host_ignore_list"
+                    }
                 pagerduty_team.database_team: |-
                     {
                       "name": "Database Team"
                     }
         argumentDocs:
-            condition: '- Conditions to be evaluated in order to determine whether or not to update the Cache Variable''s stored value.'
+            condition: '- Conditions to be evaluated in order to determine whether or not to update the Cache Variable''s stored value. This attribute can only be used when configuration.0.type is recent_value or trigger_event_count.'
             configuration: '- A configuration object to define what and how values will be stored in the Cache Variable.'
+            data_type: '- The type of data that will eventually be set for the Cache Variable via an API request. This field is only used when type is external_data'
             disabled: '- (Optional) Indicates whether the Cache Variable is disabled and would therefore not be evaluated.'
             event_orchestration: '- (Required) ID of the Global Event Orchestration to which this Cache Variable belongs.'
             expression: '- A PCL condition string.'
@@ -677,8 +735,8 @@ resources:
             name: '- (Required) Name of the Cache Variable associated with the Global Event Orchestration.'
             regex: '- A RE2 regular expression that will be matched against the field specified via the source argument. This field is only used when type is recent_value'
             source: '- The path to the event field where the regex will be applied to extract a value. You can use any valid PCL path. This field is only used when type is recent_value'
-            ttl_seconds: '- The number of seconds indicating how long to count incoming trigger events for. This field is only used when type is trigger_event_count'
-            type: '- The type of value to store into the Cache Variable. Can be one of: recent_value or trigger_event_count.'
+            ttl_seconds: '- The number of seconds indicating how long to count incoming trigger events for. This field is only used when type is trigger_event_count or external_data'
+            type: '- The type of value to store into the Cache Variable. Can be one of: recent_value, trigger_event_count or external_data.'
         importStatements: []
     pagerduty_event_orchestration_integration:
         subCategory: ""
@@ -912,6 +970,9 @@ resources:
                                       "value": "something is wrong with the canary deployment"
                                     }
                                   ],
+                                  "trigger_types": [
+                                    "alert_triggered"
+                                  ],
                                   "url": "https://our-slack-listerner.test/canary-notification"
                                 }
                               ]
@@ -927,6 +988,14 @@ resources:
                         {
                           "actions": [
                             {
+                              "pagerduty_automation_action": [
+                                {
+                                  "action_id": "01FJV5A8OA5MKHOYFHV35SM2Z0",
+                                  "trigger_types": [
+                                    "alert_suppressed"
+                                  ]
+                                }
+                              ],
                               "suppress": true
                             }
                           ],
@@ -935,7 +1004,7 @@ resources:
                               "expression": "event.severity matches 'info' and not (now in Mon,Tue,Wed,Thu,Fri 09:00:00 to 17:00:00 America/Los_Angeles)"
                             }
                           ],
-                          "label": "Never bother the on-call for info-level events outside of work hours"
+                          "label": "Never bother the on-call for info-level events outside of work hours, and let an Automation Action fix it instead"
                         }
                       ]
                     }
@@ -996,8 +1065,8 @@ resources:
             action_id: '- (Required) Id of the Process Automation action to be triggered.'
             actions: '- (Required) Actions that will be taken to change the resulting alert and incident, when an event matches this rule.'
             annotate: '- (Optional) Add this text as a note on the resulting incident.'
-            auto_send: '- (Optional) When true, PagerDuty''s servers will automatically send this webhook request as soon as the resulting incident is created. When false, your incident responder will be able to manually trigger the Webhook via the PagerDuty website and mobile app.'
-            automation_action: '- (Optional) Create a Webhook associated with the resulting incident.'
+            auto_send: '- (Optional) When true, PagerDuty''s servers will automatically send this webhook request as soon as the resulting incident or alert is created. When false, your incident responder will be able to manually trigger the Webhook via the PagerDuty website and mobile app.'
+            automation_action: '- (Optional) Create a Webhook to be run for certain alert states.'
             catch_all: '- (Required) the catch_all actions will be applied if an Event reaches the end of any set without matching any rules in that set.'
             condition: '- (Optional) Each of these conditions is evaluated to check if an event matches this rule. The rule is considered a match if any of these conditions match. If none are provided, the event will always match against the rule.'
             disabled: '- (Optional) Indicates whether the rule is disabled and would therefore not be evaluated.'
@@ -1013,7 +1082,7 @@ resources:
             key: '- (Required) Name to identify the header'
             label: '- (Optional) A description of this rule''s purpose.'
             name: '- (Required) Name of this Webhook.'
-            pagerduty_automation_action: '- (Optional) Configure a Process Automation associated with the resulting incident.'
+            pagerduty_automation_action: '- (Optional) Configure a Process Automation to be run for certain alert states.'
             parameter: '- (Optional) Specify custom key/value pairs that''ll be included in the webhook request''s JSON payload.'
             path: '- (Required) Path to a field in an event, in dot-notation. This supports both PagerDuty Common Event Format PD-CEF and non-CEF fields. Eg: Use event.summary for the summary CEF field. Use raw_event.fieldname to read from the original event fieldname data. You can use any valid PCL path.'
             priority: '- (Optional) The ID of the priority you want to set on resulting incident. Consider using the pagerduty_priority data source.'
@@ -1029,6 +1098,7 @@ resources:
             suspend: '- (Optional) The number of seconds to suspend the resulting alert before triggering. This effectively pauses incident notifications. If a resolve event arrives before the alert triggers then PagerDuty won''t create an incident for this alert.'
             target: '- (Required) The PagerDuty Common Event Format PD-CEF field that will be set with the value from the template or based on regex and source fields.'
             template: '- (Optional) A string that will be used to populate the target field. You can reference variables or event data within your template using double curly braces. For example:'
+            trigger_types: '- (Optional) The Automation Action will be triggered whenever an alert reaches the specified state. Allowed values are: ["alert_triggered"], ["alert_suspended"], ["alert_suppressed"]'
             type: '- (Required) Only regex is supported'
             url: '- (Required) The API endpoint where PagerDuty''s servers will send the webhook request.'
             value: '- (Required) The value to assign to this custom field'
@@ -1094,6 +1164,116 @@ resources:
                             {
                               "actions": [
                                 {
+                                  "suppress": true
+                                }
+                              ],
+                              "condition": [
+                                {
+                                  "expression": "cache_var.is_maintenance == true"
+                                }
+                              ],
+                              "label": "Suppress alerts if the service is in maintenance"
+                            },
+                            {
+                              "actions": [
+                                {
+                                  "severity": "critical"
+                                }
+                              ],
+                              "condition": [
+                                {
+                                  "expression": "cache_var.num_db_triggers \u003e= 5"
+                                }
+                              ],
+                              "label": "Set severity to critical if we see at least 5 triggers on the DB within the last 1 minute"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                pagerduty_service.svc: |-
+                    {
+                      "acknowledgement_timeout": 600,
+                      "alert_creation": "create_alerts_and_incidents",
+                      "auto_resolve_timeout": 14400,
+                      "escalation_policy": "${pagerduty_escalation_policy.db_ep.id}",
+                      "name": "My Database Service"
+                    }
+                pagerduty_team.database_team: |-
+                    {
+                      "name": "Database Team"
+                    }
+                pagerduty_user.user_1: |-
+                    {
+                      "email": "125.greenholt.earline@graham.name",
+                      "name": "Earline Greenholt",
+                      "teams": [
+                        "${pagerduty_team.database_team.id}"
+                      ]
+                    }
+            - name: is_maintenance
+              manifest: |-
+                {
+                  "configuration": [
+                    {
+                      "data_type": "boolean",
+                      "ttl_seconds": 7200,
+                      "type": "external_data"
+                    }
+                  ],
+                  "name": "is_maintenance",
+                  "service": "${pagerduty_service.svc.id}"
+                }
+              references:
+                service: pagerduty_service.svc.id
+              dependencies:
+                pagerduty_escalation_policy.db_ep: |-
+                    {
+                      "name": "Database Escalation Policy",
+                      "num_loops": 2,
+                      "rule": [
+                        {
+                          "escalation_delay_in_minutes": 10,
+                          "target": [
+                            {
+                              "id": "${pagerduty_user.user_1.id}",
+                              "type": "user"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                pagerduty_event_orchestration_service.event_orchestration: |-
+                    {
+                      "catch_all": [
+                        {
+                          "actions": [
+                            {}
+                          ]
+                        }
+                      ],
+                      "enable_event_orchestration_for_service": true,
+                      "service": "${pagerduty_service.svc.id}",
+                      "set": [
+                        {
+                          "id": "start",
+                          "rule": [
+                            {
+                              "actions": [
+                                {
+                                  "suppress": true
+                                }
+                              ],
+                              "condition": [
+                                {
+                                  "expression": "cache_var.is_maintenance == true"
+                                }
+                              ],
+                              "label": "Suppress alerts if the service is in maintenance"
+                            },
+                            {
+                              "actions": [
+                                {
                                   "severity": "critical"
                                 }
                               ],
@@ -1129,8 +1309,9 @@ resources:
                       ]
                     }
         argumentDocs:
-            condition: '- Conditions to be evaluated in order to determine whether or not to update the Cache Variable''s stored value.'
+            condition: '- Conditions to be evaluated in order to determine whether or not to update the Cache Variable''s stored value. This attribute can only be used when configuration.0.type is recent_value or trigger_event_count.'
             configuration: '- A configuration object to define what and how values will be stored in the Cache Variable.'
+            data_type: '- The type of data that will eventually be set for the Cache Variable via an API request. This field is only used when type is external_data'
             disabled: '- (Optional) Indicates whether the Cache Variable is disabled and would therefore not be evaluated.'
             expression: '- A PCL condition string.'
             id: '- ID of this Cache Variable.'
@@ -1138,8 +1319,8 @@ resources:
             regex: '- A RE2 regular expression that will be matched against the field specified via the source argument. This field is only used when type is recent_value'
             service: '- (Required) ID of the Service Event Orchestration to which this Cache Variable belongs.'
             source: '- The path to the event field where the regex will be applied to extract a value. You can use any valid PCL path. This field is only used when type is recent_value'
-            ttl_seconds: '- The number of seconds indicating how long to count incoming trigger events for. This field is only used when type is trigger_event_count'
-            type: '- The type of value to store into the Cache Variable. Can be one of: recent_value or trigger_event_count.'
+            ttl_seconds: '- The number of seconds indicating how long to count incoming trigger events for. This field is only used when type is trigger_event_count or external_data'
+            type: '- The type of value to store into the Cache Variable. Can be one of: recent_value, trigger_event_count or external_data.'
         importStatements: []
     pagerduty_event_orchestration_unrouted:
         subCategory: ""
@@ -1593,6 +1774,7 @@ resources:
             id: '- The ID of the incident workflow.'
             inline_steps_input: '- (Optional) The list of inputs that contain a series of inline steps for the workflow action.'
             input: '- (Optional) The list of standard inputs for the workflow action.'
+            is_enabled: '- (Optional) Indicates whether the Incident Workflow is enabled or not. Disabled workflows will not be triggered, and will not count toward the account''s enabled workflow limit.'
             name: '- (Required) The name of the workflow.'
             step: '- (Optional) The steps in the workflow.'
             team: '- (Optional) A team ID. If specified then workflow edit permissions will be scoped to members of this team.'
@@ -1799,6 +1981,7 @@ resources:
             config.jira.status_mapping: '- (Required) Maps PagerDuty incident statuses to corresponding Jira issue statuses for synchronization.'
             config.jira.sync_notes_user: '- ID of the PagerDuty user for syncing notes and comments between Jira issues and PagerDuty incidents. If not provided, note synchronization is disabled.'
             config.service: '- (Required) [Updating can cause a resource replacement] The ID of the linked PagerDuty service.'
+            enabled: '- Indicates if the rule is enabled. Defaults to true.'
             id: '- The ID of the service.'
             issue_type.id: '- (Required) Unique identifier for the Jira issue type.'
             issue_type.name: '- (Required) The name of the Jira issue type.'
@@ -2356,6 +2539,181 @@ resources:
             type = "use_support_hours".time_zone: '- The time zone for the support hours.'
             type = "use_support_hours".type: '- The type of support hours. Can be fixed_time_per_day.'
         importStatements: []
+    pagerduty_service_custom_field:
+        subCategory: ""
+        description: Creates and manages a service custom field in PagerDuty.
+        name: pagerduty_service_custom_field
+        title: pagerduty_service_custom_field
+        examples:
+            - name: environment
+              manifest: |-
+                {
+                  "data_type": "string",
+                  "description": "The environment this service runs in",
+                  "display_name": "Environment",
+                  "field_type": "single_value",
+                  "name": "environment"
+                }
+            - name: deployment_tier
+              manifest: |-
+                {
+                  "data_type": "string",
+                  "description": "The deployment tier of the service",
+                  "display_name": "Deployment Tier",
+                  "field_option": [
+                    {
+                      "data_type": "string",
+                      "value": "production"
+                    },
+                    {
+                      "data_type": "string",
+                      "value": "staging"
+                    },
+                    {
+                      "data_type": "string",
+                      "value": "development"
+                    }
+                  ],
+                  "field_type": "single_value_fixed",
+                  "name": "deployment_tier"
+                }
+            - name: regions
+              manifest: |-
+                {
+                  "data_type": "string",
+                  "description": "AWS regions where this service is deployed",
+                  "display_name": "AWS Regions",
+                  "field_option": [
+                    {
+                      "data_type": "string",
+                      "value": "us-east-1"
+                    },
+                    {
+                      "data_type": "string",
+                      "value": "us-west-1"
+                    }
+                  ],
+                  "field_type": "multi_value_fixed",
+                  "name": "regions"
+                }
+            - name: critical
+              manifest: |-
+                {
+                  "data_type": "boolean",
+                  "description": "Whether this is a critical service",
+                  "display_name": "Is Critical",
+                  "field_type": "single_value",
+                  "name": "is_critical"
+                }
+            - name: priority
+              manifest: |-
+                {
+                  "data_type": "integer",
+                  "description": "Service priority level",
+                  "display_name": "Priority Level",
+                  "field_type": "single_value",
+                  "name": "priority_level"
+                }
+        argumentDocs:
+            data_type: '- (Required) The kind of data the custom field is allowed to contain. Can be one of: string, integer, float, boolean, datetime, or url.'
+            description: '- (Optional) A description of the data this field contains.'
+            display_name: '- (Required) The human-readable name of the field. Must be unique across an account.'
+            enabled: '- (Optional) Whether the field is enabled. Defaults to true.'
+            field_option: '- (Optional) Configuration block for defining options for single_value_fixed or multi_value_fixed field types. Can be specified multiple times for multiple options.'
+            field_type: '- (Required) The type of field. Must be one of: single_value, single_value_fixed, multi_value, or multi_value_fixed.'
+            id: '- The ID of the service custom field.'
+            name: '- (Required) The name of the field. May include ASCII characters, specifically lowercase letters, digits, and underscores. Must be unique and cannot be changed once created.'
+            value: '- (Required) The value of the option.'
+        importStatements: []
+    pagerduty_service_custom_field_value:
+        subCategory: ""
+        description: Creates and manages custom field values for a service in PagerDuty.
+        name: pagerduty_service_custom_field_value
+        title: pagerduty_service_custom_field_value
+        examples:
+            - name: example
+              manifest: |-
+                {
+                  "custom_fields": [
+                    {
+                      "name": "${pagerduty_service_custom_field.environment.name}",
+                      "value": "${jsonencode(\"production\")}"
+                    },
+                    {
+                      "name": "${pagerduty_service_custom_field.region.name}",
+                      "value": "${jsonencode(\"us-east-1\")}"
+                    },
+                    {
+                      "name": "${pagerduty_service_custom_field.is_critical.name}",
+                      "value": "${jsonencode(true)}"
+                    },
+                    {
+                      "name": "${pagerduty_service_custom_field.regions.name}",
+                      "value": "${jsonencode([\"us-east-1\", \"us-west-1\"])}"
+                    }
+                  ],
+                  "service_id": "${pagerduty_service.example.id}"
+                }
+              references:
+                custom_fields.name: pagerduty_service_custom_field.regions.name
+                service_id: pagerduty_service.example.id
+              dependencies:
+                pagerduty_service.example: |-
+                    {
+                      "acknowledgement_timeout": 600,
+                      "auto_resolve_timeout": 14400,
+                      "escalation_policy": "${pagerduty_escalation_policy.example.id}",
+                      "name": "Example Service"
+                    }
+                pagerduty_service_custom_field.environment: |-
+                    {
+                      "data_type": "string",
+                      "description": "The environment this service runs in",
+                      "display_name": "Environment",
+                      "field_type": "single_value",
+                      "name": "environment"
+                    }
+                pagerduty_service_custom_field.is_critical: |-
+                    {
+                      "data_type": "boolean",
+                      "description": "Whether this service is critical",
+                      "display_name": "Is Critical",
+                      "field_type": "single_value",
+                      "name": "is_critical"
+                    }
+                pagerduty_service_custom_field.region: |-
+                    {
+                      "data_type": "string",
+                      "description": "The region this service is deployed in",
+                      "display_name": "Region",
+                      "field_type": "single_value",
+                      "name": "region"
+                    }
+                pagerduty_service_custom_field.regions: |-
+                    {
+                      "data_type": "string",
+                      "description": "AWS regions where this service is deployed",
+                      "display_name": "AWS Regions",
+                      "field_option": [
+                        {
+                          "data_type": "string",
+                          "value": "us-east-1"
+                        },
+                        {
+                          "data_type": "string",
+                          "value": "us-west-1"
+                        }
+                      ],
+                      "field_type": "multi_value_fixed",
+                      "name": "regions"
+                    }
+        argumentDocs:
+            custom_fields: '- (Required) A list of custom field values to set on the service. Each block supports the following:'
+            id: '- (Optional) The ID of the custom field. Either id or name must be provided.'
+            name: '- (Optional) The name of the custom field. Either id or name must be provided.'
+            service_id: '- (Required) The ID of the service to set custom field values for.'
+            value: '- (Required) The value to set for the custom field. Must be provided as a JSON-encoded string matching the field''s data type. Use the jsonencode() function to ensure proper formatting.'
+        importStatements: []
     pagerduty_service_dependency:
         subCategory: ""
         description: Creates and manages a business service dependency in PagerDuty.
@@ -2414,9 +2772,9 @@ resources:
                 dependency.supporting_service.type: pagerduty_service.two.type
         argumentDocs:
             dependency: '- (Required) The relationship between the supporting_service and dependent_service. One and only one dependency block must be defined.'
-            dependent_service: '- (Required) The service that dependents on the supporting service. Dependency dependent service documented below.'
+            dependent_service: '- (Required) The service that dependents on the supporting service. Dependency dependent service documented below. One and only one dependent_service dependency block must be defined.'
             id: '- (Required) The ID of the service dependency.'
-            supporting_service: '- (Required) The service that supports the dependent service. Dependency supporting service documented below.'
+            supporting_service: '- (Required) The service that supports the dependent service. Dependency supporting service documented below. One and only one supporting_service dependency block must be defined.'
             type: '- (Required) Can be business_service,  service, business_service_reference or technical_service_reference.'
         importStatements: []
     pagerduty_service_event_rule:
@@ -2899,13 +3257,13 @@ resources:
                     }
         argumentDocs:
             action: '- (Required) Can be resolve or trigger.'
-            body_mode: '- (Required) Can be always or match.'
+            body_mode: '- (Required) Can be always, match or no-match.'
             body_regex: '- (Optional) Should be a valid regex or null'
             email_filter_mode: '- (Optional) Mode of Emails Filters feature (explained in PD docs). Can be all-email, or-rules-email or and-rules-email.'
             email_incident_creation: '- (Optional) Behaviour of Email Management feature (explained in PD docs). Can be on_new_email, on_new_email_subject, only_if_no_open_incidents or use_rules.'
             email_parsing_fallback: '- (Optional) Can be open_new_incident or discard.'
             ends_before: '- (Optional)'
-            from_email_mode: '- (Required) Can be always or match.'
+            from_email_mode: '- (Required) Can be always, match or no-match.'
             from_email_regex: '- (Optional) Should be a valid regex or null'
             html_url: '- URL at which the entity is uniquely displayed in the Web app.'
             id: '- The ID of the service integration.'
@@ -2918,7 +3276,7 @@ resources:
             regex: '- (Optional) If type has value regex this value should contain valid regex.'
             service: '- (Required) The ID of the service the integration should belong to.'
             starts_after: '- (Optional)'
-            subject_mode: '- (Required) Can be always or match.'
+            subject_mode: '- (Required) Can be always, match or no-match.'
             subject_regex: '- (Optional) Should be a valid regex or null'
             type: |-
                 - (Optional) The service type. Can be:
@@ -3274,15 +3632,18 @@ resources:
             - name: high_urgency_phone
               manifest: |-
                 {
-                  "contact_method": {
-                    "id": "${pagerduty_user_contact_method.phone.id}",
-                    "type": "phone_contact_method"
-                  },
+                  "contact_method": [
+                    {
+                      "id": "${pagerduty_user_contact_method.phone.id}",
+                      "type": "phone_contact_method"
+                    }
+                  ],
                   "start_delay_in_minutes": 1,
                   "urgency": "high",
                   "user_id": "${pagerduty_user.example.id}"
                 }
               references:
+                contact_method.id: pagerduty_user_contact_method.phone.id
                 user_id: pagerduty_user.example.id
               dependencies:
                 pagerduty_user.example: |-
@@ -3316,15 +3677,18 @@ resources:
             - name: low_urgency_email
               manifest: |-
                 {
-                  "contact_method": {
-                    "id": "${pagerduty_user_contact_method.email.id}",
-                    "type": "email_contact_method"
-                  },
+                  "contact_method": [
+                    {
+                      "id": "${pagerduty_user_contact_method.email.id}",
+                      "type": "email_contact_method"
+                    }
+                  ],
                   "start_delay_in_minutes": 1,
                   "urgency": "low",
                   "user_id": "${pagerduty_user.example.id}"
                 }
               references:
+                contact_method.id: pagerduty_user_contact_method.email.id
                 user_id: pagerduty_user.example.id
               dependencies:
                 pagerduty_user.example: |-
@@ -3358,15 +3722,18 @@ resources:
             - name: low_urgency_sms
               manifest: |-
                 {
-                  "contact_method": {
-                    "id": "${pagerduty_user_contact_method.sms.id}",
-                    "type": "sms_contact_method"
-                  },
+                  "contact_method": [
+                    {
+                      "id": "${pagerduty_user_contact_method.sms.id}",
+                      "type": "sms_contact_method"
+                    }
+                  ],
                   "start_delay_in_minutes": 10,
                   "urgency": "low",
                   "user_id": "${pagerduty_user.example.id}"
                 }
               references:
+                contact_method.id: pagerduty_user_contact_method.sms.id
                 user_id: pagerduty_user.example.id
               dependencies:
                 pagerduty_user.example: |-

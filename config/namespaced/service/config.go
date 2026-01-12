@@ -22,6 +22,20 @@ func Configure(p *config.Provider) {
 		}
 	})
 
+	p.AddResourceConfigurator("pagerduty_service_custom_field", func(r *config.Resource) {
+
+		r.ShortGroup = shortGroup
+	})
+
+	p.AddResourceConfigurator("pagerduty_service_custom_field_value", func(r *config.Resource) {
+
+		r.ShortGroup = shortGroup
+		r.References = config.References{
+			shortGroup: {
+				TerraformName: "pagerduty_service",
+			},
+		}
+	})
 	p.AddResourceConfigurator("pagerduty_service_dependency", func(r *config.Resource) {
 
 		r.ShortGroup = shortGroup

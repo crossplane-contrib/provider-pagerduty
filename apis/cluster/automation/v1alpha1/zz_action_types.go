@@ -83,11 +83,20 @@ type ActionInitParameters struct {
 	// The type of the action. The only allowed values are process_automation and script. Cannot be changed once set.
 	ActionType *string `json:"actionType,omitempty" tf:"action_type,omitempty"`
 
+	// Whether the action can be invoked automatically from a PagerDuty Event Orchestration.
+	AllowInvocationFromEventOrchestration *string `json:"allowInvocationFromEventOrchestration,omitempty" tf:"allow_invocation_from_event_orchestration,omitempty"`
+
+	// Whether the action can be invoked manually by a user on the PagerDuty website.
+	AllowInvocationManually *string `json:"allowInvocationManually,omitempty" tf:"allow_invocation_manually,omitempty"`
+
 	// The time action was created. Represented as an ISO 8601 timestamp.
 	CreationTime *string `json:"creationTime,omitempty" tf:"creation_time,omitempty"`
 
 	// The description of the action. Max length is 1024 characters.
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
+
+	// If true, the action will be associated with every service.
+	MapToAllServices *bool `json:"mapToAllServices,omitempty" tf:"map_to_all_services,omitempty"`
 
 	// The last time action has been modified. Represented as an ISO 8601 timestamp.
 	ModifyTime *string `json:"modifyTime,omitempty" tf:"modify_time,omitempty"`
@@ -95,7 +104,7 @@ type ActionInitParameters struct {
 	// The name of the action. Max length is 255 characters.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
-	// Whether or not the action can be invoked on unresolved incidents.
+	// Whether the action can be invoked on unresolved incidents.
 	OnlyInvocableOnUnresolvedIncidents *bool `json:"onlyInvocableOnUnresolvedIncidents,omitempty" tf:"only_invocable_on_unresolved_incidents,omitempty"`
 
 	// The Process Automation Actions runner to associate the action with. Cannot be changed for the process_automation action type once set.
@@ -119,6 +128,12 @@ type ActionObservation struct {
 	// The type of the action. The only allowed values are process_automation and script. Cannot be changed once set.
 	ActionType *string `json:"actionType,omitempty" tf:"action_type,omitempty"`
 
+	// Whether the action can be invoked automatically from a PagerDuty Event Orchestration.
+	AllowInvocationFromEventOrchestration *string `json:"allowInvocationFromEventOrchestration,omitempty" tf:"allow_invocation_from_event_orchestration,omitempty"`
+
+	// Whether the action can be invoked manually by a user on the PagerDuty website.
+	AllowInvocationManually *string `json:"allowInvocationManually,omitempty" tf:"allow_invocation_manually,omitempty"`
+
 	// The time action was created. Represented as an ISO 8601 timestamp.
 	CreationTime *string `json:"creationTime,omitempty" tf:"creation_time,omitempty"`
 
@@ -128,13 +143,16 @@ type ActionObservation struct {
 	// The ID of the action.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
+	// If true, the action will be associated with every service.
+	MapToAllServices *bool `json:"mapToAllServices,omitempty" tf:"map_to_all_services,omitempty"`
+
 	// The last time action has been modified. Represented as an ISO 8601 timestamp.
 	ModifyTime *string `json:"modifyTime,omitempty" tf:"modify_time,omitempty"`
 
 	// The name of the action. Max length is 255 characters.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
-	// Whether or not the action can be invoked on unresolved incidents.
+	// Whether the action can be invoked on unresolved incidents.
 	OnlyInvocableOnUnresolvedIncidents *bool `json:"onlyInvocableOnUnresolvedIncidents,omitempty" tf:"only_invocable_on_unresolved_incidents,omitempty"`
 
 	// The Process Automation Actions runner to associate the action with. Cannot be changed for the process_automation action type once set.
@@ -161,6 +179,14 @@ type ActionParameters struct {
 	// +kubebuilder:validation:Optional
 	ActionType *string `json:"actionType,omitempty" tf:"action_type,omitempty"`
 
+	// Whether the action can be invoked automatically from a PagerDuty Event Orchestration.
+	// +kubebuilder:validation:Optional
+	AllowInvocationFromEventOrchestration *string `json:"allowInvocationFromEventOrchestration,omitempty" tf:"allow_invocation_from_event_orchestration,omitempty"`
+
+	// Whether the action can be invoked manually by a user on the PagerDuty website.
+	// +kubebuilder:validation:Optional
+	AllowInvocationManually *string `json:"allowInvocationManually,omitempty" tf:"allow_invocation_manually,omitempty"`
+
 	// The time action was created. Represented as an ISO 8601 timestamp.
 	// +kubebuilder:validation:Optional
 	CreationTime *string `json:"creationTime,omitempty" tf:"creation_time,omitempty"`
@@ -168,6 +194,10 @@ type ActionParameters struct {
 	// The description of the action. Max length is 1024 characters.
 	// +kubebuilder:validation:Optional
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
+
+	// If true, the action will be associated with every service.
+	// +kubebuilder:validation:Optional
+	MapToAllServices *bool `json:"mapToAllServices,omitempty" tf:"map_to_all_services,omitempty"`
 
 	// The last time action has been modified. Represented as an ISO 8601 timestamp.
 	// +kubebuilder:validation:Optional
@@ -177,7 +207,7 @@ type ActionParameters struct {
 	// +kubebuilder:validation:Optional
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
-	// Whether or not the action can be invoked on unresolved incidents.
+	// Whether the action can be invoked on unresolved incidents.
 	// +kubebuilder:validation:Optional
 	OnlyInvocableOnUnresolvedIncidents *bool `json:"onlyInvocableOnUnresolvedIncidents,omitempty" tf:"only_invocable_on_unresolved_incidents,omitempty"`
 

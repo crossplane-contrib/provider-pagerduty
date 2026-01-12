@@ -1,7 +1,7 @@
 package business
 
 import (
-	c "github.com/crossplane-contrib/provider-pagerduty/config/namespaced/common"
+	c "github.com/crossplane-contrib/provider-pagerduty/config/cluster/common"
 	"github.com/crossplane/upjet/v2/pkg/config"
 )
 
@@ -30,6 +30,11 @@ func Configure(p *config.Provider) {
 		r.References = config.References{
 			"business_service_id": {
 				TerraformName: "pagerduty_business_service",
+			},
+			"subscriber_id": {
+				TerraformName:     "pagerduty_user",
+				RefFieldName:      "UserRefs",
+				SelectorFieldName: "UserSelector",
 			},
 		}
 

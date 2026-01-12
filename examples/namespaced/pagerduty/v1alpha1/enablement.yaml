@@ -1,0 +1,15 @@
+apiVersion: pagerduty.pagerduty.m.crossplane.io/v1alpha1
+kind: Enablement
+metadata:
+  annotations:
+    meta.upbound.io/example-id: pagerduty/v1alpha1/enablement
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+  namespace: upbound-system
+spec:
+  forProvider:
+    enabled: true
+    entityId: ${data.pagerduty_service.example.id}
+    entityType: service
+    feature: aiops

@@ -14,7 +14,7 @@ spec:
     endpointUrlSecretRef:
       key: example-key
       name: example-secret
-      namespace: crossplane-system
+      namespace: upbound-system
     extensionObjectsRefs:
     - name: example
     extensionSchema: ${data.pagerduty_extension_schema.webhook.id}

@@ -16,7 +16,18 @@ import (
 type RunnerTeamAssociationInitParameters struct {
 
 	// Id of the runner.
+	// +crossplane:generate:reference:type=Runner
+	// +crossplane:generate:reference:refFieldName=RunnerRefs
+	// +crossplane:generate:reference:selectorFieldName=RunnerSelector
 	RunnerID *string `json:"runnerId,omitempty" tf:"runner_id,omitempty"`
+
+	// Reference to a Runner to populate runnerId.
+	// +kubebuilder:validation:Optional
+	RunnerRefs *v1.Reference `json:"runnerRefs,omitempty" tf:"-"`
+
+	// Selector for a Runner to populate runnerId.
+	// +kubebuilder:validation:Optional
+	RunnerSelector *v1.Selector `json:"runnerSelector,omitempty" tf:"-"`
 
 	// Id of the team associated with the runner.
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-pagerduty/apis/cluster/team/v1alpha1.Team
@@ -44,8 +55,19 @@ type RunnerTeamAssociationObservation struct {
 type RunnerTeamAssociationParameters struct {
 
 	// Id of the runner.
+	// +crossplane:generate:reference:type=Runner
+	// +crossplane:generate:reference:refFieldName=RunnerRefs
+	// +crossplane:generate:reference:selectorFieldName=RunnerSelector
 	// +kubebuilder:validation:Optional
 	RunnerID *string `json:"runnerId,omitempty" tf:"runner_id,omitempty"`
+
+	// Reference to a Runner to populate runnerId.
+	// +kubebuilder:validation:Optional
+	RunnerRefs *v1.Reference `json:"runnerRefs,omitempty" tf:"-"`
+
+	// Selector for a Runner to populate runnerId.
+	// +kubebuilder:validation:Optional
+	RunnerSelector *v1.Selector `json:"runnerSelector,omitempty" tf:"-"`
 
 	// Id of the team associated with the runner.
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-pagerduty/apis/cluster/team/v1alpha1.Team
@@ -97,9 +119,8 @@ type RunnerTeamAssociationStatus struct {
 type RunnerTeamAssociation struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.runnerId) || (has(self.initProvider) && has(self.initProvider.runnerId))",message="spec.forProvider.runnerId is a required parameter"
-	Spec   RunnerTeamAssociationSpec   `json:"spec"`
-	Status RunnerTeamAssociationStatus `json:"status,omitempty"`
+	Spec              RunnerTeamAssociationSpec   `json:"spec"`
+	Status            RunnerTeamAssociationStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true

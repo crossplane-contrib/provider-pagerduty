@@ -6,12 +6,9 @@ metadata:
   labels:
     testing.upbound.io/example-name: high_urgency_phone
   name: high-urgency-phone
-  namespace: crossplane-system
+  namespace: upbound-system
 spec:
   forProvider:
-    contactMethod:
-      id: ${pagerduty_user_contact_method.phone.id}
-      type: phone_contact_method
     startDelayInMinutes: 1
     urgency: high
     userIdSelector:
@@ -28,7 +25,7 @@ metadata:
   labels:
     testing.upbound.io/example-name: example
   name: example
-  namespace: crossplane-system
+  namespace: upbound-system
 spec:
   forProvider:
     email: 125.greenholt.earline@graham.name
@@ -44,7 +41,7 @@ metadata:
   labels:
     testing.upbound.io/example-name: email
   name: email
-  namespace: crossplane-system
+  namespace: upbound-system
 spec:
   forProvider:
     address: foo@bar.com
@@ -64,7 +61,7 @@ metadata:
   labels:
     testing.upbound.io/example-name: phone
   name: phone
-  namespace: crossplane-system
+  namespace: upbound-system
 spec:
   forProvider:
     address: "2025550199"
@@ -85,7 +82,7 @@ metadata:
   labels:
     testing.upbound.io/example-name: sms
   name: sms
-  namespace: crossplane-system
+  namespace: upbound-system
 spec:
   forProvider:
     address: "2025550199"

@@ -6,7 +6,7 @@ metadata:
   labels:
     testing.upbound.io/example-name: example
   name: example
-  namespace: crossplane-system
+  namespace: upbound-system
 spec:
   forProvider:
     description: Description of the Runner created via TF

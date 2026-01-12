@@ -1,0 +1,18 @@
+apiVersion: incident.pagerduty.crossplane.io/v1alpha1
+kind: TypeCustomField
+metadata:
+  annotations:
+    meta.upbound.io/example-id: incident/v1alpha1/typecustomfield
+  labels:
+    testing.upbound.io/example-name: alarm_time
+  name: alarm-time
+spec:
+  forProvider:
+    dataType: integer
+    defaultValue: ${jsonencode(5)}
+    displayName: Alarm Time
+    fieldType: single_value
+    incidentTypeSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    name: alarm_time_minutes

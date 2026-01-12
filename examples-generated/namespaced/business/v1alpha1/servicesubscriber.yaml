@@ -12,8 +12,10 @@ spec:
     businessServiceIdSelector:
       matchLabels:
         testing.upbound.io/example-name: example
-    subscriberId: ${pagerduty_team.engteam.id}
     subscriberType: team
+    userSelector:
+      matchLabels:
+        testing.upbound.io/example-name: engteam
 
 ---
 

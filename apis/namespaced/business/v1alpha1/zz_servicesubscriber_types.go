@@ -29,10 +29,21 @@ type ServiceSubscriberInitParameters struct {
 	BusinessServiceIDSelector *v1.NamespacedSelector `json:"businessServiceIdSelector,omitempty" tf:"-"`
 
 	// The ID of the subscriber entity.
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-pagerduty/apis/namespaced/user/v1alpha1.User
+	// +crossplane:generate:reference:refFieldName=UserRefs
+	// +crossplane:generate:reference:selectorFieldName=UserSelector
 	SubscriberID *string `json:"subscriberId,omitempty" tf:"subscriber_id,omitempty"`
 
 	// Type of subscriber entity in the subscriber assignment. Possible values can be user and team.
 	SubscriberType *string `json:"subscriberType,omitempty" tf:"subscriber_type,omitempty"`
+
+	// Reference to a User in user to populate subscriberId.
+	// +kubebuilder:validation:Optional
+	UserRefs *v1.NamespacedReference `json:"userRefs,omitempty" tf:"-"`
+
+	// Selector for a User in user to populate subscriberId.
+	// +kubebuilder:validation:Optional
+	UserSelector *v1.NamespacedSelector `json:"userSelector,omitempty" tf:"-"`
 }
 
 type ServiceSubscriberObservation struct {
@@ -66,12 +77,23 @@ type ServiceSubscriberParameters struct {
 	BusinessServiceIDSelector *v1.NamespacedSelector `json:"businessServiceIdSelector,omitempty" tf:"-"`
 
 	// The ID of the subscriber entity.
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-pagerduty/apis/namespaced/user/v1alpha1.User
+	// +crossplane:generate:reference:refFieldName=UserRefs
+	// +crossplane:generate:reference:selectorFieldName=UserSelector
 	// +kubebuilder:validation:Optional
 	SubscriberID *string `json:"subscriberId,omitempty" tf:"subscriber_id,omitempty"`
 
 	// Type of subscriber entity in the subscriber assignment. Possible values can be user and team.
 	// +kubebuilder:validation:Optional
 	SubscriberType *string `json:"subscriberType,omitempty" tf:"subscriber_type,omitempty"`
+
+	// Reference to a User in user to populate subscriberId.
+	// +kubebuilder:validation:Optional
+	UserRefs *v1.NamespacedReference `json:"userRefs,omitempty" tf:"-"`
+
+	// Selector for a User in user to populate subscriberId.
+	// +kubebuilder:validation:Optional
+	UserSelector *v1.NamespacedSelector `json:"userSelector,omitempty" tf:"-"`
 }
 
 // ServiceSubscriberSpec defines the desired state of ServiceSubscriber
@@ -110,7 +132,6 @@ type ServiceSubscriberStatus struct {
 type ServiceSubscriber struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.subscriberId) || (has(self.initProvider) && has(self.initProvider.subscriberId))",message="spec.forProvider.subscriberId is a required parameter"
 	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.subscriberType) || (has(self.initProvider) && has(self.initProvider.subscriberType))",message="spec.forProvider.subscriberType is a required parameter"
 	Spec   ServiceSubscriberSpec   `json:"spec"`
 	Status ServiceSubscriberStatus `json:"status,omitempty"`

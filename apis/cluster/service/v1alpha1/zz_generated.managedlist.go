@@ -7,6 +7,24 @@ package v1alpha1
 
 import resource "github.com/crossplane/crossplane-runtime/v2/pkg/resource"
 
+// GetItems of this CustomFieldList.
+func (l *CustomFieldList) GetItems() []resource.Managed {
+	items := make([]resource.Managed, len(l.Items))
+	for i := range l.Items {
+		items[i] = &l.Items[i]
+	}
+	return items
+}
+
+// GetItems of this CustomFieldValueList.
+func (l *CustomFieldValueList) GetItems() []resource.Managed {
+	items := make([]resource.Managed, len(l.Items))
+	for i := range l.Items {
+		items[i] = &l.Items[i]
+	}
+	return items
+}
+
 // GetItems of this DependencyList.
 func (l *DependencyList) GetItems() []resource.Managed {
 	items := make([]resource.Managed, len(l.Items))
