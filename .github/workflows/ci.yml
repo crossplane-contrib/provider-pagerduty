@@ -187,7 +187,7 @@ jobs:
       - check-diff
       - unit-tests
       - local-deploy
-    if: needs.detect-noop.outputs.noop != 'true' && github.event_name == 'push'
+    if: needs.detect-noop.outputs.noop != 'true' && github.event_name != 'pull_request'
     outputs:
       version: ${{ steps.version.outputs.VERSION }}
     permissions:
