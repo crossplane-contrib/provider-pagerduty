@@ -275,7 +275,7 @@ jobs:
         run: crane version
 
       - name: Login to Upbound
-        uses: docker/login-action@5e57cd118135c172c3672efd75eb46360885c0ef
+        uses: docker/login-action@a0d57b8e43b6ef1cca20559d68cec2227e63fccd
         with:
           registry: "xpkg.upbound.io"
           username: ${{ secrets.XPKG_ACCESS_ID }}
