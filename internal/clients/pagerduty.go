@@ -68,6 +68,24 @@ func TerraformSetupBuilder(version, providerSource, providerVersion string) terr
 			ps.Configuration[userToken] = v
 		}
 
+		// Support scoped OAuth via use_app_oauth_scoped_token.
+		// NOTE: The PD OAuth app must include the "Abilities: Read" scope at minimum,
+		// as the Terraform provider validates connectivity against /abilities on init.
+		// The OAuth token is cached at /.pagerduty/token.json, so containerized
+		// deployments need a writable volume mounted at /.pagerduty.
+		if clientID, ok := creds["pd_client_id"]; ok {
+			oauthConfig := map[string]any{
+				"pd_client_id": clientID,
+			}
+			if v, ok := creds["pd_client_secret"]; ok {
+				oauthConfig["pd_client_secret"] = v
+			}
+			if v, ok := creds["pd_subdomain"]; ok {
+				oauthConfig["pd_subdomain"] = v
+			}
+			ps.Configuration["use_app_oauth_scoped_token"] = []map[string]any{oauthConfig}
+		}
+
 		if v := pcSpec.ServiceRegion; v != "" {
 			ps.Configuration[serviceRegion] = v
 		}
