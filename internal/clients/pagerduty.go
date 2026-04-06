@@ -73,17 +73,15 @@ func TerraformSetupBuilder(version, providerSource, providerVersion string) terr
 		// as the Terraform provider validates connectivity against /abilities on init.
 		// The OAuth token is cached at /.pagerduty/token.json, so containerized
 		// deployments need a writable volume mounted at /.pagerduty.
-		if clientID, ok := creds["pd_client_id"]; ok {
-			oauthConfig := map[string]any{
-				"pd_client_id": clientID,
-			}
-			if v, ok := creds["pd_client_secret"]; ok {
-				oauthConfig["pd_client_secret"] = v
-			}
-			if v, ok := creds["pd_subdomain"]; ok {
-				oauthConfig["pd_subdomain"] = v
-			}
-			ps.Configuration["use_app_oauth_scoped_token"] = []map[string]any{oauthConfig}
+		clientID, hasClientID := creds["pd_client_id"]
+		clientSecret, hasClientSecret := creds["pd_client_secret"]
+		subdomain, hasSubdomain := creds["pd_subdomain"]
+		if hasClientID && hasClientSecret && hasSubdomain {
+			ps.Configuration["use_app_oauth_scoped_token"] = []map[string]any{{
+				"pd_client_id":     clientID,
+				"pd_client_secret": clientSecret,
+				"pd_subdomain":     subdomain,
+			}}
 		}
 
 		if v := pcSpec.ServiceRegion; v != "" {
