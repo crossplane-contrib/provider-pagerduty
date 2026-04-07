@@ -16,7 +16,7 @@ import (
 
 type CustomFieldValueInitParameters struct {
 
-	// A list of custom field values to set on the service. Each block supports the following:
+	// A set of custom field values to set on the service. Each object in the set supports the following:
 	// The custom field values to set for the service.
 	CustomFields []CustomFieldsInitParameters `json:"customFields,omitempty" tf:"custom_fields,omitempty"`
 
@@ -27,7 +27,7 @@ type CustomFieldValueInitParameters struct {
 
 type CustomFieldValueObservation struct {
 
-	// A list of custom field values to set on the service. Each block supports the following:
+	// A set of custom field values to set on the service. Each object in the set supports the following:
 	// The custom field values to set for the service.
 	CustomFields []CustomFieldsObservation `json:"customFields,omitempty" tf:"custom_fields,omitempty"`
 
@@ -41,7 +41,7 @@ type CustomFieldValueObservation struct {
 
 type CustomFieldValueParameters struct {
 
-	// A list of custom field values to set on the service. Each block supports the following:
+	// A set of custom field values to set on the service. Each object in the set supports the following:
 	// The custom field values to set for the service.
 	// +kubebuilder:validation:Optional
 	CustomFields []CustomFieldsParameters `json:"customFields,omitempty" tf:"custom_fields,omitempty"`

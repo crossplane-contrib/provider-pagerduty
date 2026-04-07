@@ -20,4 +20,20 @@ func Configure(p *config.Provider) {
 			},
 		}
 	})
+
+	p.AddResourceConfigurator("pagerduty_schedulev2", func(r *config.Resource) {
+
+		r.ShortGroup = ""
+		r.Kind = "Schedule"
+		r.References = config.References{
+			"teams": {
+				TerraformName:     "pagerduty_team",
+				RefFieldName:      "TeamRefs",
+				SelectorFieldName: "TeamSelector",
+			},
+			"rotation.event.assignment_strategy.member.user_id": {
+				TerraformName: "pagerduty_user",
+			},
+		}
+	})
 }

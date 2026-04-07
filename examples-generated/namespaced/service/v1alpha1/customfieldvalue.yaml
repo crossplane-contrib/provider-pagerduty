@@ -13,8 +13,6 @@ spec:
     - name: environment
       value: ${jsonencode("production")}
     - name: environment
-      value: ${jsonencode("us-east-1")}
-    - name: environment
       value: ${jsonencode(true)}
     - name: environment
       value: ${jsonencode(["us-east-1", "us-west-1"])}
@@ -86,25 +84,6 @@ metadata:
   annotations:
     meta.upbound.io/example-id: service/v1alpha1/customfieldvalue
   labels:
-    testing.upbound.io/example-name: region
-  name: region
-  namespace: upbound-system
-spec:
-  forProvider:
-    dataType: string
-    description: The region this service is deployed in
-    displayName: Region
-    fieldType: single_value
-    name: region
-
----
-
-apiVersion: service.pagerduty.m.crossplane.io/v1alpha1
-kind: CustomField
-metadata:
-  annotations:
-    meta.upbound.io/example-id: service/v1alpha1/customfieldvalue
-  labels:
     testing.upbound.io/example-name: regions
   name: regions
   namespace: upbound-system
@@ -116,6 +95,8 @@ spec:
     fieldOption:
     - dataType: string
       value: us-east-1
+    - dataType: string
+      value: us-east-2
     - dataType: string
       value: us-west-1
     fieldType: multi_value_fixed

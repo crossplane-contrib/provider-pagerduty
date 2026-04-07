@@ -957,7 +957,6 @@ spec:
                       type: object
                     type: array
                   lastIncidentTimestamp:
-                    description: Last incident timestamp of the service.
                     type: string
                   name:
                     description: The name of the service.
@@ -991,7 +990,6 @@ spec:
                       type: object
                     type: array
                   status:
-                    description: The status of the service.
                     type: string
                   supportHours:
                     items:

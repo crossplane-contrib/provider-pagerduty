@@ -1,0 +1,46 @@
+apiVersion: pagerduty.m.crossplane.io/v1alpha1
+kind: Schedule
+metadata:
+  annotations:
+    meta.upbound.io/example-id: pagerduty/v1alpha1/schedule
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+  namespace: upbound-system
+spec:
+  forProvider:
+    description: Managed by Terraform
+    name: Engineering On-Call
+    rotation:
+    - event:
+      - assignmentStrategy:
+        - member:
+          - type: user_member
+            userIdSelector:
+              matchLabels:
+                testing.upbound.io/example-name: example
+          shiftsPerMember: 1
+          type: rotating_member_assignment_strategy
+        effectiveSince: "2026-06-01T09:00:00Z"
+        endTime: "2026-06-01T17:00:00Z"
+        name: Weekday Business Hours
+        recurrence:
+        - RRULE:FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR
+        startTime: "2026-06-01T09:00:00Z"
+    timeZone: America/New_York
+
+---
+
+apiVersion: user.pagerduty.m.crossplane.io/v1alpha1
+kind: User
+metadata:
+  annotations:
+    meta.upbound.io/example-id: /v1alpha1/schedule
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+  namespace: upbound-system
+spec:
+  forProvider:
+    email: earline@example.com
+    name: Earline Greenholt

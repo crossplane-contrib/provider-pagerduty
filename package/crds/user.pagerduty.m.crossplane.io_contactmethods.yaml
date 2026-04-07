@@ -69,7 +69,8 @@ spec:
                     type: number
                   deviceType:
                     description: The contact method type. May be (email_contact_method,
-                      phone_contact_method, sms_contact_method, push_notification_contact_method).
+                      phone_contact_method, sms_contact_method, push_notification_contact_method,
+                      whatsapp_contact_method).
                     type: string
                   label:
                     description: The label (e.g., "Work", "Mobile", etc.).
@@ -80,7 +81,8 @@ spec:
                     type: boolean
                   type:
                     description: The contact method type. May be (email_contact_method,
-                      phone_contact_method, sms_contact_method, push_notification_contact_method).
+                      phone_contact_method, sms_contact_method, push_notification_contact_method,
+                      whatsapp_contact_method).
                     type: string
                   userId:
                     description: The ID of the user.
@@ -189,7 +191,8 @@ spec:
                     type: number
                   deviceType:
                     description: The contact method type. May be (email_contact_method,
-                      phone_contact_method, sms_contact_method, push_notification_contact_method).
+                      phone_contact_method, sms_contact_method, push_notification_contact_method,
+                      whatsapp_contact_method).
                     type: string
                   label:
                     description: The label (e.g., "Work", "Mobile", etc.).
@@ -200,7 +203,8 @@ spec:
                     type: boolean
                   type:
                     description: The contact method type. May be (email_contact_method,
-                      phone_contact_method, sms_contact_method, push_notification_contact_method).
+                      phone_contact_method, sms_contact_method, push_notification_contact_method,
+                      whatsapp_contact_method).
                     type: string
                   userId:
                     description: The ID of the user.
@@ -376,7 +380,8 @@ spec:
                     type: number
                   deviceType:
                     description: The contact method type. May be (email_contact_method,
-                      phone_contact_method, sms_contact_method, push_notification_contact_method).
+                      phone_contact_method, sms_contact_method, push_notification_contact_method,
+                      whatsapp_contact_method).
                     type: string
                   enabled:
                     description: If true, this phone is capable of receiving SMS messages.
@@ -393,7 +398,8 @@ spec:
                     type: boolean
                   type:
                     description: The contact method type. May be (email_contact_method,
-                      phone_contact_method, sms_contact_method, push_notification_contact_method).
+                      phone_contact_method, sms_contact_method, push_notification_contact_method,
+                      whatsapp_contact_method).
                     type: string
                   userId:
                     description: The ID of the user.

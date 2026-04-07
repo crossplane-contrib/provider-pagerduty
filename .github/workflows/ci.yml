@@ -14,9 +14,15 @@ concurrency:
 
 env:
   # Common versions
+<<<<<<< HEAD
   GO_VERSION: '1.25.5'
   GOLANGCI_VERSION: 'v2.6.1'
   DOCKER_BUILDX_VERSION: 'v0.28.0'
+=======
+  GO_VERSION: '1.25.8'
+  GOLANGCI_VERSION: 'v2.11.4'
+  DOCKER_BUILDX_VERSION: 'v0.31.1'
+>>>>>>> 7f44640 (feat: add schedulev2 resource and bump up golangcilint)
   UP_VERSION: 'v0.38.4'
 
   # Registry/Org names
