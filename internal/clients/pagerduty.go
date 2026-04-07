@@ -98,6 +98,48 @@ func TerraformSetupBuilder(version, providerSource, providerVersion string) terr
 
 		return ps, nil
 	}
+		ps.Configuration = map[string]any{}
+		if err := configureCredentials(ps.Configuration, creds); err != nil {
+			return ps, err
+		}
+
+		if v := pcSpec.ServiceRegion; v != "" {
+			ps.Configuration[serviceRegion] = v
+		}
+
+		return ps, nil
+	}
+}
+
+func configureCredentials(config map[string]any, creds map[string]string) error {
+	if v, ok := creds[keyToken]; ok {
+		config[keyToken] = v
+	}
+	if v, ok := creds[userToken]; ok {
+		config[userToken] = v
+	}
+
+	// Support scoped OAuth via use_app_oauth_scoped_token.
+	// NOTE: The PD OAuth app must include the "Abilities: Read" scope at minimum,
+	// as the Terraform provider validates connectivity against /abilities on init.
+	// The OAuth token is cached at /.pagerduty/token.json, so containerized
+	// deployments need a writable volume mounted at /.pagerduty.
+	clientID, hasClientID := creds[pdClientID]
+	clientSecret, hasClientSecret := creds[pdClientSecret]
+	subdomain, hasSubdomain := creds[pdSubdomain]
+	hasAny := hasClientID || hasClientSecret || hasSubdomain
+	hasAll := hasClientID && hasClientSecret && hasSubdomain
+	if hasAny && !hasAll {
+		return errors.New(errPartialOauthCredentials)
+	}
+	if hasAll {
+		config[useAppOauthScopedToken] = []map[string]any{{
+			pdClientID:     clientID,
+			pdClientSecret: clientSecret,
+			pdSubdomain:    subdomain,
+		}}
+	}
+	return nil
 }
 
 func toSharedPCSpec(pc *clusterv1beta1.ProviderConfig) (*namespacedv1beta1.ProviderConfigSpec, error) {
