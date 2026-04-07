@@ -62,42 +62,6 @@ func TerraformSetupBuilder(version, providerSource, providerVersion string) terr
 			return ps, errors.Wrap(err, errUnmarshalCredentials)
 		}
 
-		// Set credentials in Terraform provider configuration.
-		ps.Configuration = map[string]any{}
-
-		if v, ok := creds[keyToken]; ok {
-			ps.Configuration[keyToken] = v
-		}
-
-		if v, ok := creds[userToken]; ok {
-			ps.Configuration[userToken] = v
-		}
-
-		// Support scoped OAuth via use_app_oauth_scoped_token.
-		// NOTE: The PD OAuth app must include the "Abilities: Read" scope at minimum,
-		// as the Terraform provider validates connectivity against /abilities on init.
-		// The OAuth token is cached at /.pagerduty/token.json, so containerized
-		// deployments need a writable volume mounted at /.pagerduty.
-		clientID, hasClientID := creds[pdClientID]
-		clientSecret, hasClientSecret := creds[pdClientSecret]
-		subdomain, hasSubdomain := creds[pdSubdomain]
-		if hasClientID || hasClientSecret || hasSubdomain {
-			if !(hasClientID && hasClientSecret && hasSubdomain) {
-				return ps, errors.New(errPartialOauthCredentials)
-			}
-			ps.Configuration[useAppOauthScopedToken] = []map[string]any{{
-				pdClientID:     clientID,
-				pdClientSecret: clientSecret,
-				pdSubdomain:    subdomain,
-			}}
-		}
-
-		if v := pcSpec.ServiceRegion; v != "" {
-			ps.Configuration[serviceRegion] = v
-		}
-
-		return ps, nil
-	}
 		ps.Configuration = map[string]any{}
 		if err := configureCredentials(ps.Configuration, creds); err != nil {
 			return ps, err
