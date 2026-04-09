@@ -50,13 +50,17 @@ jobs:
     if: needs.detect-noop.outputs.noop != 'true'
     steps:
       - name: Checkout
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
         with:
           submodules: true
 
       - name: Get modified CRDs
         id: modified-crds
+<<<<<<< Updated upstream
         uses: tj-actions/changed-files@ed68ef82c095e0d48ec87eccea555d944a631a4c # v46
+=======
+        uses: tj-actions/changed-files@24d32ffd492484c1d75e0c0b894501ddb9d30d62 # v47
+>>>>>>> Stashed changes
         with:
           files: |
             package/crds/**
@@ -78,12 +82,12 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
         with:
           submodules: true
 
       - name: Setup Go
-        uses: actions/setup-go@0a12ed9d6a96ab950c8f026ed9f722fe0da7ef32 # v5
+        uses: actions/setup-go@4a3601121dd01d1626a1e23e37211e3254c1c06c # v6
         with:
           go-version: ${{ env.GO_VERSION }}
 
@@ -93,7 +97,7 @@ jobs:
       # We could run 'make lint' but we prefer this action because it leaves
       # 'annotations' (i.e. it comments on PRs to point out linter violations).
       - name: Lint
-        uses: golangci/golangci-lint-action@4afd733a84b1f43292c63897423277bb7f4313a9 # v8
+        uses: golangci/golangci-lint-action@1e7e51e771db61008b38414a730f564565cf7c20 # v9
         with:
           version: ${{ env.GOLANGCI_VERSION }}
 
@@ -104,12 +108,12 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
         with:
           submodules: true
 
       - name: Setup Go
-        uses: actions/setup-go@d35c59abb061a4a6fb18e82ac0862c26744d6ab5 # v5
+        uses: actions/setup-go@4a3601121dd01d1626a1e23e37211e3254c1c06c # v6
         with:
           go-version: ${{ env.GO_VERSION }}
 
@@ -129,7 +133,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
         with:
           submodules: true
 
@@ -137,7 +141,7 @@ jobs:
         run: git fetch --prune --unshallow
 
       - name: Setup Go
-        uses: actions/setup-go@0a12ed9d6a96ab950c8f026ed9f722fe0da7ef32 # v5
+        uses: actions/setup-go@4a3601121dd01d1626a1e23e37211e3254c1c06c # v6
         with:
           go-version: ${{ env.GO_VERSION }}
 
@@ -148,7 +152,7 @@ jobs:
         run: make -j2 test
 
       - name: Publish Unit Test Coverage
-        uses: codecov/codecov-action@671740ac38dd9b0130fbe1cec585b89eea48d3de # v5
+        uses: codecov/codecov-action@57e3a136b779b570ffcdbf80b3bdc90e7fab3de2 # v6
         with:
           flags: unittests
           files: _output/tests/linux_amd64/coverage.txt
@@ -160,7 +164,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
         with:
           submodules: true
 
@@ -168,7 +172,7 @@ jobs:
         run: git fetch --prune --unshallow
 
       - name: Setup Go
-        uses: actions/setup-go@0a12ed9d6a96ab950c8f026ed9f722fe0da7ef32 # v5
+        uses: actions/setup-go@4a3601121dd01d1626a1e23e37211e3254c1c06c # v6
         with:
           go-version: ${{ env.GO_VERSION }}
 
@@ -197,25 +201,24 @@ jobs:
       id-token: write
     steps:
       - name: Setup QEMU
-        uses: docker/setup-qemu-action@49b3bc8e6bdd4a60e6116a5414239cba5943d3cf # v3
+        uses: docker/setup-qemu-action@ce360397dd3f832beb865e1373c09c0e9f86d70a # v4
         with:
           platforms: all
 
       - name: Setup Docker Buildx
-        uses: docker/setup-buildx-action@8d2750c68a42422c14e847fe6c8ac0403b4cbd6f # v3
+        uses: docker/setup-buildx-action@4d04d5d9486b7bd6fa91e7baf45bbb4f8b9deedd # v4
         with:
           version: ${{ env.DOCKER_BUILDX_VERSION }}
-          install: true
 
       - name: Login to GHCR using PAT
-        uses: docker/login-action@5e57cd118135c172c3672efd75eb46360885c0ef # v3.6.0
+        uses: docker/login-action@4907a6ddec9925e35a0a9e82d7399ccc52663121 # v4
         with:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Checkout
-        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
         with:
           submodules: true
 
@@ -223,13 +226,13 @@ jobs:
         run: git fetch --prune --unshallow
 
       - name: Setup Go
-        uses: actions/setup-go@0a12ed9d6a96ab950c8f026ed9f722fe0da7ef32 # v5
+        uses: actions/setup-go@4a3601121dd01d1626a1e23e37211e3254c1c06c # v6
         with:
           go-version: ${{ env.GO_VERSION }}
 
       - name: Find the version
         id: version
-        run: make common.buildvars >> $GITHUB_OUTPUT
+        run: make common.buildvars | tee -a $GITHUB_OUTPUT
 
       - name: Vendor Dependencies
         run: make vendor vendor.check
@@ -243,7 +246,7 @@ jobs:
           BUILD_ARGS: "--load"
 
       - name: Upload Artifacts to GitHub
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7
         with:
           name: output
           path: _output/**
@@ -257,25 +260,24 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - name: Setup QEMU
-        uses: docker/setup-qemu-action@29109295f81e9208d7d86ff1c6c12d2833863392 # v3
+        uses: docker/setup-qemu-action@ce360397dd3f832beb865e1373c09c0e9f86d70a # v4
         with:
           platforms: all
 
       - name: Setup Docker Buildx
-        uses: docker/setup-buildx-action@8d2750c68a42422c14e847fe6c8ac0403b4cbd6f # v3
+        uses: docker/setup-buildx-action@4d04d5d9486b7bd6fa91e7baf45bbb4f8b9deedd # v4
         with:
           version: ${{ env.DOCKER_BUILDX_VERSION }}
-          install: true
 
       - name: Setup crane
         # crane will inherit credentials from `docker login`
-        uses: imjasonh/setup-crane@31b88efe9de28ae0ffa220711af4b60be9435f6e # v0.4
+        uses: imjasonh/setup-crane@6da1ae018866400525525ce74ff892880c099987 # v0.5
 
       - name: Validate crane installation
         run: crane version
 
       - name: Login to Upbound
-        uses: docker/login-action@5e57cd118135c172c3672efd75eb46360885c0ef
+        uses: docker/login-action@4907a6ddec9925e35a0a9e82d7399ccc52663121 # v4
         with:
           registry: "xpkg.upbound.io"
           username: ${{ secrets.XPKG_ACCESS_ID }}
