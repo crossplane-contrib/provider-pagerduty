@@ -17,7 +17,18 @@ import (
 type CatchAllActionsInitParameters struct {
 
 	// The ID of the target Service for the resulting alert.
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-pagerduty/apis/namespaced/service/v1alpha1.Service
+	// +crossplane:generate:reference:refFieldName=RouteToServiceRef
+	// +crossplane:generate:reference:selectorFieldName=RouteToServiceSelector
 	RouteTo *string `json:"routeTo,omitempty" tf:"route_to,omitempty"`
+
+	// Reference to a Service in service to populate routeTo.
+	// +kubebuilder:validation:Optional
+	RouteToServiceRef *v1.NamespacedReference `json:"routeToServiceRef,omitempty" tf:"-"`
+
+	// Selector for a Service in service to populate routeTo.
+	// +kubebuilder:validation:Optional
+	RouteToServiceSelector *v1.NamespacedSelector `json:"routeToServiceSelector,omitempty" tf:"-"`
 }
 
 type CatchAllActionsObservation struct {
@@ -29,8 +40,19 @@ type CatchAllActionsObservation struct {
 type CatchAllActionsParameters struct {
 
 	// The ID of the target Service for the resulting alert.
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-pagerduty/apis/namespaced/service/v1alpha1.Service
+	// +crossplane:generate:reference:refFieldName=RouteToServiceRef
+	// +crossplane:generate:reference:selectorFieldName=RouteToServiceSelector
 	// +kubebuilder:validation:Optional
-	RouteTo *string `json:"routeTo" tf:"route_to,omitempty"`
+	RouteTo *string `json:"routeTo,omitempty" tf:"route_to,omitempty"`
+
+	// Reference to a Service in service to populate routeTo.
+	// +kubebuilder:validation:Optional
+	RouteToServiceRef *v1.NamespacedReference `json:"routeToServiceRef,omitempty" tf:"-"`
+
+	// Selector for a Service in service to populate routeTo.
+	// +kubebuilder:validation:Optional
+	RouteToServiceSelector *v1.NamespacedSelector `json:"routeToServiceSelector,omitempty" tf:"-"`
 }
 
 type DynamicRouteToInitParameters struct {
@@ -205,7 +227,18 @@ type SetRuleActionsInitParameters struct {
 	DynamicRouteTo []DynamicRouteToInitParameters `json:"dynamicRouteTo,omitempty" tf:"dynamic_route_to,omitempty"`
 
 	// The ID of the target Service for the resulting alert.
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-pagerduty/apis/namespaced/service/v1alpha1.Service
+	// +crossplane:generate:reference:refFieldName=RouteToServiceRef
+	// +crossplane:generate:reference:selectorFieldName=RouteToServiceSelector
 	RouteTo *string `json:"routeTo,omitempty" tf:"route_to,omitempty"`
+
+	// Reference to a Service in service to populate routeTo.
+	// +kubebuilder:validation:Optional
+	RouteToServiceRef *v1.NamespacedReference `json:"routeToServiceRef,omitempty" tf:"-"`
+
+	// Selector for a Service in service to populate routeTo.
+	// +kubebuilder:validation:Optional
+	RouteToServiceSelector *v1.NamespacedSelector `json:"routeToServiceSelector,omitempty" tf:"-"`
 }
 
 type SetRuleActionsObservation struct {
@@ -224,8 +257,19 @@ type SetRuleActionsParameters struct {
 	DynamicRouteTo []DynamicRouteToParameters `json:"dynamicRouteTo,omitempty" tf:"dynamic_route_to,omitempty"`
 
 	// The ID of the target Service for the resulting alert.
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-pagerduty/apis/namespaced/service/v1alpha1.Service
+	// +crossplane:generate:reference:refFieldName=RouteToServiceRef
+	// +crossplane:generate:reference:selectorFieldName=RouteToServiceSelector
 	// +kubebuilder:validation:Optional
 	RouteTo *string `json:"routeTo,omitempty" tf:"route_to,omitempty"`
+
+	// Reference to a Service in service to populate routeTo.
+	// +kubebuilder:validation:Optional
+	RouteToServiceRef *v1.NamespacedReference `json:"routeToServiceRef,omitempty" tf:"-"`
+
+	// Selector for a Service in service to populate routeTo.
+	// +kubebuilder:validation:Optional
+	RouteToServiceSelector *v1.NamespacedSelector `json:"routeToServiceSelector,omitempty" tf:"-"`
 }
 
 type SetRuleInitParameters struct {
