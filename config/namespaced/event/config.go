@@ -44,6 +44,16 @@ func Configure(p *config.Provider) {
 			"event_orchestration": {
 				TerraformName: "pagerduty_event_orchestration",
 			},
+			"set.rule.actions.route_to": {
+				TerraformName:     "pagerduty_service",
+				RefFieldName:      "RouteToServiceRef",
+				SelectorFieldName: "RouteToServiceSelector",
+			},
+			"catch_all.actions.route_to": {
+				TerraformName:     "pagerduty_service",
+				RefFieldName:      "RouteToServiceRef",
+				SelectorFieldName: "RouteToServiceSelector",
+			},
 		}
 	})
 

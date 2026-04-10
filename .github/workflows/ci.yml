@@ -14,9 +14,9 @@ concurrency:
 
 env:
   # Common versions
-  GO_VERSION: '1.25.5'
-  GOLANGCI_VERSION: 'v2.6.1'
-  DOCKER_BUILDX_VERSION: 'v0.28.0'
+  GO_VERSION: '1.25.8'
+  GOLANGCI_VERSION: 'v2.11.4'
+  DOCKER_BUILDX_VERSION: 'v0.31.1'
   UP_VERSION: 'v0.38.4'
 
   # Registry/Org names
@@ -83,7 +83,11 @@ jobs:
           submodules: true
 
       - name: Setup Go
+<<<<<<< HEAD
         uses: actions/setup-go@4a3601121dd01d1626a1e23e37211e3254c1c06c # v6
+=======
+        uses: actions/setup-go@7a3fe6cf4cb3a834922a1244abfce67bcef6a0c5 # v6
+>>>>>>> main
         with:
           go-version: ${{ env.GO_VERSION }}
 
@@ -109,7 +113,11 @@ jobs:
           submodules: true
 
       - name: Setup Go
+<<<<<<< HEAD
         uses: actions/setup-go@4a3601121dd01d1626a1e23e37211e3254c1c06c # v6
+=======
+        uses: actions/setup-go@7a3fe6cf4cb3a834922a1244abfce67bcef6a0c5 # v6
+>>>>>>> main
         with:
           go-version: ${{ env.GO_VERSION }}
 
@@ -137,7 +145,11 @@ jobs:
         run: git fetch --prune --unshallow
 
       - name: Setup Go
+<<<<<<< HEAD
         uses: actions/setup-go@4a3601121dd01d1626a1e23e37211e3254c1c06c # v6
+=======
+        uses: actions/setup-go@7a3fe6cf4cb3a834922a1244abfce67bcef6a0c5 # v6
+>>>>>>> main
         with:
           go-version: ${{ env.GO_VERSION }}
 
@@ -168,7 +180,11 @@ jobs:
         run: git fetch --prune --unshallow
 
       - name: Setup Go
+<<<<<<< HEAD
         uses: actions/setup-go@4a3601121dd01d1626a1e23e37211e3254c1c06c # v6
+=======
+        uses: actions/setup-go@7a3fe6cf4cb3a834922a1244abfce67bcef6a0c5 # v6
+>>>>>>> main
         with:
           go-version: ${{ env.GO_VERSION }}
 
@@ -197,7 +213,11 @@ jobs:
       id-token: write
     steps:
       - name: Setup QEMU
+<<<<<<< HEAD
         uses: docker/setup-qemu-action@ce360397dd3f832beb865e1373c09c0e9f86d70a # v4
+=======
+        uses: docker/setup-qemu-action@c7c53464625b32c7a7e944ae62b3e17d2b600130 # v3
+>>>>>>> main
         with:
           platforms: all
 
@@ -207,7 +227,11 @@ jobs:
           version: ${{ env.DOCKER_BUILDX_VERSION }}
 
       - name: Login to GHCR using PAT
+<<<<<<< HEAD
         uses: docker/login-action@4907a6ddec9925e35a0a9e82d7399ccc52663121 # v4
+=======
+        uses: docker/login-action@c94ce9fb468520275223c153574b00df6fe4bcc9 # v3
+>>>>>>> main
         with:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
@@ -222,7 +246,11 @@ jobs:
         run: git fetch --prune --unshallow
 
       - name: Setup Go
+<<<<<<< HEAD
         uses: actions/setup-go@4a3601121dd01d1626a1e23e37211e3254c1c06c # v6
+=======
+        uses: actions/setup-go@7a3fe6cf4cb3a834922a1244abfce67bcef6a0c5 # v6
+>>>>>>> main
         with:
           go-version: ${{ env.GO_VERSION }}
 
@@ -242,7 +270,11 @@ jobs:
           BUILD_ARGS: "--load"
 
       - name: Upload Artifacts to GitHub
+<<<<<<< HEAD
         uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7
+=======
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
+>>>>>>> main
         with:
           name: output
           path: _output/**
@@ -256,7 +288,11 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - name: Setup QEMU
+<<<<<<< HEAD
         uses: docker/setup-qemu-action@ce360397dd3f832beb865e1373c09c0e9f86d70a # v4
+=======
+        uses: docker/setup-qemu-action@c7c53464625b32c7a7e944ae62b3e17d2b600130 # v3
+>>>>>>> main
         with:
           platforms: all
 
@@ -273,7 +309,11 @@ jobs:
         run: crane version
 
       - name: Login to Upbound
+<<<<<<< HEAD
         uses: docker/login-action@4907a6ddec9925e35a0a9e82d7399ccc52663121 # v4
+=======
+        uses: docker/login-action@c94ce9fb468520275223c153574b00df6fe4bcc9 # v3
+>>>>>>> main
         with:
           registry: "xpkg.upbound.io"
           username: ${{ secrets.XPKG_ACCESS_ID }}

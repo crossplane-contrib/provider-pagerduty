@@ -197,6 +197,27 @@ func (mg *OrchestrationRouter) ResolveReferences(ctx context.Context, c client.R
 	var rsp reference.NamespacedResolutionResponse
 	var err error
 
+	for i3 := 0; i3 < len(mg.Spec.ForProvider.CatchAll); i3++ {
+		for i4 := 0; i4 < len(mg.Spec.ForProvider.CatchAll[i3].Actions); i4++ {
+			rsp, err = r.Resolve(ctx, reference.NamespacedResolutionRequest{
+				CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.CatchAll[i3].Actions[i4].RouteTo),
+				Extract:      reference.ExternalName(),
+				Namespace:    mg.GetNamespace(),
+				Reference:    mg.Spec.ForProvider.CatchAll[i3].Actions[i4].RouteToServiceRef,
+				Selector:     mg.Spec.ForProvider.CatchAll[i3].Actions[i4].RouteToServiceSelector,
+				To: reference.To{
+					List:    &v1alpha11.ServiceList{},
+					Managed: &v1alpha11.Service{},
+				},
+			})
+			if err != nil {
+				return errors.Wrap(err, "mg.Spec.ForProvider.CatchAll[i3].Actions[i4].RouteTo")
+			}
+			mg.Spec.ForProvider.CatchAll[i3].Actions[i4].RouteTo = reference.ToPtrValue(rsp.ResolvedValue)
+			mg.Spec.ForProvider.CatchAll[i3].Actions[i4].RouteToServiceRef = rsp.ResolvedReference
+
+		}
+	}
 	rsp, err = r.Resolve(ctx, reference.NamespacedResolutionRequest{
 		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.EventOrchestration),
 		Extract:      reference.ExternalName(),
@@ -214,6 +235,50 @@ func (mg *OrchestrationRouter) ResolveReferences(ctx context.Context, c client.R
 	mg.Spec.ForProvider.EventOrchestration = reference.ToPtrValue(rsp.ResolvedValue)
 	mg.Spec.ForProvider.EventOrchestrationRef = rsp.ResolvedReference
 
+	for i3 := 0; i3 < len(mg.Spec.ForProvider.Set); i3++ {
+		for i4 := 0; i4 < len(mg.Spec.ForProvider.Set[i3].Rule); i4++ {
+			for i5 := 0; i5 < len(mg.Spec.ForProvider.Set[i3].Rule[i4].Actions); i5++ {
+				rsp, err = r.Resolve(ctx, reference.NamespacedResolutionRequest{
+					CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.Set[i3].Rule[i4].Actions[i5].RouteTo),
+					Extract:      reference.ExternalName(),
+					Namespace:    mg.GetNamespace(),
+					Reference:    mg.Spec.ForProvider.Set[i3].Rule[i4].Actions[i5].RouteToServiceRef,
+					Selector:     mg.Spec.ForProvider.Set[i3].Rule[i4].Actions[i5].RouteToServiceSelector,
+					To: reference.To{
+						List:    &v1alpha11.ServiceList{},
+						Managed: &v1alpha11.Service{},
+					},
+				})
+				if err != nil {
+					return errors.Wrap(err, "mg.Spec.ForProvider.Set[i3].Rule[i4].Actions[i5].RouteTo")
+				}
+				mg.Spec.ForProvider.Set[i3].Rule[i4].Actions[i5].RouteTo = reference.ToPtrValue(rsp.ResolvedValue)
+				mg.Spec.ForProvider.Set[i3].Rule[i4].Actions[i5].RouteToServiceRef = rsp.ResolvedReference
+
+			}
+		}
+	}
+	for i3 := 0; i3 < len(mg.Spec.InitProvider.CatchAll); i3++ {
+		for i4 := 0; i4 < len(mg.Spec.InitProvider.CatchAll[i3].Actions); i4++ {
+			rsp, err = r.Resolve(ctx, reference.NamespacedResolutionRequest{
+				CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.CatchAll[i3].Actions[i4].RouteTo),
+				Extract:      reference.ExternalName(),
+				Namespace:    mg.GetNamespace(),
+				Reference:    mg.Spec.InitProvider.CatchAll[i3].Actions[i4].RouteToServiceRef,
+				Selector:     mg.Spec.InitProvider.CatchAll[i3].Actions[i4].RouteToServiceSelector,
+				To: reference.To{
+					List:    &v1alpha11.ServiceList{},
+					Managed: &v1alpha11.Service{},
+				},
+			})
+			if err != nil {
+				return errors.Wrap(err, "mg.Spec.InitProvider.CatchAll[i3].Actions[i4].RouteTo")
+			}
+			mg.Spec.InitProvider.CatchAll[i3].Actions[i4].RouteTo = reference.ToPtrValue(rsp.ResolvedValue)
+			mg.Spec.InitProvider.CatchAll[i3].Actions[i4].RouteToServiceRef = rsp.ResolvedReference
+
+		}
+	}
 	rsp, err = r.Resolve(ctx, reference.NamespacedResolutionRequest{
 		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.EventOrchestration),
 		Extract:      reference.ExternalName(),
@@ -230,6 +295,30 @@ func (mg *OrchestrationRouter) ResolveReferences(ctx context.Context, c client.R
 	}
 	mg.Spec.InitProvider.EventOrchestration = reference.ToPtrValue(rsp.ResolvedValue)
 	mg.Spec.InitProvider.EventOrchestrationRef = rsp.ResolvedReference
+
+	for i3 := 0; i3 < len(mg.Spec.InitProvider.Set); i3++ {
+		for i4 := 0; i4 < len(mg.Spec.InitProvider.Set[i3].Rule); i4++ {
+			for i5 := 0; i5 < len(mg.Spec.InitProvider.Set[i3].Rule[i4].Actions); i5++ {
+				rsp, err = r.Resolve(ctx, reference.NamespacedResolutionRequest{
+					CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.Set[i3].Rule[i4].Actions[i5].RouteTo),
+					Extract:      reference.ExternalName(),
+					Namespace:    mg.GetNamespace(),
+					Reference:    mg.Spec.InitProvider.Set[i3].Rule[i4].Actions[i5].RouteToServiceRef,
+					Selector:     mg.Spec.InitProvider.Set[i3].Rule[i4].Actions[i5].RouteToServiceSelector,
+					To: reference.To{
+						List:    &v1alpha11.ServiceList{},
+						Managed: &v1alpha11.Service{},
+					},
+				})
+				if err != nil {
+					return errors.Wrap(err, "mg.Spec.InitProvider.Set[i3].Rule[i4].Actions[i5].RouteTo")
+				}
+				mg.Spec.InitProvider.Set[i3].Rule[i4].Actions[i5].RouteTo = reference.ToPtrValue(rsp.ResolvedValue)
+				mg.Spec.InitProvider.Set[i3].Rule[i4].Actions[i5].RouteToServiceRef = rsp.ResolvedReference
+
+			}
+		}
+	}
 
 	return nil
 }
