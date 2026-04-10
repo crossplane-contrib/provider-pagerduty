@@ -21,14 +21,19 @@ import (
 
 const (
 	// error messages
-	errNoProviderConfig     = "no providerConfigRef provided"
-	errGetProviderConfig    = "cannot get referenced ProviderConfig"
-	errTrackUsage           = "cannot track ProviderConfig usage"
-	errExtractCredentials   = "cannot extract credentials"
-	errUnmarshalCredentials = "cannot unmarshal pagerduty credentials as JSON"
-	keyToken                = "token"
-	userToken               = "user_token"
-	serviceRegion           = "service_region"
+	errNoProviderConfig        = "no providerConfigRef provided"
+	errGetProviderConfig       = "cannot get referenced ProviderConfig"
+	errTrackUsage              = "cannot track ProviderConfig usage"
+	errExtractCredentials      = "cannot extract credentials"
+	errUnmarshalCredentials    = "cannot unmarshal pagerduty credentials as JSON"
+	errPartialOauthCredentials = "incomplete OAuth credentials: all three fields (pd_client_id, pd_client_secret, pd_subdomain) are required for use_app_oauth_scoped_token"
+	keyToken                   = "token"
+	userToken                  = "user_token"
+	serviceRegion              = "service_region"
+	useAppOauthScopedToken     = "use_app_oauth_scoped_token"
+	pdClientID                 = "pd_client_id"
+	pdClientSecret             = "pd_client_secret"
+	pdSubdomain                = "pd_subdomain"
 )
 
 // TerraformSetupBuilder builds Terraform a terraform.SetupFn function which
@@ -57,15 +62,9 @@ func TerraformSetupBuilder(version, providerSource, providerVersion string) terr
 			return ps, errors.Wrap(err, errUnmarshalCredentials)
 		}
 
-		// Set credentials in Terraform provider configuration.
 		ps.Configuration = map[string]any{}
-
-		if v, ok := creds[keyToken]; ok {
-			ps.Configuration[keyToken] = v
-		}
-
-		if v, ok := creds[userToken]; ok {
-			ps.Configuration[userToken] = v
+		if err := configureCredentials(ps.Configuration, creds); err != nil {
+			return ps, err
 		}
 
 		if v := pcSpec.ServiceRegion; v != "" {
@@ -74,6 +73,37 @@ func TerraformSetupBuilder(version, providerSource, providerVersion string) terr
 
 		return ps, nil
 	}
+}
+
+func configureCredentials(config map[string]any, creds map[string]string) error {
+	if v, ok := creds[keyToken]; ok {
+		config[keyToken] = v
+	}
+	if v, ok := creds[userToken]; ok {
+		config[userToken] = v
+	}
+
+	// Support scoped OAuth via use_app_oauth_scoped_token.
+	// NOTE: The PD OAuth app must include the "Abilities: Read" scope at minimum,
+	// as the Terraform provider validates connectivity against /abilities on init.
+	// The OAuth token is cached at /.pagerduty/token.json, so containerized
+	// deployments need a writable volume mounted at /.pagerduty.
+	clientID, hasClientID := creds[pdClientID]
+	clientSecret, hasClientSecret := creds[pdClientSecret]
+	subdomain, hasSubdomain := creds[pdSubdomain]
+	hasAny := hasClientID || hasClientSecret || hasSubdomain
+	hasAll := hasClientID && hasClientSecret && hasSubdomain
+	if hasAny && !hasAll {
+		return errors.New(errPartialOauthCredentials)
+	}
+	if hasAll {
+		config[useAppOauthScopedToken] = []map[string]any{{
+			pdClientID:     clientID,
+			pdClientSecret: clientSecret,
+			pdSubdomain:    subdomain,
+		}}
+	}
+	return nil
 }
 
 func toSharedPCSpec(pc *clusterv1beta1.ProviderConfig) (*namespacedv1beta1.ProviderConfigSpec, error) {
