@@ -74,8 +74,7 @@ spec:
               forProvider:
                 properties:
                   actionClassification:
-                    description: The category of the action. The only allowed values
-                      are diagnostic and remediation.
+                    description: The category of the action, e.g. diagnostic, remediation.
                     type: string
                   actionDataReference:
                     description: Action Data block. Action Data is documented below.
@@ -161,8 +160,7 @@ spec:
                   autoscaler.
                 properties:
                   actionClassification:
-                    description: The category of the action. The only allowed values
-                      are diagnostic and remediation.
+                    description: The category of the action, e.g. diagnostic, remediation.
                     type: string
                   actionDataReference:
                     description: Action Data block. Action Data is documented below.
@@ -339,8 +337,7 @@ spec:
               atProvider:
                 properties:
                   actionClassification:
-                    description: The category of the action. The only allowed values
-                      are diagnostic and remediation.
+                    description: The category of the action, e.g. diagnostic, remediation.
                     type: string
                   actionDataReference:
                     description: Action Data block. Action Data is documented below.

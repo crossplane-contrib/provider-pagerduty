@@ -94,7 +94,7 @@ resources:
                   "name": "Script Action created via TF"
                 }
         argumentDocs:
-            action_classification: '- (Optional) The category of the action. The only allowed values are diagnostic and remediation.'
+            action_classification: '- (Optional) The category of the action, e.g. diagnostic, remediation.'
             action_data_reference: '- (Required) Action Data block. Action Data is documented below.'
             action_type: '- (Required) The type of the action. The only allowed values are process_automation and script. Cannot be changed once set.'
             allow_invocation_from_event_orchestration: '- (Optional) Whether the action can be invoked automatically from a PagerDuty Event Orchestration.'
@@ -2395,6 +2395,129 @@ resources:
             time_zone: '- (Required) The time zone of the schedule (e.g. Europe/Berlin).'
             users: '- (Required) The ordered list of users on this layer. The position of the user on the list determines their order in the layer.'
         importStatements: []
+    pagerduty_schedulev2:
+        subCategory: ""
+        description: Creates and manages an on-call schedule using the PagerDuty v3 Schedules API.
+        name: pagerduty_schedulev2
+        title: pagerduty_schedulev2
+        examples:
+            - name: example
+              manifest: |-
+                {
+                  "description": "Managed by Terraform",
+                  "name": "Engineering On-Call",
+                  "rotation": [
+                    {
+                      "event": [
+                        {
+                          "assignment_strategy": [
+                            {
+                              "member": [
+                                {
+                                  "type": "user_member",
+                                  "user_id": "${pagerduty_user.example.id}"
+                                }
+                              ],
+                              "shifts_per_member": 1,
+                              "type": "rotating_member_assignment_strategy"
+                            }
+                          ],
+                          "effective_since": "2026-06-01T09:00:00Z",
+                          "end_time": "2026-06-01T17:00:00Z",
+                          "name": "Weekday Business Hours",
+                          "recurrence": [
+                            "RRULE:FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR"
+                          ],
+                          "start_time": "2026-06-01T09:00:00Z"
+                        }
+                      ]
+                    }
+                  ],
+                  "time_zone": "America/New_York"
+                }
+              references:
+                rotation.event.assignment_strategy.member.user_id: pagerduty_user.example.id
+              dependencies:
+                pagerduty_user.example: |-
+                    {
+                      "email": "earline@example.com",
+                      "name": "Earline Greenholt"
+                    }
+            - name: all_hands
+              manifest: |-
+                {
+                  "name": "Weekend All-Hands On-Call",
+                  "rotation": [
+                    {
+                      "event": [
+                        {
+                          "assignment_strategy": [
+                            {
+                              "member": [
+                                {
+                                  "type": "user_member",
+                                  "user_id": "${pagerduty_user.primary.id}"
+                                },
+                                {
+                                  "type": "user_member",
+                                  "user_id": "${pagerduty_user.secondary.id}"
+                                }
+                              ],
+                              "type": "every_member_assignment_strategy"
+                            }
+                          ],
+                          "effective_since": "2026-06-06T00:00:00Z",
+                          "end_time": "2026-06-07T23:59:00Z",
+                          "name": "Weekend Coverage",
+                          "recurrence": [
+                            "RRULE:FREQ=WEEKLY;BYDAY=SA,SU"
+                          ],
+                          "start_time": "2026-06-06T00:00:00Z"
+                        }
+                      ]
+                    }
+                  ],
+                  "time_zone": "UTC"
+                }
+              references:
+                rotation.event.assignment_strategy.member.user_id: pagerduty_user.secondary.id
+              dependencies:
+                pagerduty_user.primary: |-
+                    {
+                      "email": "alice@example.com",
+                      "name": "Alice"
+                    }
+                pagerduty_user.secondary: |-
+                    {
+                      "email": "bob@example.com",
+                      "name": "Bob"
+                    }
+        argumentDocs:
+            '"every_member_assignment_strategy"': — all listed members are on-call simultaneously for every occurrence.
+            '"rotating_member_assignment_strategy"': — listed members rotate in sequence. Each member covers shifts_per_member consecutive shift periods before the next member takes over.
+            description: '- (Optional) A description of the schedule. Maximum 1024 characters.'
+            id: '- The ID of the schedule.'
+            member.type: '- (Required) The member type. Supported values: "user_member", "empty_member".'
+            member.user_id: '- (Optional) The ID of the user to assign. Required when type is "user_member".'
+            name: '- (Required) The name of the schedule. Maximum 255 characters.'
+            rotation: '- (Required) One or more rotation blocks. Rotations documented below.'
+            rotation.*.event.*.id: '- The ID of each event within a rotation.'
+            rotation.*.id: '- The ID of each rotation.'
+            rotation.event: '- (Required) One or more event blocks defining on-call periods within this rotation. Events documented below.'
+            rotation.event.assignment_strategy: '- (Required) A block defining how on-call responsibility is assigned. Assignment strategy documented below.'
+            rotation.event.assignment_strategy."user_assignment_strategy": is no longer valid. Use "rotating_member_assignment_strategy" instead.
+            rotation.event.assignment_strategy.member: '- (Required) One or more member blocks identifying who is on call. Required for both strategy types. Maximum 20 members. Members documented below.'
+            rotation.event.assignment_strategy.shifts_per_member: '- (Optional) Number of consecutive shift occurrences each member covers before rotating. Minimum value: 1. Required when type is "rotating_member_assignment_strategy".'
+            rotation.event.assignment_strategy.type: '- (Required) The assignment strategy type. Supported values:'
+            rotation.event.effective_since: '- (Required) When this event configuration begins producing shifts (ISO-8601 UTC). The API adjusts past values to the current time.'
+            rotation.event.effective_until: '- (Optional) When this event configuration stops producing shifts (ISO-8601 UTC). Omit for an indefinite schedule.'
+            rotation.event.end_time: '- (Required) The shift end time in ISO-8601 format. The v3 API normalizes this to UTC.'
+            rotation.event.name: '- (Required) The name of the event. Maximum 255 characters.'
+            rotation.event.recurrence: '- (Required) List of RFC 5545 recurrence rule strings. Must contain exactly one RRULE entry. May optionally include one or more EXDATE entries (dates to exclude) and one or more RDATE entries (additional dates to include). Example: ["RRULE:FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR"]. You can generate RRULE strings interactively using tools like RRULE Tool.'
+            rotation.event.start_time: '- (Required) The shift start time in ISO-8601 format (e.g. 2026-06-01T09:00:00Z). The v3 API normalizes this to UTC.'
+            teams: '- (Optional) List of team IDs to associate with this schedule.'
+            time_zone: '- (Required) The time zone of the schedule (IANA format, e.g. America/New_York).'
+        importStatements: []
     pagerduty_service:
         subCategory: ""
         description: Creates and manages a service in PagerDuty.
@@ -2523,10 +2646,8 @@ resources:
             incident_urgency_rule.outside_support_hours: '- (Optional) Incidents'' urgency outside support hours.'
             incident_urgency_rule.type: '- The type of incident urgency: constant or use_support_hours (when depending on specific support hours; see support_hours).'
             incident_urgency_rule.urgency: '- The urgency: low Notify responders (does not escalate), high (follows escalation rules) or severity_based Set''s the urgency of the incident based on the severity set by the triggering monitoring tool.'
-            last_incident_timestamp: '- Last incident timestamp of the service.'
             name: '- (Required) The name of the service.'
             response_play: '- (Optional) (Deprecated) The response play used by this service.'
-            status: '- The status of the service.'
             time_window: '- (Optional) The maximum amount of time allowed between Alerts. This setting applies only when type is set to intelligent or content_based. Value must be between 300 and 3600 or exactly 86400 (86400 is supported only for content_based alert grouping). Any Alerts arriving greater than time_window seconds apart will not be grouped together. This is a rolling time window and is counted from the most recently grouped alert. The window is extended every time a new alert is added to the group, up to 24 hours.'
             timeout: '- (Optional) The duration in minutes within which to automatically group incoming alerts. This setting applies only when type is set to time. To continue grouping alerts until the incident is resolved, set this value to 0.'
             to_urgency: '- The urgency to change to: low (does not escalate), or high (follows escalation rules).'
@@ -2640,10 +2761,6 @@ resources:
                       "value": "${jsonencode(\"production\")}"
                     },
                     {
-                      "name": "${pagerduty_service_custom_field.region.name}",
-                      "value": "${jsonencode(\"us-east-1\")}"
-                    },
-                    {
                       "name": "${pagerduty_service_custom_field.is_critical.name}",
                       "value": "${jsonencode(true)}"
                     },
@@ -2655,7 +2772,6 @@ resources:
                   "service_id": "${pagerduty_service.example.id}"
                 }
               references:
-                custom_fields.name: pagerduty_service_custom_field.regions.name
                 service_id: pagerduty_service.example.id
               dependencies:
                 pagerduty_service.example: |-
@@ -2681,14 +2797,6 @@ resources:
                       "field_type": "single_value",
                       "name": "is_critical"
                     }
-                pagerduty_service_custom_field.region: |-
-                    {
-                      "data_type": "string",
-                      "description": "The region this service is deployed in",
-                      "display_name": "Region",
-                      "field_type": "single_value",
-                      "name": "region"
-                    }
                 pagerduty_service_custom_field.regions: |-
                     {
                       "data_type": "string",
@@ -2701,6 +2809,10 @@ resources:
                         },
                         {
                           "data_type": "string",
+                          "value": "us-east-2"
+                        },
+                        {
+                          "data_type": "string",
                           "value": "us-west-1"
                         }
                       ],
@@ -2708,7 +2820,7 @@ resources:
                       "name": "regions"
                     }
         argumentDocs:
-            custom_fields: '- (Required) A list of custom field values to set on the service. Each block supports the following:'
+            custom_fields: '- (Required) A set of custom field values to set on the service. Each object in the set supports the following:'
             id: '- (Optional) The ID of the custom field. Either id or name must be provided.'
             name: '- (Optional) The name of the custom field. Either id or name must be provided.'
             service_id: '- (Required) The ID of the service to set custom field values for.'
@@ -3575,7 +3687,7 @@ resources:
             id: '- The ID of the contact method.'
             label: '- (Required) The label (e.g., "Work", "Mobile", etc.).'
             send_short_email: '- (Optional) Send an abbreviated email message instead of the standard email output.'
-            type: '- (Required) The contact method type. May be (email_contact_method, phone_contact_method, sms_contact_method, push_notification_contact_method).'
+            type: '- (Required) The contact method type. May be (email_contact_method, phone_contact_method, sms_contact_method, push_notification_contact_method, whatsapp_contact_method).'
             user_id: '- (Required) The ID of the user.'
         importStatements: []
     pagerduty_user_handoff_notification_rule:

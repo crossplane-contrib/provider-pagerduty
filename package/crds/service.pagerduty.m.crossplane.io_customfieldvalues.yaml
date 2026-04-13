@@ -61,7 +61,7 @@ spec:
                 properties:
                   customFields:
                     description: |-
-                      A list of custom field values to set on the service. Each block supports the following:
+                      A set of custom field values to set on the service. Each object in the set supports the following:
                       The custom field values to set for the service.
                     items:
                       properties:
@@ -102,7 +102,7 @@ spec:
                 properties:
                   customFields:
                     description: |-
-                      A list of custom field values to set on the service. Each block supports the following:
+                      A set of custom field values to set on the service. Each object in the set supports the following:
                       The custom field values to set for the service.
                     items:
                       properties:
@@ -202,7 +202,7 @@ spec:
                 properties:
                   customFields:
                     description: |-
-                      A list of custom field values to set on the service. Each block supports the following:
+                      A set of custom field values to set on the service. Each object in the set supports the following:
                       The custom field values to set for the service.
                     items:
                       properties:
