@@ -47,5 +47,12 @@
       "datasourceTemplate": "github-releases",
       "depNameTemplate": "upbound/uptest",
     }
+  ],
+  "packageRules": [
+    {
+      "matchManagers": ["github-actions"],
+      "matchUpdateTypes": ["major"],
+      "enabled": true
+    }
   ]
 }
