@@ -138,9 +138,6 @@ type IntegrationInitParameters struct {
 	// This is the unique fully-qualified email address used for routing emails to this integration for processing.
 	IntegrationEmail *string `json:"integrationEmail,omitempty" tf:"integration_email,omitempty"`
 
-	// (Deprecated) This is the unique key used to route events to this integration when received via the PagerDuty Events API.
-	IntegrationKey *string `json:"integrationKey,omitempty" tf:"integration_key,omitempty"`
-
 	// The name of the service integration.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
@@ -243,10 +240,6 @@ type IntegrationParameters struct {
 	// This is the unique fully-qualified email address used for routing emails to this integration for processing.
 	// +kubebuilder:validation:Optional
 	IntegrationEmail *string `json:"integrationEmail,omitempty" tf:"integration_email,omitempty"`
-
-	// (Deprecated) This is the unique key used to route events to this integration when received via the PagerDuty Events API.
-	// +kubebuilder:validation:Optional
-	IntegrationKey *string `json:"integrationKey,omitempty" tf:"integration_key,omitempty"`
 
 	// The name of the service integration.
 	// +kubebuilder:validation:Optional

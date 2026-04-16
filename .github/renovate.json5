@@ -7,8 +7,12 @@
   ],
   "rebaseWhen": "conflicted",
   "prConcurrentLimit": 5,
-  "baseBranches": ["main"],
-  "labels": ["automated"],
+  "baseBranches": [
+    "main"
+  ],
+  "labels": [
+    "automated"
+  ],
   // only possible in self-hosted renovate instances
   // "postUpgradeTasks": {
   //   "commands": ["make submodules", "make generate"],
@@ -19,7 +23,9 @@
     {
       "customType": "regex",
       "description": "Bump pagerduty terraform provider version in the Makefile",
-      "fileMatch": ["^Makefile$"],
+      "fileMatch": [
+        "^Makefile$"
+      ],
       "matchStrings": [
         "export TERRAFORM_PROVIDER_VERSION \\?= (?<currentValue>.*?)\\n",
         "export TERRAFORM_PROVIDER_DOWNLOAD_URL_PREFIX \\?= https://github.com/PagerDuty/terraform-provider-pagerduty/releases/download/v(?<currentValue>.*?)\\n"
@@ -31,16 +37,21 @@
     {
       "customType": "regex",
       "description": "Bump up version in the Makefile",
-      "fileMatch": ["^Makefile$"],
+      "fileMatch": [
+        "^Makefile$"
+      ],
       "matchStrings": [
         "UP_VERSION = (?<currentValue>.*?)\\n"
       ],
       "datasourceTemplate": "github-releases",
-      "depNameTemplate": "upbound/up",
-    }, {
+      "depNameTemplate": "upbound/up"
+    },
+    {
       "customType": "regex",
       "description": "Bump uptest version in the Makefile",
-      "fileMatch": ["^Makefile$"],
+      "fileMatch": [
+        "^Makefile$"
+      ],
       "matchStrings": [
         "UPTEST_VERSION = (?<currentValue>.*?)\\n"
       ],
@@ -50,8 +61,12 @@
   ],
   "packageRules": [
     {
-      "matchManagers": ["github-actions"],
-      "matchUpdateTypes": ["major"],
+      "matchManagers": [
+        "github-actions"
+      ],
+      "matchUpdateTypes": [
+        "major"
+      ],
       "enabled": true
     }
   ]
