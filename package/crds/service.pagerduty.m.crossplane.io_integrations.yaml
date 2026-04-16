@@ -207,11 +207,6 @@ spec:
                     description: This is the unique fully-qualified email address
                       used for routing emails to this integration for processing.
                     type: string
-                  integrationKey:
-                    description: (Deprecated) This is the unique key used to route
-                      events to this integration when received via the PagerDuty Events
-                      API.
-                    type: string
                   name:
                     description: The name of the service integration.
                     type: string
@@ -476,11 +471,6 @@ spec:
                   integrationEmail:
                     description: This is the unique fully-qualified email address
                       used for routing emails to this integration for processing.
-                    type: string
-                  integrationKey:
-                    description: (Deprecated) This is the unique key used to route
-                      events to this integration when received via the PagerDuty Events
-                      API.
                     type: string
                   name:
                     description: The name of the service integration.

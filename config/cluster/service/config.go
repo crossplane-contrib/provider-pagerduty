@@ -11,8 +11,9 @@ func Configure(p *config.Provider) {
 	p.AddResourceConfigurator("pagerduty_service", func(r *config.Resource) {
 
 		r.LateInitializer = config.LateInitializer{
-			// alert_grouping_parameters and alert_grouping_timeout are mutually exclusive
-			IgnoredFields: []string{"alert_grouping_parameters", "alert_grouping_timeout"},
+			// alert_grouping_parameters, alert_grouping, and alert_grouping_timeout are mutually exclusive
+			// alert_grouping and alert_grouping_timeout are deprecated in favour of pagerduty_alert_grouping_setting
+			IgnoredFields: []string{"alert_grouping_parameters", "alert_grouping", "alert_grouping_timeout"},
 		}
 		r.ShortGroup = shortGroup
 		r.References = config.References{
@@ -55,7 +56,13 @@ func Configure(p *config.Provider) {
 
 		r.LateInitializer = config.LateInitializer{
 			// type and vendor are mutually-exclusive, so these cannot be late-initialized
-			IgnoredFields: []string{"type", "vendor"},
+			// integration_key is read-only from the API, setting it causes constant reconciliation
+			IgnoredFields: []string{"type", "vendor", "integration_key"},
+		}
+		// integration_key is deprecated and read-only; the API does not accept writes
+		if s, ok := r.TerraformResource.Schema["integration_key"]; ok {
+			s.Optional = false
+			s.Computed = true
 		}
 		r.ShortGroup = shortGroup
 		r.References = config.References{
