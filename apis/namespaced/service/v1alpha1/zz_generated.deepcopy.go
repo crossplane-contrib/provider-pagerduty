@@ -2713,11 +2713,6 @@ func (in *IntegrationInitParameters) DeepCopyInto(out *IntegrationInitParameters
 		*out = new(string)
 		**out = **in
 	}
-	if in.IntegrationKey != nil {
-		in, out := &in.IntegrationKey, &out.IntegrationKey
-		*out = new(string)
-		**out = **in
-	}
 	if in.Name != nil {
 		in, out := &in.Name, &out.Name
 		*out = new(string)
@@ -2910,11 +2905,6 @@ func (in *IntegrationParameters) DeepCopyInto(out *IntegrationParameters) {
 	}
 	if in.IntegrationEmail != nil {
 		in, out := &in.IntegrationEmail, &out.IntegrationEmail
-		*out = new(string)
-		**out = **in
-	}
-	if in.IntegrationKey != nil {
-		in, out := &in.IntegrationKey, &out.IntegrationKey
 		*out = new(string)
 		**out = **in
 	}
