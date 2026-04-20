@@ -262,8 +262,16 @@ spec:
                                 type: array
                             type: object
                           type: array
+                        index:
+                          default: default
+                          description: This is an injected field with a default value
+                            for being able to merge items of the parent object list.
+                          type: string
                       type: object
                     type: array
+                    x-kubernetes-list-map-keys:
+                    - index
+                    x-kubernetes-list-type: map
                   eventOrchestration:
                     description: ID of the Event Orchestration to which this Global
                       Orchestration belongs to.
@@ -600,6 +608,9 @@ spec:
                           type: array
                       type: object
                     type: array
+                    x-kubernetes-list-map-keys:
+                    - id
+                    x-kubernetes-list-type: map
                 type: object
               initProvider:
                 description: |-
@@ -817,8 +828,16 @@ spec:
                                 type: array
                             type: object
                           type: array
+                        index:
+                          default: default
+                          description: This is an injected field with a default value
+                            for being able to merge items of the parent object list.
+                          type: string
                       type: object
                     type: array
+                    x-kubernetes-list-map-keys:
+                    - index
+                    x-kubernetes-list-type: map
                   eventOrchestration:
                     description: ID of the Event Orchestration to which this Global
                       Orchestration belongs to.
@@ -1155,6 +1174,9 @@ spec:
                           type: array
                       type: object
                     type: array
+                    x-kubernetes-list-map-keys:
+                    - id
+                    x-kubernetes-list-type: map
                 type: object
               managementPolicies:
                 default:
@@ -1431,8 +1453,16 @@ spec:
                                 type: array
                             type: object
                           type: array
+                        index:
+                          default: default
+                          description: This is an injected field with a default value
+                            for being able to merge items of the parent object list.
+                          type: string
                       type: object
                     type: array
+                    x-kubernetes-list-map-keys:
+                    - index
+                    x-kubernetes-list-type: map
                   eventOrchestration:
                     description: ID of the Event Orchestration to which this Global
                       Orchestration belongs to.
@@ -1696,6 +1726,9 @@ spec:
                           type: array
                       type: object
                     type: array
+                    x-kubernetes-list-map-keys:
+                    - id
+                    x-kubernetes-list-type: map
                 type: object
               conditions:
                 description: Conditions of the resource.

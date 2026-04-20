@@ -480,12 +480,20 @@ type CatchAllInitParameters struct {
 
 	// Actions that will be taken to change the resulting alert and incident, when an event matches this rule.
 	Actions []ActionsInitParameters `json:"actions,omitempty" tf:"actions,omitempty"`
+
+	// This is an injected field with a default value for being able to merge items of the parent object list.
+	// +kubebuilder:default:=default
+	Index *string `json:"index,omitempty" tf:"-"`
 }
 
 type CatchAllObservation struct {
 
 	// Actions that will be taken to change the resulting alert and incident, when an event matches this rule.
 	Actions []ActionsObservation `json:"actions,omitempty" tf:"actions,omitempty"`
+
+	// This is an injected field with a default value for being able to merge items of the parent object list.
+	// +kubebuilder:default:=default
+	Index *string `json:"index,omitempty" tf:"-"`
 }
 
 type CatchAllParameters struct {
@@ -493,6 +501,11 @@ type CatchAllParameters struct {
 	// Actions that will be taken to change the resulting alert and incident, when an event matches this rule.
 	// +kubebuilder:validation:Optional
 	Actions []ActionsParameters `json:"actions" tf:"actions,omitempty"`
+
+	// This is an injected field with a default value for being able to merge items of the parent object list.
+	// +kubebuilder:validation:Optional
+	// +kubebuilder:default:=default
+	Index *string `json:"index" tf:"-"`
 }
 
 type ConditionInitParameters struct {
@@ -624,6 +637,8 @@ type IncidentCustomFieldUpdateParameters struct {
 type OrchestrationGlobalInitParameters struct {
 
 	// the catch_all actions will be applied if an Event reaches the end of any set without matching any rules in that set.
+	// +listType=map
+	// +listMapKey=index
 	CatchAll []CatchAllInitParameters `json:"catchAll,omitempty" tf:"catch_all,omitempty"`
 
 	// ID of the Event Orchestration to which this Global Orchestration belongs to.
@@ -639,12 +654,16 @@ type OrchestrationGlobalInitParameters struct {
 	EventOrchestrationSelector *v1.NamespacedSelector `json:"eventOrchestrationSelector,omitempty" tf:"-"`
 
 	// A Global Orchestration must contain at least a "start" set, but can contain any number of additional sets that are routed to by other rules to form a directional graph.
+	// +listType=map
+	// +listMapKey=id
 	Set []SetInitParameters `json:"set,omitempty" tf:"set,omitempty"`
 }
 
 type OrchestrationGlobalObservation struct {
 
 	// the catch_all actions will be applied if an Event reaches the end of any set without matching any rules in that set.
+	// +listType=map
+	// +listMapKey=index
 	CatchAll []CatchAllObservation `json:"catchAll,omitempty" tf:"catch_all,omitempty"`
 
 	// ID of the Event Orchestration to which this Global Orchestration belongs to.
@@ -654,6 +673,8 @@ type OrchestrationGlobalObservation struct {
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
 	// A Global Orchestration must contain at least a "start" set, but can contain any number of additional sets that are routed to by other rules to form a directional graph.
+	// +listType=map
+	// +listMapKey=id
 	Set []SetObservation `json:"set,omitempty" tf:"set,omitempty"`
 }
 
@@ -661,6 +682,8 @@ type OrchestrationGlobalParameters struct {
 
 	// the catch_all actions will be applied if an Event reaches the end of any set without matching any rules in that set.
 	// +kubebuilder:validation:Optional
+	// +listType=map
+	// +listMapKey=index
 	CatchAll []CatchAllParameters `json:"catchAll,omitempty" tf:"catch_all,omitempty"`
 
 	// ID of the Event Orchestration to which this Global Orchestration belongs to.
@@ -678,6 +701,8 @@ type OrchestrationGlobalParameters struct {
 
 	// A Global Orchestration must contain at least a "start" set, but can contain any number of additional sets that are routed to by other rules to form a directional graph.
 	// +kubebuilder:validation:Optional
+	// +listType=map
+	// +listMapKey=id
 	Set []SetParameters `json:"set,omitempty" tf:"set,omitempty"`
 }
 

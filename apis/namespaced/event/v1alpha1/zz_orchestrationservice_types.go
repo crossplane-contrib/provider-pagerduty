@@ -440,12 +440,20 @@ type OrchestrationServiceCatchAllInitParameters struct {
 
 	// Actions that will be taken to change the resulting alert and incident, when an event matches this rule.
 	Actions []OrchestrationServiceCatchAllActionsInitParameters `json:"actions,omitempty" tf:"actions,omitempty"`
+
+	// This is an injected field with a default value for being able to merge items of the parent object list.
+	// +kubebuilder:default:=default
+	Index *string `json:"index,omitempty" tf:"-"`
 }
 
 type OrchestrationServiceCatchAllObservation struct {
 
 	// Actions that will be taken to change the resulting alert and incident, when an event matches this rule.
 	Actions []OrchestrationServiceCatchAllActionsObservation `json:"actions,omitempty" tf:"actions,omitempty"`
+
+	// This is an injected field with a default value for being able to merge items of the parent object list.
+	// +kubebuilder:default:=default
+	Index *string `json:"index,omitempty" tf:"-"`
 }
 
 type OrchestrationServiceCatchAllParameters struct {
@@ -453,11 +461,18 @@ type OrchestrationServiceCatchAllParameters struct {
 	// Actions that will be taken to change the resulting alert and incident, when an event matches this rule.
 	// +kubebuilder:validation:Optional
 	Actions []OrchestrationServiceCatchAllActionsParameters `json:"actions" tf:"actions,omitempty"`
+
+	// This is an injected field with a default value for being able to merge items of the parent object list.
+	// +kubebuilder:validation:Optional
+	// +kubebuilder:default:=default
+	Index *string `json:"index" tf:"-"`
 }
 
 type OrchestrationServiceInitParameters struct {
 
 	// the catch_all actions will be applied if an Event reaches the end of any set without matching any rules in that set.
+	// +listType=map
+	// +listMapKey=index
 	CatchAll []OrchestrationServiceCatchAllInitParameters `json:"catchAll,omitempty" tf:"catch_all,omitempty"`
 
 	// Opt-in/out for switching the Service to Service Orchestrations.
@@ -476,12 +491,16 @@ type OrchestrationServiceInitParameters struct {
 	ServiceSelector *v1.NamespacedSelector `json:"serviceSelector,omitempty" tf:"-"`
 
 	// A Service Orchestration must contain at least a "start" set, but can contain any number of additional sets that are routed to by other rules to form a directional graph.
+	// +listType=map
+	// +listMapKey=id
 	Set []OrchestrationServiceSetInitParameters `json:"set,omitempty" tf:"set,omitempty"`
 }
 
 type OrchestrationServiceObservation struct {
 
 	// the catch_all actions will be applied if an Event reaches the end of any set without matching any rules in that set.
+	// +listType=map
+	// +listMapKey=index
 	CatchAll []OrchestrationServiceCatchAllObservation `json:"catchAll,omitempty" tf:"catch_all,omitempty"`
 
 	// Opt-in/out for switching the Service to Service Orchestrations.
@@ -494,6 +513,8 @@ type OrchestrationServiceObservation struct {
 	Service *string `json:"service,omitempty" tf:"service,omitempty"`
 
 	// A Service Orchestration must contain at least a "start" set, but can contain any number of additional sets that are routed to by other rules to form a directional graph.
+	// +listType=map
+	// +listMapKey=id
 	Set []OrchestrationServiceSetObservation `json:"set,omitempty" tf:"set,omitempty"`
 }
 
@@ -501,6 +522,8 @@ type OrchestrationServiceParameters struct {
 
 	// the catch_all actions will be applied if an Event reaches the end of any set without matching any rules in that set.
 	// +kubebuilder:validation:Optional
+	// +listType=map
+	// +listMapKey=index
 	CatchAll []OrchestrationServiceCatchAllParameters `json:"catchAll,omitempty" tf:"catch_all,omitempty"`
 
 	// Opt-in/out for switching the Service to Service Orchestrations.
@@ -522,6 +545,8 @@ type OrchestrationServiceParameters struct {
 
 	// A Service Orchestration must contain at least a "start" set, but can contain any number of additional sets that are routed to by other rules to form a directional graph.
 	// +kubebuilder:validation:Optional
+	// +listType=map
+	// +listMapKey=id
 	Set []OrchestrationServiceSetParameters `json:"set,omitempty" tf:"set,omitempty"`
 }
 
