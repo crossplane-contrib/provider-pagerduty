@@ -63,6 +63,7 @@ func Configure(p *config.Provider) {
 		if s, ok := r.TerraformResource.Schema["integration_key"]; ok {
 			s.Optional = false
 			s.Computed = true
+			s.Required = false
 		}
 		r.ShortGroup = shortGroup
 		r.References = config.References{

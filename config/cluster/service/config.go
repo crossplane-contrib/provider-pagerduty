@@ -61,8 +61,9 @@ func Configure(p *config.Provider) {
 		}
 		// integration_key is deprecated and read-only; the API does not accept writes
 		if s, ok := r.TerraformResource.Schema["integration_key"]; ok {
-			s.Optional = false
 			s.Computed = true
+			s.Optional = false
+			s.Required = false
 		}
 		r.ShortGroup = shortGroup
 		r.References = config.References{
