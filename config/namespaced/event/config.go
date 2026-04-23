@@ -39,7 +39,7 @@ func Configure(p *config.Provider) {
 		r.ServerSideApplyMergeStrategies["catch_all"] = config.MergeStrategy{
 			ListMergeStrategy: config.ListMergeStrategy{
 				MergeStrategy: config.ListTypeMap,
-ListMapKeys: config.ListMapKeys{
+				ListMapKeys: config.ListMapKeys{
 					InjectedKey: config.InjectedKey{
 						Key:          "index",
 						DefaultValue: `"0"`,
@@ -72,7 +72,7 @@ ListMapKeys: config.ListMapKeys{
 		r.ServerSideApplyMergeStrategies["catch_all"] = config.MergeStrategy{
 			ListMergeStrategy: config.ListMergeStrategy{
 				MergeStrategy: config.ListTypeMap,
-ListMapKeys: config.ListMapKeys{
+				ListMapKeys: config.ListMapKeys{
 					InjectedKey: config.InjectedKey{
 						Key:          "index",
 						DefaultValue: `"0"`,
@@ -242,7 +242,7 @@ ListMapKeys: config.ListMapKeys{
 		r.ServerSideApplyMergeStrategies["catch_all"] = config.MergeStrategy{
 			ListMergeStrategy: config.ListMergeStrategy{
 				MergeStrategy: config.ListTypeMap,
-ListMapKeys: config.ListMapKeys{
+				ListMapKeys: config.ListMapKeys{
 					InjectedKey: config.InjectedKey{
 						Key:          "index",
 						DefaultValue: `"0"`,
