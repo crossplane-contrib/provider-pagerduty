@@ -287,6 +287,13 @@ spec:
                                       description: 'supports the following:'
                                       items:
                                         properties:
+                                          index:
+                                            default: default
+                                            description: This is an injected field
+                                              with a default value for being able
+                                              to merge items of the parent object
+                                              list.
+                                            type: string
                                           lookupBy:
                                             description: 'Indicates whether the extracted
                                               value from the source is a service''s
@@ -305,6 +312,9 @@ spec:
                                             type: string
                                         type: object
                                       type: array
+                                      x-kubernetes-list-map-keys:
+                                      - index
+                                      x-kubernetes-list-type: map
                                     index:
                                       default: default
                                       description: This is an injected field with
@@ -416,6 +426,9 @@ spec:
                                       type: string
                                   type: object
                                 type: array
+                                x-kubernetes-list-map-keys:
+                                - expression
+                                x-kubernetes-list-type: map
                               disabled:
                                 description: Indicates whether the rule is disabled
                                   and would therefore not be evaluated.
@@ -681,6 +694,13 @@ spec:
                                       description: 'supports the following:'
                                       items:
                                         properties:
+                                          index:
+                                            default: default
+                                            description: This is an injected field
+                                              with a default value for being able
+                                              to merge items of the parent object
+                                              list.
+                                            type: string
                                           lookupBy:
                                             description: 'Indicates whether the extracted
                                               value from the source is a service''s
@@ -699,6 +719,9 @@ spec:
                                             type: string
                                         type: object
                                       type: array
+                                      x-kubernetes-list-map-keys:
+                                      - index
+                                      x-kubernetes-list-type: map
                                     index:
                                       default: default
                                       description: This is an injected field with
@@ -810,6 +833,9 @@ spec:
                                       type: string
                                   type: object
                                 type: array
+                                x-kubernetes-list-map-keys:
+                                - expression
+                                x-kubernetes-list-type: map
                               disabled:
                                 description: Indicates whether the rule is disabled
                                   and would therefore not be evaluated.
@@ -974,6 +1000,13 @@ spec:
                                       description: 'supports the following:'
                                       items:
                                         properties:
+                                          index:
+                                            default: default
+                                            description: This is an injected field
+                                              with a default value for being able
+                                              to merge items of the parent object
+                                              list.
+                                            type: string
                                           lookupBy:
                                             description: 'Indicates whether the extracted
                                               value from the source is a service''s
@@ -992,6 +1025,9 @@ spec:
                                             type: string
                                         type: object
                                       type: array
+                                      x-kubernetes-list-map-keys:
+                                      - index
+                                      x-kubernetes-list-type: map
                                     index:
                                       default: default
                                       description: This is an injected field with
@@ -1020,6 +1056,9 @@ spec:
                                       type: string
                                   type: object
                                 type: array
+                                x-kubernetes-list-map-keys:
+                                - expression
+                                x-kubernetes-list-type: map
                               disabled:
                                 description: Indicates whether the rule is disabled
                                   and would therefore not be evaluated.

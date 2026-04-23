@@ -124,6 +124,28 @@ func Configure(p *config.Provider) {
 			},
 		}
 
+		// set[].rule[].condition uses expression as the natural map key.
+		r.ServerSideApplyMergeStrategies["set.rule.condition"] = config.MergeStrategy{
+			ListMergeStrategy: config.ListMergeStrategy{
+				MergeStrategy: config.ListTypeMap,
+				ListMapKeys:   config.ListMapKeys{Keys: []string{"expression"}},
+			},
+		}
+
+		// set[].rule[].actions[].dynamic_route_to is effectively a singleton;
+		// inject a synthetic key so SSA does not atomically replace it.
+		r.ServerSideApplyMergeStrategies["set.rule.actions.dynamic_route_to"] = config.MergeStrategy{
+			ListMergeStrategy: config.ListMergeStrategy{
+				MergeStrategy: config.ListTypeMap,
+				ListMapKeys: config.ListMapKeys{
+					InjectedKey: config.InjectedKey{
+						Key:          "index",
+						DefaultValue: "default",
+					},
+				},
+			},
+		}
+
 		// catch_all has no natural key; inject a synthetic one.
 		r.ServerSideApplyMergeStrategies["catch_all"] = config.MergeStrategy{
 			ListMergeStrategy: config.ListMergeStrategy{

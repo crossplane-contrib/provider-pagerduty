@@ -70,6 +70,10 @@ type CatchAllActionsParameters struct {
 
 type DynamicRouteToInitParameters struct {
 
+	// This is an injected field with a default value for being able to merge items of the parent object list.
+	// +kubebuilder:default:=default
+	Index *string `json:"index,omitempty" tf:"-"`
+
 	// Indicates whether the extracted value from the source is a service's name or ID. Allowed values are: service_name, service_id
 	LookupBy *string `json:"lookupBy,omitempty" tf:"lookup_by,omitempty"`
 
@@ -82,6 +86,10 @@ type DynamicRouteToInitParameters struct {
 
 type DynamicRouteToObservation struct {
 
+	// This is an injected field with a default value for being able to merge items of the parent object list.
+	// +kubebuilder:default:=default
+	Index *string `json:"index,omitempty" tf:"-"`
+
 	// Indicates whether the extracted value from the source is a service's name or ID. Allowed values are: service_name, service_id
 	LookupBy *string `json:"lookupBy,omitempty" tf:"lookup_by,omitempty"`
 
@@ -93,6 +101,11 @@ type DynamicRouteToObservation struct {
 }
 
 type DynamicRouteToParameters struct {
+
+	// This is an injected field with a default value for being able to merge items of the parent object list.
+	// +kubebuilder:validation:Optional
+	// +kubebuilder:default:=default
+	Index *string `json:"index" tf:"-"`
 
 	// Indicates whether the extracted value from the source is a service's name or ID. Allowed values are: service_name, service_id
 	// +kubebuilder:validation:Optional
@@ -274,6 +287,8 @@ type RuleConditionParameters struct {
 type SetRuleActionsInitParameters struct {
 
 	// supports the following:
+	// +listType=map
+	// +listMapKey=index
 	DynamicRouteTo []DynamicRouteToInitParameters `json:"dynamicRouteTo,omitempty" tf:"dynamic_route_to,omitempty"`
 
 	// This is an injected field with a default value for being able to merge items of the parent object list.
@@ -298,6 +313,8 @@ type SetRuleActionsInitParameters struct {
 type SetRuleActionsObservation struct {
 
 	// supports the following:
+	// +listType=map
+	// +listMapKey=index
 	DynamicRouteTo []DynamicRouteToObservation `json:"dynamicRouteTo,omitempty" tf:"dynamic_route_to,omitempty"`
 
 	// This is an injected field with a default value for being able to merge items of the parent object list.
@@ -312,6 +329,8 @@ type SetRuleActionsParameters struct {
 
 	// supports the following:
 	// +kubebuilder:validation:Optional
+	// +listType=map
+	// +listMapKey=index
 	DynamicRouteTo []DynamicRouteToParameters `json:"dynamicRouteTo,omitempty" tf:"dynamic_route_to,omitempty"`
 
 	// This is an injected field with a default value for being able to merge items of the parent object list.
@@ -343,6 +362,8 @@ type SetRuleInitParameters struct {
 	Actions []SetRuleActionsInitParameters `json:"actions,omitempty" tf:"actions,omitempty"`
 
 	// Each of these conditions is evaluated to check if an event matches this rule. The rule is considered a match if any of these conditions match. If none are provided, the event will always match against the rule.
+	// +listType=map
+	// +listMapKey=expression
 	Condition []RuleConditionInitParameters `json:"condition,omitempty" tf:"condition,omitempty"`
 
 	// Indicates whether the rule is disabled and would therefore not be evaluated.
@@ -364,6 +385,8 @@ type SetRuleObservation struct {
 	Actions []SetRuleActionsObservation `json:"actions,omitempty" tf:"actions,omitempty"`
 
 	// Each of these conditions is evaluated to check if an event matches this rule. The rule is considered a match if any of these conditions match. If none are provided, the event will always match against the rule.
+	// +listType=map
+	// +listMapKey=expression
 	Condition []RuleConditionObservation `json:"condition,omitempty" tf:"condition,omitempty"`
 
 	// Indicates whether the rule is disabled and would therefore not be evaluated.
@@ -390,6 +413,8 @@ type SetRuleParameters struct {
 
 	// Each of these conditions is evaluated to check if an event matches this rule. The rule is considered a match if any of these conditions match. If none are provided, the event will always match against the rule.
 	// +kubebuilder:validation:Optional
+	// +listType=map
+	// +listMapKey=expression
 	Condition []RuleConditionParameters `json:"condition,omitempty" tf:"condition,omitempty"`
 
 	// Indicates whether the rule is disabled and would therefore not be evaluated.
