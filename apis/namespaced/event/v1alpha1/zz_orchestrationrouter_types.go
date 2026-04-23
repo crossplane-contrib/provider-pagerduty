@@ -17,7 +17,7 @@ import (
 type CatchAllActionsInitParameters struct {
 
 	// This is an injected field with a default value for being able to merge items of the parent object list.
-	// +kubebuilder:default:=default
+	// +kubebuilder:default:="0"
 	Index *string `json:"index,omitempty" tf:"-"`
 
 	// The ID of the target Service for the resulting alert.
@@ -38,7 +38,7 @@ type CatchAllActionsInitParameters struct {
 type CatchAllActionsObservation struct {
 
 	// This is an injected field with a default value for being able to merge items of the parent object list.
-	// +kubebuilder:default:=default
+	// +kubebuilder:default:="0"
 	Index *string `json:"index,omitempty" tf:"-"`
 
 	// The ID of the target Service for the resulting alert.
@@ -49,7 +49,7 @@ type CatchAllActionsParameters struct {
 
 	// This is an injected field with a default value for being able to merge items of the parent object list.
 	// +kubebuilder:validation:Optional
-	// +kubebuilder:default:=default
+	// +kubebuilder:default:="0"
 	Index *string `json:"index" tf:"-"`
 
 	// The ID of the target Service for the resulting alert.
@@ -71,7 +71,7 @@ type CatchAllActionsParameters struct {
 type DynamicRouteToInitParameters struct {
 
 	// This is an injected field with a default value for being able to merge items of the parent object list.
-	// +kubebuilder:default:=default
+	// +kubebuilder:default:="0"
 	Index *string `json:"index,omitempty" tf:"-"`
 
 	// Indicates whether the extracted value from the source is a service's name or ID. Allowed values are: service_name, service_id
@@ -87,7 +87,7 @@ type DynamicRouteToInitParameters struct {
 type DynamicRouteToObservation struct {
 
 	// This is an injected field with a default value for being able to merge items of the parent object list.
-	// +kubebuilder:default:=default
+	// +kubebuilder:default:="0"
 	Index *string `json:"index,omitempty" tf:"-"`
 
 	// Indicates whether the extracted value from the source is a service's name or ID. Allowed values are: service_name, service_id
@@ -104,7 +104,7 @@ type DynamicRouteToParameters struct {
 
 	// This is an injected field with a default value for being able to merge items of the parent object list.
 	// +kubebuilder:validation:Optional
-	// +kubebuilder:default:=default
+	// +kubebuilder:default:="0"
 	Index *string `json:"index" tf:"-"`
 
 	// Indicates whether the extracted value from the source is a service's name or ID. Allowed values are: service_name, service_id
@@ -128,7 +128,7 @@ type OrchestrationRouterCatchAllInitParameters struct {
 	Actions []CatchAllActionsInitParameters `json:"actions,omitempty" tf:"actions,omitempty"`
 
 	// This is an injected field with a default value for being able to merge items of the parent object list.
-	// +kubebuilder:default:=default
+	// +kubebuilder:default:="0"
 	Index *string `json:"index,omitempty" tf:"-"`
 }
 
@@ -140,7 +140,7 @@ type OrchestrationRouterCatchAllObservation struct {
 	Actions []CatchAllActionsObservation `json:"actions,omitempty" tf:"actions,omitempty"`
 
 	// This is an injected field with a default value for being able to merge items of the parent object list.
-	// +kubebuilder:default:=default
+	// +kubebuilder:default:="0"
 	Index *string `json:"index,omitempty" tf:"-"`
 }
 
@@ -154,7 +154,7 @@ type OrchestrationRouterCatchAllParameters struct {
 
 	// This is an injected field with a default value for being able to merge items of the parent object list.
 	// +kubebuilder:validation:Optional
-	// +kubebuilder:default:=default
+	// +kubebuilder:default:="0"
 	Index *string `json:"index" tf:"-"`
 }
 
@@ -179,7 +179,7 @@ type OrchestrationRouterInitParameters struct {
 
 	// The Router contains a single set of rules  (the "start" set).
 	// +listType=map
-	// +listMapKey=id
+	// +listMapKey=index
 	Set []OrchestrationRouterSetInitParameters `json:"set,omitempty" tf:"set,omitempty"`
 }
 
@@ -198,7 +198,7 @@ type OrchestrationRouterObservation struct {
 
 	// The Router contains a single set of rules  (the "start" set).
 	// +listType=map
-	// +listMapKey=id
+	// +listMapKey=index
 	Set []OrchestrationRouterSetObservation `json:"set,omitempty" tf:"set,omitempty"`
 }
 
@@ -226,7 +226,7 @@ type OrchestrationRouterParameters struct {
 	// The Router contains a single set of rules  (the "start" set).
 	// +kubebuilder:validation:Optional
 	// +listType=map
-	// +listMapKey=id
+	// +listMapKey=index
 	Set []OrchestrationRouterSetParameters `json:"set,omitempty" tf:"set,omitempty"`
 }
 
@@ -234,6 +234,10 @@ type OrchestrationRouterSetInitParameters struct {
 
 	// ID of the start set. Router supports only one set and it's id has to be start
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// This is an injected field with a default value for being able to merge items of the parent object list.
+	// +kubebuilder:default:="0"
+	Index *string `json:"index,omitempty" tf:"-"`
 
 	// The Router evaluates Events against these Rules, one at a time, and routes each Event to a specific Service based on the first rule that matches.
 	// +listType=map
@@ -245,6 +249,10 @@ type OrchestrationRouterSetObservation struct {
 
 	// ID of the start set. Router supports only one set and it's id has to be start
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// This is an injected field with a default value for being able to merge items of the parent object list.
+	// +kubebuilder:default:="0"
+	Index *string `json:"index,omitempty" tf:"-"`
 
 	// The Router evaluates Events against these Rules, one at a time, and routes each Event to a specific Service based on the first rule that matches.
 	// +listType=map
@@ -258,6 +266,11 @@ type OrchestrationRouterSetParameters struct {
 	// +kubebuilder:validation:Optional
 	ID *string `json:"id" tf:"id,omitempty"`
 
+	// This is an injected field with a default value for being able to merge items of the parent object list.
+	// +kubebuilder:validation:Optional
+	// +kubebuilder:default:="0"
+	Index *string `json:"index" tf:"-"`
+
 	// The Router evaluates Events against these Rules, one at a time, and routes each Event to a specific Service based on the first rule that matches.
 	// +kubebuilder:validation:Optional
 	// +listType=map
@@ -269,12 +282,20 @@ type RuleConditionInitParameters struct {
 
 	// A PCL condition string.
 	Expression *string `json:"expression,omitempty" tf:"expression,omitempty"`
+
+	// This is an injected field with a default value for being able to merge items of the parent object list.
+	// +kubebuilder:default:="0"
+	Index *string `json:"index,omitempty" tf:"-"`
 }
 
 type RuleConditionObservation struct {
 
 	// A PCL condition string.
 	Expression *string `json:"expression,omitempty" tf:"expression,omitempty"`
+
+	// This is an injected field with a default value for being able to merge items of the parent object list.
+	// +kubebuilder:default:="0"
+	Index *string `json:"index,omitempty" tf:"-"`
 }
 
 type RuleConditionParameters struct {
@@ -282,6 +303,11 @@ type RuleConditionParameters struct {
 	// A PCL condition string.
 	// +kubebuilder:validation:Optional
 	Expression *string `json:"expression" tf:"expression,omitempty"`
+
+	// This is an injected field with a default value for being able to merge items of the parent object list.
+	// +kubebuilder:validation:Optional
+	// +kubebuilder:default:="0"
+	Index *string `json:"index" tf:"-"`
 }
 
 type SetRuleActionsInitParameters struct {
@@ -292,7 +318,7 @@ type SetRuleActionsInitParameters struct {
 	DynamicRouteTo []DynamicRouteToInitParameters `json:"dynamicRouteTo,omitempty" tf:"dynamic_route_to,omitempty"`
 
 	// This is an injected field with a default value for being able to merge items of the parent object list.
-	// +kubebuilder:default:=default
+	// +kubebuilder:default:="0"
 	Index *string `json:"index,omitempty" tf:"-"`
 
 	// The ID of the target Service for the resulting alert.
@@ -318,7 +344,7 @@ type SetRuleActionsObservation struct {
 	DynamicRouteTo []DynamicRouteToObservation `json:"dynamicRouteTo,omitempty" tf:"dynamic_route_to,omitempty"`
 
 	// This is an injected field with a default value for being able to merge items of the parent object list.
-	// +kubebuilder:default:=default
+	// +kubebuilder:default:="0"
 	Index *string `json:"index,omitempty" tf:"-"`
 
 	// The ID of the target Service for the resulting alert.
@@ -335,7 +361,7 @@ type SetRuleActionsParameters struct {
 
 	// This is an injected field with a default value for being able to merge items of the parent object list.
 	// +kubebuilder:validation:Optional
-	// +kubebuilder:default:=default
+	// +kubebuilder:default:="0"
 	Index *string `json:"index" tf:"-"`
 
 	// The ID of the target Service for the resulting alert.
@@ -363,14 +389,14 @@ type SetRuleInitParameters struct {
 
 	// Each of these conditions is evaluated to check if an event matches this rule. The rule is considered a match if any of these conditions match. If none are provided, the event will always match against the rule.
 	// +listType=map
-	// +listMapKey=expression
+	// +listMapKey=index
 	Condition []RuleConditionInitParameters `json:"condition,omitempty" tf:"condition,omitempty"`
 
 	// Indicates whether the rule is disabled and would therefore not be evaluated.
 	Disabled *bool `json:"disabled,omitempty" tf:"disabled,omitempty"`
 
 	// This is an injected field with a default value for being able to merge items of the parent object list.
-	// +kubebuilder:default:=default
+	// +kubebuilder:default:="0"
 	Index *string `json:"index,omitempty" tf:"-"`
 
 	// A description of this rule's purpose.
@@ -386,7 +412,7 @@ type SetRuleObservation struct {
 
 	// Each of these conditions is evaluated to check if an event matches this rule. The rule is considered a match if any of these conditions match. If none are provided, the event will always match against the rule.
 	// +listType=map
-	// +listMapKey=expression
+	// +listMapKey=index
 	Condition []RuleConditionObservation `json:"condition,omitempty" tf:"condition,omitempty"`
 
 	// Indicates whether the rule is disabled and would therefore not be evaluated.
@@ -396,7 +422,7 @@ type SetRuleObservation struct {
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
 	// This is an injected field with a default value for being able to merge items of the parent object list.
-	// +kubebuilder:default:=default
+	// +kubebuilder:default:="0"
 	Index *string `json:"index,omitempty" tf:"-"`
 
 	// A description of this rule's purpose.
@@ -414,7 +440,7 @@ type SetRuleParameters struct {
 	// Each of these conditions is evaluated to check if an event matches this rule. The rule is considered a match if any of these conditions match. If none are provided, the event will always match against the rule.
 	// +kubebuilder:validation:Optional
 	// +listType=map
-	// +listMapKey=expression
+	// +listMapKey=index
 	Condition []RuleConditionParameters `json:"condition,omitempty" tf:"condition,omitempty"`
 
 	// Indicates whether the rule is disabled and would therefore not be evaluated.
@@ -423,7 +449,7 @@ type SetRuleParameters struct {
 
 	// This is an injected field with a default value for being able to merge items of the parent object list.
 	// +kubebuilder:validation:Optional
-	// +kubebuilder:default:=default
+	// +kubebuilder:default:="0"
 	Index *string `json:"index" tf:"-"`
 
 	// A description of this rule's purpose.

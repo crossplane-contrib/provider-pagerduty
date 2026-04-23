@@ -92,7 +92,10 @@ func Configure(p *config.Provider) {
 			ListMergeStrategy: config.ListMergeStrategy{
 				MergeStrategy: config.ListTypeMap,
 				ListMapKeys: config.ListMapKeys{
-					Keys: []string{"id"},
+					InjectedKey: config.InjectedKey{
+						Key:          "index",
+						DefaultValue: `"0"`,
+					},
 				},
 			},
 		}
@@ -105,7 +108,7 @@ func Configure(p *config.Provider) {
 				ListMapKeys: config.ListMapKeys{
 					InjectedKey: config.InjectedKey{
 						Key:          "index",
-						DefaultValue: "default",
+						DefaultValue: `"0"`,
 					},
 				},
 			},
@@ -118,7 +121,7 @@ func Configure(p *config.Provider) {
 				ListMapKeys: config.ListMapKeys{
 					InjectedKey: config.InjectedKey{
 						Key:          "index",
-						DefaultValue: "default",
+						DefaultValue: `"0"`,
 					},
 				},
 			},
@@ -128,7 +131,12 @@ func Configure(p *config.Provider) {
 		r.ServerSideApplyMergeStrategies["set.rule.condition"] = config.MergeStrategy{
 			ListMergeStrategy: config.ListMergeStrategy{
 				MergeStrategy: config.ListTypeMap,
-				ListMapKeys:   config.ListMapKeys{Keys: []string{"expression"}},
+				ListMapKeys: config.ListMapKeys{
+					InjectedKey: config.InjectedKey{
+						Key:          "index",
+						DefaultValue: `"0"`,
+					},
+				},
 			},
 		}
 
@@ -140,7 +148,7 @@ func Configure(p *config.Provider) {
 				ListMapKeys: config.ListMapKeys{
 					InjectedKey: config.InjectedKey{
 						Key:          "index",
-						DefaultValue: "default",
+						DefaultValue: `"0"`,
 					},
 				},
 			},
@@ -153,7 +161,7 @@ func Configure(p *config.Provider) {
 				ListMapKeys: config.ListMapKeys{
 					InjectedKey: config.InjectedKey{
 						Key:          "index",
-						DefaultValue: "default",
+						DefaultValue: `"0"`,
 					},
 				},
 			},
@@ -166,7 +174,7 @@ func Configure(p *config.Provider) {
 				ListMapKeys: config.ListMapKeys{
 					InjectedKey: config.InjectedKey{
 						Key:          "index",
-						DefaultValue: "default",
+						DefaultValue: `"0"`,
 					},
 				},
 			},
