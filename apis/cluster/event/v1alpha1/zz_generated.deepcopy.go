@@ -4886,6 +4886,11 @@ func (in *OrchestrationServiceSetInitParameters) DeepCopyInto(out *Orchestration
 		*out = new(string)
 		**out = **in
 	}
+	if in.Index != nil {
+		in, out := &in.Index, &out.Index
+		*out = new(string)
+		**out = **in
+	}
 	if in.Rule != nil {
 		in, out := &in.Rule, &out.Rule
 		*out = make([]OrchestrationServiceSetRuleInitParameters, len(*in))
@@ -4913,6 +4918,11 @@ func (in *OrchestrationServiceSetObservation) DeepCopyInto(out *OrchestrationSer
 		*out = new(string)
 		**out = **in
 	}
+	if in.Index != nil {
+		in, out := &in.Index, &out.Index
+		*out = new(string)
+		**out = **in
+	}
 	if in.Rule != nil {
 		in, out := &in.Rule, &out.Rule
 		*out = make([]OrchestrationServiceSetRuleObservation, len(*in))
@@ -4937,6 +4947,11 @@ func (in *OrchestrationServiceSetParameters) DeepCopyInto(out *OrchestrationServ
 	*out = *in
 	if in.ID != nil {
 		in, out := &in.ID, &out.ID
+		*out = new(string)
+		**out = **in
+	}
+	if in.Index != nil {
+		in, out := &in.Index, &out.Index
 		*out = new(string)
 		**out = **in
 	}
@@ -6028,6 +6043,11 @@ func (in *OrchestrationUnroutedSetInitParameters) DeepCopyInto(out *Orchestratio
 		*out = new(string)
 		**out = **in
 	}
+	if in.Index != nil {
+		in, out := &in.Index, &out.Index
+		*out = new(string)
+		**out = **in
+	}
 	if in.Rule != nil {
 		in, out := &in.Rule, &out.Rule
 		*out = make([]OrchestrationUnroutedSetRuleInitParameters, len(*in))
@@ -6055,6 +6075,11 @@ func (in *OrchestrationUnroutedSetObservation) DeepCopyInto(out *OrchestrationUn
 		*out = new(string)
 		**out = **in
 	}
+	if in.Index != nil {
+		in, out := &in.Index, &out.Index
+		*out = new(string)
+		**out = **in
+	}
 	if in.Rule != nil {
 		in, out := &in.Rule, &out.Rule
 		*out = make([]OrchestrationUnroutedSetRuleObservation, len(*in))
@@ -6079,6 +6104,11 @@ func (in *OrchestrationUnroutedSetParameters) DeepCopyInto(out *OrchestrationUnr
 	*out = *in
 	if in.ID != nil {
 		in, out := &in.ID, &out.ID
+		*out = new(string)
+		**out = **in
+	}
+	if in.Index != nil {
+		in, out := &in.Index, &out.Index
 		*out = new(string)
 		**out = **in
 	}
@@ -7936,6 +7966,11 @@ func (in *SetInitParameters) DeepCopyInto(out *SetInitParameters) {
 		*out = new(string)
 		**out = **in
 	}
+	if in.Index != nil {
+		in, out := &in.Index, &out.Index
+		*out = new(string)
+		**out = **in
+	}
 	if in.Rule != nil {
 		in, out := &in.Rule, &out.Rule
 		*out = make([]RuleInitParameters, len(*in))
@@ -7963,6 +7998,11 @@ func (in *SetObservation) DeepCopyInto(out *SetObservation) {
 		*out = new(string)
 		**out = **in
 	}
+	if in.Index != nil {
+		in, out := &in.Index, &out.Index
+		*out = new(string)
+		**out = **in
+	}
 	if in.Rule != nil {
 		in, out := &in.Rule, &out.Rule
 		*out = make([]RuleObservation, len(*in))
@@ -7987,6 +8027,11 @@ func (in *SetParameters) DeepCopyInto(out *SetParameters) {
 	*out = *in
 	if in.ID != nil {
 		in, out := &in.ID, &out.ID
+		*out = new(string)
+		**out = **in
+	}
+	if in.Index != nil {
+		in, out := &in.Index, &out.Index
 		*out = new(string)
 		**out = **in
 	}

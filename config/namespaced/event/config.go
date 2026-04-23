@@ -28,14 +28,22 @@ func Configure(p *config.Provider) {
 		r.ServerSideApplyMergeStrategies["set"] = config.MergeStrategy{
 			ListMergeStrategy: config.ListMergeStrategy{
 				MergeStrategy: config.ListTypeMap,
-				ListMapKeys:   config.ListMapKeys{Keys: []string{"id"}},
+				ListMapKeys: config.ListMapKeys{
+					InjectedKey: config.InjectedKey{
+						Key:          "index",
+						DefaultValue: `"0"`,
+					},
+				},
 			},
 		}
 		r.ServerSideApplyMergeStrategies["catch_all"] = config.MergeStrategy{
 			ListMergeStrategy: config.ListMergeStrategy{
 				MergeStrategy: config.ListTypeMap,
-				ListMapKeys: config.ListMapKeys{
-					InjectedKey: config.InjectedKey{Key: "index", DefaultValue: "default"},
+ListMapKeys: config.ListMapKeys{
+					InjectedKey: config.InjectedKey{
+						Key:          "index",
+						DefaultValue: `"0"`,
+					},
 				},
 			},
 		}
@@ -53,14 +61,22 @@ func Configure(p *config.Provider) {
 		r.ServerSideApplyMergeStrategies["set"] = config.MergeStrategy{
 			ListMergeStrategy: config.ListMergeStrategy{
 				MergeStrategy: config.ListTypeMap,
-				ListMapKeys:   config.ListMapKeys{Keys: []string{"id"}},
+				ListMapKeys: config.ListMapKeys{
+					InjectedKey: config.InjectedKey{
+						Key:          "index",
+						DefaultValue: `"0"`,
+					},
+				},
 			},
 		}
 		r.ServerSideApplyMergeStrategies["catch_all"] = config.MergeStrategy{
 			ListMergeStrategy: config.ListMergeStrategy{
 				MergeStrategy: config.ListTypeMap,
-				ListMapKeys: config.ListMapKeys{
-					InjectedKey: config.InjectedKey{Key: "index", DefaultValue: "default"},
+ListMapKeys: config.ListMapKeys{
+					InjectedKey: config.InjectedKey{
+						Key:          "index",
+						DefaultValue: `"0"`,
+					},
 				},
 			},
 		}
@@ -215,14 +231,22 @@ func Configure(p *config.Provider) {
 		r.ServerSideApplyMergeStrategies["set"] = config.MergeStrategy{
 			ListMergeStrategy: config.ListMergeStrategy{
 				MergeStrategy: config.ListTypeMap,
-				ListMapKeys:   config.ListMapKeys{Keys: []string{"id"}},
+				ListMapKeys: config.ListMapKeys{
+					InjectedKey: config.InjectedKey{
+						Key:          "index",
+						DefaultValue: `"0"`,
+					},
+				},
 			},
 		}
 		r.ServerSideApplyMergeStrategies["catch_all"] = config.MergeStrategy{
 			ListMergeStrategy: config.ListMergeStrategy{
 				MergeStrategy: config.ListTypeMap,
-				ListMapKeys: config.ListMapKeys{
-					InjectedKey: config.InjectedKey{Key: "index", DefaultValue: "default"},
+ListMapKeys: config.ListMapKeys{
+					InjectedKey: config.InjectedKey{
+						Key:          "index",
+						DefaultValue: `"0"`,
+					},
 				},
 			},
 		}

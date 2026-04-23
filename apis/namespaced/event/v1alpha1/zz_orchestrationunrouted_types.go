@@ -169,7 +169,7 @@ type OrchestrationUnroutedCatchAllInitParameters struct {
 	Actions []OrchestrationUnroutedCatchAllActionsInitParameters `json:"actions,omitempty" tf:"actions,omitempty"`
 
 	// This is an injected field with a default value for being able to merge items of the parent object list.
-	// +kubebuilder:default:=default
+	// +kubebuilder:default:="0"
 	Index *string `json:"index,omitempty" tf:"-"`
 }
 
@@ -179,7 +179,7 @@ type OrchestrationUnroutedCatchAllObservation struct {
 	Actions []OrchestrationUnroutedCatchAllActionsObservation `json:"actions,omitempty" tf:"actions,omitempty"`
 
 	// This is an injected field with a default value for being able to merge items of the parent object list.
-	// +kubebuilder:default:=default
+	// +kubebuilder:default:="0"
 	Index *string `json:"index,omitempty" tf:"-"`
 }
 
@@ -191,7 +191,7 @@ type OrchestrationUnroutedCatchAllParameters struct {
 
 	// This is an injected field with a default value for being able to merge items of the parent object list.
 	// +kubebuilder:validation:Optional
-	// +kubebuilder:default:=default
+	// +kubebuilder:default:="0"
 	Index *string `json:"index" tf:"-"`
 }
 
@@ -216,7 +216,7 @@ type OrchestrationUnroutedInitParameters struct {
 
 	// An Unrouted Orchestration must contain at least a "start" set, but can contain any number of additional sets that are routed to by other rules to form a directional graph.
 	// +listType=map
-	// +listMapKey=id
+	// +listMapKey=index
 	Set []OrchestrationUnroutedSetInitParameters `json:"set,omitempty" tf:"set,omitempty"`
 }
 
@@ -235,7 +235,7 @@ type OrchestrationUnroutedObservation struct {
 
 	// An Unrouted Orchestration must contain at least a "start" set, but can contain any number of additional sets that are routed to by other rules to form a directional graph.
 	// +listType=map
-	// +listMapKey=id
+	// +listMapKey=index
 	Set []OrchestrationUnroutedSetObservation `json:"set,omitempty" tf:"set,omitempty"`
 }
 
@@ -263,7 +263,7 @@ type OrchestrationUnroutedParameters struct {
 	// An Unrouted Orchestration must contain at least a "start" set, but can contain any number of additional sets that are routed to by other rules to form a directional graph.
 	// +kubebuilder:validation:Optional
 	// +listType=map
-	// +listMapKey=id
+	// +listMapKey=index
 	Set []OrchestrationUnroutedSetParameters `json:"set,omitempty" tf:"set,omitempty"`
 }
 
@@ -271,6 +271,10 @@ type OrchestrationUnroutedSetInitParameters struct {
 
 	// The ID of this set of rules. Rules in other sets can route events into this set using the rule's route_to property.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// This is an injected field with a default value for being able to merge items of the parent object list.
+	// +kubebuilder:default:="0"
+	Index *string `json:"index,omitempty" tf:"-"`
 
 	// The Unrouted Orchestration evaluates Events against these Rules, one at a time, and applies all the actions for first rule it finds where the event matches the rule's conditions.
 	Rule []OrchestrationUnroutedSetRuleInitParameters `json:"rule,omitempty" tf:"rule,omitempty"`
@@ -281,6 +285,10 @@ type OrchestrationUnroutedSetObservation struct {
 	// The ID of this set of rules. Rules in other sets can route events into this set using the rule's route_to property.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
+	// This is an injected field with a default value for being able to merge items of the parent object list.
+	// +kubebuilder:default:="0"
+	Index *string `json:"index,omitempty" tf:"-"`
+
 	// The Unrouted Orchestration evaluates Events against these Rules, one at a time, and applies all the actions for first rule it finds where the event matches the rule's conditions.
 	Rule []OrchestrationUnroutedSetRuleObservation `json:"rule,omitempty" tf:"rule,omitempty"`
 }
@@ -290,6 +298,11 @@ type OrchestrationUnroutedSetParameters struct {
 	// The ID of this set of rules. Rules in other sets can route events into this set using the rule's route_to property.
 	// +kubebuilder:validation:Optional
 	ID *string `json:"id" tf:"id,omitempty"`
+
+	// This is an injected field with a default value for being able to merge items of the parent object list.
+	// +kubebuilder:validation:Optional
+	// +kubebuilder:default:="0"
+	Index *string `json:"index" tf:"-"`
 
 	// The Unrouted Orchestration evaluates Events against these Rules, one at a time, and applies all the actions for first rule it finds where the event matches the rule's conditions.
 	// +kubebuilder:validation:Optional

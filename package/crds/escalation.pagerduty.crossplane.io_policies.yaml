@@ -103,7 +103,7 @@ spec:
                             type: object
                           type: array
                         index:
-                          default: default
+                          default: "0"
                           description: This is an injected field with a default value
                             for being able to merge items of the parent object list.
                           type: string
@@ -251,7 +251,7 @@ spec:
                             type: object
                           type: array
                         index:
-                          default: default
+                          default: "0"
                           description: This is an injected field with a default value
                             for being able to merge items of the parent object list.
                           type: string
@@ -492,7 +492,7 @@ spec:
                           description: A target ID
                           type: string
                         index:
-                          default: default
+                          default: "0"
                           description: This is an injected field with a default value
                             for being able to merge items of the parent object list.
                           type: string

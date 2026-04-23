@@ -442,7 +442,7 @@ type OrchestrationServiceCatchAllInitParameters struct {
 	Actions []OrchestrationServiceCatchAllActionsInitParameters `json:"actions,omitempty" tf:"actions,omitempty"`
 
 	// This is an injected field with a default value for being able to merge items of the parent object list.
-	// +kubebuilder:default:=default
+	// +kubebuilder:default:="0"
 	Index *string `json:"index,omitempty" tf:"-"`
 }
 
@@ -452,7 +452,7 @@ type OrchestrationServiceCatchAllObservation struct {
 	Actions []OrchestrationServiceCatchAllActionsObservation `json:"actions,omitempty" tf:"actions,omitempty"`
 
 	// This is an injected field with a default value for being able to merge items of the parent object list.
-	// +kubebuilder:default:=default
+	// +kubebuilder:default:="0"
 	Index *string `json:"index,omitempty" tf:"-"`
 }
 
@@ -464,7 +464,7 @@ type OrchestrationServiceCatchAllParameters struct {
 
 	// This is an injected field with a default value for being able to merge items of the parent object list.
 	// +kubebuilder:validation:Optional
-	// +kubebuilder:default:=default
+	// +kubebuilder:default:="0"
 	Index *string `json:"index" tf:"-"`
 }
 
@@ -492,7 +492,7 @@ type OrchestrationServiceInitParameters struct {
 
 	// A Service Orchestration must contain at least a "start" set, but can contain any number of additional sets that are routed to by other rules to form a directional graph.
 	// +listType=map
-	// +listMapKey=id
+	// +listMapKey=index
 	Set []OrchestrationServiceSetInitParameters `json:"set,omitempty" tf:"set,omitempty"`
 }
 
@@ -514,7 +514,7 @@ type OrchestrationServiceObservation struct {
 
 	// A Service Orchestration must contain at least a "start" set, but can contain any number of additional sets that are routed to by other rules to form a directional graph.
 	// +listType=map
-	// +listMapKey=id
+	// +listMapKey=index
 	Set []OrchestrationServiceSetObservation `json:"set,omitempty" tf:"set,omitempty"`
 }
 
@@ -546,7 +546,7 @@ type OrchestrationServiceParameters struct {
 	// A Service Orchestration must contain at least a "start" set, but can contain any number of additional sets that are routed to by other rules to form a directional graph.
 	// +kubebuilder:validation:Optional
 	// +listType=map
-	// +listMapKey=id
+	// +listMapKey=index
 	Set []OrchestrationServiceSetParameters `json:"set,omitempty" tf:"set,omitempty"`
 }
 
@@ -554,6 +554,10 @@ type OrchestrationServiceSetInitParameters struct {
 
 	// The ID of this set of rules. Rules in other sets can route events into this set using the rule's route_to property.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// This is an injected field with a default value for being able to merge items of the parent object list.
+	// +kubebuilder:default:="0"
+	Index *string `json:"index,omitempty" tf:"-"`
 
 	// The service orchestration evaluates Events against these Rules, one at a time, and applies all the actions for first rule it finds where the event matches the rule's conditions.
 	Rule []OrchestrationServiceSetRuleInitParameters `json:"rule,omitempty" tf:"rule,omitempty"`
@@ -564,6 +568,10 @@ type OrchestrationServiceSetObservation struct {
 	// The ID of this set of rules. Rules in other sets can route events into this set using the rule's route_to property.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
+	// This is an injected field with a default value for being able to merge items of the parent object list.
+	// +kubebuilder:default:="0"
+	Index *string `json:"index,omitempty" tf:"-"`
+
 	// The service orchestration evaluates Events against these Rules, one at a time, and applies all the actions for first rule it finds where the event matches the rule's conditions.
 	Rule []OrchestrationServiceSetRuleObservation `json:"rule,omitempty" tf:"rule,omitempty"`
 }
@@ -573,6 +581,11 @@ type OrchestrationServiceSetParameters struct {
 	// The ID of this set of rules. Rules in other sets can route events into this set using the rule's route_to property.
 	// +kubebuilder:validation:Optional
 	ID *string `json:"id" tf:"id,omitempty"`
+
+	// This is an injected field with a default value for being able to merge items of the parent object list.
+	// +kubebuilder:validation:Optional
+	// +kubebuilder:default:="0"
+	Index *string `json:"index" tf:"-"`
 
 	// The service orchestration evaluates Events against these Rules, one at a time, and applies all the actions for first rule it finds where the event matches the rule's conditions.
 	// +kubebuilder:validation:Optional

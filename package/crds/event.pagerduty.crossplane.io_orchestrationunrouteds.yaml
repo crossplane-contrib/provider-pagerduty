@@ -159,7 +159,7 @@ spec:
                             type: object
                           type: array
                         index:
-                          default: default
+                          default: "0"
                           description: This is an injected field with a default value
                             for being able to merge items of the parent object list.
                           type: string
@@ -258,6 +258,11 @@ spec:
                           description: The ID of this set of rules. Rules in other
                             sets can route events into this set using the rule's route_to
                             property.
+                          type: string
+                        index:
+                          default: "0"
+                          description: This is an injected field with a default value
+                            for being able to merge items of the parent object list.
                           type: string
                         rule:
                           description: The Unrouted Orchestration evaluates Events
@@ -380,7 +385,7 @@ spec:
                       type: object
                     type: array
                     x-kubernetes-list-map-keys:
-                    - id
+                    - index
                     x-kubernetes-list-type: map
                 type: object
               initProvider:
@@ -481,7 +486,7 @@ spec:
                             type: object
                           type: array
                         index:
-                          default: default
+                          default: "0"
                           description: This is an injected field with a default value
                             for being able to merge items of the parent object list.
                           type: string
@@ -580,6 +585,11 @@ spec:
                           description: The ID of this set of rules. Rules in other
                             sets can route events into this set using the rule's route_to
                             property.
+                          type: string
+                        index:
+                          default: "0"
+                          description: This is an injected field with a default value
+                            for being able to merge items of the parent object list.
                           type: string
                         rule:
                           description: The Unrouted Orchestration evaluates Events
@@ -702,7 +712,7 @@ spec:
                       type: object
                     type: array
                     x-kubernetes-list-map-keys:
-                    - id
+                    - index
                     x-kubernetes-list-type: map
                 type: object
               managementPolicies:
@@ -893,7 +903,7 @@ spec:
                             type: object
                           type: array
                         index:
-                          default: default
+                          default: "0"
                           description: This is an injected field with a default value
                             for being able to merge items of the parent object list.
                           type: string
@@ -920,6 +930,11 @@ spec:
                           description: The ID of this set of rules. Rules in other
                             sets can route events into this set using the rule's route_to
                             property.
+                          type: string
+                        index:
+                          default: "0"
+                          description: This is an injected field with a default value
+                            for being able to merge items of the parent object list.
                           type: string
                         rule:
                           description: The Unrouted Orchestration evaluates Events
@@ -1047,7 +1062,7 @@ spec:
                       type: object
                     type: array
                     x-kubernetes-list-map-keys:
-                    - id
+                    - index
                     x-kubernetes-list-type: map
                 type: object
               conditions:

@@ -132,7 +132,7 @@ type RuleInitParameters struct {
 	EscalationRuleAssignmentStrategy []EscalationRuleAssignmentStrategyInitParameters `json:"escalationRuleAssignmentStrategy,omitempty" tf:"escalation_rule_assignment_strategy,omitempty"`
 
 	// This is an injected field with a default value for being able to merge items of the parent object list.
-	// +kubebuilder:default:=default
+	// +kubebuilder:default:="0"
 	Index *string `json:"index,omitempty" tf:"-"`
 
 	Target []TargetInitParameters `json:"target,omitempty" tf:"target,omitempty"`
@@ -150,7 +150,7 @@ type RuleObservation struct {
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
 	// This is an injected field with a default value for being able to merge items of the parent object list.
-	// +kubebuilder:default:=default
+	// +kubebuilder:default:="0"
 	Index *string `json:"index,omitempty" tf:"-"`
 
 	Target []TargetObservation `json:"target,omitempty" tf:"target,omitempty"`
@@ -168,7 +168,7 @@ type RuleParameters struct {
 
 	// This is an injected field with a default value for being able to merge items of the parent object list.
 	// +kubebuilder:validation:Optional
-	// +kubebuilder:default:=default
+	// +kubebuilder:default:="0"
 	Index *string `json:"index" tf:"-"`
 
 	// +kubebuilder:validation:Optional
