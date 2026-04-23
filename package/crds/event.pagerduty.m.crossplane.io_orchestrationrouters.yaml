@@ -70,7 +70,7 @@ spec:
                           items:
                             properties:
                               index:
-                                default: default
+                                default: "0"
                                 description: This is an injected field with a default
                                   value for being able to merge items of the parent
                                   object list.
@@ -167,7 +167,7 @@ spec:
                           - index
                           x-kubernetes-list-type: map
                         index:
-                          default: default
+                          default: "0"
                           description: This is an injected field with a default value
                             for being able to merge items of the parent object list.
                           type: string
@@ -271,6 +271,11 @@ spec:
                           description: ID of the start set. Router supports only one
                             set and it's id has to be start
                           type: string
+                        index:
+                          default: "0"
+                          description: This is an injected field with a default value
+                            for being able to merge items of the parent object list.
+                          type: string
                         rule:
                           description: The Router evaluates Events against these Rules,
                             one at a time, and routes each Event to a specific Service
@@ -288,7 +293,7 @@ spec:
                                       items:
                                         properties:
                                           index:
-                                            default: default
+                                            default: "0"
                                             description: This is an injected field
                                               with a default value for being able
                                               to merge items of the parent object
@@ -316,7 +321,7 @@ spec:
                                       - index
                                       x-kubernetes-list-type: map
                                     index:
-                                      default: default
+                                      default: "0"
                                       description: This is an injected field with
                                         a default value for being able to merge items
                                         of the parent object list.
@@ -424,17 +429,23 @@ spec:
                                     expression:
                                       description: A PCL condition string.
                                       type: string
+                                    index:
+                                      default: "0"
+                                      description: This is an injected field with
+                                        a default value for being able to merge items
+                                        of the parent object list.
+                                      type: string
                                   type: object
                                 type: array
                                 x-kubernetes-list-map-keys:
-                                - expression
+                                - index
                                 x-kubernetes-list-type: map
                               disabled:
                                 description: Indicates whether the rule is disabled
                                   and would therefore not be evaluated.
                                 type: boolean
                               index:
-                                default: default
+                                default: "0"
                                 description: This is an injected field with a default
                                   value for being able to merge items of the parent
                                   object list.
@@ -450,7 +461,7 @@ spec:
                       type: object
                     type: array
                     x-kubernetes-list-map-keys:
-                    - id
+                    - index
                     x-kubernetes-list-type: map
                 type: object
               initProvider:
@@ -477,7 +488,7 @@ spec:
                           items:
                             properties:
                               index:
-                                default: default
+                                default: "0"
                                 description: This is an injected field with a default
                                   value for being able to merge items of the parent
                                   object list.
@@ -574,7 +585,7 @@ spec:
                           - index
                           x-kubernetes-list-type: map
                         index:
-                          default: default
+                          default: "0"
                           description: This is an injected field with a default value
                             for being able to merge items of the parent object list.
                           type: string
@@ -678,6 +689,11 @@ spec:
                           description: ID of the start set. Router supports only one
                             set and it's id has to be start
                           type: string
+                        index:
+                          default: "0"
+                          description: This is an injected field with a default value
+                            for being able to merge items of the parent object list.
+                          type: string
                         rule:
                           description: The Router evaluates Events against these Rules,
                             one at a time, and routes each Event to a specific Service
@@ -695,7 +711,7 @@ spec:
                                       items:
                                         properties:
                                           index:
-                                            default: default
+                                            default: "0"
                                             description: This is an injected field
                                               with a default value for being able
                                               to merge items of the parent object
@@ -723,7 +739,7 @@ spec:
                                       - index
                                       x-kubernetes-list-type: map
                                     index:
-                                      default: default
+                                      default: "0"
                                       description: This is an injected field with
                                         a default value for being able to merge items
                                         of the parent object list.
@@ -831,17 +847,23 @@ spec:
                                     expression:
                                       description: A PCL condition string.
                                       type: string
+                                    index:
+                                      default: "0"
+                                      description: This is an injected field with
+                                        a default value for being able to merge items
+                                        of the parent object list.
+                                      type: string
                                   type: object
                                 type: array
                                 x-kubernetes-list-map-keys:
-                                - expression
+                                - index
                                 x-kubernetes-list-type: map
                               disabled:
                                 description: Indicates whether the rule is disabled
                                   and would therefore not be evaluated.
                                 type: boolean
                               index:
-                                default: default
+                                default: "0"
                                 description: This is an injected field with a default
                                   value for being able to merge items of the parent
                                   object list.
@@ -857,7 +879,7 @@ spec:
                       type: object
                     type: array
                     x-kubernetes-list-map-keys:
-                    - id
+                    - index
                     x-kubernetes-list-type: map
                 type: object
               managementPolicies:
@@ -943,7 +965,7 @@ spec:
                           items:
                             properties:
                               index:
-                                default: default
+                                default: "0"
                                 description: This is an injected field with a default
                                   value for being able to merge items of the parent
                                   object list.
@@ -958,7 +980,7 @@ spec:
                           - index
                           x-kubernetes-list-type: map
                         index:
-                          default: default
+                          default: "0"
                           description: This is an injected field with a default value
                             for being able to merge items of the parent object list.
                           type: string
@@ -984,6 +1006,11 @@ spec:
                           description: ID of the start set. Router supports only one
                             set and it's id has to be start
                           type: string
+                        index:
+                          default: "0"
+                          description: This is an injected field with a default value
+                            for being able to merge items of the parent object list.
+                          type: string
                         rule:
                           description: The Router evaluates Events against these Rules,
                             one at a time, and routes each Event to a specific Service
@@ -1001,7 +1028,7 @@ spec:
                                       items:
                                         properties:
                                           index:
-                                            default: default
+                                            default: "0"
                                             description: This is an injected field
                                               with a default value for being able
                                               to merge items of the parent object
@@ -1029,7 +1056,7 @@ spec:
                                       - index
                                       x-kubernetes-list-type: map
                                     index:
-                                      default: default
+                                      default: "0"
                                       description: This is an injected field with
                                         a default value for being able to merge items
                                         of the parent object list.
@@ -1054,10 +1081,16 @@ spec:
                                     expression:
                                       description: A PCL condition string.
                                       type: string
+                                    index:
+                                      default: "0"
+                                      description: This is an injected field with
+                                        a default value for being able to merge items
+                                        of the parent object list.
+                                      type: string
                                   type: object
                                 type: array
                                 x-kubernetes-list-map-keys:
-                                - expression
+                                - index
                                 x-kubernetes-list-type: map
                               disabled:
                                 description: Indicates whether the rule is disabled
@@ -1068,7 +1101,7 @@ spec:
                                   only one set and it's id has to be start
                                 type: string
                               index:
-                                default: default
+                                default: "0"
                                 description: This is an injected field with a default
                                   value for being able to merge items of the parent
                                   object list.
@@ -1084,7 +1117,7 @@ spec:
                       type: object
                     type: array
                     x-kubernetes-list-map-keys:
-                    - id
+                    - index
                     x-kubernetes-list-type: map
                 type: object
               conditions:
