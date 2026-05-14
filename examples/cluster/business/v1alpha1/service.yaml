@@ -24,7 +24,7 @@ metadata:
     meta.upbound.io/example-id: business/v1alpha1/service
   labels:
     testing.upbound.io/example-name: example
-  name: business-service-team
+  name: example
 spec:
   forProvider:
-    name: Business Service Example Team
+    name: Business Service Team
