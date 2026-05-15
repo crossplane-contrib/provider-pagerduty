@@ -14,14 +14,14 @@ concurrency:
 
 env:
   # Common versions
-  GO_VERSION: '1.25.8'
-  GOLANGCI_VERSION: 'v2.11.4'
-  DOCKER_BUILDX_VERSION: 'v0.31.1'
-  UP_VERSION: 'v0.38.4'
+  GO_VERSION: "1.25.9"
+  GOLANGCI_VERSION: "v2.11.4"
+  DOCKER_BUILDX_VERSION: "v0.31.1"
+  UP_VERSION: "v0.38.4"
 
   # Registry/Org names
-  CROSSPLANE_REGORG: 'ghcr.io/crossplane-contrib' # xpkg.crossplane.io/crossplane-contrib
-  UPBOUND_REGORG: 'xpkg.upbound.io/crossplane-contrib'
+  CROSSPLANE_REGORG: "ghcr.io/crossplane-contrib" # xpkg.crossplane.io/crossplane-contrib
+  UPBOUND_REGORG: "xpkg.upbound.io/crossplane-contrib"
 
   PROVIDER_REPO: provider-pagerduty
 
