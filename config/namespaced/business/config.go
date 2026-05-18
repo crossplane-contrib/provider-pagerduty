@@ -15,6 +15,14 @@ func Configure(p *config.Provider) {
 				TerraformName: "pagerduty_team",
 			},
 		}
+		if r.MetaResource != nil && len(r.MetaResource.Examples) > 0 {
+			if r.MetaResource.Examples[0].Dependencies == nil {
+				r.MetaResource.Examples[0].Dependencies = map[string]string{}
+			}
+			r.MetaResource.Examples[0].Dependencies["pagerduty_team.example"] = `{
+  "name": "Business Service Team"
+}`
+		}
 		r.ExternalName.GetExternalNameFn = c.GetExternalNameFromId
 		r.ExternalName.GetIDFn = c.GetFakeID
 		// Deprecated

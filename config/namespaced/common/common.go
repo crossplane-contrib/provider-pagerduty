@@ -12,7 +12,9 @@ import (
 const (
 	ErrFmtNoAttribute    = `attribute not found: %s`
 	ErrFmtUnexpectedType = `unexpected type for attribute %s: Expecting a string`
-	fakeId               = `managed`
+	// pagerDutyIDShapedSentinel avoids empty-ID reads while keeping the value
+	// valid-shaped for PagerDuty APIs that reject arbitrary text before lookup.
+	pagerDutyIDShapedSentinel = `P000000`
 )
 
 func getStringFromParams(parameters map[string]interface{}, keys []string, separator rune) (string, error) {
@@ -45,7 +47,7 @@ func GetExternalNameFromId(tfstate map[string]any) (string, error) {
 
 func GetFakeID(_ context.Context, externalName string, _ map[string]any, _ map[string]any) (string, error) {
 	if externalName == "" {
-		return fakeId, nil
+		return pagerDutyIDShapedSentinel, nil
 	}
 	return externalName, nil
 }

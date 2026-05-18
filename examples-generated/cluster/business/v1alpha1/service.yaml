@@ -14,3 +14,17 @@ spec:
     teamSelector:
       matchLabels:
         testing.upbound.io/example-name: example
+
+---
+
+apiVersion: team.pagerduty.crossplane.io/v1alpha1
+kind: Team
+metadata:
+  annotations:
+    meta.upbound.io/example-id: business/v1alpha1/service
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    name: Business Service Team

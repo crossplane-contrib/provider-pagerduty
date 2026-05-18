@@ -6,7 +6,7 @@ metadata:
   labels:
     testing.upbound.io/example-name: example
   name: example
-  namespace: upbound-system
+  namespace: crossplane-system
 spec:
   forProvider:
     customFields:
@@ -30,7 +30,7 @@ metadata:
   labels:
     testing.upbound.io/example-name: example
   name: example
-  namespace: upbound-system
+  namespace: crossplane-system
 spec:
   forProvider:
     acknowledgementTimeout: 600
@@ -50,7 +50,7 @@ metadata:
   labels:
     testing.upbound.io/example-name: environment
   name: environment
-  namespace: upbound-system
+  namespace: crossplane-system
 spec:
   forProvider:
     dataType: string
@@ -69,7 +69,7 @@ metadata:
   labels:
     testing.upbound.io/example-name: is_critical
   name: is-critical
-  namespace: upbound-system
+  namespace: crossplane-system
 spec:
   forProvider:
     dataType: boolean
@@ -88,7 +88,7 @@ metadata:
   labels:
     testing.upbound.io/example-name: region
   name: region
-  namespace: upbound-system
+  namespace: crossplane-system
 spec:
   forProvider:
     dataType: string
@@ -107,7 +107,7 @@ metadata:
   labels:
     testing.upbound.io/example-name: regions
   name: regions
-  namespace: upbound-system
+  namespace: crossplane-system
 spec:
   forProvider:
     dataType: string

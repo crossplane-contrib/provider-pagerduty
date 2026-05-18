@@ -6,7 +6,7 @@ metadata:
   labels:
     testing.upbound.io/example-name: global
   name: global
-  namespace: upbound-system
+  namespace: crossplane-system
 spec:
   forProvider:
     catchAll:
@@ -62,7 +62,7 @@ metadata:
   labels:
     testing.upbound.io/example-name: event_orchestration
   name: event-orchestration
-  namespace: upbound-system
+  namespace: crossplane-system
 spec:
   forProvider:
     name: Example Orchestration
@@ -80,7 +80,7 @@ metadata:
   labels:
     testing.upbound.io/example-name: database_team
   name: database-team
-  namespace: upbound-system
+  namespace: crossplane-system
 spec:
   forProvider:
     name: Database Team
