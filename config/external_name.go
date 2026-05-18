@@ -43,6 +43,7 @@ var ExternalNameConfigs = map[string]config.ExternalName{
 	"pagerduty_ruleset_rule":                                  idWithStub(),
 	"pagerduty_ruleset":                                       idWithStub(),
 	"pagerduty_schedule":                                      idWithStub(),
+	"pagerduty_schedulev2":                                    idWithStub(),
 	"pagerduty_service_custom_field":                          idWithStub(),
 	"pagerduty_service_custom_field_value":                    idWithStub(),
 	"pagerduty_service_dependency":                            idWithStub(),
