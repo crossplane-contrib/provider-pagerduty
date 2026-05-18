@@ -16,7 +16,7 @@ spec:
     snowPasswordSecretRef:
       key: example-key
       name: example-secret
-      namespace: upbound-system
+      namespace: crossplane-system
     snowUser: meeps
     syncOptions: manual_sync
     target: https://foo.servicenow.com/webhook_foo

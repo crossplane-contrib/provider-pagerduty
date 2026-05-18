@@ -3,7 +3,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.20.1
+    controller-gen.kubebuilder.io/version: v0.21.0
   name: orchestrationrouters.event.pagerduty.crossplane.io
 spec:
   group: event.pagerduty.crossplane.io
@@ -83,6 +83,12 @@ spec:
                             alert and incident, when an event matches this rule.
                           items:
                             properties:
+                              index:
+                                default: "0"
+                                description: This is an injected field with a default
+                                  value for being able to merge items of the parent
+                                  object list.
+                                type: string
                               routeTo:
                                 description: The ID of the target Service for the
                                   resulting alert.
@@ -165,8 +171,19 @@ spec:
                                 type: object
                             type: object
                           type: array
+                          x-kubernetes-list-map-keys:
+                          - index
+                          x-kubernetes-list-type: map
+                        index:
+                          default: "0"
+                          description: This is an injected field with a default value
+                            for being able to merge items of the parent object list.
+                          type: string
                       type: object
                     type: array
+                    x-kubernetes-list-map-keys:
+                    - index
+                    x-kubernetes-list-type: map
                   eventOrchestration:
                     description: ID of the Event Orchestration to which the Router
                       belongs.
@@ -256,6 +273,11 @@ spec:
                           description: ID of the start set. Router supports only one
                             set and it's id has to be start
                           type: string
+                        index:
+                          default: "0"
+                          description: This is an injected field with a default value
+                            for being able to merge items of the parent object list.
+                          type: string
                         rule:
                           description: The Router evaluates Events against these Rules,
                             one at a time, and routes each Event to a specific Service
@@ -272,6 +294,13 @@ spec:
                                       description: 'supports the following:'
                                       items:
                                         properties:
+                                          index:
+                                            default: "0"
+                                            description: This is an injected field
+                                              with a default value for being able
+                                              to merge items of the parent object
+                                              list.
+                                            type: string
                                           lookupBy:
                                             description: 'Indicates whether the extracted
                                               value from the source is a service''s
@@ -290,6 +319,15 @@ spec:
                                             type: string
                                         type: object
                                       type: array
+                                      x-kubernetes-list-map-keys:
+                                      - index
+                                      x-kubernetes-list-type: map
+                                    index:
+                                      default: "0"
+                                      description: This is an injected field with
+                                        a default value for being able to merge items
+                                        of the parent object list.
+                                      type: string
                                     routeTo:
                                       description: The ID of the target Service for
                                         the resulting alert.
@@ -372,6 +410,9 @@ spec:
                                       type: object
                                   type: object
                                 type: array
+                                x-kubernetes-list-map-keys:
+                                - index
+                                x-kubernetes-list-type: map
                               condition:
                                 description: Each of these conditions is evaluated
                                   to check if an event matches this rule. The rule
@@ -383,19 +424,40 @@ spec:
                                     expression:
                                       description: A PCL condition string.
                                       type: string
+                                    index:
+                                      default: "0"
+                                      description: This is an injected field with
+                                        a default value for being able to merge items
+                                        of the parent object list.
+                                      type: string
                                   type: object
                                 type: array
+                                x-kubernetes-list-map-keys:
+                                - index
+                                x-kubernetes-list-type: map
                               disabled:
                                 description: Indicates whether the rule is disabled
                                   and would therefore not be evaluated.
                                 type: boolean
+                              index:
+                                default: "0"
+                                description: This is an injected field with a default
+                                  value for being able to merge items of the parent
+                                  object list.
+                                type: string
                               label:
                                 description: A description of this rule's purpose.
                                 type: string
                             type: object
                           type: array
+                          x-kubernetes-list-map-keys:
+                          - index
+                          x-kubernetes-list-type: map
                       type: object
                     type: array
+                    x-kubernetes-list-map-keys:
+                    - index
+                    x-kubernetes-list-type: map
                 type: object
               initProvider:
                 description: |-
@@ -420,6 +482,12 @@ spec:
                             alert and incident, when an event matches this rule.
                           items:
                             properties:
+                              index:
+                                default: "0"
+                                description: This is an injected field with a default
+                                  value for being able to merge items of the parent
+                                  object list.
+                                type: string
                               routeTo:
                                 description: The ID of the target Service for the
                                   resulting alert.
@@ -502,8 +570,19 @@ spec:
                                 type: object
                             type: object
                           type: array
+                          x-kubernetes-list-map-keys:
+                          - index
+                          x-kubernetes-list-type: map
+                        index:
+                          default: "0"
+                          description: This is an injected field with a default value
+                            for being able to merge items of the parent object list.
+                          type: string
                       type: object
                     type: array
+                    x-kubernetes-list-map-keys:
+                    - index
+                    x-kubernetes-list-type: map
                   eventOrchestration:
                     description: ID of the Event Orchestration to which the Router
                       belongs.
@@ -593,6 +672,11 @@ spec:
                           description: ID of the start set. Router supports only one
                             set and it's id has to be start
                           type: string
+                        index:
+                          default: "0"
+                          description: This is an injected field with a default value
+                            for being able to merge items of the parent object list.
+                          type: string
                         rule:
                           description: The Router evaluates Events against these Rules,
                             one at a time, and routes each Event to a specific Service
@@ -609,6 +693,13 @@ spec:
                                       description: 'supports the following:'
                                       items:
                                         properties:
+                                          index:
+                                            default: "0"
+                                            description: This is an injected field
+                                              with a default value for being able
+                                              to merge items of the parent object
+                                              list.
+                                            type: string
                                           lookupBy:
                                             description: 'Indicates whether the extracted
                                               value from the source is a service''s
@@ -627,6 +718,15 @@ spec:
                                             type: string
                                         type: object
                                       type: array
+                                      x-kubernetes-list-map-keys:
+                                      - index
+                                      x-kubernetes-list-type: map
+                                    index:
+                                      default: "0"
+                                      description: This is an injected field with
+                                        a default value for being able to merge items
+                                        of the parent object list.
+                                      type: string
                                     routeTo:
                                       description: The ID of the target Service for
                                         the resulting alert.
@@ -709,6 +809,9 @@ spec:
                                       type: object
                                   type: object
                                 type: array
+                                x-kubernetes-list-map-keys:
+                                - index
+                                x-kubernetes-list-type: map
                               condition:
                                 description: Each of these conditions is evaluated
                                   to check if an event matches this rule. The rule
@@ -720,19 +823,40 @@ spec:
                                     expression:
                                       description: A PCL condition string.
                                       type: string
+                                    index:
+                                      default: "0"
+                                      description: This is an injected field with
+                                        a default value for being able to merge items
+                                        of the parent object list.
+                                      type: string
                                   type: object
                                 type: array
+                                x-kubernetes-list-map-keys:
+                                - index
+                                x-kubernetes-list-type: map
                               disabled:
                                 description: Indicates whether the rule is disabled
                                   and would therefore not be evaluated.
                                 type: boolean
+                              index:
+                                default: "0"
+                                description: This is an injected field with a default
+                                  value for being able to merge items of the parent
+                                  object list.
+                                type: string
                               label:
                                 description: A description of this rule's purpose.
                                 type: string
                             type: object
                           type: array
+                          x-kubernetes-list-map-keys:
+                          - index
+                          x-kubernetes-list-type: map
                       type: object
                     type: array
+                    x-kubernetes-list-map-keys:
+                    - index
+                    x-kubernetes-list-type: map
                 type: object
               managementPolicies:
                 default:
@@ -844,14 +968,31 @@ spec:
                             alert and incident, when an event matches this rule.
                           items:
                             properties:
+                              index:
+                                default: "0"
+                                description: This is an injected field with a default
+                                  value for being able to merge items of the parent
+                                  object list.
+                                type: string
                               routeTo:
                                 description: The ID of the target Service for the
                                   resulting alert.
                                 type: string
                             type: object
                           type: array
+                          x-kubernetes-list-map-keys:
+                          - index
+                          x-kubernetes-list-type: map
+                        index:
+                          default: "0"
+                          description: This is an injected field with a default value
+                            for being able to merge items of the parent object list.
+                          type: string
                       type: object
                     type: array
+                    x-kubernetes-list-map-keys:
+                    - index
+                    x-kubernetes-list-type: map
                   eventOrchestration:
                     description: ID of the Event Orchestration to which the Router
                       belongs.
@@ -869,6 +1010,11 @@ spec:
                           description: ID of the start set. Router supports only one
                             set and it's id has to be start
                           type: string
+                        index:
+                          default: "0"
+                          description: This is an injected field with a default value
+                            for being able to merge items of the parent object list.
+                          type: string
                         rule:
                           description: The Router evaluates Events against these Rules,
                             one at a time, and routes each Event to a specific Service
@@ -885,6 +1031,13 @@ spec:
                                       description: 'supports the following:'
                                       items:
                                         properties:
+                                          index:
+                                            default: "0"
+                                            description: This is an injected field
+                                              with a default value for being able
+                                              to merge items of the parent object
+                                              list.
+                                            type: string
                                           lookupBy:
                                             description: 'Indicates whether the extracted
                                               value from the source is a service''s
@@ -903,12 +1056,24 @@ spec:
                                             type: string
                                         type: object
                                       type: array
+                                      x-kubernetes-list-map-keys:
+                                      - index
+                                      x-kubernetes-list-type: map
+                                    index:
+                                      default: "0"
+                                      description: This is an injected field with
+                                        a default value for being able to merge items
+                                        of the parent object list.
+                                      type: string
                                     routeTo:
                                       description: The ID of the target Service for
                                         the resulting alert.
                                       type: string
                                   type: object
                                 type: array
+                                x-kubernetes-list-map-keys:
+                                - index
+                                x-kubernetes-list-type: map
                               condition:
                                 description: Each of these conditions is evaluated
                                   to check if an event matches this rule. The rule
@@ -920,8 +1085,17 @@ spec:
                                     expression:
                                       description: A PCL condition string.
                                       type: string
+                                    index:
+                                      default: "0"
+                                      description: This is an injected field with
+                                        a default value for being able to merge items
+                                        of the parent object list.
+                                      type: string
                                   type: object
                                 type: array
+                                x-kubernetes-list-map-keys:
+                                - index
+                                x-kubernetes-list-type: map
                               disabled:
                                 description: Indicates whether the rule is disabled
                                   and would therefore not be evaluated.
@@ -930,13 +1104,25 @@ spec:
                                 description: ID of the start set. Router supports
                                   only one set and it's id has to be start
                                 type: string
+                              index:
+                                default: "0"
+                                description: This is an injected field with a default
+                                  value for being able to merge items of the parent
+                                  object list.
+                                type: string
                               label:
                                 description: A description of this rule's purpose.
                                 type: string
                             type: object
                           type: array
+                          x-kubernetes-list-map-keys:
+                          - index
+                          x-kubernetes-list-type: map
                       type: object
                     type: array
+                    x-kubernetes-list-map-keys:
+                    - index
+                    x-kubernetes-list-type: map
                 type: object
               conditions:
                 description: Conditions of the resource.

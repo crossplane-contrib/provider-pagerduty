@@ -6,7 +6,7 @@ metadata:
   labels:
     testing.upbound.io/example-name: team_example
   name: team-example
-  namespace: upbound-system
+  namespace: crossplane-system
 spec:
   forProvider:
     businessServiceIdSelector:
@@ -27,7 +27,7 @@ metadata:
   labels:
     testing.upbound.io/example-name: example
   name: example
-  namespace: upbound-system
+  namespace: crossplane-system
 spec:
   forProvider:
     description: A very descriptive description of this business service
@@ -47,7 +47,7 @@ metadata:
   labels:
     testing.upbound.io/example-name: engteam
   name: engteam
-  namespace: upbound-system
+  namespace: crossplane-system
 spec:
   forProvider:
     name: Engineering
@@ -62,7 +62,7 @@ metadata:
   labels:
     testing.upbound.io/example-name: example
   name: example
-  namespace: upbound-system
+  namespace: crossplane-system
 spec:
   forProvider:
     email: 125.greenholt.earline@graham.name

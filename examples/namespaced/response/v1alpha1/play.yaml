@@ -6,7 +6,7 @@ metadata:
   labels:
     testing.upbound.io/example-name: example
   name: example
-  namespace: upbound-system
+  namespace: crossplane-system
 spec:
   forProvider:
     from: 125.greenholt.earline@graham.name
@@ -29,7 +29,7 @@ metadata:
   labels:
     testing.upbound.io/example-name: example
   name: example
-  namespace: upbound-system
+  namespace: crossplane-system
 spec:
   forProvider:
     name: Engineering Escalation Policy
@@ -50,7 +50,7 @@ metadata:
   labels:
     testing.upbound.io/example-name: example
   name: example
-  namespace: upbound-system
+  namespace: crossplane-system
 spec:
   forProvider:
     email: 125.greenholt.earline@graham.name

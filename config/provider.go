@@ -7,6 +7,7 @@ package config
 import (
 	// Note(turkenh): we are importing this to embed provider schema document
 	_ "embed"
+	"os"
 
 	ujconfig "github.com/crossplane/upjet/v2/pkg/config"
 
@@ -52,8 +53,9 @@ import (
 )
 
 const (
-	resourcePrefix = "pagerduty"
-	modulePath     = "github.com/crossplane-contrib/provider-pagerduty"
+	resourcePrefix                  = "pagerduty"
+	modulePath                      = "github.com/crossplane-contrib/provider-pagerduty"
+	defaultManagedResourceNamespace = "crossplane-system"
 )
 
 //go:embed schema.json
@@ -62,6 +64,16 @@ var providerSchema string
 //go:embed provider-metadata.yaml
 var providerMetadata string
 
+func exampleManifestConfiguration() ujconfig.ExampleManifestConfiguration {
+	namespace := os.Getenv("CROSSPLANE_NAMESPACE")
+	if namespace == "" {
+		namespace = defaultManagedResourceNamespace
+	}
+	return ujconfig.ExampleManifestConfiguration{
+		ManagedResourceNamespace: namespace,
+	}
+}
+
 // GetProvider returns provider configuration
 func GetProvider() *ujconfig.Provider {
 	pc := ujconfig.NewProvider([]byte(providerSchema), resourcePrefix, modulePath, []byte(providerMetadata),
@@ -69,6 +81,7 @@ func GetProvider() *ujconfig.Provider {
 		ujconfig.WithShortName("pagerduty"),
 		ujconfig.WithFeaturesPackage("internal/features"),
 		ujconfig.WithRootGroup("pagerduty.crossplane.io"),
+		ujconfig.WithExampleManifestConfiguration(exampleManifestConfiguration()),
 		ujconfig.WithDefaultResourceOptions(
 			ExternalNameConfigurations(),
 		))
@@ -109,6 +122,7 @@ func GetProviderNamespaced() *ujconfig.Provider {
 		ujconfig.WithShortName("pagerduty"),
 		ujconfig.WithFeaturesPackage("internal/features"),
 		ujconfig.WithRootGroup("pagerduty.m.crossplane.io"),
+		ujconfig.WithExampleManifestConfiguration(exampleManifestConfiguration()),
 		ujconfig.WithDefaultResourceOptions(
 			ExternalNameConfigurations(),
 		))
