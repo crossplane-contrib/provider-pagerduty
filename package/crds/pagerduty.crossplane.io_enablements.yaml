@@ -4,9 +4,9 @@ kind: CustomResourceDefinition
 metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.20.1
-  name: enablements.pagerduty.pagerduty.crossplane.io
+  name: enablements.pagerduty.crossplane.io
 spec:
-  group: pagerduty.pagerduty.crossplane.io
+  group: pagerduty.crossplane.io
   names:
     categories:
     - crossplane

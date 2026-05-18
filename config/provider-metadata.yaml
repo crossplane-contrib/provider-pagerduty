@@ -3880,7 +3880,7 @@ resources:
             contact_method: '- (Required) A contact method block, configured as a block described below.'
             id: '- (Required) The id of the referenced contact method.'
             start_delay_in_minutes: '- (Required) The delay before firing the rule, in minutes.'
-            type: '- (Required) The type of contact method. Can be email_contact_method, phone_contact_method, push_notification_contact_method or sms_contact_method.'
+            type: '- (Required) The type of contact method. Can be email_contact_method, phone_contact_method, push_notification_contact_method, sms_contact_method or whatsapp_contact_method.'
             urgency: '- (Required) Which incident urgency this rule is used for. Account must have the urgencies ability to have a low urgency notification rule. Can be high or low.'
             user_id: '- (Required) The ID of the user.'
         importStatements: []

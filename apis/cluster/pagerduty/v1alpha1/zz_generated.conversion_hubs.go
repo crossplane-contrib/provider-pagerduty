@@ -7,4 +7,4 @@
 package v1alpha1
 
 // Hub marks this type as a conversion hub.
-func (tr *Enablement) Hub() {}
+func (tr *Schedule) Hub() {}

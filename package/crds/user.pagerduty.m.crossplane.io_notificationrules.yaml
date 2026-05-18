@@ -338,8 +338,8 @@ spec:
                           type: string
                         type:
                           description: The type of contact method. Can be email_contact_method,
-                            phone_contact_method, push_notification_contact_method
-                            or sms_contact_method.
+                            phone_contact_method, push_notification_contact_method,
+                            sms_contact_method or whatsapp_contact_method.
                           type: string
                       type: object
                     type: array
