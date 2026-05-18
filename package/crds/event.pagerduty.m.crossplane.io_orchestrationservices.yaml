@@ -271,8 +271,16 @@ spec:
                                 type: array
                             type: object
                           type: array
+                        index:
+                          default: "0"
+                          description: This is an injected field with a default value
+                            for being able to merge items of the parent object list.
+                          type: string
                       type: object
                     type: array
+                    x-kubernetes-list-map-keys:
+                    - index
+                    x-kubernetes-list-type: map
                   enableEventOrchestrationForService:
                     description: Opt-in/out for switching the Service to Service Orchestrations.
                     type: boolean
@@ -370,6 +378,11 @@ spec:
                           description: The ID of this set of rules. Rules in other
                             sets can route events into this set using the rule's route_to
                             property.
+                          type: string
+                        index:
+                          default: "0"
+                          description: This is an injected field with a default value
+                            for being able to merge items of the parent object list.
                           type: string
                         rule:
                           description: The service orchestration evaluates Events
@@ -621,6 +634,9 @@ spec:
                           type: array
                       type: object
                     type: array
+                    x-kubernetes-list-map-keys:
+                    - index
+                    x-kubernetes-list-type: map
                 type: object
               initProvider:
                 description: |-
@@ -847,8 +863,16 @@ spec:
                                 type: array
                             type: object
                           type: array
+                        index:
+                          default: "0"
+                          description: This is an injected field with a default value
+                            for being able to merge items of the parent object list.
+                          type: string
                       type: object
                     type: array
+                    x-kubernetes-list-map-keys:
+                    - index
+                    x-kubernetes-list-type: map
                   enableEventOrchestrationForService:
                     description: Opt-in/out for switching the Service to Service Orchestrations.
                     type: boolean
@@ -946,6 +970,11 @@ spec:
                           description: The ID of this set of rules. Rules in other
                             sets can route events into this set using the rule's route_to
                             property.
+                          type: string
+                        index:
+                          default: "0"
+                          description: This is an injected field with a default value
+                            for being able to merge items of the parent object list.
                           type: string
                         rule:
                           description: The service orchestration evaluates Events
@@ -1197,6 +1226,9 @@ spec:
                           type: array
                       type: object
                     type: array
+                    x-kubernetes-list-map-keys:
+                    - index
+                    x-kubernetes-list-type: map
                 type: object
               managementPolicies:
                 default:
@@ -1483,8 +1515,16 @@ spec:
                                 type: array
                             type: object
                           type: array
+                        index:
+                          default: "0"
+                          description: This is an injected field with a default value
+                            for being able to merge items of the parent object list.
+                          type: string
                       type: object
                     type: array
+                    x-kubernetes-list-map-keys:
+                    - index
+                    x-kubernetes-list-type: map
                   enableEventOrchestrationForService:
                     description: Opt-in/out for switching the Service to Service Orchestrations.
                     type: boolean
@@ -1506,6 +1546,11 @@ spec:
                           description: The ID of this set of rules. Rules in other
                             sets can route events into this set using the rule's route_to
                             property.
+                          type: string
+                        index:
+                          default: "0"
+                          description: This is an injected field with a default value
+                            for being able to merge items of the parent object list.
                           type: string
                         rule:
                           description: The service orchestration evaluates Events
@@ -1762,6 +1807,9 @@ spec:
                           type: array
                       type: object
                     type: array
+                    x-kubernetes-list-map-keys:
+                    - index
+                    x-kubernetes-list-type: map
                 type: object
               conditions:
                 description: Conditions of the resource.

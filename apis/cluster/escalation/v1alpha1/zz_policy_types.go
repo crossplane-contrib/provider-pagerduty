@@ -44,6 +44,8 @@ type PolicyInitParameters struct {
 	NumLoops *float64 `json:"numLoops,omitempty" tf:"num_loops,omitempty"`
 
 	// An Escalation rule block. Escalation rules documented below.
+	// +listType=map
+	// +listMapKey=index
 	Rule []RuleInitParameters `json:"rule,omitempty" tf:"rule,omitempty"`
 
 	// References to Team in team to populate teams.
@@ -76,6 +78,8 @@ type PolicyObservation struct {
 	NumLoops *float64 `json:"numLoops,omitempty" tf:"num_loops,omitempty"`
 
 	// An Escalation rule block. Escalation rules documented below.
+	// +listType=map
+	// +listMapKey=index
 	Rule []RuleObservation `json:"rule,omitempty" tf:"rule,omitempty"`
 
 	// Team associated with the policy (Only 1 team can be assigned to an Escalation Policy). Account must have the teams ability to use this parameter.
@@ -98,6 +102,8 @@ type PolicyParameters struct {
 
 	// An Escalation rule block. Escalation rules documented below.
 	// +kubebuilder:validation:Optional
+	// +listType=map
+	// +listMapKey=index
 	Rule []RuleParameters `json:"rule,omitempty" tf:"rule,omitempty"`
 
 	// References to Team in team to populate teams.
@@ -124,6 +130,10 @@ type RuleInitParameters struct {
 	// The strategy used to assign the escalation rule to an incident. Documented below.
 	EscalationRuleAssignmentStrategy []EscalationRuleAssignmentStrategyInitParameters `json:"escalationRuleAssignmentStrategy,omitempty" tf:"escalation_rule_assignment_strategy,omitempty"`
 
+	// This is an injected field with a default value for being able to merge items of the parent object list.
+	// +kubebuilder:default:="0"
+	Index *string `json:"index,omitempty" tf:"-"`
+
 	Target []TargetInitParameters `json:"target,omitempty" tf:"target,omitempty"`
 }
 
@@ -138,6 +148,10 @@ type RuleObservation struct {
 	// A target ID
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
+	// This is an injected field with a default value for being able to merge items of the parent object list.
+	// +kubebuilder:default:="0"
+	Index *string `json:"index,omitempty" tf:"-"`
+
 	Target []TargetObservation `json:"target,omitempty" tf:"target,omitempty"`
 }
 
@@ -150,6 +164,11 @@ type RuleParameters struct {
 	// The strategy used to assign the escalation rule to an incident. Documented below.
 	// +kubebuilder:validation:Optional
 	EscalationRuleAssignmentStrategy []EscalationRuleAssignmentStrategyParameters `json:"escalationRuleAssignmentStrategy,omitempty" tf:"escalation_rule_assignment_strategy,omitempty"`
+
+	// This is an injected field with a default value for being able to merge items of the parent object list.
+	// +kubebuilder:validation:Optional
+	// +kubebuilder:default:="0"
+	Index *string `json:"index" tf:"-"`
 
 	// +kubebuilder:validation:Optional
 	Target []TargetParameters `json:"target" tf:"target,omitempty"`
