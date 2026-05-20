@@ -79,8 +79,6 @@ type PolicyObservation struct {
 	NumLoops *float64 `json:"numLoops,omitempty" tf:"num_loops,omitempty"`
 
 	// An Escalation rule block. Escalation rules documented below.
-	// +listType=map
-	// +listMapKey=index
 	Rule []RuleObservation `json:"rule,omitempty" tf:"rule,omitempty"`
 
 	// Team associated with the policy (Only 1 team can be assigned to an Escalation Policy). Account must have the teams ability to use this parameter.
@@ -150,7 +148,6 @@ type RuleObservation struct {
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
 	// This is an injected field with a default value for being able to merge items of the parent object list.
-	// +kubebuilder:default:="0"
 	Index *string `json:"index,omitempty" tf:"-"`
 
 	Target []TargetObservation `json:"target,omitempty" tf:"target,omitempty"`
