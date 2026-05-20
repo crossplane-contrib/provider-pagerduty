@@ -451,7 +451,6 @@ type OrchestrationServiceCatchAllObservation struct {
 	Actions []OrchestrationServiceCatchAllActionsObservation `json:"actions,omitempty" tf:"actions,omitempty"`
 
 	// This is an injected field with a default value for being able to merge items of the parent object list.
-	// +kubebuilder:default:="0"
 	Index *string `json:"index,omitempty" tf:"-"`
 }
 
@@ -498,8 +497,6 @@ type OrchestrationServiceInitParameters struct {
 type OrchestrationServiceObservation struct {
 
 	// the catch_all actions will be applied if an Event reaches the end of any set without matching any rules in that set.
-	// +listType=map
-	// +listMapKey=index
 	CatchAll []OrchestrationServiceCatchAllObservation `json:"catchAll,omitempty" tf:"catch_all,omitempty"`
 
 	// Opt-in/out for switching the Service to Service Orchestrations.
@@ -512,8 +509,6 @@ type OrchestrationServiceObservation struct {
 	Service *string `json:"service,omitempty" tf:"service,omitempty"`
 
 	// A Service Orchestration must contain at least a "start" set, but can contain any number of additional sets that are routed to by other rules to form a directional graph.
-	// +listType=map
-	// +listMapKey=index
 	Set []OrchestrationServiceSetObservation `json:"set,omitempty" tf:"set,omitempty"`
 }
 
@@ -568,7 +563,6 @@ type OrchestrationServiceSetObservation struct {
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
 	// This is an injected field with a default value for being able to merge items of the parent object list.
-	// +kubebuilder:default:="0"
 	Index *string `json:"index,omitempty" tf:"-"`
 
 	// The service orchestration evaluates Events against these Rules, one at a time, and applies all the actions for first rule it finds where the event matches the rule's conditions.
