@@ -118,13 +118,13 @@ func Configure(p *config.Provider) {
 
 		// set[].rule has no natural key (id is Terraform-computed); inject one
 		// so SSA can target individual rule items when patching back routeTo.
+		// No default — users must provide a unique index per rule.
 		r.ServerSideApplyMergeStrategies["set.rule"] = config.MergeStrategy{
 			ListMergeStrategy: config.ListMergeStrategy{
 				MergeStrategy: config.ListTypeMap,
 				ListMapKeys: config.ListMapKeys{
 					InjectedKey: config.InjectedKey{
-						Key:          "index",
-						DefaultValue: `"0"`,
+						Key: "index",
 					},
 				},
 			},
@@ -143,15 +143,12 @@ func Configure(p *config.Provider) {
 			},
 		}
 
-		// set[].rule[].condition uses expression as the natural map key.
+		// set[].rule[].condition: expression is required and naturally unique per condition.
 		r.ServerSideApplyMergeStrategies["set.rule.condition"] = config.MergeStrategy{
 			ListMergeStrategy: config.ListMergeStrategy{
 				MergeStrategy: config.ListTypeMap,
 				ListMapKeys: config.ListMapKeys{
-					InjectedKey: config.InjectedKey{
-						Key:          "index",
-						DefaultValue: `"0"`,
-					},
+					Keys: []string{"expression"},
 				},
 			},
 		}

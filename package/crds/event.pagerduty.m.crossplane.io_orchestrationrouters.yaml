@@ -429,23 +429,16 @@ spec:
                                     expression:
                                       description: A PCL condition string.
                                       type: string
-                                    index:
-                                      default: "0"
-                                      description: This is an injected field with
-                                        a default value for being able to merge items
-                                        of the parent object list.
-                                      type: string
                                   type: object
                                 type: array
                                 x-kubernetes-list-map-keys:
-                                - index
+                                - expression
                                 x-kubernetes-list-type: map
                               disabled:
                                 description: Indicates whether the rule is disabled
                                   and would therefore not be evaluated.
                                 type: boolean
                               index:
-                                default: "0"
                                 description: This is an injected field with a default
                                   value for being able to merge items of the parent
                                   object list.
@@ -847,23 +840,16 @@ spec:
                                     expression:
                                       description: A PCL condition string.
                                       type: string
-                                    index:
-                                      default: "0"
-                                      description: This is an injected field with
-                                        a default value for being able to merge items
-                                        of the parent object list.
-                                      type: string
                                   type: object
                                 type: array
                                 x-kubernetes-list-map-keys:
-                                - index
+                                - expression
                                 x-kubernetes-list-type: map
                               disabled:
                                 description: Indicates whether the rule is disabled
                                   and would therefore not be evaluated.
                                 type: boolean
                               index:
-                                default: "0"
                                 description: This is an injected field with a default
                                   value for being able to merge items of the parent
                                   object list.
@@ -1063,11 +1049,6 @@ spec:
                                   properties:
                                     expression:
                                       description: A PCL condition string.
-                                      type: string
-                                    index:
-                                      description: This is an injected field with
-                                        a default value for being able to merge items
-                                        of the parent object list.
                                       type: string
                                   type: object
                                 type: array
