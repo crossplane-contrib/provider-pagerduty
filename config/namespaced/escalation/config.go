@@ -15,17 +15,9 @@ func Configure(p *config.Provider) {
 			},
 		}
 
-		// rule is a required list with no user-provided id (Terraform-computed);
-		// inject a key so SSA patches resolving teams do not atomically remove it.
 		r.ServerSideApplyMergeStrategies["rule"] = config.MergeStrategy{
 			ListMergeStrategy: config.ListMergeStrategy{
-				MergeStrategy: config.ListTypeMap,
-				ListMapKeys: config.ListMapKeys{
-					InjectedKey: config.InjectedKey{
-						Key:          "index",
-						DefaultValue: `"0"`,
-					},
-				},
+				MergeStrategy: config.ListTypeAtomic,
 			},
 		}
 	})
