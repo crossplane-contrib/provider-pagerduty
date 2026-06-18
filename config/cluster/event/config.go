@@ -100,7 +100,8 @@ func Configure(p *config.Provider) {
 				MergeStrategy: config.ListTypeMap,
 				ListMapKeys: config.ListMapKeys{
 					InjectedKey: config.InjectedKey{
-						Key: "index",
+						Key:         "index",
+						Description: "Unique index to identify each rule for server-side apply merge. Required.",
 					},
 				},
 			},
@@ -128,7 +129,6 @@ func Configure(p *config.Provider) {
 				},
 			},
 		}
-
 		// set[].rule[].actions[].dynamic_route_to is effectively a singleton;
 		// inject a synthetic key so SSA does not atomically replace it.
 		r.ServerSideApplyMergeStrategies["set.rule.actions.dynamic_route_to"] = config.MergeStrategy{

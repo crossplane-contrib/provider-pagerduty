@@ -366,7 +366,7 @@ type SetRuleInitParameters struct {
 	// Indicates whether the rule is disabled and would therefore not be evaluated.
 	Disabled *bool `json:"disabled,omitempty" tf:"disabled,omitempty"`
 
-	// This is an injected field with a default value for being able to merge items of the parent object list.
+	// Unique index to identify each rule for server-side apply merge. Required.
 	Index *string `json:"index,omitempty" tf:"-"`
 
 	// A description of this rule's purpose.
@@ -387,7 +387,7 @@ type SetRuleObservation struct {
 	// ID of the start set. Router supports only one set and it's id has to be start
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
-	// This is an injected field with a default value for being able to merge items of the parent object list.
+	// Unique index to identify each rule for server-side apply merge. Required.
 	Index *string `json:"index,omitempty" tf:"-"`
 
 	// A description of this rule's purpose.
@@ -412,7 +412,7 @@ type SetRuleParameters struct {
 	// +kubebuilder:validation:Optional
 	Disabled *bool `json:"disabled,omitempty" tf:"disabled,omitempty"`
 
-	// This is an injected field with a default value for being able to merge items of the parent object list.
+	// Unique index to identify each rule for server-side apply merge. Required.
 	// +kubebuilder:validation:Optional
 	Index *string `json:"index" tf:"-"`
 

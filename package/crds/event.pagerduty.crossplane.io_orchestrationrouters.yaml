@@ -434,9 +434,8 @@ spec:
                                   and would therefore not be evaluated.
                                 type: boolean
                               index:
-                                description: This is an injected field with a default
-                                  value for being able to merge items of the parent
-                                  object list.
+                                description: Unique index to identify each rule for
+                                  server-side apply merge. Required.
                                 type: string
                               label:
                                 description: A description of this rule's purpose.
@@ -826,9 +825,8 @@ spec:
                                   and would therefore not be evaluated.
                                 type: boolean
                               index:
-                                description: This is an injected field with a default
-                                  value for being able to merge items of the parent
-                                  object list.
+                                description: Unique index to identify each rule for
+                                  server-side apply merge. Required.
                                 type: string
                               label:
                                 description: A description of this rule's purpose.
@@ -1065,9 +1063,8 @@ spec:
                                   only one set and it's id has to be start
                                 type: string
                               index:
-                                description: This is an injected field with a default
-                                  value for being able to merge items of the parent
-                                  object list.
+                                description: Unique index to identify each rule for
+                                  server-side apply merge. Required.
                                 type: string
                               label:
                                 description: A description of this rule's purpose.
