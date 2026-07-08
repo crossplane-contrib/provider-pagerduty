@@ -14,19 +14,17 @@ concurrency:
 
 env:
   # Common versions
-  GO_VERSION: "1.25.9"
-  GOLANGCI_VERSION: "v2.11.4"
-  DOCKER_BUILDX_VERSION: "v0.31.1"
-  UP_VERSION: "v0.38.4"
+  DOCKER_BUILDX_VERSION: v0.31.1
+  UP_VERSION: v0.38.4
 
   # Registry/Org names
-  CROSSPLANE_REGORG: "ghcr.io/crossplane-contrib" # xpkg.crossplane.io/crossplane-contrib
-  UPBOUND_REGORG: "xpkg.upbound.io/crossplane-contrib"
+  CROSSPLANE_REGORG: ghcr.io/crossplane-contrib
+  UPBOUND_REGORG: xpkg.upbound.io/crossplane-contrib
 
   PROVIDER_REPO: provider-pagerduty
 
   # Upbound registry specific variables
-  UP_DOMAIN: "https://upbound.io"
+  UP_DOMAIN: https://upbound.io
 
   UPBOUND_MARKETPLACE_PUSH_ROBOT_USR: ${{ secrets.XPKG_ACCESS_ID }}
 
@@ -54,20 +52,25 @@ jobs:
         with:
           submodules: true
 
+      - name: Fetch base branch for PR
+        if: github.event_name == 'pull_request'
+        run: git fetch origin ${{ github.base_ref }}:${{ github.base_ref }}
+
       - name: Get modified CRDs
         id: modified-crds
         uses: tj-actions/changed-files@24d32ffd492484c1d75e0c0b894501ddb9d30d62 # v47
         with:
           files: |
             package/crds/**
+
       - name: Report breaking CRD OpenAPI v3 schema changes
         if: steps.modified-crds.outputs.any_changed == 'true'
         env:
           MODIFIED_CRD_LIST: ${{ steps.modified-crds.outputs.all_changed_files }}
         run: |
           make crddiff
+
       - name: Report native schema version changes
-        if: ${{ inputs.upjet-based-provider }}
         run: |
           make schema-version-diff
 
@@ -85,7 +88,13 @@ jobs:
       - name: Setup Go
         uses: actions/setup-go@924ae3a1cded613372ab5595356fb5720e22ba16 # v6
         with:
-          go-version: ${{ env.GO_VERSION }}
+          go-version-file: go.mod
+
+      - name: Read GOLANGCI_VERSION from Makefile
+        id: golangci-version
+        run: |
+          VERSION=$(grep '^GOLANGCILINT_VERSION' Makefile | cut -d' ' -f3)
+          echo "version=v${VERSION}" >> "$GITHUB_OUTPUT"
 
       - name: Vendor Dependencies
         run: make vendor vendor.check
@@ -95,7 +104,7 @@ jobs:
       - name: Lint
         uses: golangci/golangci-lint-action@1e7e51e771db61008b38414a730f564565cf7c20 # v9
         with:
-          version: ${{ env.GOLANGCI_VERSION }}
+          version: ${{ steps.golangci-version.outputs.version }}
 
   check-diff:
     runs-on: ubuntu-24.04
@@ -111,7 +120,7 @@ jobs:
       - name: Setup Go
         uses: actions/setup-go@924ae3a1cded613372ab5595356fb5720e22ba16 # v6
         with:
-          go-version: ${{ env.GO_VERSION }}
+          go-version-file: go.mod
 
       - name: Install goimports
         run: go install golang.org/x/tools/cmd/goimports
@@ -139,7 +148,7 @@ jobs:
       - name: Setup Go
         uses: actions/setup-go@924ae3a1cded613372ab5595356fb5720e22ba16 # v6
         with:
-          go-version: ${{ env.GO_VERSION }}
+          go-version-file: go.mod
 
       - name: Vendor Dependencies
         run: make vendor vendor.check
@@ -170,7 +179,7 @@ jobs:
       - name: Setup Go
         uses: actions/setup-go@924ae3a1cded613372ab5595356fb5720e22ba16 # v6
         with:
-          go-version: ${{ env.GO_VERSION }}
+          go-version-file: go.mod
 
       - name: Vendor Dependencies
         run: make vendor vendor.check
@@ -224,7 +233,7 @@ jobs:
       - name: Setup Go
         uses: actions/setup-go@924ae3a1cded613372ab5595356fb5720e22ba16 # v6
         with:
-          go-version: ${{ env.GO_VERSION }}
+          go-version-file: go.mod
 
       - name: Find the version
         id: version

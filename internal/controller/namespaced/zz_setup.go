@@ -187,3 +187,65 @@ func SetupGated(mgr ctrl.Manager, o controller.Options) error {
 	}
 	return nil
 }
+
+// SetupWebhookWithManager registers conversion webhooks for all resource kinds in the group.
+func SetupWebhookWithManager(mgr ctrl.Manager) error {
+	for _, setup := range []func(ctrl.Manager) error{
+		addon.SetupWebhookWithManager,
+		groupingsetting.SetupWebhookWithManager,
+		action.SetupWebhookWithManager,
+		actionserviceassociation.SetupWebhookWithManager,
+		actionteamassociation.SetupWebhookWithManager,
+		runner.SetupWebhookWithManager,
+		runnerteamassociation.SetupWebhookWithManager,
+		service.SetupWebhookWithManager,
+		servicesubscriber.SetupWebhookWithManager,
+		policy.SetupWebhookWithManager,
+		orchestration.SetupWebhookWithManager,
+		orchestrationglobal.SetupWebhookWithManager,
+		orchestrationglobalcachevariable.SetupWebhookWithManager,
+		orchestrationintegration.SetupWebhookWithManager,
+		orchestrationrouter.SetupWebhookWithManager,
+		orchestrationservice.SetupWebhookWithManager,
+		orchestrationservicecachevariable.SetupWebhookWithManager,
+		orchestrationunrouted.SetupWebhookWithManager,
+		rule.SetupWebhookWithManager,
+		extension.SetupWebhookWithManager,
+		servicenow.SetupWebhookWithManager,
+		customfield.SetupWebhookWithManager,
+		customfieldoption.SetupWebhookWithManager,
+		incidenttype.SetupWebhookWithManager,
+		typecustomfield.SetupWebhookWithManager,
+		workflow.SetupWebhookWithManager,
+		workflowtrigger.SetupWebhookWithManager,
+		cloudaccountmappingrule.SetupWebhookWithManager,
+		window.SetupWebhookWithManager,
+		enablement.SetupWebhookWithManager,
+		providerconfig.SetupWebhookWithManager,
+		play.SetupWebhookWithManager,
+		ruleruleset.SetupWebhookWithManager,
+		ruleset.SetupWebhookWithManager,
+		schedule.SetupWebhookWithManager,
+		customfieldservice.SetupWebhookWithManager,
+		customfieldvalue.SetupWebhookWithManager,
+		dependency.SetupWebhookWithManager,
+		eventrule.SetupWebhookWithManager,
+		integration.SetupWebhookWithManager,
+		serviceservice.SetupWebhookWithManager,
+		connection.SetupWebhookWithManager,
+		assignment.SetupWebhookWithManager,
+		tag.SetupWebhookWithManager,
+		membership.SetupWebhookWithManager,
+		team.SetupWebhookWithManager,
+		contactmethod.SetupWebhookWithManager,
+		handoffnotificationrule.SetupWebhookWithManager,
+		notificationrule.SetupWebhookWithManager,
+		user.SetupWebhookWithManager,
+		subscription.SetupWebhookWithManager,
+	} {
+		if err := setup(mgr); err != nil {
+			return err
+		}
+	}
+	return nil
+}
