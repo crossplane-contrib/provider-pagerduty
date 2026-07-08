@@ -55,7 +55,7 @@ GO_SUBDIRS += cmd internal apis
 KIND_VERSION = v0.30.0
 UPTEST_VERSION = v2.2.0
 CRDDIFF_VERSION = v0.12.1
-CROSSPLANE_CLI_VERSION = v2.4.0
+CROSSPLANE_CLI_VERSION = v2.3.3
 # for e2e testing
 CROSSPLANE_VERSION = 2.3.3
 -include build/makelib/k8s_tools.mk
