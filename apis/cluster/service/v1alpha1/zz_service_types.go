@@ -386,7 +386,6 @@ type ServiceObservation struct {
 
 	IncidentUrgencyRule []IncidentUrgencyRuleObservation `json:"incidentUrgencyRule,omitempty" tf:"incident_urgency_rule,omitempty"`
 
-	// Last incident timestamp of the service.
 	LastIncidentTimestamp *string `json:"lastIncidentTimestamp,omitempty" tf:"last_incident_timestamp,omitempty"`
 
 	// The name of the service.
@@ -397,7 +396,6 @@ type ServiceObservation struct {
 
 	ScheduledActions []ScheduledActionsObservation `json:"scheduledActions,omitempty" tf:"scheduled_actions,omitempty"`
 
-	// The status of the service.
 	Status *string `json:"status,omitempty" tf:"status,omitempty"`
 
 	SupportHours []SupportHoursObservation `json:"supportHours,omitempty" tf:"support_hours,omitempty"`

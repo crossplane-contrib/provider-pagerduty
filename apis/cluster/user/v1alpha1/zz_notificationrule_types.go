@@ -18,7 +18,7 @@ type NotificationRuleContactMethodInitParameters struct {
 	// The id of the referenced contact method.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
-	// The type of contact method. Can be email_contact_method, phone_contact_method, push_notification_contact_method or sms_contact_method.
+	// The type of contact method. Can be email_contact_method, phone_contact_method, push_notification_contact_method, sms_contact_method or whatsapp_contact_method.
 	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 }
 
@@ -27,7 +27,7 @@ type NotificationRuleContactMethodObservation struct {
 	// The id of the referenced contact method.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
-	// The type of contact method. Can be email_contact_method, phone_contact_method, push_notification_contact_method or sms_contact_method.
+	// The type of contact method. Can be email_contact_method, phone_contact_method, push_notification_contact_method, sms_contact_method or whatsapp_contact_method.
 	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 }
 
@@ -37,7 +37,7 @@ type NotificationRuleContactMethodParameters struct {
 	// +kubebuilder:validation:Optional
 	ID *string `json:"id" tf:"id,omitempty"`
 
-	// The type of contact method. Can be email_contact_method, phone_contact_method, push_notification_contact_method or sms_contact_method.
+	// The type of contact method. Can be email_contact_method, phone_contact_method, push_notification_contact_method, sms_contact_method or whatsapp_contact_method.
 	// +kubebuilder:validation:Optional
 	Type *string `json:"type" tf:"type,omitempty"`
 }
