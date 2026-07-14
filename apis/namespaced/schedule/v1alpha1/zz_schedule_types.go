@@ -33,6 +33,10 @@ type LayerInitParameters struct {
 	// The end time of the schedule layer. If not specified, the layer does not end.
 	End *string `json:"end,omitempty" tf:"end,omitempty"`
 
+	// This is an injected field with a default value for being able to merge items of the parent object list.
+	// +kubebuilder:default:="0"
+	Index *string `json:"index,omitempty" tf:"-"`
+
 	// The name of the schedule.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
@@ -73,6 +77,9 @@ type LayerObservation struct {
 	// The ID of the schedule.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
+	// This is an injected field with a default value for being able to merge items of the parent object list.
+	Index *string `json:"index,omitempty" tf:"-"`
+
 	// The name of the schedule.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
@@ -101,6 +108,11 @@ type LayerParameters struct {
 	// The end time of the schedule layer. If not specified, the layer does not end.
 	// +kubebuilder:validation:Optional
 	End *string `json:"end,omitempty" tf:"end,omitempty"`
+
+	// This is an injected field with a default value for being able to merge items of the parent object list.
+	// +kubebuilder:validation:Optional
+	// +kubebuilder:default:="0"
+	Index *string `json:"index" tf:"-"`
 
 	// The name of the schedule.
 	// +kubebuilder:validation:Optional
@@ -195,7 +207,8 @@ type ScheduleInitParameters struct {
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
 
 	// A schedule layer block. Schedule layers documented below.
-	// +listType=atomic
+	// +listType=map
+	// +listMapKey=index
 	Layer []LayerInitParameters `json:"layer,omitempty" tf:"layer,omitempty"`
 
 	// The name of the schedule.
@@ -236,7 +249,6 @@ type ScheduleObservation struct {
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
 	// A schedule layer block. Schedule layers documented below.
-	// +listType=atomic
 	Layer []LayerObservation `json:"layer,omitempty" tf:"layer,omitempty"`
 
 	// The name of the schedule.
@@ -263,7 +275,8 @@ type ScheduleParameters struct {
 
 	// A schedule layer block. Schedule layers documented below.
 	// +kubebuilder:validation:Optional
-	// +listType=atomic
+	// +listType=map
+	// +listMapKey=index
 	Layer []LayerParameters `json:"layer,omitempty" tf:"layer,omitempty"`
 
 	// The name of the schedule.
