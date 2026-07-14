@@ -71,6 +71,11 @@ spec:
                           description: The end time of the schedule layer. If not
                             specified, the layer does not end.
                           type: string
+                        index:
+                          default: "0"
+                          description: This is an injected field with a default value
+                            for being able to merge items of the parent object list.
+                          type: string
                         name:
                           description: The name of the schedule.
                           type: string
@@ -199,7 +204,9 @@ spec:
                           x-kubernetes-list-type: atomic
                       type: object
                     type: array
-                    x-kubernetes-list-type: atomic
+                    x-kubernetes-list-map-keys:
+                    - index
+                    x-kubernetes-list-type: map
                   name:
                     description: The name of the schedule.
                     type: string
@@ -327,6 +334,11 @@ spec:
                           description: The end time of the schedule layer. If not
                             specified, the layer does not end.
                           type: string
+                        index:
+                          default: "0"
+                          description: This is an injected field with a default value
+                            for being able to merge items of the parent object list.
+                          type: string
                         name:
                           description: The name of the schedule.
                           type: string
@@ -455,7 +467,9 @@ spec:
                           x-kubernetes-list-type: atomic
                       type: object
                     type: array
-                    x-kubernetes-list-type: atomic
+                    x-kubernetes-list-map-keys:
+                    - index
+                    x-kubernetes-list-type: map
                   name:
                     description: The name of the schedule.
                     type: string
@@ -658,6 +672,10 @@ spec:
                         id:
                           description: The ID of the schedule.
                           type: string
+                        index:
+                          description: This is an injected field with a default value
+                            for being able to merge items of the parent object list.
+                          type: string
                         name:
                           description: The name of the schedule.
                           type: string
@@ -704,7 +722,6 @@ spec:
                           x-kubernetes-list-type: atomic
                       type: object
                     type: array
-                    x-kubernetes-list-type: atomic
                   name:
                     description: The name of the schedule.
                     type: string
