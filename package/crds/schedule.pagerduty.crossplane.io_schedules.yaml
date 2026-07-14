@@ -85,6 +85,11 @@ spec:
                           description: The end time of the schedule layer. If not
                             specified, the layer does not end.
                           type: string
+                        index:
+                          default: "0"
+                          description: This is an injected field with a default value
+                            for being able to merge items of the parent object list.
+                          type: string
                         name:
                           description: The name of the schedule.
                           type: string
@@ -108,6 +113,7 @@ spec:
                                 type: string
                             type: object
                           type: array
+                          x-kubernetes-list-type: atomic
                         rotationTurnLengthSeconds:
                           description: The duration of each on-call shift in seconds.
                           type: number
@@ -203,8 +209,12 @@ spec:
                           items:
                             type: string
                           type: array
+                          x-kubernetes-list-type: atomic
                       type: object
                     type: array
+                    x-kubernetes-list-map-keys:
+                    - index
+                    x-kubernetes-list-type: map
                   name:
                     description: The name of the schedule.
                     type: string
@@ -296,6 +306,7 @@ spec:
                     items:
                       type: string
                     type: array
+                    x-kubernetes-list-type: atomic
                   timeZone:
                     description: The time zone of the schedule (e.g. Europe/Berlin).
                     type: string
@@ -325,6 +336,11 @@ spec:
                           description: The end time of the schedule layer. If not
                             specified, the layer does not end.
                           type: string
+                        index:
+                          default: "0"
+                          description: This is an injected field with a default value
+                            for being able to merge items of the parent object list.
+                          type: string
                         name:
                           description: The name of the schedule.
                           type: string
@@ -348,6 +364,7 @@ spec:
                                 type: string
                             type: object
                           type: array
+                          x-kubernetes-list-type: atomic
                         rotationTurnLengthSeconds:
                           description: The duration of each on-call shift in seconds.
                           type: number
@@ -443,8 +460,12 @@ spec:
                           items:
                             type: string
                           type: array
+                          x-kubernetes-list-type: atomic
                       type: object
                     type: array
+                    x-kubernetes-list-map-keys:
+                    - index
+                    x-kubernetes-list-type: map
                   name:
                     description: The name of the schedule.
                     type: string
@@ -536,6 +557,7 @@ spec:
                     items:
                       type: string
                     type: array
+                    x-kubernetes-list-type: atomic
                   timeZone:
                     description: The time zone of the schedule (e.g. Europe/Berlin).
                     type: string
@@ -668,6 +690,10 @@ spec:
                         id:
                           description: The ID of the schedule.
                           type: string
+                        index:
+                          description: This is an injected field with a default value
+                            for being able to merge items of the parent object list.
+                          type: string
                         name:
                           description: The name of the schedule.
                           type: string
@@ -693,6 +719,7 @@ spec:
                                 type: string
                             type: object
                           type: array
+                          x-kubernetes-list-type: atomic
                         rotationTurnLengthSeconds:
                           description: The duration of each on-call shift in seconds.
                           type: number
@@ -710,6 +737,7 @@ spec:
                           items:
                             type: string
                           type: array
+                          x-kubernetes-list-type: atomic
                       type: object
                     type: array
                   name:
@@ -726,6 +754,7 @@ spec:
                     items:
                       type: string
                     type: array
+                    x-kubernetes-list-type: atomic
                   timeZone:
                     description: The time zone of the schedule (e.g. Europe/Berlin).
                     type: string

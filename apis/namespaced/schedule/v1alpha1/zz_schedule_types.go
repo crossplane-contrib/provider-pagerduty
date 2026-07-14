@@ -33,10 +33,15 @@ type LayerInitParameters struct {
 	// The end time of the schedule layer. If not specified, the layer does not end.
 	End *string `json:"end,omitempty" tf:"end,omitempty"`
 
+	// This is an injected field with a default value for being able to merge items of the parent object list.
+	// +kubebuilder:default:="0"
+	Index *string `json:"index,omitempty" tf:"-"`
+
 	// The name of the schedule.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
 	// A schedule layer restriction block. Restriction blocks documented below.
+	// +listType=atomic
 	Restriction []RestrictionInitParameters `json:"restriction,omitempty" tf:"restriction,omitempty"`
 
 	// The duration of each on-call shift in seconds.
@@ -60,6 +65,7 @@ type LayerInitParameters struct {
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-pagerduty/apis/namespaced/user/v1alpha1.User
 	// +crossplane:generate:reference:refFieldName=UserRefs
 	// +crossplane:generate:reference:selectorFieldName=UserSelector
+	// +listType=atomic
 	Users []*string `json:"users,omitempty" tf:"users,omitempty"`
 }
 
@@ -71,12 +77,16 @@ type LayerObservation struct {
 	// The ID of the schedule.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
+	// This is an injected field with a default value for being able to merge items of the parent object list.
+	Index *string `json:"index,omitempty" tf:"-"`
+
 	// The name of the schedule.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
 	RenderedCoveragePercentage *string `json:"renderedCoveragePercentage,omitempty" tf:"rendered_coverage_percentage,omitempty"`
 
 	// A schedule layer restriction block. Restriction blocks documented below.
+	// +listType=atomic
 	Restriction []RestrictionObservation `json:"restriction,omitempty" tf:"restriction,omitempty"`
 
 	// The duration of each on-call shift in seconds.
@@ -89,6 +99,7 @@ type LayerObservation struct {
 	Start *string `json:"start,omitempty" tf:"start,omitempty"`
 
 	// The ordered list of users on this layer. The position of the user on the list determines their order in the layer.
+	// +listType=atomic
 	Users []*string `json:"users,omitempty" tf:"users,omitempty"`
 }
 
@@ -98,12 +109,18 @@ type LayerParameters struct {
 	// +kubebuilder:validation:Optional
 	End *string `json:"end,omitempty" tf:"end,omitempty"`
 
+	// This is an injected field with a default value for being able to merge items of the parent object list.
+	// +kubebuilder:validation:Optional
+	// +kubebuilder:default:="0"
+	Index *string `json:"index" tf:"-"`
+
 	// The name of the schedule.
 	// +kubebuilder:validation:Optional
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
 	// A schedule layer restriction block. Restriction blocks documented below.
 	// +kubebuilder:validation:Optional
+	// +listType=atomic
 	Restriction []RestrictionParameters `json:"restriction,omitempty" tf:"restriction,omitempty"`
 
 	// The duration of each on-call shift in seconds.
@@ -131,6 +148,7 @@ type LayerParameters struct {
 	// +crossplane:generate:reference:refFieldName=UserRefs
 	// +crossplane:generate:reference:selectorFieldName=UserSelector
 	// +kubebuilder:validation:Optional
+	// +listType=atomic
 	Users []*string `json:"users,omitempty" tf:"users,omitempty"`
 }
 
@@ -189,6 +207,8 @@ type ScheduleInitParameters struct {
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
 
 	// A schedule layer block. Schedule layers documented below.
+	// +listType=map
+	// +listMapKey=index
 	Layer []LayerInitParameters `json:"layer,omitempty" tf:"layer,omitempty"`
 
 	// The name of the schedule.
@@ -211,6 +231,7 @@ type ScheduleInitParameters struct {
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-pagerduty/apis/namespaced/team/v1alpha1.Team
 	// +crossplane:generate:reference:refFieldName=TeamRefs
 	// +crossplane:generate:reference:selectorFieldName=TeamSelector
+	// +listType=atomic
 	Teams []*string `json:"teams,omitempty" tf:"teams,omitempty"`
 
 	// The time zone of the schedule (e.g. Europe/Berlin).
@@ -239,6 +260,7 @@ type ScheduleObservation struct {
 	Overflow *bool `json:"overflow,omitempty" tf:"overflow,omitempty"`
 
 	// Teams associated with the schedule.
+	// +listType=atomic
 	Teams []*string `json:"teams,omitempty" tf:"teams,omitempty"`
 
 	// The time zone of the schedule (e.g. Europe/Berlin).
@@ -253,6 +275,8 @@ type ScheduleParameters struct {
 
 	// A schedule layer block. Schedule layers documented below.
 	// +kubebuilder:validation:Optional
+	// +listType=map
+	// +listMapKey=index
 	Layer []LayerParameters `json:"layer,omitempty" tf:"layer,omitempty"`
 
 	// The name of the schedule.
@@ -278,6 +302,7 @@ type ScheduleParameters struct {
 	// +crossplane:generate:reference:refFieldName=TeamRefs
 	// +crossplane:generate:reference:selectorFieldName=TeamSelector
 	// +kubebuilder:validation:Optional
+	// +listType=atomic
 	Teams []*string `json:"teams,omitempty" tf:"teams,omitempty"`
 
 	// The time zone of the schedule (e.g. Europe/Berlin).

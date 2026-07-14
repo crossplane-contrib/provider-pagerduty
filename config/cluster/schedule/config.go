@@ -22,7 +22,13 @@ func Configure(p *config.Provider) {
 
 		r.ServerSideApplyMergeStrategies["layer"] = config.MergeStrategy{
 			ListMergeStrategy: config.ListMergeStrategy{
-				MergeStrategy: config.ListTypeAtomic,
+				MergeStrategy: config.ListTypeMap,
+				ListMapKeys: config.ListMapKeys{
+					InjectedKey: config.InjectedKey{
+						Key:          "index",
+						DefaultValue: `"0"`,
+					},
+				},
 			},
 		}
 		r.ServerSideApplyMergeStrategies["layer.users"] = config.MergeStrategy{
