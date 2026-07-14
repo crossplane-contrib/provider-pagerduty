@@ -108,6 +108,7 @@ spec:
                                 type: string
                             type: object
                           type: array
+                          x-kubernetes-list-type: atomic
                         rotationTurnLengthSeconds:
                           description: The duration of each on-call shift in seconds.
                           type: number
@@ -203,8 +204,10 @@ spec:
                           items:
                             type: string
                           type: array
+                          x-kubernetes-list-type: atomic
                       type: object
                     type: array
+                    x-kubernetes-list-type: atomic
                   name:
                     description: The name of the schedule.
                     type: string
@@ -296,6 +299,7 @@ spec:
                     items:
                       type: string
                     type: array
+                    x-kubernetes-list-type: atomic
                   timeZone:
                     description: The time zone of the schedule (e.g. Europe/Berlin).
                     type: string
@@ -348,6 +352,7 @@ spec:
                                 type: string
                             type: object
                           type: array
+                          x-kubernetes-list-type: atomic
                         rotationTurnLengthSeconds:
                           description: The duration of each on-call shift in seconds.
                           type: number
@@ -443,8 +448,10 @@ spec:
                           items:
                             type: string
                           type: array
+                          x-kubernetes-list-type: atomic
                       type: object
                     type: array
+                    x-kubernetes-list-type: atomic
                   name:
                     description: The name of the schedule.
                     type: string
@@ -536,6 +543,7 @@ spec:
                     items:
                       type: string
                     type: array
+                    x-kubernetes-list-type: atomic
                   timeZone:
                     description: The time zone of the schedule (e.g. Europe/Berlin).
                     type: string
@@ -693,6 +701,7 @@ spec:
                                 type: string
                             type: object
                           type: array
+                          x-kubernetes-list-type: atomic
                         rotationTurnLengthSeconds:
                           description: The duration of each on-call shift in seconds.
                           type: number
@@ -710,8 +719,10 @@ spec:
                           items:
                             type: string
                           type: array
+                          x-kubernetes-list-type: atomic
                       type: object
                     type: array
+                    x-kubernetes-list-type: atomic
                   name:
                     description: The name of the schedule.
                     type: string
@@ -726,6 +737,7 @@ spec:
                     items:
                       type: string
                     type: array
+                    x-kubernetes-list-type: atomic
                   timeZone:
                     description: The time zone of the schedule (e.g. Europe/Berlin).
                     type: string
