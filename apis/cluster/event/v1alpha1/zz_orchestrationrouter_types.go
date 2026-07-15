@@ -269,19 +269,12 @@ type RuleConditionInitParameters struct {
 
 	// A PCL condition string.
 	Expression *string `json:"expression,omitempty" tf:"expression,omitempty"`
-
-	// This is an injected field with a default value for being able to merge items of the parent object list.
-	// +kubebuilder:default:="0"
-	Index *string `json:"index,omitempty" tf:"-"`
 }
 
 type RuleConditionObservation struct {
 
 	// A PCL condition string.
 	Expression *string `json:"expression,omitempty" tf:"expression,omitempty"`
-
-	// This is an injected field with a default value for being able to merge items of the parent object list.
-	Index *string `json:"index,omitempty" tf:"-"`
 }
 
 type RuleConditionParameters struct {
@@ -289,11 +282,6 @@ type RuleConditionParameters struct {
 	// A PCL condition string.
 	// +kubebuilder:validation:Optional
 	Expression *string `json:"expression" tf:"expression,omitempty"`
-
-	// This is an injected field with a default value for being able to merge items of the parent object list.
-	// +kubebuilder:validation:Optional
-	// +kubebuilder:default:="0"
-	Index *string `json:"index" tf:"-"`
 }
 
 type SetRuleActionsInitParameters struct {
@@ -372,14 +360,13 @@ type SetRuleInitParameters struct {
 
 	// Each of these conditions is evaluated to check if an event matches this rule. The rule is considered a match if any of these conditions match. If none are provided, the event will always match against the rule.
 	// +listType=map
-	// +listMapKey=index
+	// +listMapKey=expression
 	Condition []RuleConditionInitParameters `json:"condition,omitempty" tf:"condition,omitempty"`
 
 	// Indicates whether the rule is disabled and would therefore not be evaluated.
 	Disabled *bool `json:"disabled,omitempty" tf:"disabled,omitempty"`
 
-	// This is an injected field with a default value for being able to merge items of the parent object list.
-	// +kubebuilder:default:="0"
+	// Unique index to identify each rule for server-side apply merge. Required.
 	Index *string `json:"index,omitempty" tf:"-"`
 
 	// A description of this rule's purpose.
@@ -400,7 +387,7 @@ type SetRuleObservation struct {
 	// ID of the start set. Router supports only one set and it's id has to be start
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
-	// This is an injected field with a default value for being able to merge items of the parent object list.
+	// Unique index to identify each rule for server-side apply merge. Required.
 	Index *string `json:"index,omitempty" tf:"-"`
 
 	// A description of this rule's purpose.
@@ -418,16 +405,15 @@ type SetRuleParameters struct {
 	// Each of these conditions is evaluated to check if an event matches this rule. The rule is considered a match if any of these conditions match. If none are provided, the event will always match against the rule.
 	// +kubebuilder:validation:Optional
 	// +listType=map
-	// +listMapKey=index
+	// +listMapKey=expression
 	Condition []RuleConditionParameters `json:"condition,omitempty" tf:"condition,omitempty"`
 
 	// Indicates whether the rule is disabled and would therefore not be evaluated.
 	// +kubebuilder:validation:Optional
 	Disabled *bool `json:"disabled,omitempty" tf:"disabled,omitempty"`
 
-	// This is an injected field with a default value for being able to merge items of the parent object list.
+	// Unique index to identify each rule for server-side apply merge. Required.
 	// +kubebuilder:validation:Optional
-	// +kubebuilder:default:="0"
 	Index *string `json:"index" tf:"-"`
 
 	// A description of this rule's purpose.

@@ -166,19 +166,12 @@ type OrchestrationUnroutedCatchAllInitParameters struct {
 
 	// Actions that will be taken to change the resulting alert and incident, when an event matches this rule.
 	Actions []OrchestrationUnroutedCatchAllActionsInitParameters `json:"actions,omitempty" tf:"actions,omitempty"`
-
-	// This is an injected field with a default value for being able to merge items of the parent object list.
-	// +kubebuilder:default:="0"
-	Index *string `json:"index,omitempty" tf:"-"`
 }
 
 type OrchestrationUnroutedCatchAllObservation struct {
 
 	// Actions that will be taken to change the resulting alert and incident, when an event matches this rule.
 	Actions []OrchestrationUnroutedCatchAllActionsObservation `json:"actions,omitempty" tf:"actions,omitempty"`
-
-	// This is an injected field with a default value for being able to merge items of the parent object list.
-	Index *string `json:"index,omitempty" tf:"-"`
 }
 
 type OrchestrationUnroutedCatchAllParameters struct {
@@ -186,18 +179,12 @@ type OrchestrationUnroutedCatchAllParameters struct {
 	// Actions that will be taken to change the resulting alert and incident, when an event matches this rule.
 	// +kubebuilder:validation:Optional
 	Actions []OrchestrationUnroutedCatchAllActionsParameters `json:"actions" tf:"actions,omitempty"`
-
-	// This is an injected field with a default value for being able to merge items of the parent object list.
-	// +kubebuilder:validation:Optional
-	// +kubebuilder:default:="0"
-	Index *string `json:"index" tf:"-"`
 }
 
 type OrchestrationUnroutedInitParameters struct {
 
 	// the catch_all actions will be applied if an Event reaches the end of any set without matching any rules in that set.
-	// +listType=map
-	// +listMapKey=index
+	// +listType=atomic
 	CatchAll []OrchestrationUnroutedCatchAllInitParameters `json:"catchAll,omitempty" tf:"catch_all,omitempty"`
 
 	// The Event Orchestration to which this Unrouted Orchestration belongs to.
@@ -213,14 +200,14 @@ type OrchestrationUnroutedInitParameters struct {
 	EventOrchestrationSelector *v1.Selector `json:"eventOrchestrationSelector,omitempty" tf:"-"`
 
 	// An Unrouted Orchestration must contain at least a "start" set, but can contain any number of additional sets that are routed to by other rules to form a directional graph.
-	// +listType=map
-	// +listMapKey=index
+	// +listType=atomic
 	Set []OrchestrationUnroutedSetInitParameters `json:"set,omitempty" tf:"set,omitempty"`
 }
 
 type OrchestrationUnroutedObservation struct {
 
 	// the catch_all actions will be applied if an Event reaches the end of any set without matching any rules in that set.
+	// +listType=atomic
 	CatchAll []OrchestrationUnroutedCatchAllObservation `json:"catchAll,omitempty" tf:"catch_all,omitempty"`
 
 	// The Event Orchestration to which this Unrouted Orchestration belongs to.
@@ -230,6 +217,7 @@ type OrchestrationUnroutedObservation struct {
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
 	// An Unrouted Orchestration must contain at least a "start" set, but can contain any number of additional sets that are routed to by other rules to form a directional graph.
+	// +listType=atomic
 	Set []OrchestrationUnroutedSetObservation `json:"set,omitempty" tf:"set,omitempty"`
 }
 
@@ -237,8 +225,7 @@ type OrchestrationUnroutedParameters struct {
 
 	// the catch_all actions will be applied if an Event reaches the end of any set without matching any rules in that set.
 	// +kubebuilder:validation:Optional
-	// +listType=map
-	// +listMapKey=index
+	// +listType=atomic
 	CatchAll []OrchestrationUnroutedCatchAllParameters `json:"catchAll,omitempty" tf:"catch_all,omitempty"`
 
 	// The Event Orchestration to which this Unrouted Orchestration belongs to.
@@ -256,8 +243,7 @@ type OrchestrationUnroutedParameters struct {
 
 	// An Unrouted Orchestration must contain at least a "start" set, but can contain any number of additional sets that are routed to by other rules to form a directional graph.
 	// +kubebuilder:validation:Optional
-	// +listType=map
-	// +listMapKey=index
+	// +listType=atomic
 	Set []OrchestrationUnroutedSetParameters `json:"set,omitempty" tf:"set,omitempty"`
 }
 
@@ -265,10 +251,6 @@ type OrchestrationUnroutedSetInitParameters struct {
 
 	// The ID of this set of rules. Rules in other sets can route events into this set using the rule's route_to property.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
-
-	// This is an injected field with a default value for being able to merge items of the parent object list.
-	// +kubebuilder:default:="0"
-	Index *string `json:"index,omitempty" tf:"-"`
 
 	// The Unrouted Orchestration evaluates Events against these Rules, one at a time, and applies all the actions for first rule it finds where the event matches the rule's conditions.
 	Rule []OrchestrationUnroutedSetRuleInitParameters `json:"rule,omitempty" tf:"rule,omitempty"`
@@ -279,9 +261,6 @@ type OrchestrationUnroutedSetObservation struct {
 	// The ID of this set of rules. Rules in other sets can route events into this set using the rule's route_to property.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
-	// This is an injected field with a default value for being able to merge items of the parent object list.
-	Index *string `json:"index,omitempty" tf:"-"`
-
 	// The Unrouted Orchestration evaluates Events against these Rules, one at a time, and applies all the actions for first rule it finds where the event matches the rule's conditions.
 	Rule []OrchestrationUnroutedSetRuleObservation `json:"rule,omitempty" tf:"rule,omitempty"`
 }
@@ -291,11 +270,6 @@ type OrchestrationUnroutedSetParameters struct {
 	// The ID of this set of rules. Rules in other sets can route events into this set using the rule's route_to property.
 	// +kubebuilder:validation:Optional
 	ID *string `json:"id" tf:"id,omitempty"`
-
-	// This is an injected field with a default value for being able to merge items of the parent object list.
-	// +kubebuilder:validation:Optional
-	// +kubebuilder:default:="0"
-	Index *string `json:"index" tf:"-"`
 
 	// The Unrouted Orchestration evaluates Events against these Rules, one at a time, and applies all the actions for first rule it finds where the event matches the rule's conditions.
 	// +kubebuilder:validation:Optional

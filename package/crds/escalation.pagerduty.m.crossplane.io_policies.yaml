@@ -88,11 +88,6 @@ spec:
                                 type: string
                             type: object
                           type: array
-                        index:
-                          default: "0"
-                          description: This is an injected field with a default value
-                            for being able to merge items of the parent object list.
-                          type: string
                         target:
                           items:
                             properties:
@@ -106,9 +101,7 @@ spec:
                           type: array
                       type: object
                     type: array
-                    x-kubernetes-list-map-keys:
-                    - index
-                    x-kubernetes-list-type: map
+                    x-kubernetes-list-type: atomic
                   teamRefs:
                     description: References to Team in team to populate teams.
                     items:
@@ -242,11 +235,6 @@ spec:
                                 type: string
                             type: object
                           type: array
-                        index:
-                          default: "0"
-                          description: This is an injected field with a default value
-                            for being able to merge items of the parent object list.
-                          type: string
                         target:
                           items:
                             properties:
@@ -260,9 +248,7 @@ spec:
                           type: array
                       type: object
                     type: array
-                    x-kubernetes-list-map-keys:
-                    - index
-                    x-kubernetes-list-type: map
+                    x-kubernetes-list-type: atomic
                   teamRefs:
                     description: References to Team in team to populate teams.
                     items:
@@ -461,10 +447,6 @@ spec:
                         id:
                           description: A target ID
                           type: string
-                        index:
-                          description: This is an injected field with a default value
-                            for being able to merge items of the parent object list.
-                          type: string
                         target:
                           items:
                             properties:
@@ -478,6 +460,7 @@ spec:
                           type: array
                       type: object
                     type: array
+                    x-kubernetes-list-type: atomic
                   teams:
                     description: Team associated with the policy (Only 1 team can
                       be assigned to an Escalation Policy). Account must have the
