@@ -39,11 +39,12 @@ import (
 	cloudaccountmappingrule "github.com/crossplane-contrib/provider-pagerduty/internal/controller/namespaced/jira/cloudaccountmappingrule"
 	window "github.com/crossplane-contrib/provider-pagerduty/internal/controller/namespaced/maintenance/window"
 	enablement "github.com/crossplane-contrib/provider-pagerduty/internal/controller/namespaced/pagerduty/enablement"
+	schedule "github.com/crossplane-contrib/provider-pagerduty/internal/controller/namespaced/pagerduty/schedule"
 	providerconfig "github.com/crossplane-contrib/provider-pagerduty/internal/controller/namespaced/providerconfig"
 	play "github.com/crossplane-contrib/provider-pagerduty/internal/controller/namespaced/response/play"
 	ruleruleset "github.com/crossplane-contrib/provider-pagerduty/internal/controller/namespaced/ruleset/rule"
 	ruleset "github.com/crossplane-contrib/provider-pagerduty/internal/controller/namespaced/ruleset/ruleset"
-	schedule "github.com/crossplane-contrib/provider-pagerduty/internal/controller/namespaced/schedule/schedule"
+	scheduleschedule "github.com/crossplane-contrib/provider-pagerduty/internal/controller/namespaced/schedule/schedule"
 	customfieldservice "github.com/crossplane-contrib/provider-pagerduty/internal/controller/namespaced/service/customfield"
 	customfieldvalue "github.com/crossplane-contrib/provider-pagerduty/internal/controller/namespaced/service/customfieldvalue"
 	dependency "github.com/crossplane-contrib/provider-pagerduty/internal/controller/namespaced/service/dependency"
@@ -96,11 +97,12 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 		cloudaccountmappingrule.Setup,
 		window.Setup,
 		enablement.Setup,
+		schedule.Setup,
 		providerconfig.Setup,
 		play.Setup,
 		ruleruleset.Setup,
 		ruleset.Setup,
-		schedule.Setup,
+		scheduleschedule.Setup,
 		customfieldservice.Setup,
 		customfieldvalue.Setup,
 		dependency.Setup,
@@ -159,11 +161,12 @@ func SetupGated(mgr ctrl.Manager, o controller.Options) error {
 		cloudaccountmappingrule.SetupGated,
 		window.SetupGated,
 		enablement.SetupGated,
+		schedule.SetupGated,
 		providerconfig.SetupGated,
 		play.SetupGated,
 		ruleruleset.SetupGated,
 		ruleset.SetupGated,
-		schedule.SetupGated,
+		scheduleschedule.SetupGated,
 		customfieldservice.SetupGated,
 		customfieldvalue.SetupGated,
 		dependency.SetupGated,

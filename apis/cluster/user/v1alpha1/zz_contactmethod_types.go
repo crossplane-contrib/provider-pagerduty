@@ -21,7 +21,7 @@ type ContactMethodInitParameters struct {
 	// The 1-to-3 digit country calling code. Required when using phone_contact_method or sms_contact_method.
 	CountryCode *float64 `json:"countryCode,omitempty" tf:"country_code,omitempty"`
 
-	// The contact method type. May be (email_contact_method, phone_contact_method, sms_contact_method, push_notification_contact_method).
+	// The contact method type. May be (email_contact_method, phone_contact_method, sms_contact_method, push_notification_contact_method, whatsapp_contact_method).
 	DeviceType *string `json:"deviceType,omitempty" tf:"device_type,omitempty"`
 
 	// The label (e.g., "Work", "Mobile", etc.).
@@ -30,7 +30,7 @@ type ContactMethodInitParameters struct {
 	// Send an abbreviated email message instead of the standard email output.
 	SendShortEmail *bool `json:"sendShortEmail,omitempty" tf:"send_short_email,omitempty"`
 
-	// The contact method type. May be (email_contact_method, phone_contact_method, sms_contact_method, push_notification_contact_method).
+	// The contact method type. May be (email_contact_method, phone_contact_method, sms_contact_method, push_notification_contact_method, whatsapp_contact_method).
 	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 
 	// The ID of the user.
@@ -57,7 +57,7 @@ type ContactMethodObservation struct {
 	// The 1-to-3 digit country calling code. Required when using phone_contact_method or sms_contact_method.
 	CountryCode *float64 `json:"countryCode,omitempty" tf:"country_code,omitempty"`
 
-	// The contact method type. May be (email_contact_method, phone_contact_method, sms_contact_method, push_notification_contact_method).
+	// The contact method type. May be (email_contact_method, phone_contact_method, sms_contact_method, push_notification_contact_method, whatsapp_contact_method).
 	DeviceType *string `json:"deviceType,omitempty" tf:"device_type,omitempty"`
 
 	// If true, this phone is capable of receiving SMS messages.
@@ -72,7 +72,7 @@ type ContactMethodObservation struct {
 	// Send an abbreviated email message instead of the standard email output.
 	SendShortEmail *bool `json:"sendShortEmail,omitempty" tf:"send_short_email,omitempty"`
 
-	// The contact method type. May be (email_contact_method, phone_contact_method, sms_contact_method, push_notification_contact_method).
+	// The contact method type. May be (email_contact_method, phone_contact_method, sms_contact_method, push_notification_contact_method, whatsapp_contact_method).
 	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 
 	// The ID of the user.
@@ -89,7 +89,7 @@ type ContactMethodParameters struct {
 	// +kubebuilder:validation:Optional
 	CountryCode *float64 `json:"countryCode,omitempty" tf:"country_code,omitempty"`
 
-	// The contact method type. May be (email_contact_method, phone_contact_method, sms_contact_method, push_notification_contact_method).
+	// The contact method type. May be (email_contact_method, phone_contact_method, sms_contact_method, push_notification_contact_method, whatsapp_contact_method).
 	// +kubebuilder:validation:Optional
 	DeviceType *string `json:"deviceType,omitempty" tf:"device_type,omitempty"`
 
@@ -101,7 +101,7 @@ type ContactMethodParameters struct {
 	// +kubebuilder:validation:Optional
 	SendShortEmail *bool `json:"sendShortEmail,omitempty" tf:"send_short_email,omitempty"`
 
-	// The contact method type. May be (email_contact_method, phone_contact_method, sms_contact_method, push_notification_contact_method).
+	// The contact method type. May be (email_contact_method, phone_contact_method, sms_contact_method, push_notification_contact_method, whatsapp_contact_method).
 	// +kubebuilder:validation:Optional
 	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 

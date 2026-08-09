@@ -75,7 +75,7 @@ type ActionDataReferenceParameters struct {
 
 type ActionInitParameters struct {
 
-	// The category of the action. The only allowed values are diagnostic and remediation.
+	// The category of the action, e.g. diagnostic, remediation.
 	ActionClassification *string `json:"actionClassification,omitempty" tf:"action_classification,omitempty"`
 
 	// Action Data block. Action Data is documented below.
@@ -120,7 +120,7 @@ type ActionInitParameters struct {
 
 type ActionObservation struct {
 
-	// The category of the action. The only allowed values are diagnostic and remediation.
+	// The category of the action, e.g. diagnostic, remediation.
 	ActionClassification *string `json:"actionClassification,omitempty" tf:"action_classification,omitempty"`
 
 	// Action Data block. Action Data is documented below.
@@ -168,7 +168,7 @@ type ActionObservation struct {
 
 type ActionParameters struct {
 
-	// The category of the action. The only allowed values are diagnostic and remediation.
+	// The category of the action, e.g. diagnostic, remediation.
 	// +kubebuilder:validation:Optional
 	ActionClassification *string `json:"actionClassification,omitempty" tf:"action_classification,omitempty"`
 

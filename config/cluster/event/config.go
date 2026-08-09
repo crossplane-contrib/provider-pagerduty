@@ -6,7 +6,11 @@ import (
 )
 
 const (
-	shortGroup = "event"
+	shortGroup           = "event"
+	refEventOrch         = "event_orchestration"
+	tfEventOrch          = "pagerduty_event_orchestration"
+	injectedKey          = "index"
+	injectedDefaultValue = `"0"`
 )
 
 // Configure configures individual resources by adding custom ResourceConfigurators.
@@ -20,8 +24,8 @@ func Configure(p *config.Provider) {
 
 		r.ShortGroup = shortGroup
 		r.References = config.References{
-			"event_orchestration": {
-				TerraformName: "pagerduty_event_orchestration",
+			refEventOrch: {
+				TerraformName: tfEventOrch,
 			},
 		}
 
@@ -30,8 +34,8 @@ func Configure(p *config.Provider) {
 				MergeStrategy: config.ListTypeMap,
 				ListMapKeys: config.ListMapKeys{
 					InjectedKey: config.InjectedKey{
-						Key:          "index",
-						DefaultValue: `"0"`,
+						Key:          injectedKey,
+						DefaultValue: injectedDefaultValue,
 					},
 				},
 			},
@@ -41,8 +45,8 @@ func Configure(p *config.Provider) {
 				MergeStrategy: config.ListTypeMap,
 				ListMapKeys: config.ListMapKeys{
 					InjectedKey: config.InjectedKey{
-						Key:          "index",
-						DefaultValue: `"0"`,
+						Key:          injectedKey,
+						DefaultValue: injectedDefaultValue,
 					},
 				},
 			},
@@ -63,8 +67,8 @@ func Configure(p *config.Provider) {
 				MergeStrategy: config.ListTypeMap,
 				ListMapKeys: config.ListMapKeys{
 					InjectedKey: config.InjectedKey{
-						Key:          "index",
-						DefaultValue: `"0"`,
+						Key:          injectedKey,
+						DefaultValue: injectedDefaultValue,
 					},
 				},
 			},
@@ -74,8 +78,8 @@ func Configure(p *config.Provider) {
 				MergeStrategy: config.ListTypeMap,
 				ListMapKeys: config.ListMapKeys{
 					InjectedKey: config.InjectedKey{
-						Key:          "index",
-						DefaultValue: `"0"`,
+						Key:          injectedKey,
+						DefaultValue: injectedDefaultValue,
 					},
 				},
 			},
@@ -86,8 +90,8 @@ func Configure(p *config.Provider) {
 
 		r.ShortGroup = shortGroup
 		r.References = config.References{
-			"event_orchestration": {
-				TerraformName: "pagerduty_event_orchestration",
+			refEventOrch: {
+				TerraformName: tfEventOrch,
 			},
 			"set.rule.actions.route_to": {
 				TerraformName:     "pagerduty_service",
@@ -109,8 +113,8 @@ func Configure(p *config.Provider) {
 				MergeStrategy: config.ListTypeMap,
 				ListMapKeys: config.ListMapKeys{
 					InjectedKey: config.InjectedKey{
-						Key:          "index",
-						DefaultValue: `"0"`,
+						Key:          injectedKey,
+						DefaultValue: injectedDefaultValue,
 					},
 				},
 			},
@@ -123,8 +127,8 @@ func Configure(p *config.Provider) {
 				MergeStrategy: config.ListTypeMap,
 				ListMapKeys: config.ListMapKeys{
 					InjectedKey: config.InjectedKey{
-						Key:          "index",
-						DefaultValue: `"0"`,
+						Key:          injectedKey,
+						DefaultValue: injectedDefaultValue,
 					},
 				},
 			},
@@ -136,8 +140,8 @@ func Configure(p *config.Provider) {
 				MergeStrategy: config.ListTypeMap,
 				ListMapKeys: config.ListMapKeys{
 					InjectedKey: config.InjectedKey{
-						Key:          "index",
-						DefaultValue: `"0"`,
+						Key:          injectedKey,
+						DefaultValue: injectedDefaultValue,
 					},
 				},
 			},
@@ -149,8 +153,8 @@ func Configure(p *config.Provider) {
 				MergeStrategy: config.ListTypeMap,
 				ListMapKeys: config.ListMapKeys{
 					InjectedKey: config.InjectedKey{
-						Key:          "index",
-						DefaultValue: `"0"`,
+						Key:          injectedKey,
+						DefaultValue: injectedDefaultValue,
 					},
 				},
 			},
@@ -163,8 +167,8 @@ func Configure(p *config.Provider) {
 				MergeStrategy: config.ListTypeMap,
 				ListMapKeys: config.ListMapKeys{
 					InjectedKey: config.InjectedKey{
-						Key:          "index",
-						DefaultValue: `"0"`,
+						Key:          injectedKey,
+						DefaultValue: injectedDefaultValue,
 					},
 				},
 			},
@@ -176,8 +180,8 @@ func Configure(p *config.Provider) {
 				MergeStrategy: config.ListTypeMap,
 				ListMapKeys: config.ListMapKeys{
 					InjectedKey: config.InjectedKey{
-						Key:          "index",
-						DefaultValue: `"0"`,
+						Key:          injectedKey,
+						DefaultValue: injectedDefaultValue,
 					},
 				},
 			},
@@ -189,8 +193,8 @@ func Configure(p *config.Provider) {
 				MergeStrategy: config.ListTypeMap,
 				ListMapKeys: config.ListMapKeys{
 					InjectedKey: config.InjectedKey{
-						Key:          "index",
-						DefaultValue: `"0"`,
+						Key:          injectedKey,
+						DefaultValue: injectedDefaultValue,
 					},
 				},
 			},
@@ -211,10 +215,10 @@ func Configure(p *config.Provider) {
 
 		r.ShortGroup = shortGroup
 		r.ExternalName.GetIDFn = c.SplitIdFromExternalName(':', 1)
-		r.ExternalName.GetExternalNameFn = c.GetExternalNameFromTfstate([]string{"event_orchestration", "id"}, ':')
+		r.ExternalName.GetExternalNameFn = c.GetExternalNameFromTfstate([]string{refEventOrch, "id"}, ':')
 		r.References = config.References{
-			"event_orchestration": {
-				TerraformName: "pagerduty_event_orchestration",
+			refEventOrch: {
+				TerraformName: tfEventOrch,
 			},
 		}
 	})
@@ -223,8 +227,8 @@ func Configure(p *config.Provider) {
 
 		r.ShortGroup = shortGroup
 		r.References = config.References{
-			"event_orchestration": {
-				TerraformName: "pagerduty_event_orchestration",
+			refEventOrch: {
+				TerraformName: tfEventOrch,
 			},
 		}
 
@@ -233,8 +237,8 @@ func Configure(p *config.Provider) {
 				MergeStrategy: config.ListTypeMap,
 				ListMapKeys: config.ListMapKeys{
 					InjectedKey: config.InjectedKey{
-						Key:          "index",
-						DefaultValue: `"0"`,
+						Key:          injectedKey,
+						DefaultValue: injectedDefaultValue,
 					},
 				},
 			},
@@ -244,8 +248,8 @@ func Configure(p *config.Provider) {
 				MergeStrategy: config.ListTypeMap,
 				ListMapKeys: config.ListMapKeys{
 					InjectedKey: config.InjectedKey{
-						Key:          "index",
-						DefaultValue: `"0"`,
+						Key:          injectedKey,
+						DefaultValue: injectedDefaultValue,
 					},
 				},
 			},
@@ -256,10 +260,10 @@ func Configure(p *config.Provider) {
 
 		r.ShortGroup = shortGroup
 		r.ExternalName.GetIDFn = c.SplitIdFromExternalName(':', 1)
-		r.ExternalName.GetExternalNameFn = c.GetExternalNameFromTfstate([]string{"event_orchestration", "id"}, ':')
+		r.ExternalName.GetExternalNameFn = c.GetExternalNameFromTfstate([]string{refEventOrch, "id"}, ':')
 		r.References = config.References{
-			"event_orchestration": {
-				TerraformName: "pagerduty_event_orchestration",
+			refEventOrch: {
+				TerraformName: tfEventOrch,
 			},
 		}
 	})
@@ -268,7 +272,7 @@ func Configure(p *config.Provider) {
 
 		r.ShortGroup = shortGroup
 		r.ExternalName.GetIDFn = c.SplitIdFromExternalName(':', 1)
-		r.ExternalName.GetExternalNameFn = c.GetExternalNameFromTfstate([]string{"event_orchestration", "id"}, ':')
+		r.ExternalName.GetExternalNameFn = c.GetExternalNameFromTfstate([]string{refEventOrch, "id"}, ':')
 		r.References = config.References{
 			"service": {
 				TerraformName: "pagerduty_event_orchestration_service",
