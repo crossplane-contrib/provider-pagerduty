@@ -27,24 +27,12 @@ func Configure(p *config.Provider) {
 
 		r.ServerSideApplyMergeStrategies["set"] = config.MergeStrategy{
 			ListMergeStrategy: config.ListMergeStrategy{
-				MergeStrategy: config.ListTypeMap,
-				ListMapKeys: config.ListMapKeys{
-					InjectedKey: config.InjectedKey{
-						Key:          "index",
-						DefaultValue: `"0"`,
-					},
-				},
+				MergeStrategy: config.ListTypeAtomic,
 			},
 		}
 		r.ServerSideApplyMergeStrategies["catch_all"] = config.MergeStrategy{
 			ListMergeStrategy: config.ListMergeStrategy{
-				MergeStrategy: config.ListTypeMap,
-				ListMapKeys: config.ListMapKeys{
-					InjectedKey: config.InjectedKey{
-						Key:          "index",
-						DefaultValue: `"0"`,
-					},
-				},
+				MergeStrategy: config.ListTypeAtomic,
 			},
 		}
 	})
@@ -60,24 +48,12 @@ func Configure(p *config.Provider) {
 
 		r.ServerSideApplyMergeStrategies["set"] = config.MergeStrategy{
 			ListMergeStrategy: config.ListMergeStrategy{
-				MergeStrategy: config.ListTypeMap,
-				ListMapKeys: config.ListMapKeys{
-					InjectedKey: config.InjectedKey{
-						Key:          "index",
-						DefaultValue: `"0"`,
-					},
-				},
+				MergeStrategy: config.ListTypeAtomic,
 			},
 		}
 		r.ServerSideApplyMergeStrategies["catch_all"] = config.MergeStrategy{
 			ListMergeStrategy: config.ListMergeStrategy{
-				MergeStrategy: config.ListTypeMap,
-				ListMapKeys: config.ListMapKeys{
-					InjectedKey: config.InjectedKey{
-						Key:          "index",
-						DefaultValue: `"0"`,
-					},
-				},
+				MergeStrategy: config.ListTypeAtomic,
 			},
 		}
 	})
@@ -118,13 +94,14 @@ func Configure(p *config.Provider) {
 
 		// set[].rule has no natural key (id is Terraform-computed); inject one
 		// so SSA can target individual rule items when patching back routeTo.
+		// No default, users must provide a unique index per rule.
 		r.ServerSideApplyMergeStrategies["set.rule"] = config.MergeStrategy{
 			ListMergeStrategy: config.ListMergeStrategy{
 				MergeStrategy: config.ListTypeMap,
 				ListMapKeys: config.ListMapKeys{
 					InjectedKey: config.InjectedKey{
-						Key:          "index",
-						DefaultValue: `"0"`,
+						Key:         "index",
+						Description: "Unique index to identify each rule for server-side apply merge. Required.",
 					},
 				},
 			},
@@ -143,19 +120,15 @@ func Configure(p *config.Provider) {
 			},
 		}
 
-		// set[].rule[].condition uses expression as the natural map key.
+		// set[].rule[].condition: expression is required and naturally unique per condition.
 		r.ServerSideApplyMergeStrategies["set.rule.condition"] = config.MergeStrategy{
 			ListMergeStrategy: config.ListMergeStrategy{
 				MergeStrategy: config.ListTypeMap,
 				ListMapKeys: config.ListMapKeys{
-					InjectedKey: config.InjectedKey{
-						Key:          "index",
-						DefaultValue: `"0"`,
-					},
+					Keys: []string{"expression"},
 				},
 			},
 		}
-
 		// set[].rule[].actions[].dynamic_route_to is effectively a singleton;
 		// inject a synthetic key so SSA does not atomically replace it.
 		r.ServerSideApplyMergeStrategies["set.rule.actions.dynamic_route_to"] = config.MergeStrategy{
@@ -230,24 +203,12 @@ func Configure(p *config.Provider) {
 
 		r.ServerSideApplyMergeStrategies["set"] = config.MergeStrategy{
 			ListMergeStrategy: config.ListMergeStrategy{
-				MergeStrategy: config.ListTypeMap,
-				ListMapKeys: config.ListMapKeys{
-					InjectedKey: config.InjectedKey{
-						Key:          "index",
-						DefaultValue: `"0"`,
-					},
-				},
+				MergeStrategy: config.ListTypeAtomic,
 			},
 		}
 		r.ServerSideApplyMergeStrategies["catch_all"] = config.MergeStrategy{
 			ListMergeStrategy: config.ListMergeStrategy{
-				MergeStrategy: config.ListTypeMap,
-				ListMapKeys: config.ListMapKeys{
-					InjectedKey: config.InjectedKey{
-						Key:          "index",
-						DefaultValue: `"0"`,
-					},
-				},
+				MergeStrategy: config.ListTypeAtomic,
 			},
 		}
 	})
