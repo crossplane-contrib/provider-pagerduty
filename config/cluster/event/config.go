@@ -25,6 +25,7 @@ func Configure(p *config.Provider) {
 			},
 		}
 
+		// set and catch_all have no natural key; atomic is correct.
 		r.ServerSideApplyMergeStrategies["set"] = config.MergeStrategy{
 			ListMergeStrategy: config.ListMergeStrategy{
 				MergeStrategy: config.ListTypeAtomic,
@@ -46,6 +47,7 @@ func Configure(p *config.Provider) {
 			},
 		}
 
+		// set and catch_all have no natural key; atomic is correct.
 		r.ServerSideApplyMergeStrategies["set"] = config.MergeStrategy{
 			ListMergeStrategy: config.ListMergeStrategy{
 				MergeStrategy: config.ListTypeAtomic,
@@ -201,6 +203,7 @@ func Configure(p *config.Provider) {
 			},
 		}
 
+		// set and catch_all have no natural key; atomic is correct.
 		r.ServerSideApplyMergeStrategies["set"] = config.MergeStrategy{
 			ListMergeStrategy: config.ListMergeStrategy{
 				MergeStrategy: config.ListTypeAtomic,

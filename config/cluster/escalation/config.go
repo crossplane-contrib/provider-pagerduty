@@ -15,6 +15,7 @@ func Configure(p *config.Provider) {
 			},
 		}
 
+		// rule has no natural key (id is Terraform-computed); atomic is correct.
 		r.ServerSideApplyMergeStrategies["rule"] = config.MergeStrategy{
 			ListMergeStrategy: config.ListMergeStrategy{
 				MergeStrategy: config.ListTypeAtomic,
