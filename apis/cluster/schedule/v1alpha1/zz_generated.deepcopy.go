@@ -76,6 +76,11 @@ func (in *LayerInitParameters) DeepCopyInto(out *LayerInitParameters) {
 		*out = new(string)
 		**out = **in
 	}
+	if in.Index != nil {
+		in, out := &in.Index, &out.Index
+		*out = new(string)
+		**out = **in
+	}
 	if in.Name != nil {
 		in, out := &in.Name, &out.Name
 		*out = new(string)
@@ -151,6 +156,11 @@ func (in *LayerObservation) DeepCopyInto(out *LayerObservation) {
 		*out = new(string)
 		**out = **in
 	}
+	if in.Index != nil {
+		in, out := &in.Index, &out.Index
+		*out = new(string)
+		**out = **in
+	}
 	if in.Name != nil {
 		in, out := &in.Name, &out.Name
 		*out = new(string)
@@ -211,6 +221,11 @@ func (in *LayerParameters) DeepCopyInto(out *LayerParameters) {
 	*out = *in
 	if in.End != nil {
 		in, out := &in.End, &out.End
+		*out = new(string)
+		**out = **in
+	}
+	if in.Index != nil {
+		in, out := &in.Index, &out.Index
 		*out = new(string)
 		**out = **in
 	}

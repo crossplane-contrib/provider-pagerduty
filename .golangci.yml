@@ -99,6 +99,13 @@ linters:
       - linters:
           - staticcheck
         text: 'SA3000:'
+      # scheme.Builder is deprecated upstream, but the register.go files are
+      # scaffolded by upjet and still rely on it. golangci-lint 2.11+ started
+      # flagging SA1019 here; excluded until upjet drops the deprecated helper.
+      - linters:
+          - staticcheck
+        path: register\.go
+        text: 'SA1019:.*scheme.Builder'
       - linters:
           - gosec
         text: 'G101:'

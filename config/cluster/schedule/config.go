@@ -19,5 +19,32 @@ func Configure(p *config.Provider) {
 				SelectorFieldName: "UserSelector",
 			},
 		}
+
+		r.ServerSideApplyMergeStrategies["layer"] = config.MergeStrategy{
+			ListMergeStrategy: config.ListMergeStrategy{
+				MergeStrategy: config.ListTypeMap,
+				ListMapKeys: config.ListMapKeys{
+					InjectedKey: config.InjectedKey{
+						Key:          "index",
+						DefaultValue: `"0"`,
+					},
+				},
+			},
+		}
+		r.ServerSideApplyMergeStrategies["layer.users"] = config.MergeStrategy{
+			ListMergeStrategy: config.ListMergeStrategy{
+				MergeStrategy: config.ListTypeAtomic,
+			},
+		}
+		r.ServerSideApplyMergeStrategies["layer.restriction"] = config.MergeStrategy{
+			ListMergeStrategy: config.ListMergeStrategy{
+				MergeStrategy: config.ListTypeAtomic,
+			},
+		}
+		r.ServerSideApplyMergeStrategies["teams"] = config.MergeStrategy{
+			ListMergeStrategy: config.ListMergeStrategy{
+				MergeStrategy: config.ListTypeAtomic,
+			},
+		}
 	})
 }
