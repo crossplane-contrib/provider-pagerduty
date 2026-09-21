@@ -355,11 +355,6 @@ func (in *RuleInitParameters) DeepCopyInto(out *RuleInitParameters) {
 			(*in)[i].DeepCopyInto(&(*out)[i])
 		}
 	}
-	if in.Index != nil {
-		in, out := &in.Index, &out.Index
-		*out = new(string)
-		**out = **in
-	}
 	if in.Target != nil {
 		in, out := &in.Target, &out.Target
 		*out = make([]TargetInitParameters, len(*in))
@@ -399,11 +394,6 @@ func (in *RuleObservation) DeepCopyInto(out *RuleObservation) {
 		*out = new(string)
 		**out = **in
 	}
-	if in.Index != nil {
-		in, out := &in.Index, &out.Index
-		*out = new(string)
-		**out = **in
-	}
 	if in.Target != nil {
 		in, out := &in.Target, &out.Target
 		*out = make([]TargetObservation, len(*in))
@@ -437,11 +427,6 @@ func (in *RuleParameters) DeepCopyInto(out *RuleParameters) {
 		for i := range *in {
 			(*in)[i].DeepCopyInto(&(*out)[i])
 		}
-	}
-	if in.Index != nil {
-		in, out := &in.Index, &out.Index
-		*out = new(string)
-		**out = **in
 	}
 	if in.Target != nil {
 		in, out := &in.Target, &out.Target

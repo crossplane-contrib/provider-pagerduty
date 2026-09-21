@@ -424,26 +424,18 @@ spec:
                                     expression:
                                       description: A PCL condition string.
                                       type: string
-                                    index:
-                                      default: "0"
-                                      description: This is an injected field with
-                                        a default value for being able to merge items
-                                        of the parent object list.
-                                      type: string
                                   type: object
                                 type: array
                                 x-kubernetes-list-map-keys:
-                                - index
+                                - expression
                                 x-kubernetes-list-type: map
                               disabled:
                                 description: Indicates whether the rule is disabled
                                   and would therefore not be evaluated.
                                 type: boolean
                               index:
-                                default: "0"
-                                description: This is an injected field with a default
-                                  value for being able to merge items of the parent
-                                  object list.
+                                description: Unique index to identify each rule for
+                                  server-side apply merge. Required.
                                 type: string
                               label:
                                 description: A description of this rule's purpose.
@@ -823,26 +815,18 @@ spec:
                                     expression:
                                       description: A PCL condition string.
                                       type: string
-                                    index:
-                                      default: "0"
-                                      description: This is an injected field with
-                                        a default value for being able to merge items
-                                        of the parent object list.
-                                      type: string
                                   type: object
                                 type: array
                                 x-kubernetes-list-map-keys:
-                                - index
+                                - expression
                                 x-kubernetes-list-type: map
                               disabled:
                                 description: Indicates whether the rule is disabled
                                   and would therefore not be evaluated.
                                 type: boolean
                               index:
-                                default: "0"
-                                description: This is an injected field with a default
-                                  value for being able to merge items of the parent
-                                  object list.
+                                description: Unique index to identify each rule for
+                                  server-side apply merge. Required.
                                 type: string
                               label:
                                 description: A description of this rule's purpose.
@@ -1068,11 +1052,6 @@ spec:
                                     expression:
                                       description: A PCL condition string.
                                       type: string
-                                    index:
-                                      description: This is an injected field with
-                                        a default value for being able to merge items
-                                        of the parent object list.
-                                      type: string
                                   type: object
                                 type: array
                               disabled:
@@ -1084,9 +1063,8 @@ spec:
                                   only one set and it's id has to be start
                                 type: string
                               index:
-                                description: This is an injected field with a default
-                                  value for being able to merge items of the parent
-                                  object list.
+                                description: Unique index to identify each rule for
+                                  server-side apply merge. Required.
                                 type: string
                               label:
                                 description: A description of this rule's purpose.
