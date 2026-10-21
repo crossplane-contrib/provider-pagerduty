@@ -5,54 +5,54 @@
 
 package v1alpha1
 
-import xpv1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
+import xpv2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 
 // GetCondition of this Play.
-func (mg *Play) GetCondition(ct xpv1.ConditionType) xpv1.Condition {
+func (mg *Play) GetCondition(ct xpv2.ConditionType) xpv2.Condition {
 	return mg.Status.GetCondition(ct)
 }
 
 // GetDeletionPolicy of this Play.
-func (mg *Play) GetDeletionPolicy() xpv1.DeletionPolicy {
+func (mg *Play) GetDeletionPolicy() xpv2.DeletionPolicy {
 	return mg.Spec.DeletionPolicy
 }
 
 // GetManagementPolicies of this Play.
-func (mg *Play) GetManagementPolicies() xpv1.ManagementPolicies {
+func (mg *Play) GetManagementPolicies() xpv2.ManagementPolicies {
 	return mg.Spec.ManagementPolicies
 }
 
 // GetProviderConfigReference of this Play.
-func (mg *Play) GetProviderConfigReference() *xpv1.Reference {
+func (mg *Play) GetProviderConfigReference() *xpv2.Reference {
 	return mg.Spec.ProviderConfigReference
 }
 
 // GetWriteConnectionSecretToReference of this Play.
-func (mg *Play) GetWriteConnectionSecretToReference() *xpv1.SecretReference {
+func (mg *Play) GetWriteConnectionSecretToReference() *xpv2.SecretReference {
 	return mg.Spec.WriteConnectionSecretToReference
 }
 
 // SetConditions of this Play.
-func (mg *Play) SetConditions(c ...xpv1.Condition) {
+func (mg *Play) SetConditions(c ...xpv2.Condition) {
 	mg.Status.SetConditions(c...)
 }
 
 // SetDeletionPolicy of this Play.
-func (mg *Play) SetDeletionPolicy(r xpv1.DeletionPolicy) {
+func (mg *Play) SetDeletionPolicy(r xpv2.DeletionPolicy) {
 	mg.Spec.DeletionPolicy = r
 }
 
 // SetManagementPolicies of this Play.
-func (mg *Play) SetManagementPolicies(r xpv1.ManagementPolicies) {
+func (mg *Play) SetManagementPolicies(r xpv2.ManagementPolicies) {
 	mg.Spec.ManagementPolicies = r
 }
 
 // SetProviderConfigReference of this Play.
-func (mg *Play) SetProviderConfigReference(r *xpv1.Reference) {
+func (mg *Play) SetProviderConfigReference(r *xpv2.Reference) {
 	mg.Spec.ProviderConfigReference = r
 }
 
 // SetWriteConnectionSecretToReference of this Play.
-func (mg *Play) SetWriteConnectionSecretToReference(r *xpv1.SecretReference) {
+func (mg *Play) SetWriteConnectionSecretToReference(r *xpv2.SecretReference) {
 	mg.Spec.WriteConnectionSecretToReference = r
 }

@@ -10,8 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
-	v2 "github.com/crossplane/crossplane-runtime/v2/apis/common/v2"
+	v2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 )
 
 type ConfigInitParameters struct {
@@ -82,7 +81,7 @@ type ConfigParameters struct {
 type GroupingSettingInitParameters struct {
 
 	// The set of values used for configuration.
-	Config []ConfigInitParameters `json:"config,omitempty" tf:"config,omitempty"`
+	Config *ConfigInitParameters `json:"config,omitempty" tf:"config,omitempty"`
 
 	// A human-friendly text to describe and identify this alert grouping setting.
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
@@ -92,11 +91,11 @@ type GroupingSettingInitParameters struct {
 
 	// References to Service in service to populate services.
 	// +kubebuilder:validation:Optional
-	ServiceRefs []v1.NamespacedReference `json:"serviceRefs,omitempty" tf:"-"`
+	ServiceRefs []v2.NamespacedReference `json:"serviceRefs,omitempty" tf:"-"`
 
 	// Selector for a list of Service in service to populate services.
 	// +kubebuilder:validation:Optional
-	ServiceSelector *v1.NamespacedSelector `json:"serviceSelector,omitempty" tf:"-"`
+	ServiceSelector *v2.NamespacedSelector `json:"serviceSelector,omitempty" tf:"-"`
 
 	// [Updating can cause a resource replacement] The list IDs of services associated to this setting.
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-pagerduty/apis/namespaced/service/v1alpha1.Service
@@ -112,7 +111,7 @@ type GroupingSettingInitParameters struct {
 type GroupingSettingObservation struct {
 
 	// The set of values used for configuration.
-	Config []ConfigObservation `json:"config,omitempty" tf:"config,omitempty"`
+	Config *ConfigObservation `json:"config,omitempty" tf:"config,omitempty"`
 
 	// A human-friendly text to describe and identify this alert grouping setting.
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
@@ -135,7 +134,7 @@ type GroupingSettingParameters struct {
 
 	// The set of values used for configuration.
 	// +kubebuilder:validation:Optional
-	Config []ConfigParameters `json:"config,omitempty" tf:"config,omitempty"`
+	Config *ConfigParameters `json:"config,omitempty" tf:"config,omitempty"`
 
 	// A human-friendly text to describe and identify this alert grouping setting.
 	// +kubebuilder:validation:Optional
@@ -147,11 +146,11 @@ type GroupingSettingParameters struct {
 
 	// References to Service in service to populate services.
 	// +kubebuilder:validation:Optional
-	ServiceRefs []v1.NamespacedReference `json:"serviceRefs,omitempty" tf:"-"`
+	ServiceRefs []v2.NamespacedReference `json:"serviceRefs,omitempty" tf:"-"`
 
 	// Selector for a list of Service in service to populate services.
 	// +kubebuilder:validation:Optional
-	ServiceSelector *v1.NamespacedSelector `json:"serviceSelector,omitempty" tf:"-"`
+	ServiceSelector *v2.NamespacedSelector `json:"serviceSelector,omitempty" tf:"-"`
 
 	// [Updating can cause a resource replacement] The list IDs of services associated to this setting.
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-pagerduty/apis/namespaced/service/v1alpha1.Service
@@ -185,8 +184,8 @@ type GroupingSettingSpec struct {
 
 // GroupingSettingStatus defines the observed state of GroupingSetting.
 type GroupingSettingStatus struct {
-	v1.ResourceStatus `json:",inline"`
-	AtProvider        GroupingSettingObservation `json:"atProvider,omitempty"`
+	v2.ManagedResourceStatus `json:",inline"`
+	AtProvider               GroupingSettingObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true

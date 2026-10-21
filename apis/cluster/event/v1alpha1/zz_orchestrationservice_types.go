@@ -10,7 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
+	v2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 )
 
 type ActionsAutomationActionHeaderInitParameters struct {
@@ -332,7 +332,7 @@ type OrchestrationServiceCatchAllActionsInitParameters struct {
 	Suppress *bool `json:"suppress,omitempty" tf:"suppress,omitempty"`
 
 	// The number of seconds to suspend the resulting alert before triggering. This effectively pauses incident notifications. If a resolve event arrives before the alert triggers then PagerDuty won't create an incident for this alert.
-	Suspend *float64 `json:"suspend,omitempty" tf:"suspend,omitempty"`
+	Suspend *int64 `json:"suspend,omitempty" tf:"suspend,omitempty"`
 
 	// Populate variables from event payloads and use those variables in other event actions.
 	Variable []CatchAllActionsVariableInitParameters `json:"variable,omitempty" tf:"variable,omitempty"`
@@ -374,7 +374,7 @@ type OrchestrationServiceCatchAllActionsObservation struct {
 	Suppress *bool `json:"suppress,omitempty" tf:"suppress,omitempty"`
 
 	// The number of seconds to suspend the resulting alert before triggering. This effectively pauses incident notifications. If a resolve event arrives before the alert triggers then PagerDuty won't create an incident for this alert.
-	Suspend *float64 `json:"suspend,omitempty" tf:"suspend,omitempty"`
+	Suspend *int64 `json:"suspend,omitempty" tf:"suspend,omitempty"`
 
 	// Populate variables from event payloads and use those variables in other event actions.
 	Variable []CatchAllActionsVariableObservation `json:"variable,omitempty" tf:"variable,omitempty"`
@@ -428,7 +428,7 @@ type OrchestrationServiceCatchAllActionsParameters struct {
 
 	// The number of seconds to suspend the resulting alert before triggering. This effectively pauses incident notifications. If a resolve event arrives before the alert triggers then PagerDuty won't create an incident for this alert.
 	// +kubebuilder:validation:Optional
-	Suspend *float64 `json:"suspend,omitempty" tf:"suspend,omitempty"`
+	Suspend *int64 `json:"suspend,omitempty" tf:"suspend,omitempty"`
 
 	// Populate variables from event payloads and use those variables in other event actions.
 	// +kubebuilder:validation:Optional
@@ -482,11 +482,11 @@ type OrchestrationServiceInitParameters struct {
 
 	// Reference to a Service in service to populate service.
 	// +kubebuilder:validation:Optional
-	ServiceRef *v1.Reference `json:"serviceRef,omitempty" tf:"-"`
+	ServiceRef *v2.Reference `json:"serviceRef,omitempty" tf:"-"`
 
 	// Selector for a Service in service to populate service.
 	// +kubebuilder:validation:Optional
-	ServiceSelector *v1.Selector `json:"serviceSelector,omitempty" tf:"-"`
+	ServiceSelector *v2.Selector `json:"serviceSelector,omitempty" tf:"-"`
 
 	// A Service Orchestration must contain at least a "start" set, but can contain any number of additional sets that are routed to by other rules to form a directional graph.
 	// +listType=map
@@ -531,11 +531,11 @@ type OrchestrationServiceParameters struct {
 
 	// Reference to a Service in service to populate service.
 	// +kubebuilder:validation:Optional
-	ServiceRef *v1.Reference `json:"serviceRef,omitempty" tf:"-"`
+	ServiceRef *v2.Reference `json:"serviceRef,omitempty" tf:"-"`
 
 	// Selector for a Service in service to populate service.
 	// +kubebuilder:validation:Optional
-	ServiceSelector *v1.Selector `json:"serviceSelector,omitempty" tf:"-"`
+	ServiceSelector *v2.Selector `json:"serviceSelector,omitempty" tf:"-"`
 
 	// A Service Orchestration must contain at least a "start" set, but can contain any number of additional sets that are routed to by other rules to form a directional graph.
 	// +kubebuilder:validation:Optional
@@ -621,7 +621,7 @@ type OrchestrationServiceSetRuleActionsInitParameters struct {
 	Suppress *bool `json:"suppress,omitempty" tf:"suppress,omitempty"`
 
 	// The number of seconds to suspend the resulting alert before triggering. This effectively pauses incident notifications. If a resolve event arrives before the alert triggers then PagerDuty won't create an incident for this alert.
-	Suspend *float64 `json:"suspend,omitempty" tf:"suspend,omitempty"`
+	Suspend *int64 `json:"suspend,omitempty" tf:"suspend,omitempty"`
 
 	// Populate variables from event payloads and use those variables in other event actions.
 	Variable []RuleActionsVariableInitParameters `json:"variable,omitempty" tf:"variable,omitempty"`
@@ -663,7 +663,7 @@ type OrchestrationServiceSetRuleActionsObservation struct {
 	Suppress *bool `json:"suppress,omitempty" tf:"suppress,omitempty"`
 
 	// The number of seconds to suspend the resulting alert before triggering. This effectively pauses incident notifications. If a resolve event arrives before the alert triggers then PagerDuty won't create an incident for this alert.
-	Suspend *float64 `json:"suspend,omitempty" tf:"suspend,omitempty"`
+	Suspend *int64 `json:"suspend,omitempty" tf:"suspend,omitempty"`
 
 	// Populate variables from event payloads and use those variables in other event actions.
 	Variable []RuleActionsVariableObservation `json:"variable,omitempty" tf:"variable,omitempty"`
@@ -717,7 +717,7 @@ type OrchestrationServiceSetRuleActionsParameters struct {
 
 	// The number of seconds to suspend the resulting alert before triggering. This effectively pauses incident notifications. If a resolve event arrives before the alert triggers then PagerDuty won't create an incident for this alert.
 	// +kubebuilder:validation:Optional
-	Suspend *float64 `json:"suspend,omitempty" tf:"suspend,omitempty"`
+	Suspend *int64 `json:"suspend,omitempty" tf:"suspend,omitempty"`
 
 	// Populate variables from event payloads and use those variables in other event actions.
 	// +kubebuilder:validation:Optional
@@ -1080,8 +1080,8 @@ type SetRuleConditionParameters struct {
 
 // OrchestrationServiceSpec defines the desired state of OrchestrationService
 type OrchestrationServiceSpec struct {
-	v1.ResourceSpec `json:",inline"`
-	ForProvider     OrchestrationServiceParameters `json:"forProvider"`
+	v2.ClusterManagedResourceSpec `json:",inline"`
+	ForProvider                   OrchestrationServiceParameters `json:"forProvider"`
 	// THIS IS A BETA FIELD. It will be honored
 	// unless the Management Policies feature flag is disabled.
 	// InitProvider holds the same fields as ForProvider, with the exception
@@ -1097,8 +1097,8 @@ type OrchestrationServiceSpec struct {
 
 // OrchestrationServiceStatus defines the observed state of OrchestrationService.
 type OrchestrationServiceStatus struct {
-	v1.ResourceStatus `json:",inline"`
-	AtProvider        OrchestrationServiceObservation `json:"atProvider,omitempty"`
+	v2.ManagedResourceStatus `json:",inline"`
+	AtProvider               OrchestrationServiceObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true

@@ -10,8 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
-	v2 "github.com/crossplane/crossplane-runtime/v2/apis/common/v2"
+	v2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 )
 
 type EscalationRuleAssignmentStrategyInitParameters struct {
@@ -42,7 +41,7 @@ type PolicyInitParameters struct {
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
 	// The number of times the escalation policy will repeat after reaching the end of its escalation.
-	NumLoops *float64 `json:"numLoops,omitempty" tf:"num_loops,omitempty"`
+	NumLoops *int64 `json:"numLoops,omitempty" tf:"num_loops,omitempty"`
 
 	// An Escalation rule block. Escalation rules documented below.
 	// +listType=map
@@ -51,11 +50,11 @@ type PolicyInitParameters struct {
 
 	// References to Team in team to populate teams.
 	// +kubebuilder:validation:Optional
-	TeamRefs []v1.NamespacedReference `json:"teamRefs,omitempty" tf:"-"`
+	TeamRefs []v2.NamespacedReference `json:"teamRefs,omitempty" tf:"-"`
 
 	// Selector for a list of Team in team to populate teams.
 	// +kubebuilder:validation:Optional
-	TeamSelector *v1.NamespacedSelector `json:"teamSelector,omitempty" tf:"-"`
+	TeamSelector *v2.NamespacedSelector `json:"teamSelector,omitempty" tf:"-"`
 
 	// Team associated with the policy (Only 1 team can be assigned to an Escalation Policy). Account must have the teams ability to use this parameter.
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-pagerduty/apis/namespaced/team/v1alpha1.Team
@@ -76,7 +75,7 @@ type PolicyObservation struct {
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
 	// The number of times the escalation policy will repeat after reaching the end of its escalation.
-	NumLoops *float64 `json:"numLoops,omitempty" tf:"num_loops,omitempty"`
+	NumLoops *int64 `json:"numLoops,omitempty" tf:"num_loops,omitempty"`
 
 	// An Escalation rule block. Escalation rules documented below.
 	Rule []RuleObservation `json:"rule,omitempty" tf:"rule,omitempty"`
@@ -97,7 +96,7 @@ type PolicyParameters struct {
 
 	// The number of times the escalation policy will repeat after reaching the end of its escalation.
 	// +kubebuilder:validation:Optional
-	NumLoops *float64 `json:"numLoops,omitempty" tf:"num_loops,omitempty"`
+	NumLoops *int64 `json:"numLoops,omitempty" tf:"num_loops,omitempty"`
 
 	// An Escalation rule block. Escalation rules documented below.
 	// +kubebuilder:validation:Optional
@@ -107,11 +106,11 @@ type PolicyParameters struct {
 
 	// References to Team in team to populate teams.
 	// +kubebuilder:validation:Optional
-	TeamRefs []v1.NamespacedReference `json:"teamRefs,omitempty" tf:"-"`
+	TeamRefs []v2.NamespacedReference `json:"teamRefs,omitempty" tf:"-"`
 
 	// Selector for a list of Team in team to populate teams.
 	// +kubebuilder:validation:Optional
-	TeamSelector *v1.NamespacedSelector `json:"teamSelector,omitempty" tf:"-"`
+	TeamSelector *v2.NamespacedSelector `json:"teamSelector,omitempty" tf:"-"`
 
 	// Team associated with the policy (Only 1 team can be assigned to an Escalation Policy). Account must have the teams ability to use this parameter.
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-pagerduty/apis/namespaced/team/v1alpha1.Team
@@ -124,7 +123,7 @@ type PolicyParameters struct {
 type RuleInitParameters struct {
 
 	// The number of minutes before an unacknowledged incident escalates away from this rule.
-	EscalationDelayInMinutes *float64 `json:"escalationDelayInMinutes,omitempty" tf:"escalation_delay_in_minutes,omitempty"`
+	EscalationDelayInMinutes *int64 `json:"escalationDelayInMinutes,omitempty" tf:"escalation_delay_in_minutes,omitempty"`
 
 	// The strategy used to assign the escalation rule to an incident. Documented below.
 	EscalationRuleAssignmentStrategy []EscalationRuleAssignmentStrategyInitParameters `json:"escalationRuleAssignmentStrategy,omitempty" tf:"escalation_rule_assignment_strategy,omitempty"`
@@ -139,7 +138,7 @@ type RuleInitParameters struct {
 type RuleObservation struct {
 
 	// The number of minutes before an unacknowledged incident escalates away from this rule.
-	EscalationDelayInMinutes *float64 `json:"escalationDelayInMinutes,omitempty" tf:"escalation_delay_in_minutes,omitempty"`
+	EscalationDelayInMinutes *int64 `json:"escalationDelayInMinutes,omitempty" tf:"escalation_delay_in_minutes,omitempty"`
 
 	// The strategy used to assign the escalation rule to an incident. Documented below.
 	EscalationRuleAssignmentStrategy []EscalationRuleAssignmentStrategyObservation `json:"escalationRuleAssignmentStrategy,omitempty" tf:"escalation_rule_assignment_strategy,omitempty"`
@@ -157,7 +156,7 @@ type RuleParameters struct {
 
 	// The number of minutes before an unacknowledged incident escalates away from this rule.
 	// +kubebuilder:validation:Optional
-	EscalationDelayInMinutes *float64 `json:"escalationDelayInMinutes" tf:"escalation_delay_in_minutes,omitempty"`
+	EscalationDelayInMinutes *int64 `json:"escalationDelayInMinutes" tf:"escalation_delay_in_minutes,omitempty"`
 
 	// The strategy used to assign the escalation rule to an incident. Documented below.
 	// +kubebuilder:validation:Optional
@@ -220,8 +219,8 @@ type PolicySpec struct {
 
 // PolicyStatus defines the observed state of Policy.
 type PolicyStatus struct {
-	v1.ResourceStatus `json:",inline"`
-	AtProvider        PolicyObservation `json:"atProvider,omitempty"`
+	v2.ManagedResourceStatus `json:",inline"`
+	AtProvider               PolicyObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true

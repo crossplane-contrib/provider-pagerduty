@@ -10,7 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
+	v2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 )
 
 type ContactMethodInitParameters struct {
@@ -39,11 +39,11 @@ type ContactMethodInitParameters struct {
 
 	// Reference to a User in user to populate userId.
 	// +kubebuilder:validation:Optional
-	UserIDRef *v1.Reference `json:"userIdRef,omitempty" tf:"-"`
+	UserIDRef *v2.Reference `json:"userIdRef,omitempty" tf:"-"`
 
 	// Selector for a User in user to populate userId.
 	// +kubebuilder:validation:Optional
-	UserIDSelector *v1.Selector `json:"userIdSelector,omitempty" tf:"-"`
+	UserIDSelector *v2.Selector `json:"userIdSelector,omitempty" tf:"-"`
 }
 
 type ContactMethodObservation struct {
@@ -112,17 +112,17 @@ type ContactMethodParameters struct {
 
 	// Reference to a User in user to populate userId.
 	// +kubebuilder:validation:Optional
-	UserIDRef *v1.Reference `json:"userIdRef,omitempty" tf:"-"`
+	UserIDRef *v2.Reference `json:"userIdRef,omitempty" tf:"-"`
 
 	// Selector for a User in user to populate userId.
 	// +kubebuilder:validation:Optional
-	UserIDSelector *v1.Selector `json:"userIdSelector,omitempty" tf:"-"`
+	UserIDSelector *v2.Selector `json:"userIdSelector,omitempty" tf:"-"`
 }
 
 // ContactMethodSpec defines the desired state of ContactMethod
 type ContactMethodSpec struct {
-	v1.ResourceSpec `json:",inline"`
-	ForProvider     ContactMethodParameters `json:"forProvider"`
+	v2.ClusterManagedResourceSpec `json:",inline"`
+	ForProvider                   ContactMethodParameters `json:"forProvider"`
 	// THIS IS A BETA FIELD. It will be honored
 	// unless the Management Policies feature flag is disabled.
 	// InitProvider holds the same fields as ForProvider, with the exception
@@ -138,8 +138,8 @@ type ContactMethodSpec struct {
 
 // ContactMethodStatus defines the observed state of ContactMethod.
 type ContactMethodStatus struct {
-	v1.ResourceStatus `json:",inline"`
-	AtProvider        ContactMethodObservation `json:"atProvider,omitempty"`
+	v2.ManagedResourceStatus `json:",inline"`
+	AtProvider               ContactMethodObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true

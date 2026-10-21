@@ -10,8 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
-	v2 "github.com/crossplane/crossplane-runtime/v2/apis/common/v2"
+	v2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 )
 
 type WindowInitParameters struct {
@@ -24,11 +23,11 @@ type WindowInitParameters struct {
 
 	// References to Service in service to populate services.
 	// +kubebuilder:validation:Optional
-	ServiceRefs []v1.NamespacedReference `json:"serviceRefs,omitempty" tf:"-"`
+	ServiceRefs []v2.NamespacedReference `json:"serviceRefs,omitempty" tf:"-"`
 
 	// Selector for a list of Service in service to populate services.
 	// +kubebuilder:validation:Optional
-	ServiceSelector *v1.NamespacedSelector `json:"serviceSelector,omitempty" tf:"-"`
+	ServiceSelector *v2.NamespacedSelector `json:"serviceSelector,omitempty" tf:"-"`
 
 	// A list of service IDs to include in the maintenance window.
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-pagerduty/apis/namespaced/service/v1alpha1.Service
@@ -72,11 +71,11 @@ type WindowParameters struct {
 
 	// References to Service in service to populate services.
 	// +kubebuilder:validation:Optional
-	ServiceRefs []v1.NamespacedReference `json:"serviceRefs,omitempty" tf:"-"`
+	ServiceRefs []v2.NamespacedReference `json:"serviceRefs,omitempty" tf:"-"`
 
 	// Selector for a list of Service in service to populate services.
 	// +kubebuilder:validation:Optional
-	ServiceSelector *v1.NamespacedSelector `json:"serviceSelector,omitempty" tf:"-"`
+	ServiceSelector *v2.NamespacedSelector `json:"serviceSelector,omitempty" tf:"-"`
 
 	// A list of service IDs to include in the maintenance window.
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-pagerduty/apis/namespaced/service/v1alpha1.Service
@@ -110,8 +109,8 @@ type WindowSpec struct {
 
 // WindowStatus defines the observed state of Window.
 type WindowStatus struct {
-	v1.ResourceStatus `json:",inline"`
-	AtProvider        WindowObservation `json:"atProvider,omitempty"`
+	v2.ManagedResourceStatus `json:",inline"`
+	AtProvider               WindowObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true

@@ -10,7 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
+	v2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 )
 
 type PermissionsInitParameters struct {
@@ -24,11 +24,11 @@ type PermissionsInitParameters struct {
 
 	// Reference to a Team in team to populate teamId.
 	// +kubebuilder:validation:Optional
-	TeamIDRef *v1.Reference `json:"teamIdRef,omitempty" tf:"-"`
+	TeamIDRef *v2.Reference `json:"teamIdRef,omitempty" tf:"-"`
 
 	// Selector for a Team in team to populate teamId.
 	// +kubebuilder:validation:Optional
-	TeamIDSelector *v1.Selector `json:"teamIdSelector,omitempty" tf:"-"`
+	TeamIDSelector *v2.Selector `json:"teamIdSelector,omitempty" tf:"-"`
 }
 
 type PermissionsObservation struct {
@@ -53,11 +53,11 @@ type PermissionsParameters struct {
 
 	// Reference to a Team in team to populate teamId.
 	// +kubebuilder:validation:Optional
-	TeamIDRef *v1.Reference `json:"teamIdRef,omitempty" tf:"-"`
+	TeamIDRef *v2.Reference `json:"teamIdRef,omitempty" tf:"-"`
 
 	// Selector for a Team in team to populate teamId.
 	// +kubebuilder:validation:Optional
-	TeamIDSelector *v1.Selector `json:"teamIdSelector,omitempty" tf:"-"`
+	TeamIDSelector *v2.Selector `json:"teamIdSelector,omitempty" tf:"-"`
 }
 
 type WorkflowTriggerInitParameters struct {
@@ -83,11 +83,11 @@ type WorkflowTriggerInitParameters struct {
 
 	// Reference to a Workflow in incident to populate workflow.
 	// +kubebuilder:validation:Optional
-	WorkflowRef *v1.Reference `json:"workflowRef,omitempty" tf:"-"`
+	WorkflowRef *v2.Reference `json:"workflowRef,omitempty" tf:"-"`
 
 	// Selector for a Workflow in incident to populate workflow.
 	// +kubebuilder:validation:Optional
-	WorkflowSelector *v1.Selector `json:"workflowSelector,omitempty" tf:"-"`
+	WorkflowSelector *v2.Selector `json:"workflowSelector,omitempty" tf:"-"`
 }
 
 type WorkflowTriggerObservation struct {
@@ -143,17 +143,17 @@ type WorkflowTriggerParameters struct {
 
 	// Reference to a Workflow in incident to populate workflow.
 	// +kubebuilder:validation:Optional
-	WorkflowRef *v1.Reference `json:"workflowRef,omitempty" tf:"-"`
+	WorkflowRef *v2.Reference `json:"workflowRef,omitempty" tf:"-"`
 
 	// Selector for a Workflow in incident to populate workflow.
 	// +kubebuilder:validation:Optional
-	WorkflowSelector *v1.Selector `json:"workflowSelector,omitempty" tf:"-"`
+	WorkflowSelector *v2.Selector `json:"workflowSelector,omitempty" tf:"-"`
 }
 
 // WorkflowTriggerSpec defines the desired state of WorkflowTrigger
 type WorkflowTriggerSpec struct {
-	v1.ResourceSpec `json:",inline"`
-	ForProvider     WorkflowTriggerParameters `json:"forProvider"`
+	v2.ClusterManagedResourceSpec `json:",inline"`
+	ForProvider                   WorkflowTriggerParameters `json:"forProvider"`
 	// THIS IS A BETA FIELD. It will be honored
 	// unless the Management Policies feature flag is disabled.
 	// InitProvider holds the same fields as ForProvider, with the exception
@@ -169,8 +169,8 @@ type WorkflowTriggerSpec struct {
 
 // WorkflowTriggerStatus defines the observed state of WorkflowTrigger.
 type WorkflowTriggerStatus struct {
-	v1.ResourceStatus `json:",inline"`
-	AtProvider        WorkflowTriggerObservation `json:"atProvider,omitempty"`
+	v2.ManagedResourceStatus `json:",inline"`
+	AtProvider               WorkflowTriggerObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true

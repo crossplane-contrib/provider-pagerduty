@@ -10,8 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
-	v2 "github.com/crossplane/crossplane-runtime/v2/apis/common/v2"
+	v2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 )
 
 type IntegrationInitParameters struct {
@@ -48,11 +47,11 @@ type OrchestrationInitParameters struct {
 
 	// Reference to a Team in team to populate team.
 	// +kubebuilder:validation:Optional
-	TeamRef *v1.NamespacedReference `json:"teamRef,omitempty" tf:"-"`
+	TeamRef *v2.NamespacedReference `json:"teamRef,omitempty" tf:"-"`
 
 	// Selector for a Team in team to populate team.
 	// +kubebuilder:validation:Optional
-	TeamSelector *v1.NamespacedSelector `json:"teamSelector,omitempty" tf:"-"`
+	TeamSelector *v2.NamespacedSelector `json:"teamSelector,omitempty" tf:"-"`
 }
 
 type OrchestrationObservation struct {
@@ -69,7 +68,7 @@ type OrchestrationObservation struct {
 	// Name of the Event Orchestration.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
-	Routes *float64 `json:"routes,omitempty" tf:"routes,omitempty"`
+	Routes *int64 `json:"routes,omitempty" tf:"routes,omitempty"`
 
 	// ID of the team that owns the Event Orchestration. If none is specified, only admins have access.
 	Team *string `json:"team,omitempty" tf:"team,omitempty"`
@@ -96,11 +95,11 @@ type OrchestrationParameters struct {
 
 	// Reference to a Team in team to populate team.
 	// +kubebuilder:validation:Optional
-	TeamRef *v1.NamespacedReference `json:"teamRef,omitempty" tf:"-"`
+	TeamRef *v2.NamespacedReference `json:"teamRef,omitempty" tf:"-"`
 
 	// Selector for a Team in team to populate team.
 	// +kubebuilder:validation:Optional
-	TeamSelector *v1.NamespacedSelector `json:"teamSelector,omitempty" tf:"-"`
+	TeamSelector *v2.NamespacedSelector `json:"teamSelector,omitempty" tf:"-"`
 }
 
 type ParametersInitParameters struct {
@@ -137,8 +136,8 @@ type OrchestrationSpec struct {
 
 // OrchestrationStatus defines the observed state of Orchestration.
 type OrchestrationStatus struct {
-	v1.ResourceStatus `json:",inline"`
-	AtProvider        OrchestrationObservation `json:"atProvider,omitempty"`
+	v2.ManagedResourceStatus `json:",inline"`
+	AtProvider               OrchestrationObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true

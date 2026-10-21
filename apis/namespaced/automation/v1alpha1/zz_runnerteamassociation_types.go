@@ -10,8 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
-	v2 "github.com/crossplane/crossplane-runtime/v2/apis/common/v2"
+	v2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 )
 
 type RunnerTeamAssociationInitParameters struct {
@@ -24,11 +23,11 @@ type RunnerTeamAssociationInitParameters struct {
 
 	// Reference to a Runner to populate runnerId.
 	// +kubebuilder:validation:Optional
-	RunnerRefs *v1.NamespacedReference `json:"runnerRefs,omitempty" tf:"-"`
+	RunnerRefs *v2.NamespacedReference `json:"runnerRefs,omitempty" tf:"-"`
 
 	// Selector for a Runner to populate runnerId.
 	// +kubebuilder:validation:Optional
-	RunnerSelector *v1.NamespacedSelector `json:"runnerSelector,omitempty" tf:"-"`
+	RunnerSelector *v2.NamespacedSelector `json:"runnerSelector,omitempty" tf:"-"`
 
 	// Id of the team associated with the runner.
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-pagerduty/apis/namespaced/team/v1alpha1.Team
@@ -36,11 +35,11 @@ type RunnerTeamAssociationInitParameters struct {
 
 	// Reference to a Team in team to populate teamId.
 	// +kubebuilder:validation:Optional
-	TeamIDRef *v1.NamespacedReference `json:"teamIdRef,omitempty" tf:"-"`
+	TeamIDRef *v2.NamespacedReference `json:"teamIdRef,omitempty" tf:"-"`
 
 	// Selector for a Team in team to populate teamId.
 	// +kubebuilder:validation:Optional
-	TeamIDSelector *v1.NamespacedSelector `json:"teamIdSelector,omitempty" tf:"-"`
+	TeamIDSelector *v2.NamespacedSelector `json:"teamIdSelector,omitempty" tf:"-"`
 }
 
 type RunnerTeamAssociationObservation struct {
@@ -64,11 +63,11 @@ type RunnerTeamAssociationParameters struct {
 
 	// Reference to a Runner to populate runnerId.
 	// +kubebuilder:validation:Optional
-	RunnerRefs *v1.NamespacedReference `json:"runnerRefs,omitempty" tf:"-"`
+	RunnerRefs *v2.NamespacedReference `json:"runnerRefs,omitempty" tf:"-"`
 
 	// Selector for a Runner to populate runnerId.
 	// +kubebuilder:validation:Optional
-	RunnerSelector *v1.NamespacedSelector `json:"runnerSelector,omitempty" tf:"-"`
+	RunnerSelector *v2.NamespacedSelector `json:"runnerSelector,omitempty" tf:"-"`
 
 	// Id of the team associated with the runner.
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-pagerduty/apis/namespaced/team/v1alpha1.Team
@@ -77,11 +76,11 @@ type RunnerTeamAssociationParameters struct {
 
 	// Reference to a Team in team to populate teamId.
 	// +kubebuilder:validation:Optional
-	TeamIDRef *v1.NamespacedReference `json:"teamIdRef,omitempty" tf:"-"`
+	TeamIDRef *v2.NamespacedReference `json:"teamIdRef,omitempty" tf:"-"`
 
 	// Selector for a Team in team to populate teamId.
 	// +kubebuilder:validation:Optional
-	TeamIDSelector *v1.NamespacedSelector `json:"teamIdSelector,omitempty" tf:"-"`
+	TeamIDSelector *v2.NamespacedSelector `json:"teamIdSelector,omitempty" tf:"-"`
 }
 
 // RunnerTeamAssociationSpec defines the desired state of RunnerTeamAssociation
@@ -103,8 +102,8 @@ type RunnerTeamAssociationSpec struct {
 
 // RunnerTeamAssociationStatus defines the observed state of RunnerTeamAssociation.
 type RunnerTeamAssociationStatus struct {
-	v1.ResourceStatus `json:",inline"`
-	AtProvider        RunnerTeamAssociationObservation `json:"atProvider,omitempty"`
+	v2.ManagedResourceStatus `json:",inline"`
+	AtProvider               RunnerTeamAssociationObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true

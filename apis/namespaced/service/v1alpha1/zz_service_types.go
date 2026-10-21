@@ -10,8 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
-	v2 "github.com/crossplane/crossplane-runtime/v2/apis/common/v2"
+	v2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 )
 
 type AlertGroupingParametersInitParameters struct {
@@ -78,7 +77,7 @@ type AutoPauseNotificationsParametersInitParameters struct {
 	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
 
 	// Indicates in seconds how long alerts should be suspended before triggering. Allowed values: 120, 180, 300, 600, 900 if enabled is true. Must be omitted or set to null if enabled is false.
-	Timeout *float64 `json:"timeout,omitempty" tf:"timeout,omitempty"`
+	Timeout *int64 `json:"timeout,omitempty" tf:"timeout,omitempty"`
 }
 
 type AutoPauseNotificationsParametersObservation struct {
@@ -87,7 +86,7 @@ type AutoPauseNotificationsParametersObservation struct {
 	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
 
 	// Indicates in seconds how long alerts should be suspended before triggering. Allowed values: 120, 180, 300, 600, 900 if enabled is true. Must be omitted or set to null if enabled is false.
-	Timeout *float64 `json:"timeout,omitempty" tf:"timeout,omitempty"`
+	Timeout *int64 `json:"timeout,omitempty" tf:"timeout,omitempty"`
 }
 
 type AutoPauseNotificationsParametersParameters struct {
@@ -98,7 +97,7 @@ type AutoPauseNotificationsParametersParameters struct {
 
 	// Indicates in seconds how long alerts should be suspended before triggering. Allowed values: 120, 180, 300, 600, 900 if enabled is true. Must be omitted or set to null if enabled is false.
 	// +kubebuilder:validation:Optional
-	Timeout *float64 `json:"timeout,omitempty" tf:"timeout,omitempty"`
+	Timeout *int64 `json:"timeout,omitempty" tf:"timeout,omitempty"`
 }
 
 type ConfigInitParameters struct {
@@ -110,10 +109,10 @@ type ConfigInitParameters struct {
 	Fields []*string `json:"fields,omitempty" tf:"fields,omitempty"`
 
 	// The maximum amount of time allowed between Alerts. This setting applies only when type is set to intelligent or content_based. Value must be between 300 and 3600 or exactly 86400 (86400 is supported only for content_based alert grouping). Any Alerts arriving greater than time_window seconds apart will not be grouped together. This is a rolling time window and is counted from the most recently grouped alert. The window is extended every time a new alert is added to the group, up to 24 hours.
-	TimeWindow *float64 `json:"timeWindow,omitempty" tf:"time_window,omitempty"`
+	TimeWindow *int64 `json:"timeWindow,omitempty" tf:"time_window,omitempty"`
 
 	// The duration in minutes within which to automatically group incoming alerts. This setting applies only when type is set to time. To continue grouping alerts until the incident is resolved, set this value to 0.
-	Timeout *float64 `json:"timeout,omitempty" tf:"timeout,omitempty"`
+	Timeout *int64 `json:"timeout,omitempty" tf:"timeout,omitempty"`
 }
 
 type ConfigObservation struct {
@@ -125,10 +124,10 @@ type ConfigObservation struct {
 	Fields []*string `json:"fields,omitempty" tf:"fields,omitempty"`
 
 	// The maximum amount of time allowed between Alerts. This setting applies only when type is set to intelligent or content_based. Value must be between 300 and 3600 or exactly 86400 (86400 is supported only for content_based alert grouping). Any Alerts arriving greater than time_window seconds apart will not be grouped together. This is a rolling time window and is counted from the most recently grouped alert. The window is extended every time a new alert is added to the group, up to 24 hours.
-	TimeWindow *float64 `json:"timeWindow,omitempty" tf:"time_window,omitempty"`
+	TimeWindow *int64 `json:"timeWindow,omitempty" tf:"time_window,omitempty"`
 
 	// The duration in minutes within which to automatically group incoming alerts. This setting applies only when type is set to time. To continue grouping alerts until the incident is resolved, set this value to 0.
-	Timeout *float64 `json:"timeout,omitempty" tf:"timeout,omitempty"`
+	Timeout *int64 `json:"timeout,omitempty" tf:"timeout,omitempty"`
 }
 
 type ConfigParameters struct {
@@ -143,11 +142,11 @@ type ConfigParameters struct {
 
 	// The maximum amount of time allowed between Alerts. This setting applies only when type is set to intelligent or content_based. Value must be between 300 and 3600 or exactly 86400 (86400 is supported only for content_based alert grouping). Any Alerts arriving greater than time_window seconds apart will not be grouped together. This is a rolling time window and is counted from the most recently grouped alert. The window is extended every time a new alert is added to the group, up to 24 hours.
 	// +kubebuilder:validation:Optional
-	TimeWindow *float64 `json:"timeWindow,omitempty" tf:"time_window,omitempty"`
+	TimeWindow *int64 `json:"timeWindow,omitempty" tf:"time_window,omitempty"`
 
 	// The duration in minutes within which to automatically group incoming alerts. This setting applies only when type is set to time. To continue grouping alerts until the incident is resolved, set this value to 0.
 	// +kubebuilder:validation:Optional
-	Timeout *float64 `json:"timeout,omitempty" tf:"timeout,omitempty"`
+	Timeout *int64 `json:"timeout,omitempty" tf:"timeout,omitempty"`
 }
 
 type DuringSupportHoursInitParameters struct {
@@ -328,11 +327,11 @@ type ServiceInitParameters struct {
 
 	// Reference to a Policy in escalation to populate escalationPolicy.
 	// +kubebuilder:validation:Optional
-	EscalationPolicyRef *v1.NamespacedReference `json:"escalationPolicyRef,omitempty" tf:"-"`
+	EscalationPolicyRef *v2.NamespacedReference `json:"escalationPolicyRef,omitempty" tf:"-"`
 
 	// Selector for a Policy in escalation to populate escalationPolicy.
 	// +kubebuilder:validation:Optional
-	EscalationPolicySelector *v1.NamespacedSelector `json:"escalationPolicySelector,omitempty" tf:"-"`
+	EscalationPolicySelector *v2.NamespacedSelector `json:"escalationPolicySelector,omitempty" tf:"-"`
 
 	IncidentUrgencyRule []IncidentUrgencyRuleInitParameters `json:"incidentUrgencyRule,omitempty" tf:"incident_urgency_rule,omitempty"`
 
@@ -448,11 +447,11 @@ type ServiceParameters struct {
 
 	// Reference to a Policy in escalation to populate escalationPolicy.
 	// +kubebuilder:validation:Optional
-	EscalationPolicyRef *v1.NamespacedReference `json:"escalationPolicyRef,omitempty" tf:"-"`
+	EscalationPolicyRef *v2.NamespacedReference `json:"escalationPolicyRef,omitempty" tf:"-"`
 
 	// Selector for a Policy in escalation to populate escalationPolicy.
 	// +kubebuilder:validation:Optional
-	EscalationPolicySelector *v1.NamespacedSelector `json:"escalationPolicySelector,omitempty" tf:"-"`
+	EscalationPolicySelector *v2.NamespacedSelector `json:"escalationPolicySelector,omitempty" tf:"-"`
 
 	// +kubebuilder:validation:Optional
 	IncidentUrgencyRule []IncidentUrgencyRuleParameters `json:"incidentUrgencyRule,omitempty" tf:"incident_urgency_rule,omitempty"`
@@ -476,7 +475,7 @@ type SupportHoursInitParameters struct {
 
 	// Array of days of week as integers. 1 to 7, 1 being
 	// Monday and 7 being Sunday.
-	DaysOfWeek []*float64 `json:"daysOfWeek,omitempty" tf:"days_of_week,omitempty"`
+	DaysOfWeek []*int64 `json:"daysOfWeek,omitempty" tf:"days_of_week,omitempty"`
 
 	// The support hours' ending time of day.
 	EndTime *string `json:"endTime,omitempty" tf:"end_time,omitempty"`
@@ -495,7 +494,7 @@ type SupportHoursObservation struct {
 
 	// Array of days of week as integers. 1 to 7, 1 being
 	// Monday and 7 being Sunday.
-	DaysOfWeek []*float64 `json:"daysOfWeek,omitempty" tf:"days_of_week,omitempty"`
+	DaysOfWeek []*int64 `json:"daysOfWeek,omitempty" tf:"days_of_week,omitempty"`
 
 	// The support hours' ending time of day.
 	EndTime *string `json:"endTime,omitempty" tf:"end_time,omitempty"`
@@ -515,7 +514,7 @@ type SupportHoursParameters struct {
 	// Array of days of week as integers. 1 to 7, 1 being
 	// Monday and 7 being Sunday.
 	// +kubebuilder:validation:Optional
-	DaysOfWeek []*float64 `json:"daysOfWeek,omitempty" tf:"days_of_week,omitempty"`
+	DaysOfWeek []*int64 `json:"daysOfWeek,omitempty" tf:"days_of_week,omitempty"`
 
 	// The support hours' ending time of day.
 	// +kubebuilder:validation:Optional
@@ -553,8 +552,8 @@ type ServiceSpec struct {
 
 // ServiceStatus defines the observed state of Service.
 type ServiceStatus struct {
-	v1.ResourceStatus `json:",inline"`
-	AtProvider        ServiceObservation `json:"atProvider,omitempty"`
+	v2.ManagedResourceStatus `json:",inline"`
+	AtProvider               ServiceObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true

@@ -10,8 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
-	v2 "github.com/crossplane/crossplane-runtime/v2/apis/common/v2"
+	v2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 )
 
 type CatchAllActionsInitParameters struct {
@@ -28,11 +27,11 @@ type CatchAllActionsInitParameters struct {
 
 	// Reference to a Service in service to populate routeTo.
 	// +kubebuilder:validation:Optional
-	RouteToServiceRef *v1.NamespacedReference `json:"routeToServiceRef,omitempty" tf:"-"`
+	RouteToServiceRef *v2.NamespacedReference `json:"routeToServiceRef,omitempty" tf:"-"`
 
 	// Selector for a Service in service to populate routeTo.
 	// +kubebuilder:validation:Optional
-	RouteToServiceSelector *v1.NamespacedSelector `json:"routeToServiceSelector,omitempty" tf:"-"`
+	RouteToServiceSelector *v2.NamespacedSelector `json:"routeToServiceSelector,omitempty" tf:"-"`
 }
 
 type CatchAllActionsObservation struct {
@@ -60,11 +59,11 @@ type CatchAllActionsParameters struct {
 
 	// Reference to a Service in service to populate routeTo.
 	// +kubebuilder:validation:Optional
-	RouteToServiceRef *v1.NamespacedReference `json:"routeToServiceRef,omitempty" tf:"-"`
+	RouteToServiceRef *v2.NamespacedReference `json:"routeToServiceRef,omitempty" tf:"-"`
 
 	// Selector for a Service in service to populate routeTo.
 	// +kubebuilder:validation:Optional
-	RouteToServiceSelector *v1.NamespacedSelector `json:"routeToServiceSelector,omitempty" tf:"-"`
+	RouteToServiceSelector *v2.NamespacedSelector `json:"routeToServiceSelector,omitempty" tf:"-"`
 }
 
 type DynamicRouteToInitParameters struct {
@@ -166,11 +165,11 @@ type OrchestrationRouterInitParameters struct {
 
 	// Reference to a Orchestration in event to populate eventOrchestration.
 	// +kubebuilder:validation:Optional
-	EventOrchestrationRef *v1.NamespacedReference `json:"eventOrchestrationRef,omitempty" tf:"-"`
+	EventOrchestrationRef *v2.NamespacedReference `json:"eventOrchestrationRef,omitempty" tf:"-"`
 
 	// Selector for a Orchestration in event to populate eventOrchestration.
 	// +kubebuilder:validation:Optional
-	EventOrchestrationSelector *v1.NamespacedSelector `json:"eventOrchestrationSelector,omitempty" tf:"-"`
+	EventOrchestrationSelector *v2.NamespacedSelector `json:"eventOrchestrationSelector,omitempty" tf:"-"`
 
 	// The Router contains a single set of rules  (the "start" set).
 	// +listType=map
@@ -208,11 +207,11 @@ type OrchestrationRouterParameters struct {
 
 	// Reference to a Orchestration in event to populate eventOrchestration.
 	// +kubebuilder:validation:Optional
-	EventOrchestrationRef *v1.NamespacedReference `json:"eventOrchestrationRef,omitempty" tf:"-"`
+	EventOrchestrationRef *v2.NamespacedReference `json:"eventOrchestrationRef,omitempty" tf:"-"`
 
 	// Selector for a Orchestration in event to populate eventOrchestration.
 	// +kubebuilder:validation:Optional
-	EventOrchestrationSelector *v1.NamespacedSelector `json:"eventOrchestrationSelector,omitempty" tf:"-"`
+	EventOrchestrationSelector *v2.NamespacedSelector `json:"eventOrchestrationSelector,omitempty" tf:"-"`
 
 	// The Router contains a single set of rules  (the "start" set).
 	// +kubebuilder:validation:Optional
@@ -316,11 +315,11 @@ type SetRuleActionsInitParameters struct {
 
 	// Reference to a Service in service to populate routeTo.
 	// +kubebuilder:validation:Optional
-	RouteToServiceRef *v1.NamespacedReference `json:"routeToServiceRef,omitempty" tf:"-"`
+	RouteToServiceRef *v2.NamespacedReference `json:"routeToServiceRef,omitempty" tf:"-"`
 
 	// Selector for a Service in service to populate routeTo.
 	// +kubebuilder:validation:Optional
-	RouteToServiceSelector *v1.NamespacedSelector `json:"routeToServiceSelector,omitempty" tf:"-"`
+	RouteToServiceSelector *v2.NamespacedSelector `json:"routeToServiceSelector,omitempty" tf:"-"`
 }
 
 type SetRuleActionsObservation struct {
@@ -357,11 +356,11 @@ type SetRuleActionsParameters struct {
 
 	// Reference to a Service in service to populate routeTo.
 	// +kubebuilder:validation:Optional
-	RouteToServiceRef *v1.NamespacedReference `json:"routeToServiceRef,omitempty" tf:"-"`
+	RouteToServiceRef *v2.NamespacedReference `json:"routeToServiceRef,omitempty" tf:"-"`
 
 	// Selector for a Service in service to populate routeTo.
 	// +kubebuilder:validation:Optional
-	RouteToServiceSelector *v1.NamespacedSelector `json:"routeToServiceSelector,omitempty" tf:"-"`
+	RouteToServiceSelector *v2.NamespacedSelector `json:"routeToServiceSelector,omitempty" tf:"-"`
 }
 
 type SetRuleInitParameters struct {
@@ -455,8 +454,8 @@ type OrchestrationRouterSpec struct {
 
 // OrchestrationRouterStatus defines the observed state of OrchestrationRouter.
 type OrchestrationRouterStatus struct {
-	v1.ResourceStatus `json:",inline"`
-	AtProvider        OrchestrationRouterObservation `json:"atProvider,omitempty"`
+	v2.ManagedResourceStatus `json:",inline"`
+	AtProvider               OrchestrationRouterObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true

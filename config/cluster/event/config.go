@@ -7,7 +7,26 @@ import (
 
 const (
 	shortGroup = "event"
+
+	eventOrchestrationResource = "pagerduty_event_orchestration"
+	eventOrchestrationField    = "event_orchestration"
 )
+
+// injectedIndexMergeStrategy merges an object list by a synthetic "index"
+// key, defaulted to "0", injected for server-side apply.
+func injectedIndexMergeStrategy() config.MergeStrategy {
+	return config.MergeStrategy{
+		ListMergeStrategy: config.ListMergeStrategy{
+			MergeStrategy: config.ListTypeMap,
+			ListMapKeys: config.ListMapKeys{
+				InjectedKey: config.InjectedKey{
+					Key:          "index",
+					DefaultValue: `"0"`,
+				},
+			},
+		},
+	}
+}
 
 // Configure configures individual resources by adding custom ResourceConfigurators.
 func Configure(p *config.Provider) {
@@ -20,33 +39,13 @@ func Configure(p *config.Provider) {
 
 		r.ShortGroup = shortGroup
 		r.References = config.References{
-			"event_orchestration": {
-				TerraformName: "pagerduty_event_orchestration",
+			eventOrchestrationField: {
+				TerraformName: eventOrchestrationResource,
 			},
 		}
 
-		r.ServerSideApplyMergeStrategies["set"] = config.MergeStrategy{
-			ListMergeStrategy: config.ListMergeStrategy{
-				MergeStrategy: config.ListTypeMap,
-				ListMapKeys: config.ListMapKeys{
-					InjectedKey: config.InjectedKey{
-						Key:          "index",
-						DefaultValue: `"0"`,
-					},
-				},
-			},
-		}
-		r.ServerSideApplyMergeStrategies["catch_all"] = config.MergeStrategy{
-			ListMergeStrategy: config.ListMergeStrategy{
-				MergeStrategy: config.ListTypeMap,
-				ListMapKeys: config.ListMapKeys{
-					InjectedKey: config.InjectedKey{
-						Key:          "index",
-						DefaultValue: `"0"`,
-					},
-				},
-			},
-		}
+		r.ServerSideApplyMergeStrategies["set"] = injectedIndexMergeStrategy()
+		r.ServerSideApplyMergeStrategies["catch_all"] = injectedIndexMergeStrategy()
 	})
 
 	p.AddResourceConfigurator("pagerduty_event_orchestration_service", func(r *config.Resource) {
@@ -58,36 +57,16 @@ func Configure(p *config.Provider) {
 			},
 		}
 
-		r.ServerSideApplyMergeStrategies["set"] = config.MergeStrategy{
-			ListMergeStrategy: config.ListMergeStrategy{
-				MergeStrategy: config.ListTypeMap,
-				ListMapKeys: config.ListMapKeys{
-					InjectedKey: config.InjectedKey{
-						Key:          "index",
-						DefaultValue: `"0"`,
-					},
-				},
-			},
-		}
-		r.ServerSideApplyMergeStrategies["catch_all"] = config.MergeStrategy{
-			ListMergeStrategy: config.ListMergeStrategy{
-				MergeStrategy: config.ListTypeMap,
-				ListMapKeys: config.ListMapKeys{
-					InjectedKey: config.InjectedKey{
-						Key:          "index",
-						DefaultValue: `"0"`,
-					},
-				},
-			},
-		}
+		r.ServerSideApplyMergeStrategies["set"] = injectedIndexMergeStrategy()
+		r.ServerSideApplyMergeStrategies["catch_all"] = injectedIndexMergeStrategy()
 	})
 
 	p.AddResourceConfigurator("pagerduty_event_orchestration_router", func(r *config.Resource) {
 
 		r.ShortGroup = shortGroup
 		r.References = config.References{
-			"event_orchestration": {
-				TerraformName: "pagerduty_event_orchestration",
+			eventOrchestrationField: {
+				TerraformName: eventOrchestrationResource,
 			},
 			"set.rule.actions.route_to": {
 				TerraformName:     "pagerduty_service",
@@ -104,100 +83,30 @@ func Configure(p *config.Provider) {
 		// set has a natural "id" map key; use map-merge so SSA patches that only
 		// write back resolved reference values do not atomically remove this
 		// required field, which would fail XValidation.
-		r.ServerSideApplyMergeStrategies["set"] = config.MergeStrategy{
-			ListMergeStrategy: config.ListMergeStrategy{
-				MergeStrategy: config.ListTypeMap,
-				ListMapKeys: config.ListMapKeys{
-					InjectedKey: config.InjectedKey{
-						Key:          "index",
-						DefaultValue: `"0"`,
-					},
-				},
-			},
-		}
+		r.ServerSideApplyMergeStrategies["set"] = injectedIndexMergeStrategy()
 
 		// set[].rule has no natural key (id is Terraform-computed); inject one
 		// so SSA can target individual rule items when patching back routeTo.
-		r.ServerSideApplyMergeStrategies["set.rule"] = config.MergeStrategy{
-			ListMergeStrategy: config.ListMergeStrategy{
-				MergeStrategy: config.ListTypeMap,
-				ListMapKeys: config.ListMapKeys{
-					InjectedKey: config.InjectedKey{
-						Key:          "index",
-						DefaultValue: `"0"`,
-					},
-				},
-			},
-		}
+		r.ServerSideApplyMergeStrategies["set.rule"] = injectedIndexMergeStrategy()
 
 		// set[].rule[].actions (routeTo lives here)
-		r.ServerSideApplyMergeStrategies["set.rule.actions"] = config.MergeStrategy{
-			ListMergeStrategy: config.ListMergeStrategy{
-				MergeStrategy: config.ListTypeMap,
-				ListMapKeys: config.ListMapKeys{
-					InjectedKey: config.InjectedKey{
-						Key:          "index",
-						DefaultValue: `"0"`,
-					},
-				},
-			},
-		}
+		r.ServerSideApplyMergeStrategies["set.rule.actions"] = injectedIndexMergeStrategy()
 
 		// set[].rule[].condition uses expression as the natural map key.
-		r.ServerSideApplyMergeStrategies["set.rule.condition"] = config.MergeStrategy{
-			ListMergeStrategy: config.ListMergeStrategy{
-				MergeStrategy: config.ListTypeMap,
-				ListMapKeys: config.ListMapKeys{
-					InjectedKey: config.InjectedKey{
-						Key:          "index",
-						DefaultValue: `"0"`,
-					},
-				},
-			},
-		}
+		r.ServerSideApplyMergeStrategies["set.rule.condition"] = injectedIndexMergeStrategy()
 
 		// set[].rule[].actions[].dynamic_route_to is effectively a singleton;
 		// inject a synthetic key so SSA does not atomically replace it.
-		r.ServerSideApplyMergeStrategies["set.rule.actions.dynamic_route_to"] = config.MergeStrategy{
-			ListMergeStrategy: config.ListMergeStrategy{
-				MergeStrategy: config.ListTypeMap,
-				ListMapKeys: config.ListMapKeys{
-					InjectedKey: config.InjectedKey{
-						Key:          "index",
-						DefaultValue: `"0"`,
-					},
-				},
-			},
-		}
+		r.ServerSideApplyMergeStrategies["set.rule.actions.dynamic_route_to"] = injectedIndexMergeStrategy()
 
 		// catch_all has no natural key; inject a synthetic one.
-		r.ServerSideApplyMergeStrategies["catch_all"] = config.MergeStrategy{
-			ListMergeStrategy: config.ListMergeStrategy{
-				MergeStrategy: config.ListTypeMap,
-				ListMapKeys: config.ListMapKeys{
-					InjectedKey: config.InjectedKey{
-						Key:          "index",
-						DefaultValue: `"0"`,
-					},
-				},
-			},
-		}
+		r.ServerSideApplyMergeStrategies["catch_all"] = injectedIndexMergeStrategy()
 
 		// catch_all[].actions (routeTo also lives here)
-		r.ServerSideApplyMergeStrategies["catch_all.actions"] = config.MergeStrategy{
-			ListMergeStrategy: config.ListMergeStrategy{
-				MergeStrategy: config.ListTypeMap,
-				ListMapKeys: config.ListMapKeys{
-					InjectedKey: config.InjectedKey{
-						Key:          "index",
-						DefaultValue: `"0"`,
-					},
-				},
-			},
-		}
+		r.ServerSideApplyMergeStrategies["catch_all.actions"] = injectedIndexMergeStrategy()
 	})
 
-	p.AddResourceConfigurator("pagerduty_event_orchestration", func(r *config.Resource) {
+	p.AddResourceConfigurator(eventOrchestrationResource, func(r *config.Resource) {
 
 		r.ShortGroup = shortGroup
 		r.References = config.References{
@@ -211,10 +120,10 @@ func Configure(p *config.Provider) {
 
 		r.ShortGroup = shortGroup
 		r.ExternalName.GetIDFn = c.SplitIdFromExternalName(':', 1)
-		r.ExternalName.GetExternalNameFn = c.GetExternalNameFromTfstate([]string{"event_orchestration", "id"}, ':')
+		r.ExternalName.GetExternalNameFn = c.GetExternalNameFromTfstate([]string{eventOrchestrationField, "id"}, ':')
 		r.References = config.References{
-			"event_orchestration": {
-				TerraformName: "pagerduty_event_orchestration",
+			eventOrchestrationField: {
+				TerraformName: eventOrchestrationResource,
 			},
 		}
 	})
@@ -223,43 +132,23 @@ func Configure(p *config.Provider) {
 
 		r.ShortGroup = shortGroup
 		r.References = config.References{
-			"event_orchestration": {
-				TerraformName: "pagerduty_event_orchestration",
+			eventOrchestrationField: {
+				TerraformName: eventOrchestrationResource,
 			},
 		}
 
-		r.ServerSideApplyMergeStrategies["set"] = config.MergeStrategy{
-			ListMergeStrategy: config.ListMergeStrategy{
-				MergeStrategy: config.ListTypeMap,
-				ListMapKeys: config.ListMapKeys{
-					InjectedKey: config.InjectedKey{
-						Key:          "index",
-						DefaultValue: `"0"`,
-					},
-				},
-			},
-		}
-		r.ServerSideApplyMergeStrategies["catch_all"] = config.MergeStrategy{
-			ListMergeStrategy: config.ListMergeStrategy{
-				MergeStrategy: config.ListTypeMap,
-				ListMapKeys: config.ListMapKeys{
-					InjectedKey: config.InjectedKey{
-						Key:          "index",
-						DefaultValue: `"0"`,
-					},
-				},
-			},
-		}
+		r.ServerSideApplyMergeStrategies["set"] = injectedIndexMergeStrategy()
+		r.ServerSideApplyMergeStrategies["catch_all"] = injectedIndexMergeStrategy()
 	})
 
 	p.AddResourceConfigurator("pagerduty_event_orchestration_integration", func(r *config.Resource) {
 
 		r.ShortGroup = shortGroup
 		r.ExternalName.GetIDFn = c.SplitIdFromExternalName(':', 1)
-		r.ExternalName.GetExternalNameFn = c.GetExternalNameFromTfstate([]string{"event_orchestration", "id"}, ':')
+		r.ExternalName.GetExternalNameFn = c.GetExternalNameFromTfstate([]string{eventOrchestrationField, "id"}, ':')
 		r.References = config.References{
-			"event_orchestration": {
-				TerraformName: "pagerduty_event_orchestration",
+			eventOrchestrationField: {
+				TerraformName: eventOrchestrationResource,
 			},
 		}
 	})
@@ -268,7 +157,7 @@ func Configure(p *config.Provider) {
 
 		r.ShortGroup = shortGroup
 		r.ExternalName.GetIDFn = c.SplitIdFromExternalName(':', 1)
-		r.ExternalName.GetExternalNameFn = c.GetExternalNameFromTfstate([]string{"event_orchestration", "id"}, ':')
+		r.ExternalName.GetExternalNameFn = c.GetExternalNameFromTfstate([]string{eventOrchestrationField, "id"}, ':')
 		r.References = config.References{
 			"service": {
 				TerraformName: "pagerduty_event_orchestration_service",

@@ -5,104 +5,104 @@
 
 package v1alpha1
 
-import xpv1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
+import xpv2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 
 // GetCondition of this Extension.
-func (mg *Extension) GetCondition(ct xpv1.ConditionType) xpv1.Condition {
+func (mg *Extension) GetCondition(ct xpv2.ConditionType) xpv2.Condition {
 	return mg.Status.GetCondition(ct)
 }
 
 // GetDeletionPolicy of this Extension.
-func (mg *Extension) GetDeletionPolicy() xpv1.DeletionPolicy {
+func (mg *Extension) GetDeletionPolicy() xpv2.DeletionPolicy {
 	return mg.Spec.DeletionPolicy
 }
 
 // GetManagementPolicies of this Extension.
-func (mg *Extension) GetManagementPolicies() xpv1.ManagementPolicies {
+func (mg *Extension) GetManagementPolicies() xpv2.ManagementPolicies {
 	return mg.Spec.ManagementPolicies
 }
 
 // GetProviderConfigReference of this Extension.
-func (mg *Extension) GetProviderConfigReference() *xpv1.Reference {
+func (mg *Extension) GetProviderConfigReference() *xpv2.Reference {
 	return mg.Spec.ProviderConfigReference
 }
 
 // GetWriteConnectionSecretToReference of this Extension.
-func (mg *Extension) GetWriteConnectionSecretToReference() *xpv1.SecretReference {
+func (mg *Extension) GetWriteConnectionSecretToReference() *xpv2.SecretReference {
 	return mg.Spec.WriteConnectionSecretToReference
 }
 
 // SetConditions of this Extension.
-func (mg *Extension) SetConditions(c ...xpv1.Condition) {
+func (mg *Extension) SetConditions(c ...xpv2.Condition) {
 	mg.Status.SetConditions(c...)
 }
 
 // SetDeletionPolicy of this Extension.
-func (mg *Extension) SetDeletionPolicy(r xpv1.DeletionPolicy) {
+func (mg *Extension) SetDeletionPolicy(r xpv2.DeletionPolicy) {
 	mg.Spec.DeletionPolicy = r
 }
 
 // SetManagementPolicies of this Extension.
-func (mg *Extension) SetManagementPolicies(r xpv1.ManagementPolicies) {
+func (mg *Extension) SetManagementPolicies(r xpv2.ManagementPolicies) {
 	mg.Spec.ManagementPolicies = r
 }
 
 // SetProviderConfigReference of this Extension.
-func (mg *Extension) SetProviderConfigReference(r *xpv1.Reference) {
+func (mg *Extension) SetProviderConfigReference(r *xpv2.Reference) {
 	mg.Spec.ProviderConfigReference = r
 }
 
 // SetWriteConnectionSecretToReference of this Extension.
-func (mg *Extension) SetWriteConnectionSecretToReference(r *xpv1.SecretReference) {
+func (mg *Extension) SetWriteConnectionSecretToReference(r *xpv2.SecretReference) {
 	mg.Spec.WriteConnectionSecretToReference = r
 }
 
 // GetCondition of this Servicenow.
-func (mg *Servicenow) GetCondition(ct xpv1.ConditionType) xpv1.Condition {
+func (mg *Servicenow) GetCondition(ct xpv2.ConditionType) xpv2.Condition {
 	return mg.Status.GetCondition(ct)
 }
 
 // GetDeletionPolicy of this Servicenow.
-func (mg *Servicenow) GetDeletionPolicy() xpv1.DeletionPolicy {
+func (mg *Servicenow) GetDeletionPolicy() xpv2.DeletionPolicy {
 	return mg.Spec.DeletionPolicy
 }
 
 // GetManagementPolicies of this Servicenow.
-func (mg *Servicenow) GetManagementPolicies() xpv1.ManagementPolicies {
+func (mg *Servicenow) GetManagementPolicies() xpv2.ManagementPolicies {
 	return mg.Spec.ManagementPolicies
 }
 
 // GetProviderConfigReference of this Servicenow.
-func (mg *Servicenow) GetProviderConfigReference() *xpv1.Reference {
+func (mg *Servicenow) GetProviderConfigReference() *xpv2.Reference {
 	return mg.Spec.ProviderConfigReference
 }
 
 // GetWriteConnectionSecretToReference of this Servicenow.
-func (mg *Servicenow) GetWriteConnectionSecretToReference() *xpv1.SecretReference {
+func (mg *Servicenow) GetWriteConnectionSecretToReference() *xpv2.SecretReference {
 	return mg.Spec.WriteConnectionSecretToReference
 }
 
 // SetConditions of this Servicenow.
-func (mg *Servicenow) SetConditions(c ...xpv1.Condition) {
+func (mg *Servicenow) SetConditions(c ...xpv2.Condition) {
 	mg.Status.SetConditions(c...)
 }
 
 // SetDeletionPolicy of this Servicenow.
-func (mg *Servicenow) SetDeletionPolicy(r xpv1.DeletionPolicy) {
+func (mg *Servicenow) SetDeletionPolicy(r xpv2.DeletionPolicy) {
 	mg.Spec.DeletionPolicy = r
 }
 
 // SetManagementPolicies of this Servicenow.
-func (mg *Servicenow) SetManagementPolicies(r xpv1.ManagementPolicies) {
+func (mg *Servicenow) SetManagementPolicies(r xpv2.ManagementPolicies) {
 	mg.Spec.ManagementPolicies = r
 }
 
 // SetProviderConfigReference of this Servicenow.
-func (mg *Servicenow) SetProviderConfigReference(r *xpv1.Reference) {
+func (mg *Servicenow) SetProviderConfigReference(r *xpv2.Reference) {
 	mg.Spec.ProviderConfigReference = r
 }
 
 // SetWriteConnectionSecretToReference of this Servicenow.
-func (mg *Servicenow) SetWriteConnectionSecretToReference(r *xpv1.SecretReference) {
+func (mg *Servicenow) SetWriteConnectionSecretToReference(r *xpv2.SecretReference) {
 	mg.Spec.WriteConnectionSecretToReference = r
 }

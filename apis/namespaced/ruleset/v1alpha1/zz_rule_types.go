@@ -10,8 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
-	v2 "github.com/crossplane/crossplane-runtime/v2/apis/common/v2"
+	v2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 )
 
 type ActionsInitParameters struct {
@@ -104,27 +103,27 @@ type ActionsParameters struct {
 }
 
 type ActiveBetweenInitParameters struct {
-	EndTime *float64 `json:"endTime,omitempty" tf:"end_time,omitempty"`
+	EndTime *int64 `json:"endTime,omitempty" tf:"end_time,omitempty"`
 
 	// A Unix timestamp in milliseconds which is combined with the timezone to determine the time this rule will start on each specified weekday. Note that the date of the timestamp you specify does not matter, except that it lets you determine whether daylight saving time is in effect so that you use the correct UTC offset for the timezone you specify. In practice, you may want to use the  to generate this value, as demonstrated in the resource.pagerduty_ruleset_rule.foo code example at the top of this page. To generate this timestamp manually, if you want your rule to apply starting at 9:30am in the America/New_York timezone, use your programing language of choice to determine a Unix timestamp that represents 9:30am in that timezone, like 1554989400000.
-	StartTime *float64 `json:"startTime,omitempty" tf:"start_time,omitempty"`
+	StartTime *int64 `json:"startTime,omitempty" tf:"start_time,omitempty"`
 }
 
 type ActiveBetweenObservation struct {
-	EndTime *float64 `json:"endTime,omitempty" tf:"end_time,omitempty"`
+	EndTime *int64 `json:"endTime,omitempty" tf:"end_time,omitempty"`
 
 	// A Unix timestamp in milliseconds which is combined with the timezone to determine the time this rule will start on each specified weekday. Note that the date of the timestamp you specify does not matter, except that it lets you determine whether daylight saving time is in effect so that you use the correct UTC offset for the timezone you specify. In practice, you may want to use the  to generate this value, as demonstrated in the resource.pagerduty_ruleset_rule.foo code example at the top of this page. To generate this timestamp manually, if you want your rule to apply starting at 9:30am in the America/New_York timezone, use your programing language of choice to determine a Unix timestamp that represents 9:30am in that timezone, like 1554989400000.
-	StartTime *float64 `json:"startTime,omitempty" tf:"start_time,omitempty"`
+	StartTime *int64 `json:"startTime,omitempty" tf:"start_time,omitempty"`
 }
 
 type ActiveBetweenParameters struct {
 
 	// +kubebuilder:validation:Optional
-	EndTime *float64 `json:"endTime,omitempty" tf:"end_time,omitempty"`
+	EndTime *int64 `json:"endTime,omitempty" tf:"end_time,omitempty"`
 
 	// A Unix timestamp in milliseconds which is combined with the timezone to determine the time this rule will start on each specified weekday. Note that the date of the timestamp you specify does not matter, except that it lets you determine whether daylight saving time is in effect so that you use the correct UTC offset for the timezone you specify. In practice, you may want to use the  to generate this value, as demonstrated in the resource.pagerduty_ruleset_rule.foo code example at the top of this page. To generate this timestamp manually, if you want your rule to apply starting at 9:30am in the America/New_York timezone, use your programing language of choice to determine a Unix timestamp that represents 9:30am in that timezone, like 1554989400000.
 	// +kubebuilder:validation:Optional
-	StartTime *float64 `json:"startTime,omitempty" tf:"start_time,omitempty"`
+	StartTime *int64 `json:"startTime,omitempty" tf:"start_time,omitempty"`
 }
 
 type AnnotateInitParameters struct {
@@ -344,7 +343,7 @@ type RuleInitParameters struct {
 	Disabled *bool `json:"disabled,omitempty" tf:"disabled,omitempty"`
 
 	// Position/index of the rule within the ruleset.
-	Position *float64 `json:"position,omitempty" tf:"position,omitempty"`
+	Position *int64 `json:"position,omitempty" tf:"position,omitempty"`
 
 	// The ID of the ruleset that the rule belongs to.
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-pagerduty/apis/namespaced/ruleset/v1alpha1.Ruleset
@@ -352,11 +351,11 @@ type RuleInitParameters struct {
 
 	// Reference to a Ruleset in ruleset to populate ruleset.
 	// +kubebuilder:validation:Optional
-	RulesetRef *v1.NamespacedReference `json:"rulesetRef,omitempty" tf:"-"`
+	RulesetRef *v2.NamespacedReference `json:"rulesetRef,omitempty" tf:"-"`
 
 	// Selector for a Ruleset in ruleset to populate ruleset.
 	// +kubebuilder:validation:Optional
-	RulesetSelector *v1.NamespacedSelector `json:"rulesetSelector,omitempty" tf:"-"`
+	RulesetSelector *v2.NamespacedSelector `json:"rulesetSelector,omitempty" tf:"-"`
 
 	// Settings for scheduling the rule.
 	TimeFrame []TimeFrameInitParameters `json:"timeFrame,omitempty" tf:"time_frame,omitempty"`
@@ -383,7 +382,7 @@ type RuleObservation struct {
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
 	// Position/index of the rule within the ruleset.
-	Position *float64 `json:"position,omitempty" tf:"position,omitempty"`
+	Position *int64 `json:"position,omitempty" tf:"position,omitempty"`
 
 	// The ID of the ruleset that the rule belongs to.
 	Ruleset *string `json:"ruleset,omitempty" tf:"ruleset,omitempty"`
@@ -415,7 +414,7 @@ type RuleParameters struct {
 
 	// Position/index of the rule within the ruleset.
 	// +kubebuilder:validation:Optional
-	Position *float64 `json:"position,omitempty" tf:"position,omitempty"`
+	Position *int64 `json:"position,omitempty" tf:"position,omitempty"`
 
 	// The ID of the ruleset that the rule belongs to.
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-pagerduty/apis/namespaced/ruleset/v1alpha1.Ruleset
@@ -424,11 +423,11 @@ type RuleParameters struct {
 
 	// Reference to a Ruleset in ruleset to populate ruleset.
 	// +kubebuilder:validation:Optional
-	RulesetRef *v1.NamespacedReference `json:"rulesetRef,omitempty" tf:"-"`
+	RulesetRef *v2.NamespacedReference `json:"rulesetRef,omitempty" tf:"-"`
 
 	// Selector for a Ruleset in ruleset to populate ruleset.
 	// +kubebuilder:validation:Optional
-	RulesetSelector *v1.NamespacedSelector `json:"rulesetSelector,omitempty" tf:"-"`
+	RulesetSelector *v2.NamespacedSelector `json:"rulesetSelector,omitempty" tf:"-"`
 
 	// Settings for scheduling the rule.
 	// +kubebuilder:validation:Optional
@@ -442,42 +441,42 @@ type RuleParameters struct {
 type ScheduledWeeklyInitParameters struct {
 
 	// Length of time the schedule will be active in milliseconds. For example duration = 2 * 60 * 60 * 1000 if you want your rule to apply for 2 hours, from the specified start_time.
-	Duration *float64 `json:"duration,omitempty" tf:"duration,omitempty"`
+	Duration *int64 `json:"duration,omitempty" tf:"duration,omitempty"`
 
 	// A Unix timestamp in milliseconds which is combined with the timezone to determine the time this rule will start on each specified weekday. Note that the date of the timestamp you specify does not matter, except that it lets you determine whether daylight saving time is in effect so that you use the correct UTC offset for the timezone you specify. In practice, you may want to use the  to generate this value, as demonstrated in the resource.pagerduty_ruleset_rule.foo code example at the top of this page. To generate this timestamp manually, if you want your rule to apply starting at 9:30am in the America/New_York timezone, use your programing language of choice to determine a Unix timestamp that represents 9:30am in that timezone, like 1554989400000.
-	StartTime *float64 `json:"startTime,omitempty" tf:"start_time,omitempty"`
+	StartTime *int64 `json:"startTime,omitempty" tf:"start_time,omitempty"`
 
 	// The name of the timezone for the given schedule, which will be used to determine UTC offset including adjustment for daylight saving time. For example: timezone = "America/Toronto"
 	Timezone *string `json:"timezone,omitempty" tf:"timezone,omitempty"`
 
 	// An integer array representing which days during the week the rule executes. For example weekdays = [1,3,7] would execute on Monday, Wednesday and Sunday.
-	Weekdays []*float64 `json:"weekdays,omitempty" tf:"weekdays,omitempty"`
+	Weekdays []*int64 `json:"weekdays,omitempty" tf:"weekdays,omitempty"`
 }
 
 type ScheduledWeeklyObservation struct {
 
 	// Length of time the schedule will be active in milliseconds. For example duration = 2 * 60 * 60 * 1000 if you want your rule to apply for 2 hours, from the specified start_time.
-	Duration *float64 `json:"duration,omitempty" tf:"duration,omitempty"`
+	Duration *int64 `json:"duration,omitempty" tf:"duration,omitempty"`
 
 	// A Unix timestamp in milliseconds which is combined with the timezone to determine the time this rule will start on each specified weekday. Note that the date of the timestamp you specify does not matter, except that it lets you determine whether daylight saving time is in effect so that you use the correct UTC offset for the timezone you specify. In practice, you may want to use the  to generate this value, as demonstrated in the resource.pagerduty_ruleset_rule.foo code example at the top of this page. To generate this timestamp manually, if you want your rule to apply starting at 9:30am in the America/New_York timezone, use your programing language of choice to determine a Unix timestamp that represents 9:30am in that timezone, like 1554989400000.
-	StartTime *float64 `json:"startTime,omitempty" tf:"start_time,omitempty"`
+	StartTime *int64 `json:"startTime,omitempty" tf:"start_time,omitempty"`
 
 	// The name of the timezone for the given schedule, which will be used to determine UTC offset including adjustment for daylight saving time. For example: timezone = "America/Toronto"
 	Timezone *string `json:"timezone,omitempty" tf:"timezone,omitempty"`
 
 	// An integer array representing which days during the week the rule executes. For example weekdays = [1,3,7] would execute on Monday, Wednesday and Sunday.
-	Weekdays []*float64 `json:"weekdays,omitempty" tf:"weekdays,omitempty"`
+	Weekdays []*int64 `json:"weekdays,omitempty" tf:"weekdays,omitempty"`
 }
 
 type ScheduledWeeklyParameters struct {
 
 	// Length of time the schedule will be active in milliseconds. For example duration = 2 * 60 * 60 * 1000 if you want your rule to apply for 2 hours, from the specified start_time.
 	// +kubebuilder:validation:Optional
-	Duration *float64 `json:"duration,omitempty" tf:"duration,omitempty"`
+	Duration *int64 `json:"duration,omitempty" tf:"duration,omitempty"`
 
 	// A Unix timestamp in milliseconds which is combined with the timezone to determine the time this rule will start on each specified weekday. Note that the date of the timestamp you specify does not matter, except that it lets you determine whether daylight saving time is in effect so that you use the correct UTC offset for the timezone you specify. In practice, you may want to use the  to generate this value, as demonstrated in the resource.pagerduty_ruleset_rule.foo code example at the top of this page. To generate this timestamp manually, if you want your rule to apply starting at 9:30am in the America/New_York timezone, use your programing language of choice to determine a Unix timestamp that represents 9:30am in that timezone, like 1554989400000.
 	// +kubebuilder:validation:Optional
-	StartTime *float64 `json:"startTime,omitempty" tf:"start_time,omitempty"`
+	StartTime *int64 `json:"startTime,omitempty" tf:"start_time,omitempty"`
 
 	// The name of the timezone for the given schedule, which will be used to determine UTC offset including adjustment for daylight saving time. For example: timezone = "America/Toronto"
 	// +kubebuilder:validation:Optional
@@ -485,7 +484,7 @@ type ScheduledWeeklyParameters struct {
 
 	// An integer array representing which days during the week the rule executes. For example weekdays = [1,3,7] would execute on Monday, Wednesday and Sunday.
 	// +kubebuilder:validation:Optional
-	Weekdays []*float64 `json:"weekdays,omitempty" tf:"weekdays,omitempty"`
+	Weekdays []*int64 `json:"weekdays,omitempty" tf:"weekdays,omitempty"`
 }
 
 type SeverityInitParameters struct {
@@ -539,13 +538,13 @@ type SubconditionsParameters struct {
 type SuppressInitParameters struct {
 
 	// The number value of the threshold_time_unit before an incident is created. Must be greater than 0.
-	ThresholdTimeAmount *float64 `json:"thresholdTimeAmount,omitempty" tf:"threshold_time_amount,omitempty"`
+	ThresholdTimeAmount *int64 `json:"thresholdTimeAmount,omitempty" tf:"threshold_time_amount,omitempty"`
 
 	// The seconds,minutes, or hours the threshold_time_amount should be measured.
 	ThresholdTimeUnit *string `json:"thresholdTimeUnit,omitempty" tf:"threshold_time_unit,omitempty"`
 
 	// The number of alerts that should be suppressed. Must be greater than 0.
-	ThresholdValue *float64 `json:"thresholdValue,omitempty" tf:"threshold_value,omitempty"`
+	ThresholdValue *int64 `json:"thresholdValue,omitempty" tf:"threshold_value,omitempty"`
 
 	// Boolean value that indicates if the alert should be suppressed before the indicated threshold values are met.
 	Value *bool `json:"value,omitempty" tf:"value,omitempty"`
@@ -554,13 +553,13 @@ type SuppressInitParameters struct {
 type SuppressObservation struct {
 
 	// The number value of the threshold_time_unit before an incident is created. Must be greater than 0.
-	ThresholdTimeAmount *float64 `json:"thresholdTimeAmount,omitempty" tf:"threshold_time_amount,omitempty"`
+	ThresholdTimeAmount *int64 `json:"thresholdTimeAmount,omitempty" tf:"threshold_time_amount,omitempty"`
 
 	// The seconds,minutes, or hours the threshold_time_amount should be measured.
 	ThresholdTimeUnit *string `json:"thresholdTimeUnit,omitempty" tf:"threshold_time_unit,omitempty"`
 
 	// The number of alerts that should be suppressed. Must be greater than 0.
-	ThresholdValue *float64 `json:"thresholdValue,omitempty" tf:"threshold_value,omitempty"`
+	ThresholdValue *int64 `json:"thresholdValue,omitempty" tf:"threshold_value,omitempty"`
 
 	// Boolean value that indicates if the alert should be suppressed before the indicated threshold values are met.
 	Value *bool `json:"value,omitempty" tf:"value,omitempty"`
@@ -570,7 +569,7 @@ type SuppressParameters struct {
 
 	// The number value of the threshold_time_unit before an incident is created. Must be greater than 0.
 	// +kubebuilder:validation:Optional
-	ThresholdTimeAmount *float64 `json:"thresholdTimeAmount,omitempty" tf:"threshold_time_amount,omitempty"`
+	ThresholdTimeAmount *int64 `json:"thresholdTimeAmount,omitempty" tf:"threshold_time_amount,omitempty"`
 
 	// The seconds,minutes, or hours the threshold_time_amount should be measured.
 	// +kubebuilder:validation:Optional
@@ -578,7 +577,7 @@ type SuppressParameters struct {
 
 	// The number of alerts that should be suppressed. Must be greater than 0.
 	// +kubebuilder:validation:Optional
-	ThresholdValue *float64 `json:"thresholdValue,omitempty" tf:"threshold_value,omitempty"`
+	ThresholdValue *int64 `json:"thresholdValue,omitempty" tf:"threshold_value,omitempty"`
 
 	// Boolean value that indicates if the alert should be suppressed before the indicated threshold values are met.
 	// +kubebuilder:validation:Optional
@@ -588,20 +587,20 @@ type SuppressParameters struct {
 type SuspendInitParameters struct {
 
 	// Boolean value that indicates if the alert should be suppressed before the indicated threshold values are met.
-	Value *float64 `json:"value,omitempty" tf:"value,omitempty"`
+	Value *int64 `json:"value,omitempty" tf:"value,omitempty"`
 }
 
 type SuspendObservation struct {
 
 	// Boolean value that indicates if the alert should be suppressed before the indicated threshold values are met.
-	Value *float64 `json:"value,omitempty" tf:"value,omitempty"`
+	Value *int64 `json:"value,omitempty" tf:"value,omitempty"`
 }
 
 type SuspendParameters struct {
 
 	// Boolean value that indicates if the alert should be suppressed before the indicated threshold values are met.
 	// +kubebuilder:validation:Optional
-	Value *float64 `json:"value,omitempty" tf:"value,omitempty"`
+	Value *int64 `json:"value,omitempty" tf:"value,omitempty"`
 }
 
 type TimeFrameInitParameters struct {
@@ -680,8 +679,8 @@ type RuleSpec struct {
 
 // RuleStatus defines the observed state of Rule.
 type RuleStatus struct {
-	v1.ResourceStatus `json:",inline"`
-	AtProvider        RuleObservation `json:"atProvider,omitempty"`
+	v2.ManagedResourceStatus `json:",inline"`
+	AtProvider               RuleObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true

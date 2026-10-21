@@ -10,7 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
+	v2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 )
 
 type ActionsInitParameters struct {
@@ -95,30 +95,30 @@ type ActionsParameters struct {
 type ActiveBetweenInitParameters struct {
 
 	// Ending of the scheduled time when the rule should execute.  Unix timestamp in milliseconds.
-	EndTime *float64 `json:"endTime,omitempty" tf:"end_time,omitempty"`
+	EndTime *int64 `json:"endTime,omitempty" tf:"end_time,omitempty"`
 
 	// Time when the schedule will start. Unix timestamp in milliseconds. For example, if you have a rule with a start_time of 0 and a duration of 60,000 then that rule would be active from 00:00 to 00:01. If the start_time was 3,600,000 the it would be active starting at 01:00.
-	StartTime *float64 `json:"startTime,omitempty" tf:"start_time,omitempty"`
+	StartTime *int64 `json:"startTime,omitempty" tf:"start_time,omitempty"`
 }
 
 type ActiveBetweenObservation struct {
 
 	// Ending of the scheduled time when the rule should execute.  Unix timestamp in milliseconds.
-	EndTime *float64 `json:"endTime,omitempty" tf:"end_time,omitempty"`
+	EndTime *int64 `json:"endTime,omitempty" tf:"end_time,omitempty"`
 
 	// Time when the schedule will start. Unix timestamp in milliseconds. For example, if you have a rule with a start_time of 0 and a duration of 60,000 then that rule would be active from 00:00 to 00:01. If the start_time was 3,600,000 the it would be active starting at 01:00.
-	StartTime *float64 `json:"startTime,omitempty" tf:"start_time,omitempty"`
+	StartTime *int64 `json:"startTime,omitempty" tf:"start_time,omitempty"`
 }
 
 type ActiveBetweenParameters struct {
 
 	// Ending of the scheduled time when the rule should execute.  Unix timestamp in milliseconds.
 	// +kubebuilder:validation:Optional
-	EndTime *float64 `json:"endTime,omitempty" tf:"end_time,omitempty"`
+	EndTime *int64 `json:"endTime,omitempty" tf:"end_time,omitempty"`
 
 	// Time when the schedule will start. Unix timestamp in milliseconds. For example, if you have a rule with a start_time of 0 and a duration of 60,000 then that rule would be active from 00:00 to 00:01. If the start_time was 3,600,000 the it would be active starting at 01:00.
 	// +kubebuilder:validation:Optional
-	StartTime *float64 `json:"startTime,omitempty" tf:"start_time,omitempty"`
+	StartTime *int64 `json:"startTime,omitempty" tf:"start_time,omitempty"`
 }
 
 type AnnotateInitParameters struct {
@@ -200,7 +200,7 @@ type EventRuleInitParameters struct {
 	Disabled *bool `json:"disabled,omitempty" tf:"disabled,omitempty"`
 
 	// Position/index of the rule within the service.
-	Position *float64 `json:"position,omitempty" tf:"position,omitempty"`
+	Position *int64 `json:"position,omitempty" tf:"position,omitempty"`
 
 	// The ID of the service that the rule belongs to.
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-pagerduty/apis/cluster/service/v1alpha1.Service
@@ -208,11 +208,11 @@ type EventRuleInitParameters struct {
 
 	// Reference to a Service in service to populate service.
 	// +kubebuilder:validation:Optional
-	ServiceRef *v1.Reference `json:"serviceRef,omitempty" tf:"-"`
+	ServiceRef *v2.Reference `json:"serviceRef,omitempty" tf:"-"`
 
 	// Selector for a Service in service to populate service.
 	// +kubebuilder:validation:Optional
-	ServiceSelector *v1.Selector `json:"serviceSelector,omitempty" tf:"-"`
+	ServiceSelector *v2.Selector `json:"serviceSelector,omitempty" tf:"-"`
 
 	// Settings for scheduling the rule.
 	TimeFrame []TimeFrameInitParameters `json:"timeFrame,omitempty" tf:"time_frame,omitempty"`
@@ -236,7 +236,7 @@ type EventRuleObservation struct {
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
 	// Position/index of the rule within the service.
-	Position *float64 `json:"position,omitempty" tf:"position,omitempty"`
+	Position *int64 `json:"position,omitempty" tf:"position,omitempty"`
 
 	// The ID of the service that the rule belongs to.
 	Service *string `json:"service,omitempty" tf:"service,omitempty"`
@@ -264,7 +264,7 @@ type EventRuleParameters struct {
 
 	// Position/index of the rule within the service.
 	// +kubebuilder:validation:Optional
-	Position *float64 `json:"position,omitempty" tf:"position,omitempty"`
+	Position *int64 `json:"position,omitempty" tf:"position,omitempty"`
 
 	// The ID of the service that the rule belongs to.
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-pagerduty/apis/cluster/service/v1alpha1.Service
@@ -273,11 +273,11 @@ type EventRuleParameters struct {
 
 	// Reference to a Service in service to populate service.
 	// +kubebuilder:validation:Optional
-	ServiceRef *v1.Reference `json:"serviceRef,omitempty" tf:"-"`
+	ServiceRef *v2.Reference `json:"serviceRef,omitempty" tf:"-"`
 
 	// Selector for a Service in service to populate service.
 	// +kubebuilder:validation:Optional
-	ServiceSelector *v1.Selector `json:"serviceSelector,omitempty" tf:"-"`
+	ServiceSelector *v2.Selector `json:"serviceSelector,omitempty" tf:"-"`
 
 	// Settings for scheduling the rule.
 	// +kubebuilder:validation:Optional
@@ -417,42 +417,42 @@ type PriorityParameters struct {
 type ScheduledWeeklyInitParameters struct {
 
 	// Length of time the schedule will be active.  Unix timestamp in milliseconds.
-	Duration *float64 `json:"duration,omitempty" tf:"duration,omitempty"`
+	Duration *int64 `json:"duration,omitempty" tf:"duration,omitempty"`
 
 	// Time when the schedule will start. Unix timestamp in milliseconds. For example, if you have a rule with a start_time of 0 and a duration of 60,000 then that rule would be active from 00:00 to 00:01. If the start_time was 3,600,000 the it would be active starting at 01:00.
-	StartTime *float64 `json:"startTime,omitempty" tf:"start_time,omitempty"`
+	StartTime *int64 `json:"startTime,omitempty" tf:"start_time,omitempty"`
 
 	// Timezone for the given schedule.
 	Timezone *string `json:"timezone,omitempty" tf:"timezone,omitempty"`
 
 	// An integer array representing which days during the week the rule executes. For example weekdays = [1,3,7] would execute on Monday, Wednesday and Sunday.
-	Weekdays []*float64 `json:"weekdays,omitempty" tf:"weekdays,omitempty"`
+	Weekdays []*int64 `json:"weekdays,omitempty" tf:"weekdays,omitempty"`
 }
 
 type ScheduledWeeklyObservation struct {
 
 	// Length of time the schedule will be active.  Unix timestamp in milliseconds.
-	Duration *float64 `json:"duration,omitempty" tf:"duration,omitempty"`
+	Duration *int64 `json:"duration,omitempty" tf:"duration,omitempty"`
 
 	// Time when the schedule will start. Unix timestamp in milliseconds. For example, if you have a rule with a start_time of 0 and a duration of 60,000 then that rule would be active from 00:00 to 00:01. If the start_time was 3,600,000 the it would be active starting at 01:00.
-	StartTime *float64 `json:"startTime,omitempty" tf:"start_time,omitempty"`
+	StartTime *int64 `json:"startTime,omitempty" tf:"start_time,omitempty"`
 
 	// Timezone for the given schedule.
 	Timezone *string `json:"timezone,omitempty" tf:"timezone,omitempty"`
 
 	// An integer array representing which days during the week the rule executes. For example weekdays = [1,3,7] would execute on Monday, Wednesday and Sunday.
-	Weekdays []*float64 `json:"weekdays,omitempty" tf:"weekdays,omitempty"`
+	Weekdays []*int64 `json:"weekdays,omitempty" tf:"weekdays,omitempty"`
 }
 
 type ScheduledWeeklyParameters struct {
 
 	// Length of time the schedule will be active.  Unix timestamp in milliseconds.
 	// +kubebuilder:validation:Optional
-	Duration *float64 `json:"duration,omitempty" tf:"duration,omitempty"`
+	Duration *int64 `json:"duration,omitempty" tf:"duration,omitempty"`
 
 	// Time when the schedule will start. Unix timestamp in milliseconds. For example, if you have a rule with a start_time of 0 and a duration of 60,000 then that rule would be active from 00:00 to 00:01. If the start_time was 3,600,000 the it would be active starting at 01:00.
 	// +kubebuilder:validation:Optional
-	StartTime *float64 `json:"startTime,omitempty" tf:"start_time,omitempty"`
+	StartTime *int64 `json:"startTime,omitempty" tf:"start_time,omitempty"`
 
 	// Timezone for the given schedule.
 	// +kubebuilder:validation:Optional
@@ -460,7 +460,7 @@ type ScheduledWeeklyParameters struct {
 
 	// An integer array representing which days during the week the rule executes. For example weekdays = [1,3,7] would execute on Monday, Wednesday and Sunday.
 	// +kubebuilder:validation:Optional
-	Weekdays []*float64 `json:"weekdays,omitempty" tf:"weekdays,omitempty"`
+	Weekdays []*int64 `json:"weekdays,omitempty" tf:"weekdays,omitempty"`
 }
 
 type SeverityInitParameters struct {
@@ -514,13 +514,13 @@ type SubconditionsParameters struct {
 type SuppressInitParameters struct {
 
 	// The number value of the threshold_time_unit before an incident is created.
-	ThresholdTimeAmount *float64 `json:"thresholdTimeAmount,omitempty" tf:"threshold_time_amount,omitempty"`
+	ThresholdTimeAmount *int64 `json:"thresholdTimeAmount,omitempty" tf:"threshold_time_amount,omitempty"`
 
 	// The seconds,minutes, or hours the threshold_time_amount should be measured.
 	ThresholdTimeUnit *string `json:"thresholdTimeUnit,omitempty" tf:"threshold_time_unit,omitempty"`
 
 	// The number of alerts that should be suppressed.
-	ThresholdValue *float64 `json:"thresholdValue,omitempty" tf:"threshold_value,omitempty"`
+	ThresholdValue *int64 `json:"thresholdValue,omitempty" tf:"threshold_value,omitempty"`
 
 	// Boolean value that indicates if the alert should be suppressed before the indicated threshold values are met.
 	Value *bool `json:"value,omitempty" tf:"value,omitempty"`
@@ -529,13 +529,13 @@ type SuppressInitParameters struct {
 type SuppressObservation struct {
 
 	// The number value of the threshold_time_unit before an incident is created.
-	ThresholdTimeAmount *float64 `json:"thresholdTimeAmount,omitempty" tf:"threshold_time_amount,omitempty"`
+	ThresholdTimeAmount *int64 `json:"thresholdTimeAmount,omitempty" tf:"threshold_time_amount,omitempty"`
 
 	// The seconds,minutes, or hours the threshold_time_amount should be measured.
 	ThresholdTimeUnit *string `json:"thresholdTimeUnit,omitempty" tf:"threshold_time_unit,omitempty"`
 
 	// The number of alerts that should be suppressed.
-	ThresholdValue *float64 `json:"thresholdValue,omitempty" tf:"threshold_value,omitempty"`
+	ThresholdValue *int64 `json:"thresholdValue,omitempty" tf:"threshold_value,omitempty"`
 
 	// Boolean value that indicates if the alert should be suppressed before the indicated threshold values are met.
 	Value *bool `json:"value,omitempty" tf:"value,omitempty"`
@@ -545,7 +545,7 @@ type SuppressParameters struct {
 
 	// The number value of the threshold_time_unit before an incident is created.
 	// +kubebuilder:validation:Optional
-	ThresholdTimeAmount *float64 `json:"thresholdTimeAmount,omitempty" tf:"threshold_time_amount,omitempty"`
+	ThresholdTimeAmount *int64 `json:"thresholdTimeAmount,omitempty" tf:"threshold_time_amount,omitempty"`
 
 	// The seconds,minutes, or hours the threshold_time_amount should be measured.
 	// +kubebuilder:validation:Optional
@@ -553,7 +553,7 @@ type SuppressParameters struct {
 
 	// The number of alerts that should be suppressed.
 	// +kubebuilder:validation:Optional
-	ThresholdValue *float64 `json:"thresholdValue,omitempty" tf:"threshold_value,omitempty"`
+	ThresholdValue *int64 `json:"thresholdValue,omitempty" tf:"threshold_value,omitempty"`
 
 	// Boolean value that indicates if the alert should be suppressed before the indicated threshold values are met.
 	// +kubebuilder:validation:Optional
@@ -563,20 +563,20 @@ type SuppressParameters struct {
 type SuspendInitParameters struct {
 
 	// Boolean value that indicates if the alert should be suppressed before the indicated threshold values are met.
-	Value *float64 `json:"value,omitempty" tf:"value,omitempty"`
+	Value *int64 `json:"value,omitempty" tf:"value,omitempty"`
 }
 
 type SuspendObservation struct {
 
 	// Boolean value that indicates if the alert should be suppressed before the indicated threshold values are met.
-	Value *float64 `json:"value,omitempty" tf:"value,omitempty"`
+	Value *int64 `json:"value,omitempty" tf:"value,omitempty"`
 }
 
 type SuspendParameters struct {
 
 	// Boolean value that indicates if the alert should be suppressed before the indicated threshold values are met.
 	// +kubebuilder:validation:Optional
-	Value *float64 `json:"value,omitempty" tf:"value,omitempty"`
+	Value *int64 `json:"value,omitempty" tf:"value,omitempty"`
 }
 
 type TimeFrameInitParameters struct {
@@ -649,8 +649,8 @@ type VariableParameters struct {
 
 // EventRuleSpec defines the desired state of EventRule
 type EventRuleSpec struct {
-	v1.ResourceSpec `json:",inline"`
-	ForProvider     EventRuleParameters `json:"forProvider"`
+	v2.ClusterManagedResourceSpec `json:",inline"`
+	ForProvider                   EventRuleParameters `json:"forProvider"`
 	// THIS IS A BETA FIELD. It will be honored
 	// unless the Management Policies feature flag is disabled.
 	// InitProvider holds the same fields as ForProvider, with the exception
@@ -666,8 +666,8 @@ type EventRuleSpec struct {
 
 // EventRuleStatus defines the observed state of EventRule.
 type EventRuleStatus struct {
-	v1.ResourceStatus `json:",inline"`
-	AtProvider        EventRuleObservation `json:"atProvider,omitempty"`
+	v2.ManagedResourceStatus `json:",inline"`
+	AtProvider               EventRuleObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true

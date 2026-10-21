@@ -10,16 +10,19 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
+	v2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 )
 
 type EscalationRuleInitParameters struct {
+
+	// The targets an incident should be assigned to upon reaching this rule.
+	Target []TargetInitParameters `json:"target,omitempty" tf:"target,omitempty"`
 }
 
 type EscalationRuleObservation struct {
 
 	// The number of minutes before an unacknowledged incident escalates away from this rule.
-	EscalationDelayInMinutes *float64 `json:"escalationDelayInMinutes,omitempty" tf:"escalation_delay_in_minutes,omitempty"`
+	EscalationDelayInMinutes *int64 `json:"escalationDelayInMinutes,omitempty" tf:"escalation_delay_in_minutes,omitempty"`
 
 	// ID of the user defined as the responder
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
@@ -29,6 +32,10 @@ type EscalationRuleObservation struct {
 }
 
 type EscalationRuleParameters struct {
+
+	// The targets an incident should be assigned to upon reaching this rule.
+	// +kubebuilder:validation:Optional
+	Target []TargetParameters `json:"target" tf:"target,omitempty"`
 }
 
 type PlayInitParameters struct {
@@ -193,7 +200,7 @@ type ResponderObservation struct {
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
 	// The number of times the escalation policy will repeat after reaching the end of its escalation.
-	NumLoops *float64 `json:"numLoops,omitempty" tf:"num_loops,omitempty"`
+	NumLoops *int64 `json:"numLoops,omitempty" tf:"num_loops,omitempty"`
 
 	// Determines how on call handoff notifications will be sent for users on the escalation policy. Defaults to "if_has_services". Could be "if_has_services", "always
 	OnCallHandoffNotifications *string `json:"onCallHandoffNotifications,omitempty" tf:"on_call_handoff_notifications,omitempty"`
@@ -287,6 +294,9 @@ type TargetParameters struct {
 }
 
 type TeamInitParameters struct {
+
+	// A string that determines the schema of the object. If not set, the default value is "response_play".
+	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 }
 
 type TeamObservation struct {
@@ -299,12 +309,16 @@ type TeamObservation struct {
 }
 
 type TeamParameters struct {
+
+	// A string that determines the schema of the object. If not set, the default value is "response_play".
+	// +kubebuilder:validation:Optional
+	Type *string `json:"type" tf:"type,omitempty"`
 }
 
 // PlaySpec defines the desired state of Play
 type PlaySpec struct {
-	v1.ResourceSpec `json:",inline"`
-	ForProvider     PlayParameters `json:"forProvider"`
+	v2.ClusterManagedResourceSpec `json:",inline"`
+	ForProvider                   PlayParameters `json:"forProvider"`
 	// THIS IS A BETA FIELD. It will be honored
 	// unless the Management Policies feature flag is disabled.
 	// InitProvider holds the same fields as ForProvider, with the exception
@@ -320,8 +334,8 @@ type PlaySpec struct {
 
 // PlayStatus defines the observed state of Play.
 type PlayStatus struct {
-	v1.ResourceStatus `json:",inline"`
-	AtProvider        PlayObservation `json:"atProvider,omitempty"`
+	v2.ManagedResourceStatus `json:",inline"`
+	AtProvider               PlayObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true

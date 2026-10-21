@@ -10,7 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
+	v2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 )
 
 type CustomFieldOptionInitParameters struct {
@@ -24,11 +24,11 @@ type CustomFieldOptionInitParameters struct {
 
 	// Reference to a CustomField in incident to populate field.
 	// +kubebuilder:validation:Optional
-	FieldRef *v1.Reference `json:"fieldRef,omitempty" tf:"-"`
+	FieldRef *v2.Reference `json:"fieldRef,omitempty" tf:"-"`
 
 	// Selector for a CustomField in incident to populate field.
 	// +kubebuilder:validation:Optional
-	FieldSelector *v1.Selector `json:"fieldSelector,omitempty" tf:"-"`
+	FieldSelector *v2.Selector `json:"fieldSelector,omitempty" tf:"-"`
 
 	// The allowed value.
 	Value *string `json:"value,omitempty" tf:"value,omitempty"`
@@ -62,11 +62,11 @@ type CustomFieldOptionParameters struct {
 
 	// Reference to a CustomField in incident to populate field.
 	// +kubebuilder:validation:Optional
-	FieldRef *v1.Reference `json:"fieldRef,omitempty" tf:"-"`
+	FieldRef *v2.Reference `json:"fieldRef,omitempty" tf:"-"`
 
 	// Selector for a CustomField in incident to populate field.
 	// +kubebuilder:validation:Optional
-	FieldSelector *v1.Selector `json:"fieldSelector,omitempty" tf:"-"`
+	FieldSelector *v2.Selector `json:"fieldSelector,omitempty" tf:"-"`
 
 	// The allowed value.
 	// +kubebuilder:validation:Optional
@@ -75,8 +75,8 @@ type CustomFieldOptionParameters struct {
 
 // CustomFieldOptionSpec defines the desired state of CustomFieldOption
 type CustomFieldOptionSpec struct {
-	v1.ResourceSpec `json:",inline"`
-	ForProvider     CustomFieldOptionParameters `json:"forProvider"`
+	v2.ClusterManagedResourceSpec `json:",inline"`
+	ForProvider                   CustomFieldOptionParameters `json:"forProvider"`
 	// THIS IS A BETA FIELD. It will be honored
 	// unless the Management Policies feature flag is disabled.
 	// InitProvider holds the same fields as ForProvider, with the exception
@@ -92,8 +92,8 @@ type CustomFieldOptionSpec struct {
 
 // CustomFieldOptionStatus defines the observed state of CustomFieldOption.
 type CustomFieldOptionStatus struct {
-	v1.ResourceStatus `json:",inline"`
-	AtProvider        CustomFieldOptionObservation `json:"atProvider,omitempty"`
+	v2.ManagedResourceStatus `json:",inline"`
+	AtProvider               CustomFieldOptionObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true

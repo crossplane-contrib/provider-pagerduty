@@ -10,8 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
-	v2 "github.com/crossplane/crossplane-runtime/v2/apis/common/v2"
+	v2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 )
 
 type ActionServiceAssociationInitParameters struct {
@@ -22,11 +21,11 @@ type ActionServiceAssociationInitParameters struct {
 
 	// Reference to a Action to populate actionId.
 	// +kubebuilder:validation:Optional
-	ActionIDRef *v1.NamespacedReference `json:"actionIdRef,omitempty" tf:"-"`
+	ActionIDRef *v2.NamespacedReference `json:"actionIdRef,omitempty" tf:"-"`
 
 	// Selector for a Action to populate actionId.
 	// +kubebuilder:validation:Optional
-	ActionIDSelector *v1.NamespacedSelector `json:"actionIdSelector,omitempty" tf:"-"`
+	ActionIDSelector *v2.NamespacedSelector `json:"actionIdSelector,omitempty" tf:"-"`
 
 	// Id of the service associated to the action.
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-pagerduty/apis/namespaced/service/v1alpha1.Service
@@ -34,11 +33,11 @@ type ActionServiceAssociationInitParameters struct {
 
 	// Reference to a Service in service to populate serviceId.
 	// +kubebuilder:validation:Optional
-	ServiceIDRef *v1.NamespacedReference `json:"serviceIdRef,omitempty" tf:"-"`
+	ServiceIDRef *v2.NamespacedReference `json:"serviceIdRef,omitempty" tf:"-"`
 
 	// Selector for a Service in service to populate serviceId.
 	// +kubebuilder:validation:Optional
-	ServiceIDSelector *v1.NamespacedSelector `json:"serviceIdSelector,omitempty" tf:"-"`
+	ServiceIDSelector *v2.NamespacedSelector `json:"serviceIdSelector,omitempty" tf:"-"`
 }
 
 type ActionServiceAssociationObservation struct {
@@ -61,11 +60,11 @@ type ActionServiceAssociationParameters struct {
 
 	// Reference to a Action to populate actionId.
 	// +kubebuilder:validation:Optional
-	ActionIDRef *v1.NamespacedReference `json:"actionIdRef,omitempty" tf:"-"`
+	ActionIDRef *v2.NamespacedReference `json:"actionIdRef,omitempty" tf:"-"`
 
 	// Selector for a Action to populate actionId.
 	// +kubebuilder:validation:Optional
-	ActionIDSelector *v1.NamespacedSelector `json:"actionIdSelector,omitempty" tf:"-"`
+	ActionIDSelector *v2.NamespacedSelector `json:"actionIdSelector,omitempty" tf:"-"`
 
 	// Id of the service associated to the action.
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-pagerduty/apis/namespaced/service/v1alpha1.Service
@@ -74,11 +73,11 @@ type ActionServiceAssociationParameters struct {
 
 	// Reference to a Service in service to populate serviceId.
 	// +kubebuilder:validation:Optional
-	ServiceIDRef *v1.NamespacedReference `json:"serviceIdRef,omitempty" tf:"-"`
+	ServiceIDRef *v2.NamespacedReference `json:"serviceIdRef,omitempty" tf:"-"`
 
 	// Selector for a Service in service to populate serviceId.
 	// +kubebuilder:validation:Optional
-	ServiceIDSelector *v1.NamespacedSelector `json:"serviceIdSelector,omitempty" tf:"-"`
+	ServiceIDSelector *v2.NamespacedSelector `json:"serviceIdSelector,omitempty" tf:"-"`
 }
 
 // ActionServiceAssociationSpec defines the desired state of ActionServiceAssociation
@@ -100,8 +99,8 @@ type ActionServiceAssociationSpec struct {
 
 // ActionServiceAssociationStatus defines the observed state of ActionServiceAssociation.
 type ActionServiceAssociationStatus struct {
-	v1.ResourceStatus `json:",inline"`
-	AtProvider        ActionServiceAssociationObservation `json:"atProvider,omitempty"`
+	v2.ManagedResourceStatus `json:",inline"`
+	AtProvider               ActionServiceAssociationObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true

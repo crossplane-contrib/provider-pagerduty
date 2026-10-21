@@ -9,8 +9,11 @@ import (
 	"fmt"
 	"io"
 	"log"
+	"maps"
 	"os"
 	"path/filepath"
+	"slices"
+	"strings"
 	"time"
 
 	"github.com/alecthomas/kingpin/v2"
@@ -25,15 +28,18 @@ import (
 	"github.com/crossplane/crossplane-runtime/v2/pkg/reconciler/managed"
 	"github.com/crossplane/crossplane-runtime/v2/pkg/statemetrics"
 	tjcontroller "github.com/crossplane/upjet/v2/pkg/controller"
-	"github.com/crossplane/upjet/v2/pkg/terraform"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 	authv1 "k8s.io/api/authorization/v1"
+	corev1 "k8s.io/api/core/v1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
+	clientgoscheme "k8s.io/client-go/kubernetes/scheme"
 	"k8s.io/client-go/tools/leaderelection/resourcelock"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/cache"
+	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/log/zap"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
 	"sigs.k8s.io/controller-runtime/pkg/metrics"
@@ -69,14 +75,14 @@ func main() {
 
 		webhookPort          = app.Flag("webhook-port", "The port the webhook listens on").Default("9443").Envar("WEBHOOK_PORT").Int()
 		metricsBindAddress   = app.Flag("metrics-bind-address", "The address the metrics server listens on").Default(":8080").Envar("METRICS_BIND_ADDRESS").String()
+		pprofBindAddress     = app.Flag("pprof-bind-address", "The address the pprof profiling server listens on (e.g. :8083). Empty disables profiling.").Default("").Envar("PPROF_BIND_ADDRESS").String()
 		changelogsSocketPath = app.Flag("changelogs-socket-path", "Path for changelogs socket (if enabled)").Default("/var/run/changelogs/changelogs.sock").Envar("CHANGELOGS_SOCKET_PATH").String()
 
-		terraformVersion = app.Flag("terraform-version", "Terraform version.").Required().Envar("TERRAFORM_VERSION").String()
-		providerSource   = app.Flag("terraform-provider-source", "Terraform provider source.").Required().Envar("TERRAFORM_PROVIDER_SOURCE").String()
-		providerVersion  = app.Flag("terraform-provider-version", "Terraform provider version.").Required().Envar("TERRAFORM_PROVIDER_VERSION").String()
+		clientCacheTTL = app.Flag("client-cache-ttl", "How long a configured PagerDuty client is reused for the same provider configuration.").Default("30m").Envar("CLIENT_CACHE_TTL").Duration()
 
 		enableManagementPolicies = app.Flag("enable-management-policies", "Enable support for Management Policies.").Default("true").Envar("ENABLE_MANAGEMENT_POLICIES").Bool()
 		enableChangeLogs         = app.Flag("enable-changelogs", "Enable support for capturing change logs during reconciliation.").Default("false").Envar("ENABLE_CHANGE_LOGS").Bool()
+		enableSecretCache        = app.Flag("enable-secret-cache", "Enable caching of Secrets via an informer. Disabling it routes Secret reads through live API calls, trading memory for API server QPS.").Default("true").Envar("ENABLE_SECRET_CACHE").Bool()
 
 		certsDirSet = false
 		// we record whether the command-line option "--certs-dir" was supplied
@@ -131,12 +137,35 @@ func main() {
 		}
 	}
 
+	// The scheme must be fully populated before ctrl.NewManager runs: the CRD
+	// cache transform below resolves its ByObject key's GVK synchronously at
+	// manager-construction time.
+	scheme := runtime.NewScheme()
+	kingpin.FatalIfError(clientgoscheme.AddToScheme(scheme), "Cannot add client-go APIs to scheme")
+	kingpin.FatalIfError(apisCluster.AddToScheme(scheme), "Cannot add cluster-scoped PagerDuty APIs to scheme")
+	kingpin.FatalIfError(apisNamespaced.AddToScheme(scheme), "Cannot add namespaced PagerDuty APIs to scheme")
+	kingpin.FatalIfError(apiextensionsv1.AddToScheme(scheme), "Cannot add api-extensions APIs to scheme")
+	kingpin.FatalIfError(authv1.AddToScheme(scheme), "Cannot add k8s authorization APIs to scheme")
+
 	mgr, err := ctrl.NewManager(cfg, ctrl.Options{
+		Scheme:           scheme,
 		LeaderElection:   *leaderElection,
 		LeaderElectionID: "crossplane-leader-election-provider-pagerduty",
 		Cache: cache.Options{
-			SyncPeriod: syncInterval,
+			SyncPeriod:       syncInterval,
+			DefaultTransform: cache.TransformStripManagedFields(),
+			// Strips the OpenAPI schema (and other non-critical fields) from
+			// cached CRDs: the SafeStart gate only needs GVK + Established
+			// status. Never Update() a cached CRD - that would persist the
+			// stripped object back to the cluster.
+			ByObject: map[client.Object]cache.ByObject{
+				&apiextensionsv1.CustomResourceDefinition{}: {
+					Transform: customresourcesgate.TransformStripCRDSchema,
+				},
+			},
 		},
+		Client:           clientOptions(*enableSecretCache),
+		PprofBindAddress: *pprofBindAddress,
 		Metrics: metricsserver.Options{
 			BindAddress: *metricsBindAddress,
 		},
@@ -150,10 +179,6 @@ func main() {
 		RenewDeadline:              func() *time.Duration { d := 50 * time.Second; return &d }(),
 	})
 	kingpin.FatalIfError(err, "Cannot create controller manager")
-	kingpin.FatalIfError(apisCluster.AddToScheme(mgr.GetScheme()), "Cannot add cluster-scoped PagerDuty APIs to scheme")
-	kingpin.FatalIfError(apisNamespaced.AddToScheme(mgr.GetScheme()), "Cannot add namespaced PagerDuty APIs to scheme")
-	kingpin.FatalIfError(apiextensionsv1.AddToScheme(mgr.GetScheme()), "Cannot add api-extensions APIs to scheme")
-	kingpin.FatalIfError(authv1.AddToScheme(mgr.GetScheme()), "Cannot add k8s authorization APIs to scheme")
 
 	metricRecorder := managed.NewMRMetricRecorder()
 	stateMetrics := statemetrics.NewMRStateMetrics()
@@ -162,6 +187,9 @@ func main() {
 	metrics.Registry.MustRegister(stateMetrics)
 
 	featureFlags := &feature.Flags{}
+	otStore := tjcontroller.NewOperationStore(log)
+	clusterProvider := config.GetProvider()
+	namespacedProvider := config.GetProviderNamespaced()
 	clusterOpts := tjcontroller.Options{
 		Options: xpcontroller.Options{
 			Logger:                  log,
@@ -175,10 +203,10 @@ func main() {
 				MRStateMetrics:          stateMetrics,
 			},
 		},
-		Provider:       config.GetProvider(),
-		SetupFn:        clients.TerraformSetupBuilder(*terraformVersion, *providerSource, *providerVersion),
-		WorkspaceStore: terraform.NewWorkspaceStore(log, terraform.WithFeatures(featureFlags)),
-		PollJitter:     pollJitter,
+		Provider:              clusterProvider,
+		SetupFn:               clients.TerraformSetupBuilder(clusterProvider.TerraformProvider, clusterProvider.TerraformPluginFrameworkProvider, *clientCacheTTL),
+		OperationTrackerStore: otStore,
+		PollJitter:            pollJitter,
 	}
 
 	namespacedOpts := tjcontroller.Options{
@@ -194,10 +222,10 @@ func main() {
 				MRStateMetrics:          stateMetrics,
 			},
 		},
-		Provider:       config.GetProviderNamespaced(),
-		SetupFn:        clients.TerraformSetupBuilder(*terraformVersion, *providerSource, *providerVersion),
-		WorkspaceStore: terraform.NewWorkspaceStore(log, terraform.WithFeatures(featureFlags)),
-		PollJitter:     pollJitter,
+		Provider:              namespacedProvider,
+		SetupFn:               clients.TerraformSetupBuilder(namespacedProvider.TerraformProvider, namespacedProvider.TerraformPluginFrameworkProvider, *clientCacheTTL),
+		OperationTrackerStore: otStore,
+		PollJitter:            pollJitter,
 	}
 
 	if *enableManagementPolicies {
@@ -233,6 +261,7 @@ func main() {
 			Logger:                  log,
 			Gate:                    crdGate,
 			MaxConcurrentReconciles: 1,
+			Groups:                  providerGroups(scheme, clusterOpts.Provider.RootGroup, namespacedOpts.Provider.RootGroup),
 		}), "Cannot setup CRD gate")
 		kingpin.FatalIfError(controllerCluster.SetupGated(mgr, clusterOpts), "Cannot setup cluster-scoped PagerDuty controllers")
 		kingpin.FatalIfError(controllerNamespaced.SetupGated(mgr, namespacedOpts), "Cannot setup namespaced PagerDuty controllers")
@@ -252,6 +281,31 @@ func main() {
 	}
 
 	kingpin.FatalIfError(mgr.Start(ctrl.SetupSignalHandler()), "Cannot start controller manager")
+}
+
+// clientOptions returns the manager client options. With the Secret cache
+// disabled, Secret reads go straight to the API server.
+func clientOptions(enableSecretCache bool) client.Options {
+	if enableSecretCache {
+		return client.Options{}
+	}
+	return client.Options{
+		Cache: &client.CacheOptions{DisableFor: []client.Object{&corev1.Secret{}}},
+	}
+}
+
+// providerGroups returns the API groups registered in s that are a root group
+// or one of its sub-groups, so the CRD gate ignores unrelated CRDs.
+func providerGroups(s *runtime.Scheme, roots ...string) []string {
+	set := map[string]struct{}{}
+	for gvk := range s.AllKnownTypes() {
+		for _, root := range roots {
+			if gvk.Group == root || strings.HasSuffix(gvk.Group, "."+root) {
+				set[gvk.Group] = struct{}{}
+			}
+		}
+	}
+	return slices.Sorted(maps.Keys(set))
 }
 
 func canWatchCRD(ctx context.Context, mgr manager.Manager) (bool, error) {

@@ -10,7 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
+	v2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 )
 
 type WindowInitParameters struct {
@@ -23,11 +23,11 @@ type WindowInitParameters struct {
 
 	// References to Service in service to populate services.
 	// +kubebuilder:validation:Optional
-	ServiceRefs []v1.Reference `json:"serviceRefs,omitempty" tf:"-"`
+	ServiceRefs []v2.Reference `json:"serviceRefs,omitempty" tf:"-"`
 
 	// Selector for a list of Service in service to populate services.
 	// +kubebuilder:validation:Optional
-	ServiceSelector *v1.Selector `json:"serviceSelector,omitempty" tf:"-"`
+	ServiceSelector *v2.Selector `json:"serviceSelector,omitempty" tf:"-"`
 
 	// A list of service IDs to include in the maintenance window.
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-pagerduty/apis/cluster/service/v1alpha1.Service
@@ -71,11 +71,11 @@ type WindowParameters struct {
 
 	// References to Service in service to populate services.
 	// +kubebuilder:validation:Optional
-	ServiceRefs []v1.Reference `json:"serviceRefs,omitempty" tf:"-"`
+	ServiceRefs []v2.Reference `json:"serviceRefs,omitempty" tf:"-"`
 
 	// Selector for a list of Service in service to populate services.
 	// +kubebuilder:validation:Optional
-	ServiceSelector *v1.Selector `json:"serviceSelector,omitempty" tf:"-"`
+	ServiceSelector *v2.Selector `json:"serviceSelector,omitempty" tf:"-"`
 
 	// A list of service IDs to include in the maintenance window.
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-pagerduty/apis/cluster/service/v1alpha1.Service
@@ -92,8 +92,8 @@ type WindowParameters struct {
 
 // WindowSpec defines the desired state of Window
 type WindowSpec struct {
-	v1.ResourceSpec `json:",inline"`
-	ForProvider     WindowParameters `json:"forProvider"`
+	v2.ClusterManagedResourceSpec `json:",inline"`
+	ForProvider                   WindowParameters `json:"forProvider"`
 	// THIS IS A BETA FIELD. It will be honored
 	// unless the Management Policies feature flag is disabled.
 	// InitProvider holds the same fields as ForProvider, with the exception
@@ -109,8 +109,8 @@ type WindowSpec struct {
 
 // WindowStatus defines the observed state of Window.
 type WindowStatus struct {
-	v1.ResourceStatus `json:",inline"`
-	AtProvider        WindowObservation `json:"atProvider,omitempty"`
+	v2.ManagedResourceStatus `json:",inline"`
+	AtProvider               WindowObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true

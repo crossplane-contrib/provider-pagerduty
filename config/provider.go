@@ -76,8 +76,16 @@ func exampleManifestConfiguration() ujconfig.ExampleManifestConfiguration {
 
 // GetProvider returns provider configuration
 func GetProvider() *ujconfig.Provider {
+	sdk, fw := newTerraformProviders()
+	sdkList, fwList := includeLists(sdk, fw)
 	pc := ujconfig.NewProvider([]byte(providerSchema), resourcePrefix, modulePath, []byte(providerMetadata),
-		ujconfig.WithIncludeList(ExternalNameConfigured()),
+		// IncludeList defaults to [".+"] (CLI-based). Clear it so every
+		// resource is reconciled in-process (no-fork).
+		ujconfig.WithIncludeList(nil),
+		ujconfig.WithTerraformProvider(sdk),
+		ujconfig.WithTerraformPluginSDKIncludeList(sdkList),
+		ujconfig.WithTerraformPluginFrameworkProvider(fw),
+		ujconfig.WithTerraformPluginFrameworkIncludeList(fwList),
 		ujconfig.WithShortName("pagerduty"),
 		ujconfig.WithFeaturesPackage("internal/features"),
 		ujconfig.WithRootGroup("pagerduty.crossplane.io"),
@@ -117,8 +125,16 @@ func GetProvider() *ujconfig.Provider {
 
 // GetProviderNamespaced returns provider configuration
 func GetProviderNamespaced() *ujconfig.Provider {
+	sdk, fw := newTerraformProviders()
+	sdkList, fwList := includeLists(sdk, fw)
 	pc := ujconfig.NewProvider([]byte(providerSchema), resourcePrefix, modulePath, []byte(providerMetadata),
-		ujconfig.WithIncludeList(ExternalNameConfigured()),
+		// IncludeList defaults to [".+"] (CLI-based). Clear it so every
+		// resource is reconciled in-process (no-fork).
+		ujconfig.WithIncludeList(nil),
+		ujconfig.WithTerraformProvider(sdk),
+		ujconfig.WithTerraformPluginSDKIncludeList(sdkList),
+		ujconfig.WithTerraformPluginFrameworkProvider(fw),
+		ujconfig.WithTerraformPluginFrameworkIncludeList(fwList),
 		ujconfig.WithShortName("pagerduty"),
 		ujconfig.WithFeaturesPackage("internal/features"),
 		ujconfig.WithRootGroup("pagerduty.m.crossplane.io"),

@@ -3,7 +3,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.20.1
+    controller-gen.kubebuilder.io/version: v0.23.0
   name: plays.response.pagerduty.m.crossplane.io
 spec:
   group: response.pagerduty.m.crossplane.io
@@ -346,7 +346,8 @@ spec:
                               escalationDelayInMinutes:
                                 description: The number of minutes before an unacknowledged
                                   incident escalates away from this rule.
-                                type: number
+                                format: int64
+                                type: integer
                               id:
                                 description: ID of the user defined as the responder
                                 type: string
@@ -376,7 +377,8 @@ spec:
                         numLoops:
                           description: The number of times the escalation policy will
                             repeat after reaching the end of its escalation.
-                          type: number
+                          format: int64
+                          type: integer
                         onCallHandoffNotifications:
                           description: Determines how on call handoff notifications
                             will be sent for users on the escalation policy. Defaults
@@ -501,6 +503,13 @@ spec:
                 x-kubernetes-list-map-keys:
                 - type
                 x-kubernetes-list-type: map
+              lastHandledReconcileAt:
+                description: |-
+                  LastHandledReconcileAt holds the value of the most recent
+                  reconcile-requested-at annotation token that the controller has
+                  processed. Users can compare this to the annotation to determine
+                  whether a reconcile request has been handled.
+                type: string
               observedGeneration:
                 description: |-
                   ObservedGeneration is the latest metadata.generation

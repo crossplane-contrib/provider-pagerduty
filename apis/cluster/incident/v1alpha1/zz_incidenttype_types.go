@@ -10,7 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
+	v2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 )
 
 type IncidentTypeInitParameters struct {
@@ -33,11 +33,11 @@ type IncidentTypeInitParameters struct {
 
 	// Reference to a IncidentType in incident to populate parentType.
 	// +kubebuilder:validation:Optional
-	ParentTypeRef *v1.Reference `json:"parentTypeRef,omitempty" tf:"-"`
+	ParentTypeRef *v2.Reference `json:"parentTypeRef,omitempty" tf:"-"`
 
 	// Selector for a IncidentType in incident to populate parentType.
 	// +kubebuilder:validation:Optional
-	ParentTypeSelector *v1.Selector `json:"parentTypeSelector,omitempty" tf:"-"`
+	ParentTypeSelector *v2.Selector `json:"parentTypeSelector,omitempty" tf:"-"`
 }
 
 type IncidentTypeObservation struct {
@@ -89,17 +89,17 @@ type IncidentTypeParameters struct {
 
 	// Reference to a IncidentType in incident to populate parentType.
 	// +kubebuilder:validation:Optional
-	ParentTypeRef *v1.Reference `json:"parentTypeRef,omitempty" tf:"-"`
+	ParentTypeRef *v2.Reference `json:"parentTypeRef,omitempty" tf:"-"`
 
 	// Selector for a IncidentType in incident to populate parentType.
 	// +kubebuilder:validation:Optional
-	ParentTypeSelector *v1.Selector `json:"parentTypeSelector,omitempty" tf:"-"`
+	ParentTypeSelector *v2.Selector `json:"parentTypeSelector,omitempty" tf:"-"`
 }
 
 // IncidentTypeSpec defines the desired state of IncidentType
 type IncidentTypeSpec struct {
-	v1.ResourceSpec `json:",inline"`
-	ForProvider     IncidentTypeParameters `json:"forProvider"`
+	v2.ClusterManagedResourceSpec `json:",inline"`
+	ForProvider                   IncidentTypeParameters `json:"forProvider"`
 	// THIS IS A BETA FIELD. It will be honored
 	// unless the Management Policies feature flag is disabled.
 	// InitProvider holds the same fields as ForProvider, with the exception
@@ -115,8 +115,8 @@ type IncidentTypeSpec struct {
 
 // IncidentTypeStatus defines the observed state of IncidentType.
 type IncidentTypeStatus struct {
-	v1.ResourceStatus `json:",inline"`
-	AtProvider        IncidentTypeObservation `json:"atProvider,omitempty"`
+	v2.ManagedResourceStatus `json:",inline"`
+	AtProvider               IncidentTypeObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true

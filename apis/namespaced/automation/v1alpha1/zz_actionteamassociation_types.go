@@ -10,8 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
-	v2 "github.com/crossplane/crossplane-runtime/v2/apis/common/v2"
+	v2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 )
 
 type ActionTeamAssociationInitParameters struct {
@@ -22,11 +21,11 @@ type ActionTeamAssociationInitParameters struct {
 
 	// Reference to a Action to populate actionId.
 	// +kubebuilder:validation:Optional
-	ActionIDRef *v1.NamespacedReference `json:"actionIdRef,omitempty" tf:"-"`
+	ActionIDRef *v2.NamespacedReference `json:"actionIdRef,omitempty" tf:"-"`
 
 	// Selector for a Action to populate actionId.
 	// +kubebuilder:validation:Optional
-	ActionIDSelector *v1.NamespacedSelector `json:"actionIdSelector,omitempty" tf:"-"`
+	ActionIDSelector *v2.NamespacedSelector `json:"actionIdSelector,omitempty" tf:"-"`
 
 	// Id of the team associated to the action.
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-pagerduty/apis/namespaced/team/v1alpha1.Team
@@ -34,11 +33,11 @@ type ActionTeamAssociationInitParameters struct {
 
 	// Reference to a Team in team to populate teamId.
 	// +kubebuilder:validation:Optional
-	TeamIDRef *v1.NamespacedReference `json:"teamIdRef,omitempty" tf:"-"`
+	TeamIDRef *v2.NamespacedReference `json:"teamIdRef,omitempty" tf:"-"`
 
 	// Selector for a Team in team to populate teamId.
 	// +kubebuilder:validation:Optional
-	TeamIDSelector *v1.NamespacedSelector `json:"teamIdSelector,omitempty" tf:"-"`
+	TeamIDSelector *v2.NamespacedSelector `json:"teamIdSelector,omitempty" tf:"-"`
 }
 
 type ActionTeamAssociationObservation struct {
@@ -61,11 +60,11 @@ type ActionTeamAssociationParameters struct {
 
 	// Reference to a Action to populate actionId.
 	// +kubebuilder:validation:Optional
-	ActionIDRef *v1.NamespacedReference `json:"actionIdRef,omitempty" tf:"-"`
+	ActionIDRef *v2.NamespacedReference `json:"actionIdRef,omitempty" tf:"-"`
 
 	// Selector for a Action to populate actionId.
 	// +kubebuilder:validation:Optional
-	ActionIDSelector *v1.NamespacedSelector `json:"actionIdSelector,omitempty" tf:"-"`
+	ActionIDSelector *v2.NamespacedSelector `json:"actionIdSelector,omitempty" tf:"-"`
 
 	// Id of the team associated to the action.
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-pagerduty/apis/namespaced/team/v1alpha1.Team
@@ -74,11 +73,11 @@ type ActionTeamAssociationParameters struct {
 
 	// Reference to a Team in team to populate teamId.
 	// +kubebuilder:validation:Optional
-	TeamIDRef *v1.NamespacedReference `json:"teamIdRef,omitempty" tf:"-"`
+	TeamIDRef *v2.NamespacedReference `json:"teamIdRef,omitempty" tf:"-"`
 
 	// Selector for a Team in team to populate teamId.
 	// +kubebuilder:validation:Optional
-	TeamIDSelector *v1.NamespacedSelector `json:"teamIdSelector,omitempty" tf:"-"`
+	TeamIDSelector *v2.NamespacedSelector `json:"teamIdSelector,omitempty" tf:"-"`
 }
 
 // ActionTeamAssociationSpec defines the desired state of ActionTeamAssociation
@@ -100,8 +99,8 @@ type ActionTeamAssociationSpec struct {
 
 // ActionTeamAssociationStatus defines the observed state of ActionTeamAssociation.
 type ActionTeamAssociationStatus struct {
-	v1.ResourceStatus `json:",inline"`
-	AtProvider        ActionTeamAssociationObservation `json:"atProvider,omitempty"`
+	v2.ManagedResourceStatus `json:",inline"`
+	AtProvider               ActionTeamAssociationObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true

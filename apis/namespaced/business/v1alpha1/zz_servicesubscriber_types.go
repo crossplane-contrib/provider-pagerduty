@@ -10,8 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
-	v2 "github.com/crossplane/crossplane-runtime/v2/apis/common/v2"
+	v2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 )
 
 type ServiceSubscriberInitParameters struct {
@@ -22,11 +21,11 @@ type ServiceSubscriberInitParameters struct {
 
 	// Reference to a Service in business to populate businessServiceId.
 	// +kubebuilder:validation:Optional
-	BusinessServiceIDRef *v1.NamespacedReference `json:"businessServiceIdRef,omitempty" tf:"-"`
+	BusinessServiceIDRef *v2.NamespacedReference `json:"businessServiceIdRef,omitempty" tf:"-"`
 
 	// Selector for a Service in business to populate businessServiceId.
 	// +kubebuilder:validation:Optional
-	BusinessServiceIDSelector *v1.NamespacedSelector `json:"businessServiceIdSelector,omitempty" tf:"-"`
+	BusinessServiceIDSelector *v2.NamespacedSelector `json:"businessServiceIdSelector,omitempty" tf:"-"`
 
 	// The ID of the subscriber entity.
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-pagerduty/apis/namespaced/user/v1alpha1.User
@@ -39,11 +38,11 @@ type ServiceSubscriberInitParameters struct {
 
 	// Reference to a User in user to populate subscriberId.
 	// +kubebuilder:validation:Optional
-	UserRefs *v1.NamespacedReference `json:"userRefs,omitempty" tf:"-"`
+	UserRefs *v2.NamespacedReference `json:"userRefs,omitempty" tf:"-"`
 
 	// Selector for a User in user to populate subscriberId.
 	// +kubebuilder:validation:Optional
-	UserSelector *v1.NamespacedSelector `json:"userSelector,omitempty" tf:"-"`
+	UserSelector *v2.NamespacedSelector `json:"userSelector,omitempty" tf:"-"`
 }
 
 type ServiceSubscriberObservation struct {
@@ -70,11 +69,11 @@ type ServiceSubscriberParameters struct {
 
 	// Reference to a Service in business to populate businessServiceId.
 	// +kubebuilder:validation:Optional
-	BusinessServiceIDRef *v1.NamespacedReference `json:"businessServiceIdRef,omitempty" tf:"-"`
+	BusinessServiceIDRef *v2.NamespacedReference `json:"businessServiceIdRef,omitempty" tf:"-"`
 
 	// Selector for a Service in business to populate businessServiceId.
 	// +kubebuilder:validation:Optional
-	BusinessServiceIDSelector *v1.NamespacedSelector `json:"businessServiceIdSelector,omitempty" tf:"-"`
+	BusinessServiceIDSelector *v2.NamespacedSelector `json:"businessServiceIdSelector,omitempty" tf:"-"`
 
 	// The ID of the subscriber entity.
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-pagerduty/apis/namespaced/user/v1alpha1.User
@@ -89,11 +88,11 @@ type ServiceSubscriberParameters struct {
 
 	// Reference to a User in user to populate subscriberId.
 	// +kubebuilder:validation:Optional
-	UserRefs *v1.NamespacedReference `json:"userRefs,omitempty" tf:"-"`
+	UserRefs *v2.NamespacedReference `json:"userRefs,omitempty" tf:"-"`
 
 	// Selector for a User in user to populate subscriberId.
 	// +kubebuilder:validation:Optional
-	UserSelector *v1.NamespacedSelector `json:"userSelector,omitempty" tf:"-"`
+	UserSelector *v2.NamespacedSelector `json:"userSelector,omitempty" tf:"-"`
 }
 
 // ServiceSubscriberSpec defines the desired state of ServiceSubscriber
@@ -115,8 +114,8 @@ type ServiceSubscriberSpec struct {
 
 // ServiceSubscriberStatus defines the observed state of ServiceSubscriber.
 type ServiceSubscriberStatus struct {
-	v1.ResourceStatus `json:",inline"`
-	AtProvider        ServiceSubscriberObservation `json:"atProvider,omitempty"`
+	v2.ManagedResourceStatus `json:",inline"`
+	AtProvider               ServiceSubscriberObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true

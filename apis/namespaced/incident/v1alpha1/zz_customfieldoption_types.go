@@ -10,8 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
-	v2 "github.com/crossplane/crossplane-runtime/v2/apis/common/v2"
+	v2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 )
 
 type CustomFieldOptionInitParameters struct {
@@ -25,11 +24,11 @@ type CustomFieldOptionInitParameters struct {
 
 	// Reference to a CustomField in incident to populate field.
 	// +kubebuilder:validation:Optional
-	FieldRef *v1.NamespacedReference `json:"fieldRef,omitempty" tf:"-"`
+	FieldRef *v2.NamespacedReference `json:"fieldRef,omitempty" tf:"-"`
 
 	// Selector for a CustomField in incident to populate field.
 	// +kubebuilder:validation:Optional
-	FieldSelector *v1.NamespacedSelector `json:"fieldSelector,omitempty" tf:"-"`
+	FieldSelector *v2.NamespacedSelector `json:"fieldSelector,omitempty" tf:"-"`
 
 	// The allowed value.
 	Value *string `json:"value,omitempty" tf:"value,omitempty"`
@@ -63,11 +62,11 @@ type CustomFieldOptionParameters struct {
 
 	// Reference to a CustomField in incident to populate field.
 	// +kubebuilder:validation:Optional
-	FieldRef *v1.NamespacedReference `json:"fieldRef,omitempty" tf:"-"`
+	FieldRef *v2.NamespacedReference `json:"fieldRef,omitempty" tf:"-"`
 
 	// Selector for a CustomField in incident to populate field.
 	// +kubebuilder:validation:Optional
-	FieldSelector *v1.NamespacedSelector `json:"fieldSelector,omitempty" tf:"-"`
+	FieldSelector *v2.NamespacedSelector `json:"fieldSelector,omitempty" tf:"-"`
 
 	// The allowed value.
 	// +kubebuilder:validation:Optional
@@ -93,8 +92,8 @@ type CustomFieldOptionSpec struct {
 
 // CustomFieldOptionStatus defines the observed state of CustomFieldOption.
 type CustomFieldOptionStatus struct {
-	v1.ResourceStatus `json:",inline"`
-	AtProvider        CustomFieldOptionObservation `json:"atProvider,omitempty"`
+	v2.ManagedResourceStatus `json:",inline"`
+	AtProvider               CustomFieldOptionObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true

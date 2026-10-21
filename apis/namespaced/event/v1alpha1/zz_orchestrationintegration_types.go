@@ -10,8 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
-	v2 "github.com/crossplane/crossplane-runtime/v2/apis/common/v2"
+	v2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 )
 
 type OrchestrationIntegrationInitParameters struct {
@@ -22,11 +21,11 @@ type OrchestrationIntegrationInitParameters struct {
 
 	// Reference to a Orchestration in event to populate eventOrchestration.
 	// +kubebuilder:validation:Optional
-	EventOrchestrationRef *v1.NamespacedReference `json:"eventOrchestrationRef,omitempty" tf:"-"`
+	EventOrchestrationRef *v2.NamespacedReference `json:"eventOrchestrationRef,omitempty" tf:"-"`
 
 	// Selector for a Orchestration in event to populate eventOrchestration.
 	// +kubebuilder:validation:Optional
-	EventOrchestrationSelector *v1.NamespacedSelector `json:"eventOrchestrationSelector,omitempty" tf:"-"`
+	EventOrchestrationSelector *v2.NamespacedSelector `json:"eventOrchestrationSelector,omitempty" tf:"-"`
 
 	// Name/description of the Integration.
 	Label *string `json:"label,omitempty" tf:"label,omitempty"`
@@ -55,11 +54,11 @@ type OrchestrationIntegrationParameters struct {
 
 	// Reference to a Orchestration in event to populate eventOrchestration.
 	// +kubebuilder:validation:Optional
-	EventOrchestrationRef *v1.NamespacedReference `json:"eventOrchestrationRef,omitempty" tf:"-"`
+	EventOrchestrationRef *v2.NamespacedReference `json:"eventOrchestrationRef,omitempty" tf:"-"`
 
 	// Selector for a Orchestration in event to populate eventOrchestration.
 	// +kubebuilder:validation:Optional
-	EventOrchestrationSelector *v1.NamespacedSelector `json:"eventOrchestrationSelector,omitempty" tf:"-"`
+	EventOrchestrationSelector *v2.NamespacedSelector `json:"eventOrchestrationSelector,omitempty" tf:"-"`
 
 	// Name/description of the Integration.
 	// +kubebuilder:validation:Optional
@@ -100,8 +99,8 @@ type OrchestrationIntegrationSpec struct {
 
 // OrchestrationIntegrationStatus defines the observed state of OrchestrationIntegration.
 type OrchestrationIntegrationStatus struct {
-	v1.ResourceStatus `json:",inline"`
-	AtProvider        OrchestrationIntegrationObservation `json:"atProvider,omitempty"`
+	v2.ManagedResourceStatus `json:",inline"`
+	AtProvider               OrchestrationIntegrationObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true
