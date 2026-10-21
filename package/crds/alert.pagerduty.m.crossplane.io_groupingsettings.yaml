@@ -3,7 +3,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.20.1
+    controller-gen.kubebuilder.io/version: v0.23.0
   name: groupingsettings.alert.pagerduty.m.crossplane.io
 spec:
   group: alert.pagerduty.m.crossplane.io
@@ -61,50 +61,48 @@ spec:
                 properties:
                   config:
                     description: The set of values used for configuration.
-                    items:
-                      properties:
-                        aggregate:
-                          description: One of any or all. This setting is only required
-                            and applies when type is set to content_based or content_based_intelligent.
-                            Group alerts based on one or all of fields value(s).
+                    properties:
+                      aggregate:
+                        description: One of any or all. This setting is only required
+                          and applies when type is set to content_based or content_based_intelligent.
+                          Group alerts based on one or all of fields value(s).
+                        type: string
+                      fields:
+                        description: Alerts will be grouped together if the content
+                          of these fields match. This setting is only required and
+                          applies when type is set to content_based or content_based_intelligent.
+                        items:
                           type: string
-                        fields:
-                          description: Alerts will be grouped together if the content
-                            of these fields match. This setting is only required and
-                            applies when type is set to content_based or content_based_intelligent.
-                          items:
-                            type: string
-                          type: array
-                          x-kubernetes-list-type: set
-                        iagFields:
-                          description: |-
-                            An array of strings which represent the iag fields with which to intelligently group against.  This setting applies only when type is set to intelligent. Default: ["summary"].
-                            An array of strings which represent the iag fields with which to intelligently group against
-                          items:
-                            type: string
-                          type: array
-                        timeWindow:
-                          description: The maximum amount of time allowed between
-                            Alerts. This setting applies only when type is set to
-                            intelligent, content_based, content_based_intelligent.
-                            Value must be between 300 and 3600 or exactly 86400 (86400
-                            is supported only for content_based alert grouping). Any
-                            Alerts arriving greater than time_window seconds apart
-                            will not be grouped together. This is a rolling time window
-                            and is counted from the most recently grouped alert. The
-                            window is extended every time a new alert is added to
-                            the group, up to 24 hours. To use the recommended time
-                            window leave this value unset or set it to null.
-                          type: number
-                        timeout:
-                          description: The duration in seconds within which to automatically
-                            group incoming alerts. This setting is only required and
-                            applies when type is set to time. To continue grouping
-                            alerts until the incident is resolved leave this value
-                            unset or set it to null.
-                          type: number
-                      type: object
-                    type: array
+                        type: array
+                        x-kubernetes-list-type: set
+                      iagFields:
+                        description: |-
+                          An array of strings which represent the iag fields with which to intelligently group against.  This setting applies only when type is set to intelligent. Default: ["summary"].
+                          An array of strings which represent the iag fields with which to intelligently group against
+                        items:
+                          type: string
+                        type: array
+                      timeWindow:
+                        description: The maximum amount of time allowed between Alerts.
+                          This setting applies only when type is set to intelligent,
+                          content_based, content_based_intelligent. Value must be
+                          between 300 and 3600 or exactly 86400 (86400 is supported
+                          only for content_based alert grouping). Any Alerts arriving
+                          greater than time_window seconds apart will not be grouped
+                          together. This is a rolling time window and is counted from
+                          the most recently grouped alert. The window is extended
+                          every time a new alert is added to the group, up to 24 hours.
+                          To use the recommended time window leave this value unset
+                          or set it to null.
+                        type: number
+                      timeout:
+                        description: The duration in seconds within which to automatically
+                          group incoming alerts. This setting is only required and
+                          applies when type is set to time. To continue grouping alerts
+                          until the incident is resolved leave this value unset or
+                          set it to null.
+                        type: number
+                    type: object
                   description:
                     description: A human-friendly text to describe and identify this
                       alert grouping setting.
@@ -223,50 +221,48 @@ spec:
                 properties:
                   config:
                     description: The set of values used for configuration.
-                    items:
-                      properties:
-                        aggregate:
-                          description: One of any or all. This setting is only required
-                            and applies when type is set to content_based or content_based_intelligent.
-                            Group alerts based on one or all of fields value(s).
+                    properties:
+                      aggregate:
+                        description: One of any or all. This setting is only required
+                          and applies when type is set to content_based or content_based_intelligent.
+                          Group alerts based on one or all of fields value(s).
+                        type: string
+                      fields:
+                        description: Alerts will be grouped together if the content
+                          of these fields match. This setting is only required and
+                          applies when type is set to content_based or content_based_intelligent.
+                        items:
                           type: string
-                        fields:
-                          description: Alerts will be grouped together if the content
-                            of these fields match. This setting is only required and
-                            applies when type is set to content_based or content_based_intelligent.
-                          items:
-                            type: string
-                          type: array
-                          x-kubernetes-list-type: set
-                        iagFields:
-                          description: |-
-                            An array of strings which represent the iag fields with which to intelligently group against.  This setting applies only when type is set to intelligent. Default: ["summary"].
-                            An array of strings which represent the iag fields with which to intelligently group against
-                          items:
-                            type: string
-                          type: array
-                        timeWindow:
-                          description: The maximum amount of time allowed between
-                            Alerts. This setting applies only when type is set to
-                            intelligent, content_based, content_based_intelligent.
-                            Value must be between 300 and 3600 or exactly 86400 (86400
-                            is supported only for content_based alert grouping). Any
-                            Alerts arriving greater than time_window seconds apart
-                            will not be grouped together. This is a rolling time window
-                            and is counted from the most recently grouped alert. The
-                            window is extended every time a new alert is added to
-                            the group, up to 24 hours. To use the recommended time
-                            window leave this value unset or set it to null.
-                          type: number
-                        timeout:
-                          description: The duration in seconds within which to automatically
-                            group incoming alerts. This setting is only required and
-                            applies when type is set to time. To continue grouping
-                            alerts until the incident is resolved leave this value
-                            unset or set it to null.
-                          type: number
-                      type: object
-                    type: array
+                        type: array
+                        x-kubernetes-list-type: set
+                      iagFields:
+                        description: |-
+                          An array of strings which represent the iag fields with which to intelligently group against.  This setting applies only when type is set to intelligent. Default: ["summary"].
+                          An array of strings which represent the iag fields with which to intelligently group against
+                        items:
+                          type: string
+                        type: array
+                      timeWindow:
+                        description: The maximum amount of time allowed between Alerts.
+                          This setting applies only when type is set to intelligent,
+                          content_based, content_based_intelligent. Value must be
+                          between 300 and 3600 or exactly 86400 (86400 is supported
+                          only for content_based alert grouping). Any Alerts arriving
+                          greater than time_window seconds apart will not be grouped
+                          together. This is a rolling time window and is counted from
+                          the most recently grouped alert. The window is extended
+                          every time a new alert is added to the group, up to 24 hours.
+                          To use the recommended time window leave this value unset
+                          or set it to null.
+                        type: number
+                      timeout:
+                        description: The duration in seconds within which to automatically
+                          group incoming alerts. This setting is only required and
+                          applies when type is set to time. To continue grouping alerts
+                          until the incident is resolved leave this value unset or
+                          set it to null.
+                        type: number
+                    type: object
                   description:
                     description: A human-friendly text to describe and identify this
                       alert grouping setting.
@@ -440,50 +436,48 @@ spec:
                 properties:
                   config:
                     description: The set of values used for configuration.
-                    items:
-                      properties:
-                        aggregate:
-                          description: One of any or all. This setting is only required
-                            and applies when type is set to content_based or content_based_intelligent.
-                            Group alerts based on one or all of fields value(s).
+                    properties:
+                      aggregate:
+                        description: One of any or all. This setting is only required
+                          and applies when type is set to content_based or content_based_intelligent.
+                          Group alerts based on one or all of fields value(s).
+                        type: string
+                      fields:
+                        description: Alerts will be grouped together if the content
+                          of these fields match. This setting is only required and
+                          applies when type is set to content_based or content_based_intelligent.
+                        items:
                           type: string
-                        fields:
-                          description: Alerts will be grouped together if the content
-                            of these fields match. This setting is only required and
-                            applies when type is set to content_based or content_based_intelligent.
-                          items:
-                            type: string
-                          type: array
-                          x-kubernetes-list-type: set
-                        iagFields:
-                          description: |-
-                            An array of strings which represent the iag fields with which to intelligently group against.  This setting applies only when type is set to intelligent. Default: ["summary"].
-                            An array of strings which represent the iag fields with which to intelligently group against
-                          items:
-                            type: string
-                          type: array
-                        timeWindow:
-                          description: The maximum amount of time allowed between
-                            Alerts. This setting applies only when type is set to
-                            intelligent, content_based, content_based_intelligent.
-                            Value must be between 300 and 3600 or exactly 86400 (86400
-                            is supported only for content_based alert grouping). Any
-                            Alerts arriving greater than time_window seconds apart
-                            will not be grouped together. This is a rolling time window
-                            and is counted from the most recently grouped alert. The
-                            window is extended every time a new alert is added to
-                            the group, up to 24 hours. To use the recommended time
-                            window leave this value unset or set it to null.
-                          type: number
-                        timeout:
-                          description: The duration in seconds within which to automatically
-                            group incoming alerts. This setting is only required and
-                            applies when type is set to time. To continue grouping
-                            alerts until the incident is resolved leave this value
-                            unset or set it to null.
-                          type: number
-                      type: object
-                    type: array
+                        type: array
+                        x-kubernetes-list-type: set
+                      iagFields:
+                        description: |-
+                          An array of strings which represent the iag fields with which to intelligently group against.  This setting applies only when type is set to intelligent. Default: ["summary"].
+                          An array of strings which represent the iag fields with which to intelligently group against
+                        items:
+                          type: string
+                        type: array
+                      timeWindow:
+                        description: The maximum amount of time allowed between Alerts.
+                          This setting applies only when type is set to intelligent,
+                          content_based, content_based_intelligent. Value must be
+                          between 300 and 3600 or exactly 86400 (86400 is supported
+                          only for content_based alert grouping). Any Alerts arriving
+                          greater than time_window seconds apart will not be grouped
+                          together. This is a rolling time window and is counted from
+                          the most recently grouped alert. The window is extended
+                          every time a new alert is added to the group, up to 24 hours.
+                          To use the recommended time window leave this value unset
+                          or set it to null.
+                        type: number
+                      timeout:
+                        description: The duration in seconds within which to automatically
+                          group incoming alerts. This setting is only required and
+                          applies when type is set to time. To continue grouping alerts
+                          until the incident is resolved leave this value unset or
+                          set it to null.
+                        type: number
+                    type: object
                   description:
                     description: A human-friendly text to describe and identify this
                       alert grouping setting.
@@ -552,6 +546,13 @@ spec:
                 x-kubernetes-list-map-keys:
                 - type
                 x-kubernetes-list-type: map
+              lastHandledReconcileAt:
+                description: |-
+                  LastHandledReconcileAt holds the value of the most recent
+                  reconcile-requested-at annotation token that the controller has
+                  processed. Users can compare this to the annotation to determine
+                  whether a reconcile request has been handled.
+                type: string
               observedGeneration:
                 description: |-
                   ObservedGeneration is the latest metadata.generation

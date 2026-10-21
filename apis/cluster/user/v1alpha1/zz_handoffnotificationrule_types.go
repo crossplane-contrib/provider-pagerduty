@@ -10,7 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
+	v2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 )
 
 type HandoffNotificationRuleContactMethodInitParameters struct {
@@ -65,11 +65,11 @@ type HandoffNotificationRuleInitParameters struct {
 
 	// Reference to a User in user to populate userId.
 	// +kubebuilder:validation:Optional
-	UserIDRef *v1.Reference `json:"userIdRef,omitempty" tf:"-"`
+	UserIDRef *v2.Reference `json:"userIdRef,omitempty" tf:"-"`
 
 	// Selector for a User in user to populate userId.
 	// +kubebuilder:validation:Optional
-	UserIDSelector *v1.Selector `json:"userIdSelector,omitempty" tf:"-"`
+	UserIDSelector *v2.Selector `json:"userIdSelector,omitempty" tf:"-"`
 }
 
 type HandoffNotificationRuleObservation struct {
@@ -117,17 +117,17 @@ type HandoffNotificationRuleParameters struct {
 
 	// Reference to a User in user to populate userId.
 	// +kubebuilder:validation:Optional
-	UserIDRef *v1.Reference `json:"userIdRef,omitempty" tf:"-"`
+	UserIDRef *v2.Reference `json:"userIdRef,omitempty" tf:"-"`
 
 	// Selector for a User in user to populate userId.
 	// +kubebuilder:validation:Optional
-	UserIDSelector *v1.Selector `json:"userIdSelector,omitempty" tf:"-"`
+	UserIDSelector *v2.Selector `json:"userIdSelector,omitempty" tf:"-"`
 }
 
 // HandoffNotificationRuleSpec defines the desired state of HandoffNotificationRule
 type HandoffNotificationRuleSpec struct {
-	v1.ResourceSpec `json:",inline"`
-	ForProvider     HandoffNotificationRuleParameters `json:"forProvider"`
+	v2.ClusterManagedResourceSpec `json:",inline"`
+	ForProvider                   HandoffNotificationRuleParameters `json:"forProvider"`
 	// THIS IS A BETA FIELD. It will be honored
 	// unless the Management Policies feature flag is disabled.
 	// InitProvider holds the same fields as ForProvider, with the exception
@@ -143,8 +143,8 @@ type HandoffNotificationRuleSpec struct {
 
 // HandoffNotificationRuleStatus defines the observed state of HandoffNotificationRule.
 type HandoffNotificationRuleStatus struct {
-	v1.ResourceStatus `json:",inline"`
-	AtProvider        HandoffNotificationRuleObservation `json:"atProvider,omitempty"`
+	v2.ManagedResourceStatus `json:",inline"`
+	AtProvider               HandoffNotificationRuleObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true

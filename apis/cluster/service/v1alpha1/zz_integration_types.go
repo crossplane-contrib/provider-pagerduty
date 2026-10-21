@@ -10,7 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
+	v2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 )
 
 type EmailFilterInitParameters struct {
@@ -101,7 +101,7 @@ type EmailParserObservation struct {
 	Action *string `json:"action,omitempty" tf:"action,omitempty"`
 
 	// The ID of the service integration.
-	ID *float64 `json:"id,omitempty" tf:"id,omitempty"`
+	ID *int64 `json:"id,omitempty" tf:"id,omitempty"`
 
 	MatchPredicate []MatchPredicateObservation `json:"matchPredicate,omitempty" tf:"match_predicate,omitempty"`
 
@@ -147,11 +147,11 @@ type IntegrationInitParameters struct {
 
 	// Reference to a Service in service to populate service.
 	// +kubebuilder:validation:Optional
-	ServiceRef *v1.Reference `json:"serviceRef,omitempty" tf:"-"`
+	ServiceRef *v2.Reference `json:"serviceRef,omitempty" tf:"-"`
 
 	// Selector for a Service in service to populate service.
 	// +kubebuilder:validation:Optional
-	ServiceSelector *v1.Selector `json:"serviceSelector,omitempty" tf:"-"`
+	ServiceSelector *v2.Selector `json:"serviceSelector,omitempty" tf:"-"`
 
 	// The service type. Can be:
 	// aws_cloudwatch_inbound_integration,
@@ -252,11 +252,11 @@ type IntegrationParameters struct {
 
 	// Reference to a Service in service to populate service.
 	// +kubebuilder:validation:Optional
-	ServiceRef *v1.Reference `json:"serviceRef,omitempty" tf:"-"`
+	ServiceRef *v2.Reference `json:"serviceRef,omitempty" tf:"-"`
 
 	// Selector for a Service in service to populate service.
 	// +kubebuilder:validation:Optional
-	ServiceSelector *v1.Selector `json:"serviceSelector,omitempty" tf:"-"`
+	ServiceSelector *v2.Selector `json:"serviceSelector,omitempty" tf:"-"`
 
 	// The service type. Can be:
 	// aws_cloudwatch_inbound_integration,
@@ -556,8 +556,8 @@ type ValueExtractorParameters struct {
 
 // IntegrationSpec defines the desired state of Integration
 type IntegrationSpec struct {
-	v1.ResourceSpec `json:",inline"`
-	ForProvider     IntegrationParameters `json:"forProvider"`
+	v2.ClusterManagedResourceSpec `json:",inline"`
+	ForProvider                   IntegrationParameters `json:"forProvider"`
 	// THIS IS A BETA FIELD. It will be honored
 	// unless the Management Policies feature flag is disabled.
 	// InitProvider holds the same fields as ForProvider, with the exception
@@ -573,8 +573,8 @@ type IntegrationSpec struct {
 
 // IntegrationStatus defines the observed state of Integration.
 type IntegrationStatus struct {
-	v1.ResourceStatus `json:",inline"`
-	AtProvider        IntegrationObservation `json:"atProvider,omitempty"`
+	v2.ManagedResourceStatus `json:",inline"`
+	AtProvider               IntegrationObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true

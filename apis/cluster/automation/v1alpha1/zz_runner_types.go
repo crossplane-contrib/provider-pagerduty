@@ -10,7 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
+	v2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 )
 
 type RunnerInitParameters struct {
@@ -25,7 +25,7 @@ type RunnerInitParameters struct {
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
 	// The unique User API Token created in Runbook Automation.
-	RunbookAPIKeySecretRef *v1.SecretKeySelector `json:"runbookApiKeySecretRef,omitempty" tf:"-"`
+	RunbookAPIKeySecretRef *v2.SecretKeySelector `json:"runbookApiKeySecretRef,omitempty" tf:"-"`
 
 	// The subdomain for your Runbook Automation Instance.
 	RunbookBaseURI *string `json:"runbookBaseUri,omitempty" tf:"runbook_base_uri,omitempty"`
@@ -77,7 +77,7 @@ type RunnerParameters struct {
 
 	// The unique User API Token created in Runbook Automation.
 	// +kubebuilder:validation:Optional
-	RunbookAPIKeySecretRef *v1.SecretKeySelector `json:"runbookApiKeySecretRef,omitempty" tf:"-"`
+	RunbookAPIKeySecretRef *v2.SecretKeySelector `json:"runbookApiKeySecretRef,omitempty" tf:"-"`
 
 	// The subdomain for your Runbook Automation Instance.
 	// +kubebuilder:validation:Optional
@@ -90,8 +90,8 @@ type RunnerParameters struct {
 
 // RunnerSpec defines the desired state of Runner
 type RunnerSpec struct {
-	v1.ResourceSpec `json:",inline"`
-	ForProvider     RunnerParameters `json:"forProvider"`
+	v2.ClusterManagedResourceSpec `json:",inline"`
+	ForProvider                   RunnerParameters `json:"forProvider"`
 	// THIS IS A BETA FIELD. It will be honored
 	// unless the Management Policies feature flag is disabled.
 	// InitProvider holds the same fields as ForProvider, with the exception
@@ -107,8 +107,8 @@ type RunnerSpec struct {
 
 // RunnerStatus defines the observed state of Runner.
 type RunnerStatus struct {
-	v1.ResourceStatus `json:",inline"`
-	AtProvider        RunnerObservation `json:"atProvider,omitempty"`
+	v2.ManagedResourceStatus `json:",inline"`
+	AtProvider               RunnerObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true

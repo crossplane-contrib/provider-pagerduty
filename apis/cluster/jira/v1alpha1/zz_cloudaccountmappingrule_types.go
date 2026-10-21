@@ -10,7 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
+	v2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 )
 
 type AcknowledgedInitParameters struct {
@@ -47,6 +47,9 @@ type CloudAccountMappingRuleInitParameters struct {
 	// [Updating can cause a resource replacement] The account mapping this rule belongs to.
 	AccountMapping *string `json:"accountMapping,omitempty" tf:"account_mapping,omitempty"`
 
+	// Configuration for bidirectional synchronization between Jira issues and PagerDuty incidents.
+	Config *ConfigInitParameters `json:"config,omitempty" tf:"config,omitempty"`
+
 	// Indicates if the rule is enabled. Defaults to true.
 	// Indicates if the rule is enabled.
 	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
@@ -67,7 +70,7 @@ type CloudAccountMappingRuleObservation struct {
 	AutocreateJqlDisabledUntil *string `json:"autocreateJqlDisabledUntil,omitempty" tf:"autocreate_jql_disabled_until,omitempty"`
 
 	// Configuration for bidirectional synchronization between Jira issues and PagerDuty incidents.
-	Config []ConfigObservation `json:"config,omitempty" tf:"config,omitempty"`
+	Config *ConfigObservation `json:"config,omitempty" tf:"config,omitempty"`
 
 	// Indicates if the rule is enabled. Defaults to true.
 	// Indicates if the rule is enabled.
@@ -86,6 +89,10 @@ type CloudAccountMappingRuleParameters struct {
 	// +kubebuilder:validation:Optional
 	AccountMapping *string `json:"accountMapping,omitempty" tf:"account_mapping,omitempty"`
 
+	// Configuration for bidirectional synchronization between Jira issues and PagerDuty incidents.
+	// +kubebuilder:validation:Optional
+	Config *ConfigParameters `json:"config,omitempty" tf:"config,omitempty"`
+
 	// Indicates if the rule is enabled. Defaults to true.
 	// Indicates if the rule is enabled.
 	// +kubebuilder:validation:Optional
@@ -98,6 +105,9 @@ type CloudAccountMappingRuleParameters struct {
 
 type ConfigInitParameters struct {
 
+	// Synchronization settings.
+	Jira *JiraInitParameters `json:"jira,omitempty" tf:"jira,omitempty"`
+
 	// [Updating can cause a resource replacement] The ID of the linked PagerDuty service.
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-pagerduty/apis/cluster/service/v1alpha1.Service
 	// +crossplane:generate:reference:refFieldName=ServiceRefs
@@ -106,17 +116,17 @@ type ConfigInitParameters struct {
 
 	// Reference to a Service in service to populate service.
 	// +kubebuilder:validation:Optional
-	ServiceRefs *v1.Reference `json:"serviceRefs,omitempty" tf:"-"`
+	ServiceRefs *v2.Reference `json:"serviceRefs,omitempty" tf:"-"`
 
 	// Selector for a Service in service to populate service.
 	// +kubebuilder:validation:Optional
-	ServiceSelector *v1.Selector `json:"serviceSelector,omitempty" tf:"-"`
+	ServiceSelector *v2.Selector `json:"serviceSelector,omitempty" tf:"-"`
 }
 
 type ConfigObservation struct {
 
 	// Synchronization settings.
-	Jira []JiraObservation `json:"jira,omitempty" tf:"jira,omitempty"`
+	Jira *JiraObservation `json:"jira,omitempty" tf:"jira,omitempty"`
 
 	// [Updating can cause a resource replacement] The ID of the linked PagerDuty service.
 	Service *string `json:"service,omitempty" tf:"service,omitempty"`
@@ -124,6 +134,10 @@ type ConfigObservation struct {
 
 type ConfigParameters struct {
 
+	// Synchronization settings.
+	// +kubebuilder:validation:Optional
+	Jira *JiraParameters `json:"jira,omitempty" tf:"jira,omitempty"`
+
 	// [Updating can cause a resource replacement] The ID of the linked PagerDuty service.
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-pagerduty/apis/cluster/service/v1alpha1.Service
 	// +crossplane:generate:reference:refFieldName=ServiceRefs
@@ -133,11 +147,11 @@ type ConfigParameters struct {
 
 	// Reference to a Service in service to populate service.
 	// +kubebuilder:validation:Optional
-	ServiceRefs *v1.Reference `json:"serviceRefs,omitempty" tf:"-"`
+	ServiceRefs *v2.Reference `json:"serviceRefs,omitempty" tf:"-"`
 
 	// Selector for a Service in service to populate service.
 	// +kubebuilder:validation:Optional
-	ServiceSelector *v1.Selector `json:"serviceSelector,omitempty" tf:"-"`
+	ServiceSelector *v2.Selector `json:"serviceSelector,omitempty" tf:"-"`
 }
 
 type CustomFieldsInitParameters struct {
@@ -239,8 +253,17 @@ type JiraInitParameters struct {
 	// Defines how Jira fields are populated when a Jira Issue is created from a PagerDuty Incident.
 	CustomFields []CustomFieldsInitParameters `json:"customFields,omitempty" tf:"custom_fields,omitempty"`
 
+	// Specifies the Jira issue type to be created or synchronized with PagerDuty incidents.
+	IssueType *IssueTypeInitParameters `json:"issueType,omitempty" tf:"issue_type,omitempty"`
+
 	// Maps PagerDuty incident priorities to Jira issue priorities for synchronization.
 	Priorities []PrioritiesInitParameters `json:"priorities,omitempty" tf:"priorities,omitempty"`
+
+	// [Updating can cause a resource replacement] Defines the Jira project where issues will be created or synchronized.
+	Project *ProjectInitParameters `json:"project,omitempty" tf:"project,omitempty"`
+
+	// Maps PagerDuty incident statuses to corresponding Jira issue statuses for synchronization.
+	StatusMapping *StatusMappingInitParameters `json:"statusMapping,omitempty" tf:"status_mapping,omitempty"`
 
 	// ID of the PagerDuty user for syncing notes and comments between Jira issues and PagerDuty incidents. If not provided, note synchronization is disabled.
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-pagerduty/apis/cluster/user/v1alpha1.User
@@ -250,11 +273,11 @@ type JiraInitParameters struct {
 
 	// Reference to a User in user to populate syncNotesUser.
 	// +kubebuilder:validation:Optional
-	UserRefs *v1.Reference `json:"userRefs,omitempty" tf:"-"`
+	UserRefs *v2.Reference `json:"userRefs,omitempty" tf:"-"`
 
 	// Selector for a User in user to populate syncNotesUser.
 	// +kubebuilder:validation:Optional
-	UserSelector *v1.Selector `json:"userSelector,omitempty" tf:"-"`
+	UserSelector *v2.Selector `json:"userSelector,omitempty" tf:"-"`
 }
 
 type JiraObservation struct {
@@ -269,16 +292,16 @@ type JiraObservation struct {
 	CustomFields []CustomFieldsObservation `json:"customFields,omitempty" tf:"custom_fields,omitempty"`
 
 	// Specifies the Jira issue type to be created or synchronized with PagerDuty incidents.
-	IssueType []IssueTypeObservation `json:"issueType,omitempty" tf:"issue_type,omitempty"`
+	IssueType *IssueTypeObservation `json:"issueType,omitempty" tf:"issue_type,omitempty"`
 
 	// Maps PagerDuty incident priorities to Jira issue priorities for synchronization.
 	Priorities []PrioritiesObservation `json:"priorities,omitempty" tf:"priorities,omitempty"`
 
 	// [Updating can cause a resource replacement] Defines the Jira project where issues will be created or synchronized.
-	Project []ProjectObservation `json:"project,omitempty" tf:"project,omitempty"`
+	Project *ProjectObservation `json:"project,omitempty" tf:"project,omitempty"`
 
 	// Maps PagerDuty incident statuses to corresponding Jira issue statuses for synchronization.
-	StatusMapping []StatusMappingObservation `json:"statusMapping,omitempty" tf:"status_mapping,omitempty"`
+	StatusMapping *StatusMappingObservation `json:"statusMapping,omitempty" tf:"status_mapping,omitempty"`
 
 	// ID of the PagerDuty user for syncing notes and comments between Jira issues and PagerDuty incidents. If not provided, note synchronization is disabled.
 	SyncNotesUser *string `json:"syncNotesUser,omitempty" tf:"sync_notes_user,omitempty"`
@@ -298,9 +321,21 @@ type JiraParameters struct {
 	// +kubebuilder:validation:Optional
 	CustomFields []CustomFieldsParameters `json:"customFields,omitempty" tf:"custom_fields,omitempty"`
 
+	// Specifies the Jira issue type to be created or synchronized with PagerDuty incidents.
+	// +kubebuilder:validation:Optional
+	IssueType *IssueTypeParameters `json:"issueType,omitempty" tf:"issue_type,omitempty"`
+
 	// Maps PagerDuty incident priorities to Jira issue priorities for synchronization.
 	// +kubebuilder:validation:Optional
 	Priorities []PrioritiesParameters `json:"priorities,omitempty" tf:"priorities,omitempty"`
+
+	// [Updating can cause a resource replacement] Defines the Jira project where issues will be created or synchronized.
+	// +kubebuilder:validation:Optional
+	Project *ProjectParameters `json:"project,omitempty" tf:"project,omitempty"`
+
+	// Maps PagerDuty incident statuses to corresponding Jira issue statuses for synchronization.
+	// +kubebuilder:validation:Optional
+	StatusMapping *StatusMappingParameters `json:"statusMapping,omitempty" tf:"status_mapping,omitempty"`
 
 	// ID of the PagerDuty user for syncing notes and comments between Jira issues and PagerDuty incidents. If not provided, note synchronization is disabled.
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-pagerduty/apis/cluster/user/v1alpha1.User
@@ -311,11 +346,11 @@ type JiraParameters struct {
 
 	// Reference to a User in user to populate syncNotesUser.
 	// +kubebuilder:validation:Optional
-	UserRefs *v1.Reference `json:"userRefs,omitempty" tf:"-"`
+	UserRefs *v2.Reference `json:"userRefs,omitempty" tf:"-"`
 
 	// Selector for a User in user to populate syncNotesUser.
 	// +kubebuilder:validation:Optional
-	UserSelector *v1.Selector `json:"userSelector,omitempty" tf:"-"`
+	UserSelector *v2.Selector `json:"userSelector,omitempty" tf:"-"`
 }
 
 type PrioritiesInitParameters struct {
@@ -418,33 +453,40 @@ type ResolvedParameters struct {
 type StatusMappingInitParameters struct {
 
 	// Jira status that maps to the PagerDuty acknowledged status.
-	Acknowledged []AcknowledgedInitParameters `json:"acknowledged,omitempty" tf:"acknowledged,omitempty"`
+	Acknowledged *AcknowledgedInitParameters `json:"acknowledged,omitempty" tf:"acknowledged,omitempty"`
 
 	// Jira status that maps to the PagerDuty resolved status.
-	Resolved []ResolvedInitParameters `json:"resolved,omitempty" tf:"resolved,omitempty"`
+	Resolved *ResolvedInitParameters `json:"resolved,omitempty" tf:"resolved,omitempty"`
+
+	// Jira status that maps to the PagerDuty triggered status.
+	Triggered *TriggeredInitParameters `json:"triggered,omitempty" tf:"triggered,omitempty"`
 }
 
 type StatusMappingObservation struct {
 
 	// Jira status that maps to the PagerDuty acknowledged status.
-	Acknowledged []AcknowledgedObservation `json:"acknowledged,omitempty" tf:"acknowledged,omitempty"`
+	Acknowledged *AcknowledgedObservation `json:"acknowledged,omitempty" tf:"acknowledged,omitempty"`
 
 	// Jira status that maps to the PagerDuty resolved status.
-	Resolved []ResolvedObservation `json:"resolved,omitempty" tf:"resolved,omitempty"`
+	Resolved *ResolvedObservation `json:"resolved,omitempty" tf:"resolved,omitempty"`
 
 	// Jira status that maps to the PagerDuty triggered status.
-	Triggered []TriggeredObservation `json:"triggered,omitempty" tf:"triggered,omitempty"`
+	Triggered *TriggeredObservation `json:"triggered,omitempty" tf:"triggered,omitempty"`
 }
 
 type StatusMappingParameters struct {
 
 	// Jira status that maps to the PagerDuty acknowledged status.
 	// +kubebuilder:validation:Optional
-	Acknowledged []AcknowledgedParameters `json:"acknowledged,omitempty" tf:"acknowledged,omitempty"`
+	Acknowledged *AcknowledgedParameters `json:"acknowledged,omitempty" tf:"acknowledged,omitempty"`
 
 	// Jira status that maps to the PagerDuty resolved status.
 	// +kubebuilder:validation:Optional
-	Resolved []ResolvedParameters `json:"resolved,omitempty" tf:"resolved,omitempty"`
+	Resolved *ResolvedParameters `json:"resolved,omitempty" tf:"resolved,omitempty"`
+
+	// Jira status that maps to the PagerDuty triggered status.
+	// +kubebuilder:validation:Optional
+	Triggered *TriggeredParameters `json:"triggered,omitempty" tf:"triggered,omitempty"`
 }
 
 type TriggeredInitParameters struct {
@@ -478,8 +520,8 @@ type TriggeredParameters struct {
 
 // CloudAccountMappingRuleSpec defines the desired state of CloudAccountMappingRule
 type CloudAccountMappingRuleSpec struct {
-	v1.ResourceSpec `json:",inline"`
-	ForProvider     CloudAccountMappingRuleParameters `json:"forProvider"`
+	v2.ClusterManagedResourceSpec `json:",inline"`
+	ForProvider                   CloudAccountMappingRuleParameters `json:"forProvider"`
 	// THIS IS A BETA FIELD. It will be honored
 	// unless the Management Policies feature flag is disabled.
 	// InitProvider holds the same fields as ForProvider, with the exception
@@ -495,8 +537,8 @@ type CloudAccountMappingRuleSpec struct {
 
 // CloudAccountMappingRuleStatus defines the observed state of CloudAccountMappingRule.
 type CloudAccountMappingRuleStatus struct {
-	v1.ResourceStatus `json:",inline"`
-	AtProvider        CloudAccountMappingRuleObservation `json:"atProvider,omitempty"`
+	v2.ManagedResourceStatus `json:",inline"`
+	AtProvider               CloudAccountMappingRuleObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true

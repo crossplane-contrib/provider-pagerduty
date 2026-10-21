@@ -3,7 +3,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.20.1
+    controller-gen.kubebuilder.io/version: v0.23.0
   name: schedules.schedule.pagerduty.crossplane.io
 spec:
   group: schedule.pagerduty.crossplane.io
@@ -100,11 +100,13 @@ spec:
                             properties:
                               durationSeconds:
                                 description: The duration of the restriction in seconds.
-                                type: number
+                                format: int64
+                                type: integer
                               startDayOfWeek:
                                 description: Number of the day when restriction starts.
                                   From 1 to 7 where 1 is Monday and 7 is Sunday.
-                                type: number
+                                format: int64
+                                type: integer
                               startTimeOfDay:
                                 description: The start time in HH:mm:ss format.
                                 type: string
@@ -116,7 +118,8 @@ spec:
                           x-kubernetes-list-type: atomic
                         rotationTurnLengthSeconds:
                           description: The duration of each on-call shift in seconds.
-                          type: number
+                          format: int64
+                          type: integer
                         rotationVirtualStart:
                           description: The effective start time of the schedule layer.
                             This can be before the start time of the schedule.
@@ -351,11 +354,13 @@ spec:
                             properties:
                               durationSeconds:
                                 description: The duration of the restriction in seconds.
-                                type: number
+                                format: int64
+                                type: integer
                               startDayOfWeek:
                                 description: Number of the day when restriction starts.
                                   From 1 to 7 where 1 is Monday and 7 is Sunday.
-                                type: number
+                                format: int64
+                                type: integer
                               startTimeOfDay:
                                 description: The start time in HH:mm:ss format.
                                 type: string
@@ -367,7 +372,8 @@ spec:
                           x-kubernetes-list-type: atomic
                         rotationTurnLengthSeconds:
                           description: The duration of each on-call shift in seconds.
-                          type: number
+                          format: int64
+                          type: integer
                         rotationVirtualStart:
                           description: The effective start time of the schedule layer.
                             This can be before the start time of the schedule.
@@ -706,11 +712,13 @@ spec:
                             properties:
                               durationSeconds:
                                 description: The duration of the restriction in seconds.
-                                type: number
+                                format: int64
+                                type: integer
                               startDayOfWeek:
                                 description: Number of the day when restriction starts.
                                   From 1 to 7 where 1 is Monday and 7 is Sunday.
-                                type: number
+                                format: int64
+                                type: integer
                               startTimeOfDay:
                                 description: The start time in HH:mm:ss format.
                                 type: string
@@ -722,7 +730,8 @@ spec:
                           x-kubernetes-list-type: atomic
                         rotationTurnLengthSeconds:
                           description: The duration of each on-call shift in seconds.
-                          type: number
+                          format: int64
+                          type: integer
                         rotationVirtualStart:
                           description: The effective start time of the schedule layer.
                             This can be before the start time of the schedule.
@@ -805,6 +814,13 @@ spec:
                 x-kubernetes-list-map-keys:
                 - type
                 x-kubernetes-list-type: map
+              lastHandledReconcileAt:
+                description: |-
+                  LastHandledReconcileAt holds the value of the most recent
+                  reconcile-requested-at annotation token that the controller has
+                  processed. Users can compare this to the annotation to determine
+                  whether a reconcile request has been handled.
+                type: string
               observedGeneration:
                 description: |-
                   ObservedGeneration is the latest metadata.generation

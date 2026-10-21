@@ -10,8 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
-	v2 "github.com/crossplane/crossplane-runtime/v2/apis/common/v2"
+	v2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 )
 
 type ConfigurationInitParameters struct {
@@ -26,7 +25,7 @@ type ConfigurationInitParameters struct {
 	Source *string `json:"source,omitempty" tf:"source,omitempty"`
 
 	// The number of seconds indicating how long to count incoming trigger events for. This field is only used when type is trigger_event_count or external_data
-	TTLSeconds *float64 `json:"ttlSeconds,omitempty" tf:"ttl_seconds,omitempty"`
+	TTLSeconds *int64 `json:"ttlSeconds,omitempty" tf:"ttl_seconds,omitempty"`
 
 	// The type of value to store into the Cache Variable. Can be one of: recent_value, trigger_event_count or external_data.
 	Type *string `json:"type,omitempty" tf:"type,omitempty"`
@@ -44,7 +43,7 @@ type ConfigurationObservation struct {
 	Source *string `json:"source,omitempty" tf:"source,omitempty"`
 
 	// The number of seconds indicating how long to count incoming trigger events for. This field is only used when type is trigger_event_count or external_data
-	TTLSeconds *float64 `json:"ttlSeconds,omitempty" tf:"ttl_seconds,omitempty"`
+	TTLSeconds *int64 `json:"ttlSeconds,omitempty" tf:"ttl_seconds,omitempty"`
 
 	// The type of value to store into the Cache Variable. Can be one of: recent_value, trigger_event_count or external_data.
 	Type *string `json:"type,omitempty" tf:"type,omitempty"`
@@ -66,7 +65,7 @@ type ConfigurationParameters struct {
 
 	// The number of seconds indicating how long to count incoming trigger events for. This field is only used when type is trigger_event_count or external_data
 	// +kubebuilder:validation:Optional
-	TTLSeconds *float64 `json:"ttlSeconds,omitempty" tf:"ttl_seconds,omitempty"`
+	TTLSeconds *int64 `json:"ttlSeconds,omitempty" tf:"ttl_seconds,omitempty"`
 
 	// The type of value to store into the Cache Variable. Can be one of: recent_value, trigger_event_count or external_data.
 	// +kubebuilder:validation:Optional
@@ -109,11 +108,11 @@ type OrchestrationGlobalCacheVariableInitParameters struct {
 
 	// Reference to a Orchestration in event to populate eventOrchestration.
 	// +kubebuilder:validation:Optional
-	EventOrchestrationRef *v1.NamespacedReference `json:"eventOrchestrationRef,omitempty" tf:"-"`
+	EventOrchestrationRef *v2.NamespacedReference `json:"eventOrchestrationRef,omitempty" tf:"-"`
 
 	// Selector for a Orchestration in event to populate eventOrchestration.
 	// +kubebuilder:validation:Optional
-	EventOrchestrationSelector *v1.NamespacedSelector `json:"eventOrchestrationSelector,omitempty" tf:"-"`
+	EventOrchestrationSelector *v2.NamespacedSelector `json:"eventOrchestrationSelector,omitempty" tf:"-"`
 
 	// Name of the Cache Variable associated with the Global Event Orchestration.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
@@ -161,11 +160,11 @@ type OrchestrationGlobalCacheVariableParameters struct {
 
 	// Reference to a Orchestration in event to populate eventOrchestration.
 	// +kubebuilder:validation:Optional
-	EventOrchestrationRef *v1.NamespacedReference `json:"eventOrchestrationRef,omitempty" tf:"-"`
+	EventOrchestrationRef *v2.NamespacedReference `json:"eventOrchestrationRef,omitempty" tf:"-"`
 
 	// Selector for a Orchestration in event to populate eventOrchestration.
 	// +kubebuilder:validation:Optional
-	EventOrchestrationSelector *v1.NamespacedSelector `json:"eventOrchestrationSelector,omitempty" tf:"-"`
+	EventOrchestrationSelector *v2.NamespacedSelector `json:"eventOrchestrationSelector,omitempty" tf:"-"`
 
 	// Name of the Cache Variable associated with the Global Event Orchestration.
 	// +kubebuilder:validation:Optional
@@ -191,8 +190,8 @@ type OrchestrationGlobalCacheVariableSpec struct {
 
 // OrchestrationGlobalCacheVariableStatus defines the observed state of OrchestrationGlobalCacheVariable.
 type OrchestrationGlobalCacheVariableStatus struct {
-	v1.ResourceStatus `json:",inline"`
-	AtProvider        OrchestrationGlobalCacheVariableObservation `json:"atProvider,omitempty"`
+	v2.ManagedResourceStatus `json:",inline"`
+	AtProvider               OrchestrationGlobalCacheVariableObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true

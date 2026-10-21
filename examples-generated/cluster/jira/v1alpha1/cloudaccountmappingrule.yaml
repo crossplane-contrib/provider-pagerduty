@@ -9,6 +9,53 @@ metadata:
 spec:
   forProvider:
     accountMapping: PLBP09X
+    config:
+    - jira:
+      - autocreateJql: priority = Highest
+        createIssueOnIncidentTrigger: true
+        customFields:
+        - sourceIncidentField: incident_description
+          targetIssueField: description
+          targetIssueFieldName: Description
+          type: attribute
+        - targetIssueField: security
+          targetIssueFieldName: Security Level
+          type: jira_value
+          value: |-
+            ${jsonencode({
+                      displayName = "Sec Level 1"
+                      id = "10000"
+                    })}
+        issueType:
+        - id: "10001"
+          name: Incident
+        priorities:
+        - jiraId: "1"
+          pagerdutyId: ${data.pagerduty_priority.p1.id}
+        - jiraId: "2"
+          pagerdutyId: ${data.pagerduty_priority.p2.id}
+        - jiraId: "3"
+          pagerdutyId: ${data.pagerduty_priority.p3.id}
+        project:
+        - id: "10100"
+          key: ITS
+          name: IT Support
+        statusMapping:
+        - acknowledged:
+          - id: "2"
+            name: In Progress
+          resolved:
+          - id: "3"
+            name: Resolved
+          triggered:
+          - id: "1"
+            name: Open
+        userSelector:
+          matchLabels:
+            testing.upbound.io/example-name: foo
+      serviceSelector:
+        matchLabels:
+          testing.upbound.io/example-name: foo
     name: Integration with My Web App
 
 ---

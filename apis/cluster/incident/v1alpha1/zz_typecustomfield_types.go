@@ -10,7 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
+	v2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 )
 
 type TypeCustomFieldInitParameters struct {
@@ -43,11 +43,11 @@ type TypeCustomFieldInitParameters struct {
 
 	// Reference to a IncidentType in incident to populate incidentType.
 	// +kubebuilder:validation:Optional
-	IncidentTypeRef *v1.Reference `json:"incidentTypeRef,omitempty" tf:"-"`
+	IncidentTypeRef *v2.Reference `json:"incidentTypeRef,omitempty" tf:"-"`
 
 	// Selector for a IncidentType in incident to populate incidentType.
 	// +kubebuilder:validation:Optional
-	IncidentTypeSelector *v1.Selector `json:"incidentTypeSelector,omitempty" tf:"-"`
+	IncidentTypeSelector *v2.Selector `json:"incidentTypeSelector,omitempty" tf:"-"`
 
 	// [Updating causes resource replacement] The name of the custom field.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
@@ -133,11 +133,11 @@ type TypeCustomFieldParameters struct {
 
 	// Reference to a IncidentType in incident to populate incidentType.
 	// +kubebuilder:validation:Optional
-	IncidentTypeRef *v1.Reference `json:"incidentTypeRef,omitempty" tf:"-"`
+	IncidentTypeRef *v2.Reference `json:"incidentTypeRef,omitempty" tf:"-"`
 
 	// Selector for a IncidentType in incident to populate incidentType.
 	// +kubebuilder:validation:Optional
-	IncidentTypeSelector *v1.Selector `json:"incidentTypeSelector,omitempty" tf:"-"`
+	IncidentTypeSelector *v2.Selector `json:"incidentTypeSelector,omitempty" tf:"-"`
 
 	// [Updating causes resource replacement] The name of the custom field.
 	// +kubebuilder:validation:Optional
@@ -146,8 +146,8 @@ type TypeCustomFieldParameters struct {
 
 // TypeCustomFieldSpec defines the desired state of TypeCustomField
 type TypeCustomFieldSpec struct {
-	v1.ResourceSpec `json:",inline"`
-	ForProvider     TypeCustomFieldParameters `json:"forProvider"`
+	v2.ClusterManagedResourceSpec `json:",inline"`
+	ForProvider                   TypeCustomFieldParameters `json:"forProvider"`
 	// THIS IS A BETA FIELD. It will be honored
 	// unless the Management Policies feature flag is disabled.
 	// InitProvider holds the same fields as ForProvider, with the exception
@@ -163,8 +163,8 @@ type TypeCustomFieldSpec struct {
 
 // TypeCustomFieldStatus defines the observed state of TypeCustomField.
 type TypeCustomFieldStatus struct {
-	v1.ResourceStatus `json:",inline"`
-	AtProvider        TypeCustomFieldObservation `json:"atProvider,omitempty"`
+	v2.ManagedResourceStatus `json:",inline"`
+	AtProvider               TypeCustomFieldObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true

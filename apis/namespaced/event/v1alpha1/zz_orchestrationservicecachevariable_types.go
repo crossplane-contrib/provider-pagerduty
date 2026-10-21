@@ -10,8 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
-	v2 "github.com/crossplane/crossplane-runtime/v2/apis/common/v2"
+	v2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 )
 
 type OrchestrationServiceCacheVariableConditionInitParameters struct {
@@ -45,7 +44,7 @@ type OrchestrationServiceCacheVariableConfigurationInitParameters struct {
 	Source *string `json:"source,omitempty" tf:"source,omitempty"`
 
 	// The number of seconds indicating how long to count incoming trigger events for. This field is only used when type is trigger_event_count or external_data
-	TTLSeconds *float64 `json:"ttlSeconds,omitempty" tf:"ttl_seconds,omitempty"`
+	TTLSeconds *int64 `json:"ttlSeconds,omitempty" tf:"ttl_seconds,omitempty"`
 
 	// The type of value to store into the Cache Variable. Can be one of: recent_value, trigger_event_count or external_data.
 	Type *string `json:"type,omitempty" tf:"type,omitempty"`
@@ -63,7 +62,7 @@ type OrchestrationServiceCacheVariableConfigurationObservation struct {
 	Source *string `json:"source,omitempty" tf:"source,omitempty"`
 
 	// The number of seconds indicating how long to count incoming trigger events for. This field is only used when type is trigger_event_count or external_data
-	TTLSeconds *float64 `json:"ttlSeconds,omitempty" tf:"ttl_seconds,omitempty"`
+	TTLSeconds *int64 `json:"ttlSeconds,omitempty" tf:"ttl_seconds,omitempty"`
 
 	// The type of value to store into the Cache Variable. Can be one of: recent_value, trigger_event_count or external_data.
 	Type *string `json:"type,omitempty" tf:"type,omitempty"`
@@ -85,7 +84,7 @@ type OrchestrationServiceCacheVariableConfigurationParameters struct {
 
 	// The number of seconds indicating how long to count incoming trigger events for. This field is only used when type is trigger_event_count or external_data
 	// +kubebuilder:validation:Optional
-	TTLSeconds *float64 `json:"ttlSeconds,omitempty" tf:"ttl_seconds,omitempty"`
+	TTLSeconds *int64 `json:"ttlSeconds,omitempty" tf:"ttl_seconds,omitempty"`
 
 	// The type of value to store into the Cache Variable. Can be one of: recent_value, trigger_event_count or external_data.
 	// +kubebuilder:validation:Optional
@@ -112,11 +111,11 @@ type OrchestrationServiceCacheVariableInitParameters struct {
 
 	// Reference to a OrchestrationService in event to populate service.
 	// +kubebuilder:validation:Optional
-	ServiceRef *v1.NamespacedReference `json:"serviceRef,omitempty" tf:"-"`
+	ServiceRef *v2.NamespacedReference `json:"serviceRef,omitempty" tf:"-"`
 
 	// Selector for a OrchestrationService in event to populate service.
 	// +kubebuilder:validation:Optional
-	ServiceSelector *v1.NamespacedSelector `json:"serviceSelector,omitempty" tf:"-"`
+	ServiceSelector *v2.NamespacedSelector `json:"serviceSelector,omitempty" tf:"-"`
 }
 
 type OrchestrationServiceCacheVariableObservation struct {
@@ -165,11 +164,11 @@ type OrchestrationServiceCacheVariableParameters struct {
 
 	// Reference to a OrchestrationService in event to populate service.
 	// +kubebuilder:validation:Optional
-	ServiceRef *v1.NamespacedReference `json:"serviceRef,omitempty" tf:"-"`
+	ServiceRef *v2.NamespacedReference `json:"serviceRef,omitempty" tf:"-"`
 
 	// Selector for a OrchestrationService in event to populate service.
 	// +kubebuilder:validation:Optional
-	ServiceSelector *v1.NamespacedSelector `json:"serviceSelector,omitempty" tf:"-"`
+	ServiceSelector *v2.NamespacedSelector `json:"serviceSelector,omitempty" tf:"-"`
 }
 
 // OrchestrationServiceCacheVariableSpec defines the desired state of OrchestrationServiceCacheVariable
@@ -191,8 +190,8 @@ type OrchestrationServiceCacheVariableSpec struct {
 
 // OrchestrationServiceCacheVariableStatus defines the observed state of OrchestrationServiceCacheVariable.
 type OrchestrationServiceCacheVariableStatus struct {
-	v1.ResourceStatus `json:",inline"`
-	AtProvider        OrchestrationServiceCacheVariableObservation `json:"atProvider,omitempty"`
+	v2.ManagedResourceStatus `json:",inline"`
+	AtProvider               OrchestrationServiceCacheVariableObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true

@@ -10,8 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
-	v2 "github.com/crossplane/crossplane-runtime/v2/apis/common/v2"
+	v2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 )
 
 type NotificationRuleContactMethodInitParameters struct {
@@ -45,6 +44,9 @@ type NotificationRuleContactMethodParameters struct {
 
 type NotificationRuleInitParameters struct {
 
+	// A contact method block, configured as a block described below.
+	ContactMethod *NotificationRuleContactMethodInitParameters `json:"contactMethod,omitempty" tf:"contact_method,omitempty"`
+
 	// The delay before firing the rule, in minutes.
 	StartDelayInMinutes *float64 `json:"startDelayInMinutes,omitempty" tf:"start_delay_in_minutes,omitempty"`
 
@@ -57,17 +59,17 @@ type NotificationRuleInitParameters struct {
 
 	// Reference to a User in user to populate userId.
 	// +kubebuilder:validation:Optional
-	UserIDRef *v1.NamespacedReference `json:"userIdRef,omitempty" tf:"-"`
+	UserIDRef *v2.NamespacedReference `json:"userIdRef,omitempty" tf:"-"`
 
 	// Selector for a User in user to populate userId.
 	// +kubebuilder:validation:Optional
-	UserIDSelector *v1.NamespacedSelector `json:"userIdSelector,omitempty" tf:"-"`
+	UserIDSelector *v2.NamespacedSelector `json:"userIdSelector,omitempty" tf:"-"`
 }
 
 type NotificationRuleObservation struct {
 
 	// A contact method block, configured as a block described below.
-	ContactMethod []NotificationRuleContactMethodObservation `json:"contactMethod,omitempty" tf:"contact_method,omitempty"`
+	ContactMethod *NotificationRuleContactMethodObservation `json:"contactMethod,omitempty" tf:"contact_method,omitempty"`
 
 	// The id of the referenced contact method.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
@@ -84,6 +86,10 @@ type NotificationRuleObservation struct {
 
 type NotificationRuleParameters struct {
 
+	// A contact method block, configured as a block described below.
+	// +kubebuilder:validation:Optional
+	ContactMethod *NotificationRuleContactMethodParameters `json:"contactMethod,omitempty" tf:"contact_method,omitempty"`
+
 	// The delay before firing the rule, in minutes.
 	// +kubebuilder:validation:Optional
 	StartDelayInMinutes *float64 `json:"startDelayInMinutes,omitempty" tf:"start_delay_in_minutes,omitempty"`
@@ -99,11 +105,11 @@ type NotificationRuleParameters struct {
 
 	// Reference to a User in user to populate userId.
 	// +kubebuilder:validation:Optional
-	UserIDRef *v1.NamespacedReference `json:"userIdRef,omitempty" tf:"-"`
+	UserIDRef *v2.NamespacedReference `json:"userIdRef,omitempty" tf:"-"`
 
 	// Selector for a User in user to populate userId.
 	// +kubebuilder:validation:Optional
-	UserIDSelector *v1.NamespacedSelector `json:"userIdSelector,omitempty" tf:"-"`
+	UserIDSelector *v2.NamespacedSelector `json:"userIdSelector,omitempty" tf:"-"`
 }
 
 // NotificationRuleSpec defines the desired state of NotificationRule
@@ -125,8 +131,8 @@ type NotificationRuleSpec struct {
 
 // NotificationRuleStatus defines the observed state of NotificationRule.
 type NotificationRuleStatus struct {
-	v1.ResourceStatus `json:",inline"`
-	AtProvider        NotificationRuleObservation `json:"atProvider,omitempty"`
+	v2.ManagedResourceStatus `json:",inline"`
+	AtProvider               NotificationRuleObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true

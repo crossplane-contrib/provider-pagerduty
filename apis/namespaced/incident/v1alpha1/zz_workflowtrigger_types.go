@@ -10,8 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
-	v2 "github.com/crossplane/crossplane-runtime/v2/apis/common/v2"
+	v2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 )
 
 type PermissionsInitParameters struct {
@@ -25,11 +24,11 @@ type PermissionsInitParameters struct {
 
 	// Reference to a Team in team to populate teamId.
 	// +kubebuilder:validation:Optional
-	TeamIDRef *v1.NamespacedReference `json:"teamIdRef,omitempty" tf:"-"`
+	TeamIDRef *v2.NamespacedReference `json:"teamIdRef,omitempty" tf:"-"`
 
 	// Selector for a Team in team to populate teamId.
 	// +kubebuilder:validation:Optional
-	TeamIDSelector *v1.NamespacedSelector `json:"teamIdSelector,omitempty" tf:"-"`
+	TeamIDSelector *v2.NamespacedSelector `json:"teamIdSelector,omitempty" tf:"-"`
 }
 
 type PermissionsObservation struct {
@@ -54,11 +53,11 @@ type PermissionsParameters struct {
 
 	// Reference to a Team in team to populate teamId.
 	// +kubebuilder:validation:Optional
-	TeamIDRef *v1.NamespacedReference `json:"teamIdRef,omitempty" tf:"-"`
+	TeamIDRef *v2.NamespacedReference `json:"teamIdRef,omitempty" tf:"-"`
 
 	// Selector for a Team in team to populate teamId.
 	// +kubebuilder:validation:Optional
-	TeamIDSelector *v1.NamespacedSelector `json:"teamIdSelector,omitempty" tf:"-"`
+	TeamIDSelector *v2.NamespacedSelector `json:"teamIdSelector,omitempty" tf:"-"`
 }
 
 type WorkflowTriggerInitParameters struct {
@@ -84,11 +83,11 @@ type WorkflowTriggerInitParameters struct {
 
 	// Reference to a Workflow in incident to populate workflow.
 	// +kubebuilder:validation:Optional
-	WorkflowRef *v1.NamespacedReference `json:"workflowRef,omitempty" tf:"-"`
+	WorkflowRef *v2.NamespacedReference `json:"workflowRef,omitempty" tf:"-"`
 
 	// Selector for a Workflow in incident to populate workflow.
 	// +kubebuilder:validation:Optional
-	WorkflowSelector *v1.NamespacedSelector `json:"workflowSelector,omitempty" tf:"-"`
+	WorkflowSelector *v2.NamespacedSelector `json:"workflowSelector,omitempty" tf:"-"`
 }
 
 type WorkflowTriggerObservation struct {
@@ -144,11 +143,11 @@ type WorkflowTriggerParameters struct {
 
 	// Reference to a Workflow in incident to populate workflow.
 	// +kubebuilder:validation:Optional
-	WorkflowRef *v1.NamespacedReference `json:"workflowRef,omitempty" tf:"-"`
+	WorkflowRef *v2.NamespacedReference `json:"workflowRef,omitempty" tf:"-"`
 
 	// Selector for a Workflow in incident to populate workflow.
 	// +kubebuilder:validation:Optional
-	WorkflowSelector *v1.NamespacedSelector `json:"workflowSelector,omitempty" tf:"-"`
+	WorkflowSelector *v2.NamespacedSelector `json:"workflowSelector,omitempty" tf:"-"`
 }
 
 // WorkflowTriggerSpec defines the desired state of WorkflowTrigger
@@ -170,8 +169,8 @@ type WorkflowTriggerSpec struct {
 
 // WorkflowTriggerStatus defines the observed state of WorkflowTrigger.
 type WorkflowTriggerStatus struct {
-	v1.ResourceStatus `json:",inline"`
-	AtProvider        WorkflowTriggerObservation `json:"atProvider,omitempty"`
+	v2.ManagedResourceStatus `json:",inline"`
+	AtProvider               WorkflowTriggerObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true

@@ -3,7 +3,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.20.1
+    controller-gen.kubebuilder.io/version: v0.23.0
   name: services.service.pagerduty.m.crossplane.io
 spec:
   group: service.pagerduty.m.crossplane.io
@@ -124,14 +124,16 @@ spec:
                                   time window and is counted from the most recently
                                   grouped alert. The window is extended every time
                                   a new alert is added to the group, up to 24 hours.
-                                type: number
+                                format: int64
+                                type: integer
                               timeout:
                                 description: The duration in minutes within which
                                   to automatically group incoming alerts. This setting
                                   applies only when type is set to time. To continue
                                   grouping alerts until the incident is resolved,
                                   set this value to 0.
-                                type: number
+                                format: int64
+                                type: integer
                             type: object
                           type: array
                         type:
@@ -165,7 +167,8 @@ spec:
                             be suspended before triggering. Allowed values: 120, 180,
                             300, 600, 900 if enabled is true. Must be omitted or set
                             to null if enabled is false.'
-                          type: number
+                          format: int64
+                          type: integer
                       type: object
                     type: array
                   autoResolveTimeout:
@@ -346,7 +349,8 @@ spec:
                             Array of days of week as integers. 1 to 7, 1 being
                             Monday and 7 being Sunday.
                           items:
-                            type: number
+                            format: int64
+                            type: integer
                           type: array
                         endTime:
                           description: The support hours' ending time of day.
@@ -441,14 +445,16 @@ spec:
                                   time window and is counted from the most recently
                                   grouped alert. The window is extended every time
                                   a new alert is added to the group, up to 24 hours.
-                                type: number
+                                format: int64
+                                type: integer
                               timeout:
                                 description: The duration in minutes within which
                                   to automatically group incoming alerts. This setting
                                   applies only when type is set to time. To continue
                                   grouping alerts until the incident is resolved,
                                   set this value to 0.
-                                type: number
+                                format: int64
+                                type: integer
                             type: object
                           type: array
                         type:
@@ -482,7 +488,8 @@ spec:
                             be suspended before triggering. Allowed values: 120, 180,
                             300, 600, 900 if enabled is true. Must be omitted or set
                             to null if enabled is false.'
-                          type: number
+                          format: int64
+                          type: integer
                       type: object
                     type: array
                   autoResolveTimeout:
@@ -663,7 +670,8 @@ spec:
                             Array of days of week as integers. 1 to 7, 1 being
                             Monday and 7 being Sunday.
                           items:
-                            type: number
+                            format: int64
+                            type: integer
                           type: array
                         endTime:
                           description: The support hours' ending time of day.
@@ -813,14 +821,16 @@ spec:
                                   time window and is counted from the most recently
                                   grouped alert. The window is extended every time
                                   a new alert is added to the group, up to 24 hours.
-                                type: number
+                                format: int64
+                                type: integer
                               timeout:
                                 description: The duration in minutes within which
                                   to automatically group incoming alerts. This setting
                                   applies only when type is set to time. To continue
                                   grouping alerts until the incident is resolved,
                                   set this value to 0.
-                                type: number
+                                format: int64
+                                type: integer
                             type: object
                           type: array
                         type:
@@ -854,7 +864,8 @@ spec:
                             be suspended before triggering. Allowed values: 120, 180,
                             300, 600, 900 if enabled is true. Must be omitted or set
                             to null if enabled is false.'
-                          type: number
+                          format: int64
+                          type: integer
                       type: object
                     type: array
                   autoResolveTimeout:
@@ -971,7 +982,8 @@ spec:
                             Array of days of week as integers. 1 to 7, 1 being
                             Monday and 7 being Sunday.
                           items:
-                            type: number
+                            format: int64
+                            type: integer
                           type: array
                         endTime:
                           description: The support hours' ending time of day.
@@ -1038,6 +1050,13 @@ spec:
                 x-kubernetes-list-map-keys:
                 - type
                 x-kubernetes-list-type: map
+              lastHandledReconcileAt:
+                description: |-
+                  LastHandledReconcileAt holds the value of the most recent
+                  reconcile-requested-at annotation token that the controller has
+                  processed. Users can compare this to the annotation to determine
+                  whether a reconcile request has been handled.
+                type: string
               observedGeneration:
                 description: |-
                   ObservedGeneration is the latest metadata.generation

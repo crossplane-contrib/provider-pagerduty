@@ -10,7 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
+	v2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 )
 
 type ActionsAutomationActionInitParameters struct {
@@ -196,7 +196,7 @@ type ActionsInitParameters struct {
 	Suppress *bool `json:"suppress,omitempty" tf:"suppress,omitempty"`
 
 	// The number of seconds to suspend the resulting alert before triggering. This effectively pauses incident notifications. If a resolve event arrives before the alert triggers then PagerDuty won't create an incident for this alert.
-	Suspend *float64 `json:"suspend,omitempty" tf:"suspend,omitempty"`
+	Suspend *int64 `json:"suspend,omitempty" tf:"suspend,omitempty"`
 
 	// Populate variables from event payloads and use those variables in other event actions.
 	Variable []VariableInitParameters `json:"variable,omitempty" tf:"variable,omitempty"`
@@ -238,7 +238,7 @@ type ActionsObservation struct {
 	Suppress *bool `json:"suppress,omitempty" tf:"suppress,omitempty"`
 
 	// The number of seconds to suspend the resulting alert before triggering. This effectively pauses incident notifications. If a resolve event arrives before the alert triggers then PagerDuty won't create an incident for this alert.
-	Suspend *float64 `json:"suspend,omitempty" tf:"suspend,omitempty"`
+	Suspend *int64 `json:"suspend,omitempty" tf:"suspend,omitempty"`
 
 	// Populate variables from event payloads and use those variables in other event actions.
 	Variable []VariableObservation `json:"variable,omitempty" tf:"variable,omitempty"`
@@ -292,7 +292,7 @@ type ActionsParameters struct {
 
 	// The number of seconds to suspend the resulting alert before triggering. This effectively pauses incident notifications. If a resolve event arrives before the alert triggers then PagerDuty won't create an incident for this alert.
 	// +kubebuilder:validation:Optional
-	Suspend *float64 `json:"suspend,omitempty" tf:"suspend,omitempty"`
+	Suspend *int64 `json:"suspend,omitempty" tf:"suspend,omitempty"`
 
 	// Populate variables from event payloads and use those variables in other event actions.
 	// +kubebuilder:validation:Optional
@@ -645,11 +645,11 @@ type OrchestrationGlobalInitParameters struct {
 
 	// Reference to a Orchestration in event to populate eventOrchestration.
 	// +kubebuilder:validation:Optional
-	EventOrchestrationRef *v1.Reference `json:"eventOrchestrationRef,omitempty" tf:"-"`
+	EventOrchestrationRef *v2.Reference `json:"eventOrchestrationRef,omitempty" tf:"-"`
 
 	// Selector for a Orchestration in event to populate eventOrchestration.
 	// +kubebuilder:validation:Optional
-	EventOrchestrationSelector *v1.Selector `json:"eventOrchestrationSelector,omitempty" tf:"-"`
+	EventOrchestrationSelector *v2.Selector `json:"eventOrchestrationSelector,omitempty" tf:"-"`
 
 	// A Global Orchestration must contain at least a "start" set, but can contain any number of additional sets that are routed to by other rules to form a directional graph.
 	// +listType=map
@@ -687,11 +687,11 @@ type OrchestrationGlobalParameters struct {
 
 	// Reference to a Orchestration in event to populate eventOrchestration.
 	// +kubebuilder:validation:Optional
-	EventOrchestrationRef *v1.Reference `json:"eventOrchestrationRef,omitempty" tf:"-"`
+	EventOrchestrationRef *v2.Reference `json:"eventOrchestrationRef,omitempty" tf:"-"`
 
 	// Selector for a Orchestration in event to populate eventOrchestration.
 	// +kubebuilder:validation:Optional
-	EventOrchestrationSelector *v1.Selector `json:"eventOrchestrationSelector,omitempty" tf:"-"`
+	EventOrchestrationSelector *v2.Selector `json:"eventOrchestrationSelector,omitempty" tf:"-"`
 
 	// A Global Orchestration must contain at least a "start" set, but can contain any number of additional sets that are routed to by other rules to form a directional graph.
 	// +kubebuilder:validation:Optional
@@ -765,7 +765,7 @@ type RuleActionsInitParameters struct {
 	Suppress *bool `json:"suppress,omitempty" tf:"suppress,omitempty"`
 
 	// The number of seconds to suspend the resulting alert before triggering. This effectively pauses incident notifications. If a resolve event arrives before the alert triggers then PagerDuty won't create an incident for this alert.
-	Suspend *float64 `json:"suspend,omitempty" tf:"suspend,omitempty"`
+	Suspend *int64 `json:"suspend,omitempty" tf:"suspend,omitempty"`
 
 	// Populate variables from event payloads and use those variables in other event actions.
 	Variable []ActionsVariableInitParameters `json:"variable,omitempty" tf:"variable,omitempty"`
@@ -807,7 +807,7 @@ type RuleActionsObservation struct {
 	Suppress *bool `json:"suppress,omitempty" tf:"suppress,omitempty"`
 
 	// The number of seconds to suspend the resulting alert before triggering. This effectively pauses incident notifications. If a resolve event arrives before the alert triggers then PagerDuty won't create an incident for this alert.
-	Suspend *float64 `json:"suspend,omitempty" tf:"suspend,omitempty"`
+	Suspend *int64 `json:"suspend,omitempty" tf:"suspend,omitempty"`
 
 	// Populate variables from event payloads and use those variables in other event actions.
 	Variable []ActionsVariableObservation `json:"variable,omitempty" tf:"variable,omitempty"`
@@ -861,7 +861,7 @@ type RuleActionsParameters struct {
 
 	// The number of seconds to suspend the resulting alert before triggering. This effectively pauses incident notifications. If a resolve event arrives before the alert triggers then PagerDuty won't create an incident for this alert.
 	// +kubebuilder:validation:Optional
-	Suspend *float64 `json:"suspend,omitempty" tf:"suspend,omitempty"`
+	Suspend *int64 `json:"suspend,omitempty" tf:"suspend,omitempty"`
 
 	// Populate variables from event payloads and use those variables in other event actions.
 	// +kubebuilder:validation:Optional
@@ -1012,8 +1012,8 @@ type VariableParameters struct {
 
 // OrchestrationGlobalSpec defines the desired state of OrchestrationGlobal
 type OrchestrationGlobalSpec struct {
-	v1.ResourceSpec `json:",inline"`
-	ForProvider     OrchestrationGlobalParameters `json:"forProvider"`
+	v2.ClusterManagedResourceSpec `json:",inline"`
+	ForProvider                   OrchestrationGlobalParameters `json:"forProvider"`
 	// THIS IS A BETA FIELD. It will be honored
 	// unless the Management Policies feature flag is disabled.
 	// InitProvider holds the same fields as ForProvider, with the exception
@@ -1029,8 +1029,8 @@ type OrchestrationGlobalSpec struct {
 
 // OrchestrationGlobalStatus defines the observed state of OrchestrationGlobal.
 type OrchestrationGlobalStatus struct {
-	v1.ResourceStatus `json:",inline"`
-	AtProvider        OrchestrationGlobalObservation `json:"atProvider,omitempty"`
+	v2.ManagedResourceStatus `json:",inline"`
+	AtProvider               OrchestrationGlobalObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true

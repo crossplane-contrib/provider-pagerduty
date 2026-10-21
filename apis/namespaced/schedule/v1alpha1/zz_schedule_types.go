@@ -10,8 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
-	v2 "github.com/crossplane/crossplane-runtime/v2/apis/common/v2"
+	v2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 )
 
 type FinalScheduleInitParameters struct {
@@ -45,7 +44,7 @@ type LayerInitParameters struct {
 	Restriction []RestrictionInitParameters `json:"restriction,omitempty" tf:"restriction,omitempty"`
 
 	// The duration of each on-call shift in seconds.
-	RotationTurnLengthSeconds *float64 `json:"rotationTurnLengthSeconds,omitempty" tf:"rotation_turn_length_seconds,omitempty"`
+	RotationTurnLengthSeconds *int64 `json:"rotationTurnLengthSeconds,omitempty" tf:"rotation_turn_length_seconds,omitempty"`
 
 	// The effective start time of the schedule layer. This can be before the start time of the schedule.
 	RotationVirtualStart *string `json:"rotationVirtualStart,omitempty" tf:"rotation_virtual_start,omitempty"`
@@ -55,11 +54,11 @@ type LayerInitParameters struct {
 
 	// References to User in user to populate users.
 	// +kubebuilder:validation:Optional
-	UserRefs []v1.NamespacedReference `json:"userRefs,omitempty" tf:"-"`
+	UserRefs []v2.NamespacedReference `json:"userRefs,omitempty" tf:"-"`
 
 	// Selector for a list of User in user to populate users.
 	// +kubebuilder:validation:Optional
-	UserSelector *v1.NamespacedSelector `json:"userSelector,omitempty" tf:"-"`
+	UserSelector *v2.NamespacedSelector `json:"userSelector,omitempty" tf:"-"`
 
 	// The ordered list of users on this layer. The position of the user on the list determines their order in the layer.
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-pagerduty/apis/namespaced/user/v1alpha1.User
@@ -90,7 +89,7 @@ type LayerObservation struct {
 	Restriction []RestrictionObservation `json:"restriction,omitempty" tf:"restriction,omitempty"`
 
 	// The duration of each on-call shift in seconds.
-	RotationTurnLengthSeconds *float64 `json:"rotationTurnLengthSeconds,omitempty" tf:"rotation_turn_length_seconds,omitempty"`
+	RotationTurnLengthSeconds *int64 `json:"rotationTurnLengthSeconds,omitempty" tf:"rotation_turn_length_seconds,omitempty"`
 
 	// The effective start time of the schedule layer. This can be before the start time of the schedule.
 	RotationVirtualStart *string `json:"rotationVirtualStart,omitempty" tf:"rotation_virtual_start,omitempty"`
@@ -125,7 +124,7 @@ type LayerParameters struct {
 
 	// The duration of each on-call shift in seconds.
 	// +kubebuilder:validation:Optional
-	RotationTurnLengthSeconds *float64 `json:"rotationTurnLengthSeconds" tf:"rotation_turn_length_seconds,omitempty"`
+	RotationTurnLengthSeconds *int64 `json:"rotationTurnLengthSeconds" tf:"rotation_turn_length_seconds,omitempty"`
 
 	// The effective start time of the schedule layer. This can be before the start time of the schedule.
 	// +kubebuilder:validation:Optional
@@ -137,11 +136,11 @@ type LayerParameters struct {
 
 	// References to User in user to populate users.
 	// +kubebuilder:validation:Optional
-	UserRefs []v1.NamespacedReference `json:"userRefs,omitempty" tf:"-"`
+	UserRefs []v2.NamespacedReference `json:"userRefs,omitempty" tf:"-"`
 
 	// Selector for a list of User in user to populate users.
 	// +kubebuilder:validation:Optional
-	UserSelector *v1.NamespacedSelector `json:"userSelector,omitempty" tf:"-"`
+	UserSelector *v2.NamespacedSelector `json:"userSelector,omitempty" tf:"-"`
 
 	// The ordered list of users on this layer. The position of the user on the list determines their order in the layer.
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-pagerduty/apis/namespaced/user/v1alpha1.User
@@ -155,10 +154,10 @@ type LayerParameters struct {
 type RestrictionInitParameters struct {
 
 	// The duration of the restriction in seconds.
-	DurationSeconds *float64 `json:"durationSeconds,omitempty" tf:"duration_seconds,omitempty"`
+	DurationSeconds *int64 `json:"durationSeconds,omitempty" tf:"duration_seconds,omitempty"`
 
 	// Number of the day when restriction starts. From 1 to 7 where 1 is Monday and 7 is Sunday.
-	StartDayOfWeek *float64 `json:"startDayOfWeek,omitempty" tf:"start_day_of_week,omitempty"`
+	StartDayOfWeek *int64 `json:"startDayOfWeek,omitempty" tf:"start_day_of_week,omitempty"`
 
 	// The start time in HH:mm:ss format.
 	StartTimeOfDay *string `json:"startTimeOfDay,omitempty" tf:"start_time_of_day,omitempty"`
@@ -170,10 +169,10 @@ type RestrictionInitParameters struct {
 type RestrictionObservation struct {
 
 	// The duration of the restriction in seconds.
-	DurationSeconds *float64 `json:"durationSeconds,omitempty" tf:"duration_seconds,omitempty"`
+	DurationSeconds *int64 `json:"durationSeconds,omitempty" tf:"duration_seconds,omitempty"`
 
 	// Number of the day when restriction starts. From 1 to 7 where 1 is Monday and 7 is Sunday.
-	StartDayOfWeek *float64 `json:"startDayOfWeek,omitempty" tf:"start_day_of_week,omitempty"`
+	StartDayOfWeek *int64 `json:"startDayOfWeek,omitempty" tf:"start_day_of_week,omitempty"`
 
 	// The start time in HH:mm:ss format.
 	StartTimeOfDay *string `json:"startTimeOfDay,omitempty" tf:"start_time_of_day,omitempty"`
@@ -186,11 +185,11 @@ type RestrictionParameters struct {
 
 	// The duration of the restriction in seconds.
 	// +kubebuilder:validation:Optional
-	DurationSeconds *float64 `json:"durationSeconds" tf:"duration_seconds,omitempty"`
+	DurationSeconds *int64 `json:"durationSeconds" tf:"duration_seconds,omitempty"`
 
 	// Number of the day when restriction starts. From 1 to 7 where 1 is Monday and 7 is Sunday.
 	// +kubebuilder:validation:Optional
-	StartDayOfWeek *float64 `json:"startDayOfWeek,omitempty" tf:"start_day_of_week,omitempty"`
+	StartDayOfWeek *int64 `json:"startDayOfWeek,omitempty" tf:"start_day_of_week,omitempty"`
 
 	// The start time in HH:mm:ss format.
 	// +kubebuilder:validation:Optional
@@ -221,11 +220,11 @@ type ScheduleInitParameters struct {
 
 	// References to Team in team to populate teams.
 	// +kubebuilder:validation:Optional
-	TeamRefs []v1.NamespacedReference `json:"teamRefs,omitempty" tf:"-"`
+	TeamRefs []v2.NamespacedReference `json:"teamRefs,omitempty" tf:"-"`
 
 	// Selector for a list of Team in team to populate teams.
 	// +kubebuilder:validation:Optional
-	TeamSelector *v1.NamespacedSelector `json:"teamSelector,omitempty" tf:"-"`
+	TeamSelector *v2.NamespacedSelector `json:"teamSelector,omitempty" tf:"-"`
 
 	// Teams associated with the schedule.
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-pagerduty/apis/namespaced/team/v1alpha1.Team
@@ -291,11 +290,11 @@ type ScheduleParameters struct {
 
 	// References to Team in team to populate teams.
 	// +kubebuilder:validation:Optional
-	TeamRefs []v1.NamespacedReference `json:"teamRefs,omitempty" tf:"-"`
+	TeamRefs []v2.NamespacedReference `json:"teamRefs,omitempty" tf:"-"`
 
 	// Selector for a list of Team in team to populate teams.
 	// +kubebuilder:validation:Optional
-	TeamSelector *v1.NamespacedSelector `json:"teamSelector,omitempty" tf:"-"`
+	TeamSelector *v2.NamespacedSelector `json:"teamSelector,omitempty" tf:"-"`
 
 	// Teams associated with the schedule.
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-pagerduty/apis/namespaced/team/v1alpha1.Team
@@ -329,8 +328,8 @@ type ScheduleSpec struct {
 
 // ScheduleStatus defines the observed state of Schedule.
 type ScheduleStatus struct {
-	v1.ResourceStatus `json:",inline"`
-	AtProvider        ScheduleObservation `json:"atProvider,omitempty"`
+	v2.ManagedResourceStatus `json:",inline"`
+	AtProvider               ScheduleObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true

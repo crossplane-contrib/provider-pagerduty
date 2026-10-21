@@ -10,8 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
-	v2 "github.com/crossplane/crossplane-runtime/v2/apis/common/v2"
+	v2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 )
 
 type OrchestrationUnroutedCatchAllActionsExtractionInitParameters struct {
@@ -207,11 +206,11 @@ type OrchestrationUnroutedInitParameters struct {
 
 	// Reference to a Orchestration in event to populate eventOrchestration.
 	// +kubebuilder:validation:Optional
-	EventOrchestrationRef *v1.NamespacedReference `json:"eventOrchestrationRef,omitempty" tf:"-"`
+	EventOrchestrationRef *v2.NamespacedReference `json:"eventOrchestrationRef,omitempty" tf:"-"`
 
 	// Selector for a Orchestration in event to populate eventOrchestration.
 	// +kubebuilder:validation:Optional
-	EventOrchestrationSelector *v1.NamespacedSelector `json:"eventOrchestrationSelector,omitempty" tf:"-"`
+	EventOrchestrationSelector *v2.NamespacedSelector `json:"eventOrchestrationSelector,omitempty" tf:"-"`
 
 	// An Unrouted Orchestration must contain at least a "start" set, but can contain any number of additional sets that are routed to by other rules to form a directional graph.
 	// +listType=map
@@ -249,11 +248,11 @@ type OrchestrationUnroutedParameters struct {
 
 	// Reference to a Orchestration in event to populate eventOrchestration.
 	// +kubebuilder:validation:Optional
-	EventOrchestrationRef *v1.NamespacedReference `json:"eventOrchestrationRef,omitempty" tf:"-"`
+	EventOrchestrationRef *v2.NamespacedReference `json:"eventOrchestrationRef,omitempty" tf:"-"`
 
 	// Selector for a Orchestration in event to populate eventOrchestration.
 	// +kubebuilder:validation:Optional
-	EventOrchestrationSelector *v1.NamespacedSelector `json:"eventOrchestrationSelector,omitempty" tf:"-"`
+	EventOrchestrationSelector *v2.NamespacedSelector `json:"eventOrchestrationSelector,omitempty" tf:"-"`
 
 	// An Unrouted Orchestration must contain at least a "start" set, but can contain any number of additional sets that are routed to by other rules to form a directional graph.
 	// +kubebuilder:validation:Optional
@@ -550,8 +549,8 @@ type OrchestrationUnroutedSpec struct {
 
 // OrchestrationUnroutedStatus defines the observed state of OrchestrationUnrouted.
 type OrchestrationUnroutedStatus struct {
-	v1.ResourceStatus `json:",inline"`
-	AtProvider        OrchestrationUnroutedObservation `json:"atProvider,omitempty"`
+	v2.ManagedResourceStatus `json:",inline"`
+	AtProvider               OrchestrationUnroutedObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true

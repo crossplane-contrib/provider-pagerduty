@@ -10,8 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
-	v2 "github.com/crossplane/crossplane-runtime/v2/apis/common/v2"
+	v2 "github.com/crossplane/crossplane/apis/v2/core/v2"
 )
 
 type MembershipInitParameters struct {
@@ -26,11 +25,11 @@ type MembershipInitParameters struct {
 
 	// Reference to a Team in team to populate teamId.
 	// +kubebuilder:validation:Optional
-	TeamIDRef *v1.NamespacedReference `json:"teamIdRef,omitempty" tf:"-"`
+	TeamIDRef *v2.NamespacedReference `json:"teamIdRef,omitempty" tf:"-"`
 
 	// Selector for a Team in team to populate teamId.
 	// +kubebuilder:validation:Optional
-	TeamIDSelector *v1.NamespacedSelector `json:"teamIdSelector,omitempty" tf:"-"`
+	TeamIDSelector *v2.NamespacedSelector `json:"teamIdSelector,omitempty" tf:"-"`
 
 	// The ID of the user to add to the team.
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-pagerduty/apis/namespaced/user/v1alpha1.User
@@ -38,11 +37,11 @@ type MembershipInitParameters struct {
 
 	// Reference to a User in user to populate userId.
 	// +kubebuilder:validation:Optional
-	UserIDRef *v1.NamespacedReference `json:"userIdRef,omitempty" tf:"-"`
+	UserIDRef *v2.NamespacedReference `json:"userIdRef,omitempty" tf:"-"`
 
 	// Selector for a User in user to populate userId.
 	// +kubebuilder:validation:Optional
-	UserIDSelector *v1.NamespacedSelector `json:"userIdSelector,omitempty" tf:"-"`
+	UserIDSelector *v2.NamespacedSelector `json:"userIdSelector,omitempty" tf:"-"`
 }
 
 type MembershipObservation struct {
@@ -73,11 +72,11 @@ type MembershipParameters struct {
 
 	// Reference to a Team in team to populate teamId.
 	// +kubebuilder:validation:Optional
-	TeamIDRef *v1.NamespacedReference `json:"teamIdRef,omitempty" tf:"-"`
+	TeamIDRef *v2.NamespacedReference `json:"teamIdRef,omitempty" tf:"-"`
 
 	// Selector for a Team in team to populate teamId.
 	// +kubebuilder:validation:Optional
-	TeamIDSelector *v1.NamespacedSelector `json:"teamIdSelector,omitempty" tf:"-"`
+	TeamIDSelector *v2.NamespacedSelector `json:"teamIdSelector,omitempty" tf:"-"`
 
 	// The ID of the user to add to the team.
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-pagerduty/apis/namespaced/user/v1alpha1.User
@@ -86,11 +85,11 @@ type MembershipParameters struct {
 
 	// Reference to a User in user to populate userId.
 	// +kubebuilder:validation:Optional
-	UserIDRef *v1.NamespacedReference `json:"userIdRef,omitempty" tf:"-"`
+	UserIDRef *v2.NamespacedReference `json:"userIdRef,omitempty" tf:"-"`
 
 	// Selector for a User in user to populate userId.
 	// +kubebuilder:validation:Optional
-	UserIDSelector *v1.NamespacedSelector `json:"userIdSelector,omitempty" tf:"-"`
+	UserIDSelector *v2.NamespacedSelector `json:"userIdSelector,omitempty" tf:"-"`
 }
 
 // MembershipSpec defines the desired state of Membership
@@ -112,8 +111,8 @@ type MembershipSpec struct {
 
 // MembershipStatus defines the observed state of Membership.
 type MembershipStatus struct {
-	v1.ResourceStatus `json:",inline"`
-	AtProvider        MembershipObservation `json:"atProvider,omitempty"`
+	v2.ManagedResourceStatus `json:",inline"`
+	AtProvider               MembershipObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true

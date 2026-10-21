@@ -7,8 +7,13 @@ package clients
 import (
 	"context"
 	"encoding/json"
+	"sync"
+	"time"
 
 	"github.com/crossplane/crossplane-runtime/v2/pkg/resource"
+	fwprovider "github.com/hashicorp/terraform-plugin-framework/provider"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+	tf "github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
 	"github.com/pkg/errors"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -26,6 +31,7 @@ const (
 	errTrackUsage              = "cannot track ProviderConfig usage"
 	errExtractCredentials      = "cannot extract credentials"
 	errUnmarshalCredentials    = "cannot unmarshal pagerduty credentials as JSON"
+	errConfigureSDK            = "cannot configure the Terraform Plugin SDKv2 provider"
 	errPartialOauthCredentials = "incomplete OAuth credentials: all three fields (pd_client_id, pd_client_secret, pd_subdomain) are required for use_app_oauth_scoped_token"
 	keyToken                   = "token"
 	userToken                  = "user_token"
@@ -36,16 +42,20 @@ const (
 	pdSubdomain                = "pd_subdomain"
 )
 
-// TerraformSetupBuilder builds Terraform a terraform.SetupFn function which
-// returns Terraform provider setup configuration
-func TerraformSetupBuilder(version, providerSource, providerVersion string) terraform.SetupFn {
+// TerraformSetupBuilder returns a terraform.SetupFn for the no-fork
+// (in-process) architecture. It populates Setup.Meta with the configured
+// SDKv2 provider metadata and Setup.FrameworkProvider with a Plugin Framework
+// provider whose Configure results are cached, both keyed by the provider
+// configuration and kept for cacheTTL.
+func TerraformSetupBuilder(sdk *schema.Provider, fw fwprovider.Provider, cacheTTL time.Duration) terraform.SetupFn {
+	cachedFW := newCachingProvider(fw, cacheTTL)
+	sdkMeta := newConfigCache[any](cacheTTL)
+	// sdk.Configure stores its result in the shared provider instance and
+	// sdk.Meta reads it back, so both must run atomically.
+	var sdkMu sync.Mutex
 	return func(ctx context.Context, client client.Client, mg resource.Managed) (terraform.Setup, error) {
 		ps := terraform.Setup{
-			Version: version,
-			Requirement: terraform.ProviderRequirement{
-				Source:  providerSource,
-				Version: providerVersion,
-			},
+			FrameworkProvider: cachedFW,
 		}
 
 		pcSpec, err := resolveProviderConfig(ctx, client, mg)
@@ -71,8 +81,35 @@ func TerraformSetupBuilder(version, providerSource, providerVersion string) terr
 			ps.Configuration[serviceRegion] = v
 		}
 
+		sdkMu.Lock()
+		ps.Meta, err = configureSDK(ctx, sdk, sdkMeta, ps.Configuration)
+		sdkMu.Unlock()
+		if err != nil {
+			return terraform.Setup{}, err
+		}
 		return ps, nil
 	}
+}
+
+// configureSDK returns the SDKv2 provider metadata (the PagerDuty client
+// config) for the given provider configuration, configuring the provider
+// only on a cache miss.
+func configureSDK(ctx context.Context, sdk *schema.Provider, cache *configCache[any], config map[string]any) (any, error) {
+	// encoding/json sorts map keys, so the hash is deterministic.
+	raw, err := json.Marshal(config)
+	if err != nil {
+		return nil, errors.Wrap(err, errConfigureSDK)
+	}
+	h := hashOf(raw)
+	if meta, ok := cache.get(h); ok {
+		return meta, nil
+	}
+	if diags := sdk.Configure(ctx, tf.NewResourceConfigRaw(config)); diags.HasError() {
+		return nil, errors.Errorf("%s: %v", errConfigureSDK, diags)
+	}
+	meta := sdk.Meta()
+	cache.put(h, meta)
+	return meta, nil
 }
 
 func configureCredentials(config map[string]any, creds map[string]string) error {
