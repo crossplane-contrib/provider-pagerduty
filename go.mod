@@ -6,7 +6,7 @@ tool golang.org/x/tools/cmd/goimports
 
 require (
 	dario.cat/mergo v1.0.2
-	github.com/PagerDuty/terraform-provider-pagerduty v0.0.0-local
+	github.com/PagerDuty/terraform-provider-pagerduty v0.1.3
 	github.com/alecthomas/kingpin/v2 v2.4.0
 	github.com/crossplane/crossplane-runtime/v2 v2.5.0-rc.0.0.20261020154247-654ae6d88a10
 	github.com/crossplane/crossplane-tools v0.0.0-20260719180100-659f1dc036c5
