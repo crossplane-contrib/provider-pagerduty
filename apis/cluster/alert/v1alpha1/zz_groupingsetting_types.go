@@ -81,7 +81,7 @@ type ConfigParameters struct {
 type GroupingSettingInitParameters struct {
 
 	// The set of values used for configuration.
-	Config *ConfigInitParameters `json:"config,omitempty" tf:"config,omitempty"`
+	Config []ConfigInitParameters `json:"config,omitempty" tf:"config,omitempty"`
 
 	// A human-friendly text to describe and identify this alert grouping setting.
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
@@ -111,7 +111,7 @@ type GroupingSettingInitParameters struct {
 type GroupingSettingObservation struct {
 
 	// The set of values used for configuration.
-	Config *ConfigObservation `json:"config,omitempty" tf:"config,omitempty"`
+	Config []ConfigObservation `json:"config,omitempty" tf:"config,omitempty"`
 
 	// A human-friendly text to describe and identify this alert grouping setting.
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
@@ -134,7 +134,7 @@ type GroupingSettingParameters struct {
 
 	// The set of values used for configuration.
 	// +kubebuilder:validation:Optional
-	Config *ConfigParameters `json:"config,omitempty" tf:"config,omitempty"`
+	Config []ConfigParameters `json:"config,omitempty" tf:"config,omitempty"`
 
 	// A human-friendly text to describe and identify this alert grouping setting.
 	// +kubebuilder:validation:Optional

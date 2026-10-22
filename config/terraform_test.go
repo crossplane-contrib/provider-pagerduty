@@ -1,9 +1,13 @@
 package config
 
 import (
+	"context"
+	"encoding/json"
 	"testing"
 
 	ujconfig "github.com/crossplane/upjet/v2/pkg/config"
+	fwresource "github.com/hashicorp/terraform-plugin-framework/resource"
+	"github.com/hashicorp/terraform-plugin-go/tftypes"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
 
@@ -86,4 +90,47 @@ func contains(l []string, s string) bool {
 		}
 	}
 	return false
+}
+
+// GroupingSetting keeps config as a singleton list in its CRD while the
+// Framework resource defines it as a single nested block, so the params
+// must be converted before upjet encodes them with the Framework schema.
+func TestGroupingSettingConfigEncodesAsFrameworkObject(t *testing.T) {
+	ctx := context.Background()
+	for name, get := range map[string]func() *ujconfig.Provider{
+		"cluster":    GetProvider,
+		"namespaced": GetProviderNamespaced,
+	} {
+		t.Run(name, func(t *testing.T) {
+			r := get().Resources["pagerduty_alert_grouping_setting"]
+			resp := &fwresource.SchemaResponse{}
+			r.TerraformPluginFrameworkResource.Schema(ctx, fwresource.SchemaRequest{}, resp)
+			tfType := resp.Schema.Type().TerraformType(ctx)
+
+			params, err := r.ApplyTFConversions(map[string]any{
+				"name":     "n",
+				"type":     "time",
+				"services": []any{"P1"},
+				"config":   []any{map[string]any{"timeout": 5}},
+			}, ujconfig.ToTerraform)
+			if err != nil {
+				t.Fatalf("ApplyTFConversions(ToTerraform): %v", err)
+			}
+			b, err := json.Marshal(params)
+			if err != nil {
+				t.Fatal(err)
+			}
+			if _, err := tftypes.ValueFromJSONWithOpts(b, tfType, tftypes.ValueFromJSONOpts{IgnoreUndefinedAttributes: true}); err != nil {
+				t.Errorf("params do not match the Framework schema: %v", err)
+			}
+
+			state, err := r.ApplyTFConversions(map[string]any{"config": map[string]any{"timeout": 5}}, ujconfig.FromTerraform)
+			if err != nil {
+				t.Fatalf("ApplyTFConversions(FromTerraform): %v", err)
+			}
+			if _, ok := state["config"].([]any); !ok {
+				t.Errorf("state config = %T, want a singleton list", state["config"])
+			}
+		})
+	}
 }

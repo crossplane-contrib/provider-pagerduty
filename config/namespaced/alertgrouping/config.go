@@ -2,6 +2,8 @@ package alertgrouping
 
 import (
 	"github.com/crossplane/upjet/v2/pkg/config"
+
+	"github.com/crossplane-contrib/provider-pagerduty/config/singletonlist"
 )
 
 // Configure configures individual resources by adding custom ResourceConfigurators.
@@ -14,5 +16,7 @@ func Configure(p *config.Provider) {
 				SelectorFieldName: "ServiceSelector",
 			},
 		}
+		// Keep the list shape the CRD had before the no-fork migration.
+		singletonlist.Keep(r, "config")
 	})
 }
