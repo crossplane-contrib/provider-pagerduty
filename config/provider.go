@@ -92,6 +92,7 @@ func GetProvider() *ujconfig.Provider {
 		ujconfig.WithExampleManifestConfiguration(exampleManifestConfiguration()),
 		ujconfig.WithDefaultResourceOptions(
 			ExternalNameConfigurations(),
+			NoOpComputedCollectionDiff(),
 		))
 
 	for _, configure := range []func(provider *ujconfig.Provider){
@@ -141,6 +142,7 @@ func GetProviderNamespaced() *ujconfig.Provider {
 		ujconfig.WithExampleManifestConfiguration(exampleManifestConfiguration()),
 		ujconfig.WithDefaultResourceOptions(
 			ExternalNameConfigurations(),
+			NoOpComputedCollectionDiff(),
 		))
 
 	for _, configure := range []func(provider *ujconfig.Provider){
