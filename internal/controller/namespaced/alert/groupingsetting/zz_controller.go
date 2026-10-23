@@ -21,15 +21,15 @@ import (
 	"github.com/pkg/errors"
 	ctrl "sigs.k8s.io/controller-runtime"
 
-	v1alpha1 "github.com/crossplane-contrib/provider-pagerduty/apis/namespaced/alert/v1alpha1"
+	v1alpha2 "github.com/crossplane-contrib/provider-pagerduty/apis/namespaced/alert/v1alpha2"
 	features "github.com/crossplane-contrib/provider-pagerduty/internal/features"
 )
 
 // SetupWebhookWithManager registers the conversion webhook for GroupingSetting.
 func SetupWebhookWithManager(mgr ctrl.Manager) error {
-	if err := ctrl.NewWebhookManagedBy(mgr, &v1alpha1.GroupingSetting{}).
+	if err := ctrl.NewWebhookManagedBy(mgr, &v1alpha2.GroupingSetting{}).
 		Complete(); err != nil {
-		return errors.Wrap(err, "cannot register webhook for the kind v1alpha1.GroupingSetting")
+		return errors.Wrap(err, "cannot register webhook for the kind v1alpha2.GroupingSetting")
 	}
 	return nil
 }
@@ -38,25 +38,25 @@ func SetupWebhookWithManager(mgr ctrl.Manager) error {
 func SetupGated(mgr ctrl.Manager, o tjcontroller.Options) error {
 	o.Options.Gate.Register(func() {
 		if err := Setup(mgr, o); err != nil {
-			mgr.GetLogger().Error(err, "unable to setup reconciler", "gvk", v1alpha1.GroupingSetting_GroupVersionKind.String())
+			mgr.GetLogger().Error(err, "unable to setup reconciler", "gvk", v1alpha2.GroupingSetting_GroupVersionKind.String())
 		}
-	}, v1alpha1.GroupingSetting_GroupVersionKind)
+	}, v1alpha2.GroupingSetting_GroupVersionKind)
 	return nil
 }
 
 // Setup adds a controller that reconciles GroupingSetting managed resources.
 func Setup(mgr ctrl.Manager, o tjcontroller.Options) error {
-	name := managed.ControllerName(v1alpha1.GroupingSetting_GroupVersionKind.String())
+	name := managed.ControllerName(v1alpha2.GroupingSetting_GroupVersionKind.String())
 	var initializers managed.InitializerChain
-	eventHandler := handler.NewEventHandler(handler.WithLogger(o.Logger.WithValues("gvk", v1alpha1.GroupingSetting_GroupVersionKind)))
-	ac := tjcontroller.NewAPICallbacks(mgr, xpresource.ManagedKind(v1alpha1.GroupingSetting_GroupVersionKind), tjcontroller.WithEventHandler(eventHandler), tjcontroller.WithStatusUpdates(false))
+	eventHandler := handler.NewEventHandler(handler.WithLogger(o.Logger.WithValues("gvk", v1alpha2.GroupingSetting_GroupVersionKind)))
+	ac := tjcontroller.NewAPICallbacks(mgr, xpresource.ManagedKind(v1alpha2.GroupingSetting_GroupVersionKind), tjcontroller.WithEventHandler(eventHandler), tjcontroller.WithStatusUpdates(false))
 	opts := []managed.ReconcilerOption{
 		managed.WithExternalConnecter(
 			tjcontroller.NewTerraformPluginFrameworkAsyncConnector(mgr.GetClient(), o.OperationTrackerStore, o.SetupFn, o.Provider.Resources["pagerduty_alert_grouping_setting"],
 				tjcontroller.WithTerraformPluginFrameworkAsyncLogger(o.Logger),
 				tjcontroller.WithTerraformPluginFrameworkAsyncConnectorEventHandler(eventHandler),
 				tjcontroller.WithTerraformPluginFrameworkAsyncCallbackProvider(ac),
-				tjcontroller.WithTerraformPluginFrameworkAsyncMetricRecorder(metrics.NewMetricRecorder(v1alpha1.GroupingSetting_GroupVersionKind, mgr, o.PollInterval)),
+				tjcontroller.WithTerraformPluginFrameworkAsyncMetricRecorder(metrics.NewMetricRecorder(v1alpha2.GroupingSetting_GroupVersionKind, mgr, o.PollInterval)),
 				tjcontroller.WithTerraformPluginFrameworkAsyncManagementPolicies(o.Features.Enabled(features.EnableBetaManagementPolicies)))),
 		managed.WithLogger(o.Logger.WithValues("controller", name)),
 		managed.WithRecorder(event.NewAPIRecorder(mgr.GetEventRecorderFor(name))),
@@ -77,10 +77,10 @@ func Setup(mgr ctrl.Manager, o tjcontroller.Options) error {
 
 	if o.MetricOptions != nil && o.MetricOptions.MRStateMetrics != nil {
 		stateMetricsRecorder := statemetrics.NewMRStateRecorder(
-			mgr.GetClient(), o.Logger, o.MetricOptions.MRStateMetrics, &v1alpha1.GroupingSettingList{}, o.MetricOptions.PollStateMetricInterval,
+			mgr.GetClient(), o.Logger, o.MetricOptions.MRStateMetrics, &v1alpha2.GroupingSettingList{}, o.MetricOptions.PollStateMetricInterval,
 		)
 		if err := mgr.Add(stateMetricsRecorder); err != nil {
-			return errors.Wrap(err, "cannot register MR state metrics recorder for kind v1alpha1.GroupingSettingList")
+			return errors.Wrap(err, "cannot register MR state metrics recorder for kind v1alpha2.GroupingSettingList")
 		}
 	}
 
@@ -88,12 +88,12 @@ func Setup(mgr ctrl.Manager, o tjcontroller.Options) error {
 		opts = append(opts, managed.WithChangeLogger(o.ChangeLogOptions.ChangeLogger))
 	}
 
-	r := managed.NewReconciler(mgr, xpresource.ManagedKind(v1alpha1.GroupingSetting_GroupVersionKind), opts...)
+	r := managed.NewReconciler(mgr, xpresource.ManagedKind(v1alpha2.GroupingSetting_GroupVersionKind), opts...)
 
 	return ctrl.NewControllerManagedBy(mgr).
 		Named(name).
 		WithOptions(o.ForControllerRuntime()).
 		WithEventFilter(xpresource.DesiredStateChanged()).
-		Watches(&v1alpha1.GroupingSetting{}, eventHandler).
+		Watches(&v1alpha2.GroupingSetting{}, eventHandler).
 		Complete(ratelimiter.NewReconciler(name, r, o.GlobalRateLimiter))
 }

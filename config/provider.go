@@ -50,6 +50,7 @@ import (
 	teamNamespaced "github.com/crossplane-contrib/provider-pagerduty/config/namespaced/team"
 	userNamespaced "github.com/crossplane-contrib/provider-pagerduty/config/namespaced/user"
 	webhookNamespaced "github.com/crossplane-contrib/provider-pagerduty/config/namespaced/webhook"
+	"github.com/crossplane-contrib/provider-pagerduty/config/versions"
 )
 
 const (
@@ -121,6 +122,7 @@ func GetProvider() *ujconfig.Provider {
 	}
 
 	pc.ConfigureResources()
+	versions.RegisterPreviousVersions(pc)
 	return pc
 }
 
@@ -171,5 +173,6 @@ func GetProviderNamespaced() *ujconfig.Provider {
 	}
 
 	pc.ConfigureResources()
+	versions.RegisterPreviousVersions(pc)
 	return pc
 }

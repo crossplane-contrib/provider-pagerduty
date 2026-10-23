@@ -13,7 +13,4 @@ func (tr *ContactMethod) Hub() {}
 func (tr *HandoffNotificationRule) Hub() {}
 
 // Hub marks this type as a conversion hub.
-func (tr *NotificationRule) Hub() {}
-
-// Hub marks this type as a conversion hub.
 func (tr *User) Hub() {}

@@ -28,6 +28,7 @@ import (
 	"github.com/crossplane/crossplane-runtime/v2/pkg/reconciler/managed"
 	"github.com/crossplane/crossplane-runtime/v2/pkg/statemetrics"
 	tjcontroller "github.com/crossplane/upjet/v2/pkg/controller"
+	"github.com/crossplane/upjet/v2/pkg/controller/conversion"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 	authv1 "k8s.io/api/authorization/v1"
@@ -276,6 +277,7 @@ func main() {
 	// Reconciler setup is deferred to the gate and only runs on the leader.
 	startWebhooks := *certsDir != ""
 	if startWebhooks {
+		kingpin.FatalIfError(conversion.RegisterConversions(clusterProvider, namespacedProvider, mgr.GetScheme()), "Cannot initialize the webhook conversion registry")
 		kingpin.FatalIfError(controllerCluster.SetupWebhookWithManager(mgr), "Cannot setup cluster-scoped webhooks")
 		kingpin.FatalIfError(controllerNamespaced.SetupWebhookWithManager(mgr), "Cannot setup namespaced webhooks")
 	}
