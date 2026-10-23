@@ -12,6 +12,7 @@ import (
 	"github.com/crossplane/upjet/v2/pkg/pipeline"
 
 	"github.com/crossplane-contrib/provider-pagerduty/config"
+	"github.com/crossplane-contrib/provider-pagerduty/config/versions"
 )
 
 func main() {
@@ -24,4 +25,7 @@ func main() {
 		panic(fmt.Sprintf("cannot calculate the absolute path with %s", rootDir))
 	}
 	pipeline.Run(config.GetProvider(), config.GetProviderNamespaced(), absRootDir)
+	if err := versions.ConvertExamples(filepath.Join(absRootDir, "examples-generated")); err != nil {
+		panic(err)
+	}
 }

@@ -201,8 +201,10 @@ func (in *GroupingSettingInitParameters) DeepCopyInto(out *GroupingSettingInitPa
 	*out = *in
 	if in.Config != nil {
 		in, out := &in.Config, &out.Config
-		*out = new(ConfigInitParameters)
-		(*in).DeepCopyInto(*out)
+		*out = make([]ConfigInitParameters, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
 	}
 	if in.Description != nil {
 		in, out := &in.Description, &out.Description
@@ -291,8 +293,10 @@ func (in *GroupingSettingObservation) DeepCopyInto(out *GroupingSettingObservati
 	*out = *in
 	if in.Config != nil {
 		in, out := &in.Config, &out.Config
-		*out = new(ConfigObservation)
-		(*in).DeepCopyInto(*out)
+		*out = make([]ConfigObservation, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
 	}
 	if in.Description != nil {
 		in, out := &in.Description, &out.Description
@@ -342,8 +346,10 @@ func (in *GroupingSettingParameters) DeepCopyInto(out *GroupingSettingParameters
 	*out = *in
 	if in.Config != nil {
 		in, out := &in.Config, &out.Config
-		*out = new(ConfigParameters)
-		(*in).DeepCopyInto(*out)
+		*out = make([]ConfigParameters, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
 	}
 	if in.Description != nil {
 		in, out := &in.Description, &out.Description

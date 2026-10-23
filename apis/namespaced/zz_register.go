@@ -12,6 +12,7 @@ import (
 
 	v1alpha1 "github.com/crossplane-contrib/provider-pagerduty/apis/namespaced/addon/v1alpha1"
 	v1alpha1alert "github.com/crossplane-contrib/provider-pagerduty/apis/namespaced/alert/v1alpha1"
+	v1alpha2 "github.com/crossplane-contrib/provider-pagerduty/apis/namespaced/alert/v1alpha2"
 	v1alpha1automation "github.com/crossplane-contrib/provider-pagerduty/apis/namespaced/automation/v1alpha1"
 	v1alpha1business "github.com/crossplane-contrib/provider-pagerduty/apis/namespaced/business/v1alpha1"
 	v1alpha1escalation "github.com/crossplane-contrib/provider-pagerduty/apis/namespaced/escalation/v1alpha1"
@@ -19,6 +20,7 @@ import (
 	v1alpha1extensions "github.com/crossplane-contrib/provider-pagerduty/apis/namespaced/extensions/v1alpha1"
 	v1alpha1incident "github.com/crossplane-contrib/provider-pagerduty/apis/namespaced/incident/v1alpha1"
 	v1alpha1jira "github.com/crossplane-contrib/provider-pagerduty/apis/namespaced/jira/v1alpha1"
+	v1alpha2jira "github.com/crossplane-contrib/provider-pagerduty/apis/namespaced/jira/v1alpha2"
 	v1alpha1maintenance "github.com/crossplane-contrib/provider-pagerduty/apis/namespaced/maintenance/v1alpha1"
 	v1alpha1pagerduty "github.com/crossplane-contrib/provider-pagerduty/apis/namespaced/pagerduty/v1alpha1"
 	v1alpha1response "github.com/crossplane-contrib/provider-pagerduty/apis/namespaced/response/v1alpha1"
@@ -29,6 +31,7 @@ import (
 	v1alpha1tag "github.com/crossplane-contrib/provider-pagerduty/apis/namespaced/tag/v1alpha1"
 	v1alpha1team "github.com/crossplane-contrib/provider-pagerduty/apis/namespaced/team/v1alpha1"
 	v1alpha1user "github.com/crossplane-contrib/provider-pagerduty/apis/namespaced/user/v1alpha1"
+	v1alpha2user "github.com/crossplane-contrib/provider-pagerduty/apis/namespaced/user/v1alpha2"
 	v1alpha1namespaced "github.com/crossplane-contrib/provider-pagerduty/apis/namespaced/v1alpha1"
 	v1beta1 "github.com/crossplane-contrib/provider-pagerduty/apis/namespaced/v1beta1"
 	v1alpha1webhook "github.com/crossplane-contrib/provider-pagerduty/apis/namespaced/webhook/v1alpha1"
@@ -39,6 +42,7 @@ func init() {
 	AddToSchemes = append(AddToSchemes,
 		v1alpha1.SchemeBuilder.AddToScheme,
 		v1alpha1alert.SchemeBuilder.AddToScheme,
+		v1alpha2.SchemeBuilder.AddToScheme,
 		v1alpha1automation.SchemeBuilder.AddToScheme,
 		v1alpha1business.SchemeBuilder.AddToScheme,
 		v1alpha1escalation.SchemeBuilder.AddToScheme,
@@ -46,6 +50,7 @@ func init() {
 		v1alpha1extensions.SchemeBuilder.AddToScheme,
 		v1alpha1incident.SchemeBuilder.AddToScheme,
 		v1alpha1jira.SchemeBuilder.AddToScheme,
+		v1alpha2jira.SchemeBuilder.AddToScheme,
 		v1alpha1maintenance.SchemeBuilder.AddToScheme,
 		v1alpha1pagerduty.SchemeBuilder.AddToScheme,
 		v1alpha1response.SchemeBuilder.AddToScheme,
@@ -56,6 +61,7 @@ func init() {
 		v1alpha1tag.SchemeBuilder.AddToScheme,
 		v1alpha1team.SchemeBuilder.AddToScheme,
 		v1alpha1user.SchemeBuilder.AddToScheme,
+		v1alpha2user.SchemeBuilder.AddToScheme,
 		v1alpha1namespaced.SchemeBuilder.AddToScheme,
 		v1beta1.SchemeBuilder.AddToScheme,
 		v1alpha1webhook.SchemeBuilder.AddToScheme,

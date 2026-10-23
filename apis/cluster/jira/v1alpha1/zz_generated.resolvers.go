@@ -21,84 +21,84 @@ func (mg *CloudAccountMappingRule) ResolveReferences(ctx context.Context, c clie
 	var rsp reference.ResolutionResponse
 	var err error
 
-	if mg.Spec.ForProvider.Config != nil {
-		if mg.Spec.ForProvider.Config.Jira != nil {
+	for i3 := 0; i3 < len(mg.Spec.ForProvider.Config); i3++ {
+		for i4 := 0; i4 < len(mg.Spec.ForProvider.Config[i3].Jira); i4++ {
 			rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
-				CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.Config.Jira.SyncNotesUser),
+				CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.Config[i3].Jira[i4].SyncNotesUser),
 				Extract:      reference.ExternalName(),
 				Namespace:    mg.GetNamespace(),
-				Reference:    mg.Spec.ForProvider.Config.Jira.UserRefs,
-				Selector:     mg.Spec.ForProvider.Config.Jira.UserSelector,
+				Reference:    mg.Spec.ForProvider.Config[i3].Jira[i4].UserRefs,
+				Selector:     mg.Spec.ForProvider.Config[i3].Jira[i4].UserSelector,
 				To: reference.To{
 					List:    &v1alpha1.UserList{},
 					Managed: &v1alpha1.User{},
 				},
 			})
 			if err != nil {
-				return errors.Wrap(err, "mg.Spec.ForProvider.Config.Jira.SyncNotesUser")
+				return errors.Wrap(err, "mg.Spec.ForProvider.Config[i3].Jira[i4].SyncNotesUser")
 			}
-			mg.Spec.ForProvider.Config.Jira.SyncNotesUser = reference.ToPtrValue(rsp.ResolvedValue)
-			mg.Spec.ForProvider.Config.Jira.UserRefs = rsp.ResolvedReference
+			mg.Spec.ForProvider.Config[i3].Jira[i4].SyncNotesUser = reference.ToPtrValue(rsp.ResolvedValue)
+			mg.Spec.ForProvider.Config[i3].Jira[i4].UserRefs = rsp.ResolvedReference
 
 		}
 	}
-	if mg.Spec.ForProvider.Config != nil {
+	for i3 := 0; i3 < len(mg.Spec.ForProvider.Config); i3++ {
 		rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
-			CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.Config.Service),
+			CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.Config[i3].Service),
 			Extract:      reference.ExternalName(),
 			Namespace:    mg.GetNamespace(),
-			Reference:    mg.Spec.ForProvider.Config.ServiceRefs,
-			Selector:     mg.Spec.ForProvider.Config.ServiceSelector,
+			Reference:    mg.Spec.ForProvider.Config[i3].ServiceRefs,
+			Selector:     mg.Spec.ForProvider.Config[i3].ServiceSelector,
 			To: reference.To{
 				List:    &v1alpha11.ServiceList{},
 				Managed: &v1alpha11.Service{},
 			},
 		})
 		if err != nil {
-			return errors.Wrap(err, "mg.Spec.ForProvider.Config.Service")
+			return errors.Wrap(err, "mg.Spec.ForProvider.Config[i3].Service")
 		}
-		mg.Spec.ForProvider.Config.Service = reference.ToPtrValue(rsp.ResolvedValue)
-		mg.Spec.ForProvider.Config.ServiceRefs = rsp.ResolvedReference
+		mg.Spec.ForProvider.Config[i3].Service = reference.ToPtrValue(rsp.ResolvedValue)
+		mg.Spec.ForProvider.Config[i3].ServiceRefs = rsp.ResolvedReference
 
 	}
-	if mg.Spec.InitProvider.Config != nil {
-		if mg.Spec.InitProvider.Config.Jira != nil {
+	for i3 := 0; i3 < len(mg.Spec.InitProvider.Config); i3++ {
+		for i4 := 0; i4 < len(mg.Spec.InitProvider.Config[i3].Jira); i4++ {
 			rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
-				CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.Config.Jira.SyncNotesUser),
+				CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.Config[i3].Jira[i4].SyncNotesUser),
 				Extract:      reference.ExternalName(),
 				Namespace:    mg.GetNamespace(),
-				Reference:    mg.Spec.InitProvider.Config.Jira.UserRefs,
-				Selector:     mg.Spec.InitProvider.Config.Jira.UserSelector,
+				Reference:    mg.Spec.InitProvider.Config[i3].Jira[i4].UserRefs,
+				Selector:     mg.Spec.InitProvider.Config[i3].Jira[i4].UserSelector,
 				To: reference.To{
 					List:    &v1alpha1.UserList{},
 					Managed: &v1alpha1.User{},
 				},
 			})
 			if err != nil {
-				return errors.Wrap(err, "mg.Spec.InitProvider.Config.Jira.SyncNotesUser")
+				return errors.Wrap(err, "mg.Spec.InitProvider.Config[i3].Jira[i4].SyncNotesUser")
 			}
-			mg.Spec.InitProvider.Config.Jira.SyncNotesUser = reference.ToPtrValue(rsp.ResolvedValue)
-			mg.Spec.InitProvider.Config.Jira.UserRefs = rsp.ResolvedReference
+			mg.Spec.InitProvider.Config[i3].Jira[i4].SyncNotesUser = reference.ToPtrValue(rsp.ResolvedValue)
+			mg.Spec.InitProvider.Config[i3].Jira[i4].UserRefs = rsp.ResolvedReference
 
 		}
 	}
-	if mg.Spec.InitProvider.Config != nil {
+	for i3 := 0; i3 < len(mg.Spec.InitProvider.Config); i3++ {
 		rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
-			CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.Config.Service),
+			CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.Config[i3].Service),
 			Extract:      reference.ExternalName(),
 			Namespace:    mg.GetNamespace(),
-			Reference:    mg.Spec.InitProvider.Config.ServiceRefs,
-			Selector:     mg.Spec.InitProvider.Config.ServiceSelector,
+			Reference:    mg.Spec.InitProvider.Config[i3].ServiceRefs,
+			Selector:     mg.Spec.InitProvider.Config[i3].ServiceSelector,
 			To: reference.To{
 				List:    &v1alpha11.ServiceList{},
 				Managed: &v1alpha11.Service{},
 			},
 		})
 		if err != nil {
-			return errors.Wrap(err, "mg.Spec.InitProvider.Config.Service")
+			return errors.Wrap(err, "mg.Spec.InitProvider.Config[i3].Service")
 		}
-		mg.Spec.InitProvider.Config.Service = reference.ToPtrValue(rsp.ResolvedValue)
-		mg.Spec.InitProvider.Config.ServiceRefs = rsp.ResolvedReference
+		mg.Spec.InitProvider.Config[i3].Service = reference.ToPtrValue(rsp.ResolvedValue)
+		mg.Spec.InitProvider.Config[i3].ServiceRefs = rsp.ResolvedReference
 
 	}
 

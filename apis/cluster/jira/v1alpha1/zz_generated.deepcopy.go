@@ -125,8 +125,10 @@ func (in *CloudAccountMappingRuleInitParameters) DeepCopyInto(out *CloudAccountM
 	}
 	if in.Config != nil {
 		in, out := &in.Config, &out.Config
-		*out = new(ConfigInitParameters)
-		(*in).DeepCopyInto(*out)
+		*out = make([]ConfigInitParameters, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
 	}
 	if in.Enabled != nil {
 		in, out := &in.Enabled, &out.Enabled
@@ -202,8 +204,10 @@ func (in *CloudAccountMappingRuleObservation) DeepCopyInto(out *CloudAccountMapp
 	}
 	if in.Config != nil {
 		in, out := &in.Config, &out.Config
-		*out = new(ConfigObservation)
-		(*in).DeepCopyInto(*out)
+		*out = make([]ConfigObservation, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
 	}
 	if in.Enabled != nil {
 		in, out := &in.Enabled, &out.Enabled
@@ -242,8 +246,10 @@ func (in *CloudAccountMappingRuleParameters) DeepCopyInto(out *CloudAccountMappi
 	}
 	if in.Config != nil {
 		in, out := &in.Config, &out.Config
-		*out = new(ConfigParameters)
-		(*in).DeepCopyInto(*out)
+		*out = make([]ConfigParameters, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
 	}
 	if in.Enabled != nil {
 		in, out := &in.Enabled, &out.Enabled
@@ -307,8 +313,10 @@ func (in *ConfigInitParameters) DeepCopyInto(out *ConfigInitParameters) {
 	*out = *in
 	if in.Jira != nil {
 		in, out := &in.Jira, &out.Jira
-		*out = new(JiraInitParameters)
-		(*in).DeepCopyInto(*out)
+		*out = make([]JiraInitParameters, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
 	}
 	if in.Service != nil {
 		in, out := &in.Service, &out.Service
@@ -342,8 +350,10 @@ func (in *ConfigObservation) DeepCopyInto(out *ConfigObservation) {
 	*out = *in
 	if in.Jira != nil {
 		in, out := &in.Jira, &out.Jira
-		*out = new(JiraObservation)
-		(*in).DeepCopyInto(*out)
+		*out = make([]JiraObservation, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
 	}
 	if in.Service != nil {
 		in, out := &in.Service, &out.Service
@@ -367,8 +377,10 @@ func (in *ConfigParameters) DeepCopyInto(out *ConfigParameters) {
 	*out = *in
 	if in.Jira != nil {
 		in, out := &in.Jira, &out.Jira
-		*out = new(JiraParameters)
-		(*in).DeepCopyInto(*out)
+		*out = make([]JiraParameters, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
 	}
 	if in.Service != nil {
 		in, out := &in.Service, &out.Service
@@ -614,8 +626,10 @@ func (in *JiraInitParameters) DeepCopyInto(out *JiraInitParameters) {
 	}
 	if in.IssueType != nil {
 		in, out := &in.IssueType, &out.IssueType
-		*out = new(IssueTypeInitParameters)
-		(*in).DeepCopyInto(*out)
+		*out = make([]IssueTypeInitParameters, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
 	}
 	if in.Priorities != nil {
 		in, out := &in.Priorities, &out.Priorities
@@ -626,13 +640,17 @@ func (in *JiraInitParameters) DeepCopyInto(out *JiraInitParameters) {
 	}
 	if in.Project != nil {
 		in, out := &in.Project, &out.Project
-		*out = new(ProjectInitParameters)
-		(*in).DeepCopyInto(*out)
+		*out = make([]ProjectInitParameters, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
 	}
 	if in.StatusMapping != nil {
 		in, out := &in.StatusMapping, &out.StatusMapping
-		*out = new(StatusMappingInitParameters)
-		(*in).DeepCopyInto(*out)
+		*out = make([]StatusMappingInitParameters, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
 	}
 	if in.SyncNotesUser != nil {
 		in, out := &in.SyncNotesUser, &out.SyncNotesUser
@@ -683,8 +701,10 @@ func (in *JiraObservation) DeepCopyInto(out *JiraObservation) {
 	}
 	if in.IssueType != nil {
 		in, out := &in.IssueType, &out.IssueType
-		*out = new(IssueTypeObservation)
-		(*in).DeepCopyInto(*out)
+		*out = make([]IssueTypeObservation, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
 	}
 	if in.Priorities != nil {
 		in, out := &in.Priorities, &out.Priorities
@@ -695,13 +715,17 @@ func (in *JiraObservation) DeepCopyInto(out *JiraObservation) {
 	}
 	if in.Project != nil {
 		in, out := &in.Project, &out.Project
-		*out = new(ProjectObservation)
-		(*in).DeepCopyInto(*out)
+		*out = make([]ProjectObservation, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
 	}
 	if in.StatusMapping != nil {
 		in, out := &in.StatusMapping, &out.StatusMapping
-		*out = new(StatusMappingObservation)
-		(*in).DeepCopyInto(*out)
+		*out = make([]StatusMappingObservation, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
 	}
 	if in.SyncNotesUser != nil {
 		in, out := &in.SyncNotesUser, &out.SyncNotesUser
@@ -742,8 +766,10 @@ func (in *JiraParameters) DeepCopyInto(out *JiraParameters) {
 	}
 	if in.IssueType != nil {
 		in, out := &in.IssueType, &out.IssueType
-		*out = new(IssueTypeParameters)
-		(*in).DeepCopyInto(*out)
+		*out = make([]IssueTypeParameters, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
 	}
 	if in.Priorities != nil {
 		in, out := &in.Priorities, &out.Priorities
@@ -754,13 +780,17 @@ func (in *JiraParameters) DeepCopyInto(out *JiraParameters) {
 	}
 	if in.Project != nil {
 		in, out := &in.Project, &out.Project
-		*out = new(ProjectParameters)
-		(*in).DeepCopyInto(*out)
+		*out = make([]ProjectParameters, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
 	}
 	if in.StatusMapping != nil {
 		in, out := &in.StatusMapping, &out.StatusMapping
-		*out = new(StatusMappingParameters)
-		(*in).DeepCopyInto(*out)
+		*out = make([]StatusMappingParameters, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
 	}
 	if in.SyncNotesUser != nil {
 		in, out := &in.SyncNotesUser, &out.SyncNotesUser
@@ -1034,18 +1064,24 @@ func (in *StatusMappingInitParameters) DeepCopyInto(out *StatusMappingInitParame
 	*out = *in
 	if in.Acknowledged != nil {
 		in, out := &in.Acknowledged, &out.Acknowledged
-		*out = new(AcknowledgedInitParameters)
-		(*in).DeepCopyInto(*out)
+		*out = make([]AcknowledgedInitParameters, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
 	}
 	if in.Resolved != nil {
 		in, out := &in.Resolved, &out.Resolved
-		*out = new(ResolvedInitParameters)
-		(*in).DeepCopyInto(*out)
+		*out = make([]ResolvedInitParameters, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
 	}
 	if in.Triggered != nil {
 		in, out := &in.Triggered, &out.Triggered
-		*out = new(TriggeredInitParameters)
-		(*in).DeepCopyInto(*out)
+		*out = make([]TriggeredInitParameters, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
 	}
 }
 
@@ -1064,18 +1100,24 @@ func (in *StatusMappingObservation) DeepCopyInto(out *StatusMappingObservation) 
 	*out = *in
 	if in.Acknowledged != nil {
 		in, out := &in.Acknowledged, &out.Acknowledged
-		*out = new(AcknowledgedObservation)
-		(*in).DeepCopyInto(*out)
+		*out = make([]AcknowledgedObservation, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
 	}
 	if in.Resolved != nil {
 		in, out := &in.Resolved, &out.Resolved
-		*out = new(ResolvedObservation)
-		(*in).DeepCopyInto(*out)
+		*out = make([]ResolvedObservation, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
 	}
 	if in.Triggered != nil {
 		in, out := &in.Triggered, &out.Triggered
-		*out = new(TriggeredObservation)
-		(*in).DeepCopyInto(*out)
+		*out = make([]TriggeredObservation, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
 	}
 }
 
@@ -1094,18 +1136,24 @@ func (in *StatusMappingParameters) DeepCopyInto(out *StatusMappingParameters) {
 	*out = *in
 	if in.Acknowledged != nil {
 		in, out := &in.Acknowledged, &out.Acknowledged
-		*out = new(AcknowledgedParameters)
-		(*in).DeepCopyInto(*out)
+		*out = make([]AcknowledgedParameters, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
 	}
 	if in.Resolved != nil {
 		in, out := &in.Resolved, &out.Resolved
-		*out = new(ResolvedParameters)
-		(*in).DeepCopyInto(*out)
+		*out = make([]ResolvedParameters, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
 	}
 	if in.Triggered != nil {
 		in, out := &in.Triggered, &out.Triggered
-		*out = new(TriggeredParameters)
-		(*in).DeepCopyInto(*out)
+		*out = make([]TriggeredParameters, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
 	}
 }
 

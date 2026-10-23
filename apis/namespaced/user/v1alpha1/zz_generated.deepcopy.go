@@ -704,8 +704,10 @@ func (in *NotificationRuleInitParameters) DeepCopyInto(out *NotificationRuleInit
 	*out = *in
 	if in.ContactMethod != nil {
 		in, out := &in.ContactMethod, &out.ContactMethod
-		*out = new(NotificationRuleContactMethodInitParameters)
-		(*in).DeepCopyInto(*out)
+		*out = make([]NotificationRuleContactMethodInitParameters, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
 	}
 	if in.StartDelayInMinutes != nil {
 		in, out := &in.StartDelayInMinutes, &out.StartDelayInMinutes
@@ -781,8 +783,10 @@ func (in *NotificationRuleObservation) DeepCopyInto(out *NotificationRuleObserva
 	*out = *in
 	if in.ContactMethod != nil {
 		in, out := &in.ContactMethod, &out.ContactMethod
-		*out = new(NotificationRuleContactMethodObservation)
-		(*in).DeepCopyInto(*out)
+		*out = make([]NotificationRuleContactMethodObservation, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
 	}
 	if in.ID != nil {
 		in, out := &in.ID, &out.ID
@@ -821,8 +825,10 @@ func (in *NotificationRuleParameters) DeepCopyInto(out *NotificationRuleParamete
 	*out = *in
 	if in.ContactMethod != nil {
 		in, out := &in.ContactMethod, &out.ContactMethod
-		*out = new(NotificationRuleContactMethodParameters)
-		(*in).DeepCopyInto(*out)
+		*out = make([]NotificationRuleContactMethodParameters, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
 	}
 	if in.StartDelayInMinutes != nil {
 		in, out := &in.StartDelayInMinutes, &out.StartDelayInMinutes

@@ -81,7 +81,7 @@ type ConfigParameters struct {
 type GroupingSettingInitParameters struct {
 
 	// The set of values used for configuration.
-	Config *ConfigInitParameters `json:"config,omitempty" tf:"config,omitempty"`
+	Config []ConfigInitParameters `json:"config,omitempty" tf:"config,omitempty"`
 
 	// A human-friendly text to describe and identify this alert grouping setting.
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
@@ -111,7 +111,7 @@ type GroupingSettingInitParameters struct {
 type GroupingSettingObservation struct {
 
 	// The set of values used for configuration.
-	Config *ConfigObservation `json:"config,omitempty" tf:"config,omitempty"`
+	Config []ConfigObservation `json:"config,omitempty" tf:"config,omitempty"`
 
 	// A human-friendly text to describe and identify this alert grouping setting.
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
@@ -134,7 +134,7 @@ type GroupingSettingParameters struct {
 
 	// The set of values used for configuration.
 	// +kubebuilder:validation:Optional
-	Config *ConfigParameters `json:"config,omitempty" tf:"config,omitempty"`
+	Config []ConfigParameters `json:"config,omitempty" tf:"config,omitempty"`
 
 	// A human-friendly text to describe and identify this alert grouping setting.
 	// +kubebuilder:validation:Optional
@@ -191,8 +191,10 @@ type GroupingSettingStatus struct {
 // +kubebuilder:object:root=true
 // +kubebuilder:subresource:status
 // +kubebuilder:storageversion
+// +kubebuilder:deprecatedversion:warning="GroupingSetting v1alpha1 is deprecated, use v1alpha2: its singleton lists are embedded objects. Deprecated since v1.2.2."
 
 // GroupingSetting is the Schema for the GroupingSettings API. Creates and manages an alert grouping setting in PagerDuty.
+// Deprecated: This API version (v1alpha1) has been deprecated in release v1.2.2.
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
