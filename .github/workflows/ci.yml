@@ -30,7 +30,7 @@ env:
 
 jobs:
   detect-noop:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     outputs:
       noop: ${{ steps.noop.outputs.should_skip }}
     steps:
@@ -43,7 +43,7 @@ jobs:
           do_not_skip: '["workflow_dispatch", "schedule", "push"]'
 
   report-breaking-changes:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     needs: detect-noop
     if: needs.detect-noop.outputs.noop != 'true'
     steps:
@@ -75,7 +75,7 @@ jobs:
           make schema-version-diff
 
   lint:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     needs: detect-noop
     if: needs.detect-noop.outputs.noop != 'true'
 
@@ -107,7 +107,7 @@ jobs:
           version: ${{ steps.golangci-version.outputs.version }}
 
   check-diff:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     needs: detect-noop
     if: needs.detect-noop.outputs.noop != 'true'
 
@@ -132,7 +132,7 @@ jobs:
         run: make check-diff
 
   unit-tests:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     needs: detect-noop
     if: needs.detect-noop.outputs.noop != 'true'
 
@@ -163,7 +163,7 @@ jobs:
           files: _output/tests/linux_amd64/coverage.txt
 
   local-deploy:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     needs: detect-noop
     if: needs.detect-noop.outputs.noop != 'true'
 
@@ -188,7 +188,7 @@ jobs:
         run: make local-deploy
 
   publish-artifacts:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     needs:
       - detect-noop
       - report-breaking-changes
@@ -262,7 +262,7 @@ jobs:
 
   mirror-to-xpkg-upbound-io:
     needs: publish-artifacts
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     steps:
       - name: Setup QEMU
         uses: docker/setup-qemu-action@99012661954931238ded8c8b007157a8430204e1 # v4
