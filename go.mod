@@ -6,7 +6,8 @@ tool golang.org/x/tools/cmd/goimports
 
 require (
 	dario.cat/mergo v1.0.2
-	github.com/PagerDuty/terraform-provider-pagerduty v0.0.0-local
+	// Terraform provider v3.31.0; upstream uses an unversioned Go module path.
+	github.com/PagerDuty/terraform-provider-pagerduty v1.11.1-0.20260217145649-a0d2e27cd4ae
 	github.com/alecthomas/kingpin/v2 v2.4.0
 	github.com/crossplane/crossplane-runtime/v2 v2.5.0-rc.0.0.20261020154247-654ae6d88a10
 	github.com/crossplane/crossplane-tools v0.0.0-20260719180100-659f1dc036c5
@@ -186,5 +187,3 @@ require (
 	sigs.k8s.io/randfill v1.0.0 // indirect
 	sigs.k8s.io/structured-merge-diff/v6 v6.4.2 // indirect
 )
-
-replace github.com/PagerDuty/terraform-provider-pagerduty => ./third_party/terraform-provider-pagerduty
