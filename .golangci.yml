@@ -107,7 +107,6 @@ linters:
         text: 'G104:'
     paths:
       - zz_\..+\.go$
-      - third_party$
       - builtin$
       - examples$
 issues:
@@ -128,6 +127,5 @@ formatters:
     generated: lax
     paths:
       - zz_\..+\.go$
-      - third_party$
       - builtin$
       - examples$

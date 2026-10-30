@@ -11,6 +11,7 @@ export TERRAFORM_VERSION ?= 1.5.7
 TERRAFORM_VERSION_VALID := $(shell [ "$(TERRAFORM_VERSION)" = "`printf "$(TERRAFORM_VERSION)\n1.6" | sort -V | head -n1`" ] && echo 1 || echo 0)
 
 export TERRAFORM_PROVIDER_SOURCE ?= PagerDuty/pagerduty
+# Keep the Terraform provider source tag aligned with its pseudo-version in go.mod.
 export TERRAFORM_PROVIDER_VERSION ?= 3.31.0
 export TERRAFORM_PROVIDER_DOWNLOAD_NAME ?= terraform-provider-pagerduty
 export TERRAFORM_PROVIDER_REPO ?= https://github.com/PagerDuty/$(TERRAFORM_PROVIDER_DOWNLOAD_NAME)
@@ -97,7 +98,7 @@ xpkg.build.provider-pagerduty: do.build.images
 
 # NOTE(hasheddan): we ensure up is installed prior to running platform-specific
 # build steps in parallel to avoid encountering an installation race condition.
-build.init: $(UP) $(CROSSPLANE_CLI) check-terraform-version provider-source
+build.init: $(UP) $(CROSSPLANE_CLI) check-terraform-version
 
 # ====================================================================================
 # Setup Terraform for fetching provider schema
@@ -134,42 +135,10 @@ pull-docs:
 	fi
 	@git -C "$(WORK_DIR)/$(TERRAFORM_PROVIDER_SOURCE)" sparse-checkout set "$(TERRAFORM_DOCS_PATH)"
 
-# ====================================================================================
-# Provider source for the no-fork (in-process) runtime.
-#
-# The upstream module path has no /v3 suffix, so its v3.x tags are not valid Go
-# module versions. go.mod replaces the module with this directory, cloned from
-# the v$(TERRAFORM_PROVIDER_VERSION) tag, so that version is the single source
-# of truth for both the generated schema and the compiled provider.
-# third_party/ is gitignored; fresh checkouts must run `make provider-source`
-# (wired into build.init, generate.init and go.modules.download) before the Go
-# tree compiles.
-PROVIDER_SOURCE_DIR := third_party/terraform-provider-pagerduty
-PROVIDER_VERSION_STAMP := $(WORK_DIR)/.provider-version-$(TERRAFORM_PROVIDER_VERSION)
-
-$(PROVIDER_VERSION_STAMP):
-	@rm -rf $(WORK_DIR)/.provider-version-* "$(PROVIDER_SOURCE_DIR)"
-	@mkdir -p $(WORK_DIR) && touch $@
-
-provider-source: $(PROVIDER_VERSION_STAMP)
-	@if [ ! -f "$(PROVIDER_SOURCE_DIR)/go.mod" ]; then \
-		$(INFO) cloning $(TERRAFORM_PROVIDER_DOWNLOAD_NAME) v$(TERRAFORM_PROVIDER_VERSION); \
-		rm -rf "$(PROVIDER_SOURCE_DIR)"; \
-		git clone -c advice.detachedHead=false --depth 1 --branch "v$(TERRAFORM_PROVIDER_VERSION)" "$(TERRAFORM_PROVIDER_REPO)" "$(PROVIDER_SOURCE_DIR)" || $(FAIL); \
-		rm -rf "$(PROVIDER_SOURCE_DIR)/.git"; \
-		$(OK) cloning $(TERRAFORM_PROVIDER_DOWNLOAD_NAME) v$(TERRAFORM_PROVIDER_VERSION); \
-	fi
-
-provider-source-clean:
-	@rm -rf "$(PROVIDER_SOURCE_DIR)" $(WORK_DIR)/.provider-version-*
-
-go.modules.download: provider-source
-clean: provider-source-clean
-
-generate.init: $(TERRAFORM_PROVIDER_SCHEMA) pull-docs provider-source
+generate.init: $(TERRAFORM_PROVIDER_SCHEMA) pull-docs
 generate.done: copy-examples
 
-.PHONY: $(TERRAFORM_PROVIDER_SCHEMA) pull-docs check-terraform-version provider-source provider-source-clean
+.PHONY: $(TERRAFORM_PROVIDER_SCHEMA) pull-docs check-terraform-version
 # ====================================================================================
 # Targets
 
