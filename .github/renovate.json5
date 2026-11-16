@@ -61,6 +61,12 @@
   ],
   "packageRules": [
     {
+      // The Makefile manager owns upgrades; generation derives the Go pseudo-version.
+      "matchManagers": ["gomod"],
+      "matchPackageNames": ["github.com/PagerDuty/terraform-provider-pagerduty"],
+      "enabled": false
+    },
+    {
       "matchManagers": [
         "github-actions"
       ],
