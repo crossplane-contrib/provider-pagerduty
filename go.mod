@@ -6,7 +6,7 @@ tool golang.org/x/tools/cmd/goimports
 
 require (
 	dario.cat/mergo v1.0.2
-	// Terraform provider v3.31.0; upstream uses an unversioned Go module path.
+	// Derived from TERRAFORM_PROVIDER_VERSION by make update-terraform-provider.
 	github.com/PagerDuty/terraform-provider-pagerduty v1.11.1-0.20260217145649-a0d2e27cd4ae
 	github.com/alecthomas/kingpin/v2 v2.4.0
 	github.com/crossplane/crossplane-runtime/v2 v2.5.0-rc.0.0.20261020154247-654ae6d88a10

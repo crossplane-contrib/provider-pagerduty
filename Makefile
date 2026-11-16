@@ -11,7 +11,7 @@ export TERRAFORM_VERSION ?= 1.5.7
 TERRAFORM_VERSION_VALID := $(shell [ "$(TERRAFORM_VERSION)" = "`printf "$(TERRAFORM_VERSION)\n1.6" | sort -V | head -n1`" ] && echo 1 || echo 0)
 
 export TERRAFORM_PROVIDER_SOURCE ?= PagerDuty/pagerduty
-# Keep the Terraform provider source tag aligned with its pseudo-version in go.mod.
+# Source of truth for the schema, docs, and Go dependency (resolved by generate.init).
 export TERRAFORM_PROVIDER_VERSION ?= 3.31.0
 export TERRAFORM_PROVIDER_DOWNLOAD_NAME ?= terraform-provider-pagerduty
 export TERRAFORM_PROVIDER_REPO ?= https://github.com/PagerDuty/$(TERRAFORM_PROVIDER_DOWNLOAD_NAME)
@@ -135,10 +135,19 @@ pull-docs:
 	fi
 	@git -C "$(WORK_DIR)/$(TERRAFORM_PROVIDER_SOURCE)" sparse-checkout set "$(TERRAFORM_DOCS_PATH)"
 
-generate.init: $(TERRAFORM_PROVIDER_SCHEMA) pull-docs
+# Resolve the release tag to a commit because upstream's Go module path lacks /v3.
+update-terraform-provider:
+	@sh scripts/update-terraform-provider.sh "$(TERRAFORM_PROVIDER_REPO)" "$(TERRAFORM_PROVIDER_VERSION)" "$(GO)"
+
+test-terraform-provider-dependency:
+	@python3 scripts/test_update_terraform_provider.py
+
+test.init: test-terraform-provider-dependency
+
+generate.init: update-terraform-provider $(TERRAFORM_PROVIDER_SCHEMA) pull-docs
 generate.done: copy-examples
 
-.PHONY: $(TERRAFORM_PROVIDER_SCHEMA) pull-docs check-terraform-version
+.PHONY: $(TERRAFORM_PROVIDER_SCHEMA) pull-docs check-terraform-version update-terraform-provider test-terraform-provider-dependency
 # ====================================================================================
 # Targets
 
